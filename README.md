@@ -1,0 +1,1 @@
+Management console for gateway.
