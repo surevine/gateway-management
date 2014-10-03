@@ -1,1 +1,4 @@
-Management console for gateway.
+Gateway Management Console
+==========================
+
+Web-based management console for gateway configuration.
