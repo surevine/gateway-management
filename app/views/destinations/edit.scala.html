@@ -2,11 +2,13 @@
 
 @import helper._
 
+@implicitFieldConstructor = @{ FieldConstructor(utils.twitterBootstrapInput.render) }
+
 @main("Edit destination") {
 
 	<h2>Edit destination</h2>
 
-	@form(routes.Destinations.update(id)) {
+	@form(routes.Destinations.update(id), 'role -> "form") {
 
 		<fieldset>
 

@@ -49,7 +49,9 @@ public class Destinations extends Controller {
 
     	Form<Destination> destinationForm = Form.form(Destination.class).bindFromRequest();
 
-    	// TODO error checking etc
+    	if(destinationForm.hasErrors()) {
+            return badRequest(views.html.destinations.add.render(destinationForm));
+        }
 
     	destinationForm.get().save();
 
@@ -64,7 +66,9 @@ public class Destinations extends Controller {
 
     	Form<Destination> destinationForm = Form.form(Destination.class).bindFromRequest();
 
-    	// TODO validation
+    	if(destinationForm.hasErrors()) {
+            return badRequest(views.html.destinations.edit.render(id, destinationForm));
+        }
 
     	destinationForm.get().update(id);
 

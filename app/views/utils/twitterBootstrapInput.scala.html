@@ -4,8 +4,11 @@
 * Generate input according twitter bootstrap 3 rules (custom) *
 **************************************************************@
 
-<div class="form-group @if(elements.hasErrors) {error}">
-	<label for="@elements.id">@elements.label</label>
+<div class="form-group @if(elements.hasErrors) {has-error}">
+	<label class="control-label" for="@elements.id">@elements.label</label>
+	@if(elements.hasErrors) {
+		<span class="help-block">@elements.errors.mkString(", ")</span>
+	}
     @elements.input
     <span class="help-block">@elements.infos.mkString(", ")</span>
 </div>
