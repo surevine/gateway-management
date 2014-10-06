@@ -1,15 +1,19 @@
 @(destinationForm: Form[Destination])
 
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(utils.twitterBootstrapInput.render) }
+
 @main("Add Destination") {
 
 	<h2>Add destination</h2>
 
-	@helper.form(routes.Destinations.create()) {
+	@form(routes.Destinations.create(), 'role -> "form") {
 
 		<fieldset>
 
-			@helper.inputText(destinationForm("name"), '_label -> "Name", '_help -> "Name of destination")
-			@helper.inputText(destinationForm("url"), '_label -> "URL", '_help -> "URL of destination")
+			@inputText(destinationForm("name"), '_label -> "Name", '_help -> "Name of destination", 'class -> "form-control")
+			@inputText(destinationForm("url"), '_label -> "URL", '_help -> "URL of destination", 'class -> "form-control")
 
 		</fieldset>
 

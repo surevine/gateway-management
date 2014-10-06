@@ -1,15 +1,17 @@
 @(id: Long, destinationForm: Form[Destination])
 
+@import helper._
+
 @main("Edit destination") {
 
 	<h2>Edit destination</h2>
 
-	@helper.form(routes.Destinations.update(id)) {
+	@form(routes.Destinations.update(id)) {
 
 		<fieldset>
 
-			@helper.inputText(destinationForm("name"), '_label -> "Name", '_help -> "Name of destination")
-			@helper.inputText(destinationForm("url"), '_label -> "URL", '_help -> "URL of destination")
+			@inputText(destinationForm("name"), '_label -> "Name", '_help -> "Name of destination", 'class -> "form-control")
+			@inputText(destinationForm("url"), '_label -> "URL", '_help -> "URL of destination", 'class -> "form-control")
 
 		</fieldset>
 
@@ -20,7 +22,7 @@
 
 	}
 
-    @helper.form(routes.Destinations.delete(id), 'class -> "topRight") {
+    @form(routes.Destinations.delete(id), 'class -> "topRight") {
         <input type="submit" value="Delete this destination" class="btn btn-danger">
     }
 
