@@ -6,8 +6,16 @@ import javax.persistence.Id;
 import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
 
+/**
+ * Gateway destination end-point to share resources with.
+ *
+ * @author jonnyheavey (jonny.heavey@surevine.com)
+ *
+ */
 @Entity
 public class Destination extends Model {
+
+    private static final long serialVersionUID = 1L;
 
 	@Id
 	public Long id;
@@ -17,7 +25,6 @@ public class Destination extends Model {
 
 	@Required
 	public String url;
-
 
     /**
      * Generic query helper for entity Computer with id Long

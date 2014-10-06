@@ -12,6 +12,11 @@ import views.html.*;
 
 public class Destinations extends Controller {
 
+	/**
+	 * Display list of all destinations
+	 *
+	 * @return
+	 */
     public static Result list() {
 
     	List<Destination> destinations = Destination.find.all();
@@ -20,6 +25,12 @@ public class Destinations extends Controller {
 
     }
 
+    /**
+     * Display single destination view page
+     *
+     * @param id Id of destination to display
+     * @return
+     */
     public static Result view(Long id) {
 
     	Destination destination = Destination.find.byId(id);
@@ -28,6 +39,11 @@ public class Destinations extends Controller {
 
     }
 
+    /**
+     * Display the 'add destination' form page
+     *
+     * @return
+     */
     public static Result add() {
 
     	Form<Destination> destinationForm = Form.form(Destination.class);
@@ -36,6 +52,12 @@ public class Destinations extends Controller {
 
     }
 
+    /**
+     * Display the 'edit destination' form page
+     *
+     * @param id Id of destination to edit
+     * @return
+     */
     public static Result edit(Long id) {
 
     	Destination destination = Destination.find.byId(id);
@@ -45,6 +67,9 @@ public class Destinations extends Controller {
 
     }
 
+    /**
+     * Handle the 'new destination' form submission
+     */
     public static Result create() {
 
     	Form<Destination> destinationForm = Form.form(Destination.class).bindFromRequest();
@@ -62,6 +87,12 @@ public class Destinations extends Controller {
 
     }
 
+    /**
+     * Handle the 'update destination' form submission
+     *
+     * @param id Id of destination to update
+     * @return
+     */
     public static Result update(Long id) {
 
     	Form<Destination> destinationForm = Form.form(Destination.class).bindFromRequest();
@@ -79,6 +110,11 @@ public class Destinations extends Controller {
 
     }
 
+    /**
+     * Handles the 'delete destination' form submission
+     *
+     * @param id Id of the destination to delete
+     */
     public static Result delete(Long id) {
 
     	Destination destination = Destination.find.byId(id);
