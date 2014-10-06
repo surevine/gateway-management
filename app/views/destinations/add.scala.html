@@ -1,6 +1,8 @@
 @(destinationForm: Form[Destination])
 
-@main("Gateway management console")("Add Destination") {
+@main("Add Destination") {
+
+	<h2>Add destination</h2>
 
 	@helper.form(routes.Destinations.create()) {
 

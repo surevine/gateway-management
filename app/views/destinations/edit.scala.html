@@ -1,6 +1,8 @@
 @(id: Long, destinationForm: Form[Destination])
 
-@main("Gateway management console")("Update destination") {
+@main("Edit destination") {
+
+	<h2>Edit destination</h2>
 
 	@helper.form(routes.Destinations.update(id)) {
 
