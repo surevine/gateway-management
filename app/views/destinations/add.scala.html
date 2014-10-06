@@ -1,0 +1,21 @@
+@(destinationForm: Form[Destination])
+
+@main("Gateway management console")("Add Destination") {
+
+	@helper.form(routes.Destinations.create()) {
+
+		<fieldset>
+
+			@helper.inputText(destinationForm("name"), '_label -> "Name", '_help -> "Name of destination")
+			@helper.inputText(destinationForm("url"), '_label -> "URL", '_help -> "URL of destination")
+
+		</fieldset>
+
+		<div class="actions">
+            <input type="submit" value="Create destination" class="btn btn-primary">
+            <a href="@routes.Destinations.list()" class="btn btn-default">Cancel</a>
+		</div>
+
+	}
+
+}

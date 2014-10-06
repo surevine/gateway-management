@@ -1,0 +1,18 @@
+@(destinations: List[Destination])
+
+@main("Gateway management console")("Destinations") {
+
+    <a href="@routes.Destinations.add()" class="btn btn-primary">Add Destination</a>
+
+    @if(destinations.isEmpty()) {
+    	<p>No destinations!</p>
+    } else {
+	    <ul>
+		    @for(destination <- destinations) {
+		    	<li>@destination.name (@destination.url) - <a href="@routes.Destinations.view(destination.id)">View destination</a></li>
+		    }
+	    </ul>
+    }
+
+
+}

@@ -2,8 +2,25 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Home page
+# Dashboard
 GET     /                           controllers.Application.index()
+
+# Destinations list
+GET		/destinations				controllers.Destinations.list()
+
+# View destination
+GET		/destinations/view/:id		controllers.Destinations.view(id: Long)
+
+# Add a destination
+GET		/destinations/add			controllers.Destinations.add()
+POST	/destinations/add			controllers.Destinations.create()
+
+# Edit existing destination
+GET		/destinations/edit/:id		controllers.Destinations.edit(id: Long)
+POST	/destinations/edit/:id		controllers.Destinations.update(id: Long)
+
+# Delete destination
+POST	/destinations/delete/:id	controllers.Destinations.delete(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

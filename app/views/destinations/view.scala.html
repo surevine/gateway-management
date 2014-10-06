@@ -1,0 +1,10 @@
+@(destination: Destination)
+
+@main("Gateway management console")("View destination") {
+
+	<p>@destination.name</p>
+	<p>@destination.url</p>
+	<a href="@routes.Destinations.edit(destination.id)" class="btn btn-primary">Edit</a>
+
+
+}

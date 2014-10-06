@@ -1,0 +1,25 @@
+@(id: Long, destinationForm: Form[Destination])
+
+@main("Gateway management console")("Update destination") {
+
+	@helper.form(routes.Destinations.update(id)) {
+
+		<fieldset>
+
+			@helper.inputText(destinationForm("name"), '_label -> "Name", '_help -> "Name of destination")
+			@helper.inputText(destinationForm("url"), '_label -> "URL", '_help -> "URL of destination")
+
+		</fieldset>
+
+		<div class="actions">
+            <input type="submit" value="Update destination" class="btn btn-primary">
+            <a href="@routes.Destinations.view(id)" class="btn btn-default">Cancel</a>
+		</div>
+
+	}
+
+    @helper.form(routes.Destinations.delete(id), 'class -> "topRight") {
+        <input type="submit" value="Delete this destination" class="btn btn-danger">
+    }
+
+}
