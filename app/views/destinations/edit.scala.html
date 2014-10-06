@@ -10,8 +10,8 @@
 
 		<fieldset>
 
-			@inputText(destinationForm("name"), '_label -> "Name", '_help -> "Name of destination", 'class -> "form-control")
-			@inputText(destinationForm("url"), '_label -> "URL", '_help -> "URL of destination", 'class -> "form-control")
+			@inputText(destinationForm("name"), '_label -> "Name", '_help -> "Name of destination", 'class -> "form-control", 'placeholder -> "Name")
+			@inputText(destinationForm("url"), '_label -> "URL", '_help -> "URL of destination", 'class -> "form-control", 'placeholder -> "URL")
 
 		</fieldset>
 
@@ -21,6 +21,8 @@
 		</div>
 
 	}
+
+	<h3>Delete destination</h3>
 
     @form(routes.Destinations.delete(id), 'class -> "topRight") {
         <input type="submit" value="Delete this destination" class="btn btn-danger">

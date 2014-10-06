@@ -4,11 +4,8 @@
 * Generate input according twitter bootstrap 3 rules (custom) *
 **************************************************************@
 
-@inputType = @{ elements.args.toMap.get('type).map(_.toString).getOrElse("text") }
-@classes = @{ elements.args.toMap.get('class).map(_.toString).getOrElse("") }
-
 <div class="form-group @if(elements.hasErrors) {error}">
 	<label for="@elements.id">@elements.label</label>
-    <input type="@inputType" id="@elements.id" name="@elements.name" class="@classes" />
+    @elements.input
     <span class="help-block">@elements.infos.mkString(", ")</span>
 </div>
