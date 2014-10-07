@@ -1,12 +1,21 @@
 package controllers;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
 
 import models.Destination;
 import play.*;
 import play.data.Form;
 import play.db.ebean.Model;
 import play.mvc.*;
+
 
 import views.html.*;
 
@@ -35,7 +44,20 @@ public class Destinations extends Controller {
 
     	Destination destination = Destination.find.byId(id);
 
-    	return ok(views.html.destinations.view.render(destination));
+    	String destinationRules = "";
+    	String errorMessage = "";
+    	Boolean error = false;
+
+    	try {
+    		destinationRules = destination.loadRules();
+    	}
+    	catch(IOException e) {
+    		// Display error to user, but continue render of destination page
+    		error = true;
+    		errorMessage = e.getMessage();
+    	}
+
+    	return ok(views.html.destinations.view.render(destination, destinationRules, error, errorMessage));
 
     }
 

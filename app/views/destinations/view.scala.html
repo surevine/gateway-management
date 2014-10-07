@@ -1,12 +1,28 @@
-@(destination: Destination)
+@(destination: Destination, rules: String, error: Boolean, errorMessage: String)
 
 @main("View destination") {
 
 	<h2>View destination</h2>
 
+	<h4>Destination details</h4>
 	<p>@destination.name</p>
 	<p>@destination.url</p>
-	<a href="@routes.Destinations.edit(destination.id)" class="btn btn-primary">Edit</a>
+	<a href="@routes.Destinations.edit(destination.id)" class="btn btn-primary btn-sm">Edit</a>
 
+	<h4>Destination rules</h4>
+
+	@if(error) {
+
+		<h4>Error!</h4>
+		<p>Could not load rule file:</p>
+		<p>@errorMessage</p>
+		<p>This may cause issues for gateway functionality.</p>
+
+	} else {
+
+		<a href="#" class="btn btn-primary btn-sm">Edit rules</a>
+		<pre>@rules</pre>
+
+	}
 
 }
