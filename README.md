@@ -10,4 +10,4 @@ Provides functionality to:
 
 ## Build status
 
-[![Build Status](https://travis-ci.org/surevine/gateway-management.png?branch=master)](https://travis-ci.org/surevine/gateway-management)
+[![Build Status](https://travis-ci.org/surevine/gateway-management.svg)](https://travis-ci.org/surevine/gateway-management)
