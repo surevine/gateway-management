@@ -44,6 +44,17 @@ public class Destination extends Model {
      */
     public static Finder<Long,Destination> find = new Finder<Long,Destination>(Long.class, Destination.class);
 
+
+    @Override
+    public void save() {
+
+    	createRuleFileDirectory();
+    	createRuleFile("custom.js");
+
+    	super.save();
+
+    }
+
     /**
      * Loads rules for the destination from expected rule-file locations
      *
