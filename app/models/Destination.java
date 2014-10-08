@@ -68,6 +68,15 @@ public class Destination extends Model {
     }
 
     /**
+     * Creates rule file on disk for destination
+     *
+     * @param name Name of file to create
+     */
+    public void createRuleFile(String destinationsDirectoryPath, String name) {
+    	// TODO
+    }
+
+    /**
      * Perform additional validation (beyond annotations) on model properties.
      *
      * @return List of validation error messages associated with relevant fields (if any exist)

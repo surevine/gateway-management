@@ -37,6 +37,9 @@ public class DestinationsTest {
 
 		// Expect 303 as implementation redirects to 'view' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
+
+		// TODO confirm that destination is persisted in database
+		// TODO confirm that rule-file is generated for destination
 	}
 
 	@Test
