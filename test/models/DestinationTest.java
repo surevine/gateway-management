@@ -36,9 +36,6 @@ public class DestinationTest {
 
 	@AfterClass
 	public static void stopApp() {
-
-		// TODO tidy up all created files on disk
-
 		stop(app);
 	}
 
@@ -54,9 +51,10 @@ public class DestinationTest {
 		destination.createRuleFile(destinationsDirectoryPath, ruleFileName);
 
 		// Determine whether rule file exists
-		String destinationsPath = ConfigFactory.load().getString("gatewaydestinationsdir");
-    	Path rule_file_path = Paths.get(destinationsPath + "/" + destination.id, ruleFileName);
+    	Path rule_file_path = Paths.get(destinationsDirectoryPath + "/" + destination.id, ruleFileName);
 		Boolean exists = Files.exists(rule_file_path);
+
+		// TODO determine that contents of file match template
 
 		assertThat(exists).isEqualTo(true);
 

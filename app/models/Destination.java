@@ -74,6 +74,9 @@ public class Destination extends Model {
      */
     public void createRuleFile(String destinationsDirectoryPath, String name) {
     	// TODO
+
+
+
     }
 
     /**
