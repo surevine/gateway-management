@@ -1,19 +1,22 @@
 package models;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
 import play.data.validation.Constraints.Required;
+import play.data.validation.ValidationError;
 import play.db.ebean.Model;
 
 /**
@@ -61,6 +64,28 @@ public class Destination extends Model {
 		}
 
 		return parsedJsFile.toString();
+
+    }
+
+    /**
+     * Perform additional validation (beyond annotations) on model properties.
+     *
+     * @return List of validation error messages associated with relevant fields (if any exist)
+     */
+    public List<ValidationError> validate() {
+
+    	List<ValidationError> errors = new ArrayList<ValidationError>();
+
+    	// Validate URL
+    	final URL u;
+    	try {
+    		u = new URL(url);
+    	}
+    	catch(MalformedURLException e) {
+    		errors.add(new ValidationError("url", "Valid URL required."));
+    	}
+
+    	return errors.isEmpty() ? null : errors;
 
     }
 
