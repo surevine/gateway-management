@@ -39,6 +39,16 @@ public class Destination extends Model {
 	@Required
 	public String url;
 
+	/**
+	 * Configured location of destinations rule file directories
+	 */
+	public static String DESTINATIONS_RULES_DIRECTORY = ConfigFactory.load().getString("gateway.destinations.dir");
+
+	/**
+	 * Default name of rule file generated when destination created
+	 */
+	public static String DEFAULT_RULEFILE_NAME = "custom.js";
+
     /**
      * Generic query helper for entity Computer with id Long
      */
@@ -47,9 +57,9 @@ public class Destination extends Model {
 
     @Override
     public void save() {
-    	createRuleFileDirectory();
-    	createRuleFile("custom.js");
     	super.save();
+    	createRuleFileDirectory();
+    	createRuleFile(DEFAULT_RULEFILE_NAME);
     }
 
     /**
@@ -60,9 +70,7 @@ public class Destination extends Model {
      */
     public String loadRules() throws IOException {
 
-    	String destinationsPath = ConfigFactory.load().getString("gateway.destinations.dir");
-
-    	Path rule_file_path = Paths.get(destinationsPath + "/" + this.id, "custom.js");
+    	Path rule_file_path = Paths.get(DESTINATIONS_RULES_DIRECTORY + "/" + this.id, DEFAULT_RULEFILE_NAME);
 		List<String> lines = Files.readAllLines(rule_file_path, Charset.forName("UTF-8"));
 
     	StringBuffer parsedJsFile = new StringBuffer();
@@ -80,9 +88,7 @@ public class Destination extends Model {
      */
     public void createRuleFileDirectory() {
 
-    	String destinationsDirectory = ConfigFactory.load().getString("gateway.destinations.dir");
-
-    	Path destinationsDirectoryPath = Paths.get(destinationsDirectory + "/" + this.id);
+    	Path destinationsDirectoryPath = Paths.get(DESTINATIONS_RULES_DIRECTORY + "/" + this.id);
 
     	if(!Files.exists(destinationsDirectoryPath)) {
     		try {
@@ -92,7 +98,6 @@ public class Destination extends Model {
     			e.printStackTrace();
     		}
     	}
-
     }
 
     /**
@@ -102,11 +107,10 @@ public class Destination extends Model {
      */
     public void createRuleFile(String fileName) {
 
-    	String destinationsDirectory = ConfigFactory.load().getString("gateway.destinations.dir");
     	String templateRuleFile = ConfigFactory.load().getString("gateway.template.rule.file");
 
     	Path templateRuleFilePath = Paths.get(templateRuleFile);
-    	Path destinationRuleFilePath = Paths.get(destinationsDirectory + "/" + this.id + "/" + fileName);
+    	Path destinationRuleFilePath = Paths.get(DESTINATIONS_RULES_DIRECTORY + "/" + this.id + "/" + fileName);
 
     	try {
 			Files.copy(templateRuleFilePath, destinationRuleFilePath);
@@ -114,7 +118,6 @@ public class Destination extends Model {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
     }
 
     /**
@@ -123,7 +126,6 @@ public class Destination extends Model {
      * @return List of validation error messages associated with relevant fields (if any exist)
      */
     public List<ValidationError> validate() {
-
     	List<ValidationError> errors = new ArrayList<ValidationError>();
 
     	// Validate URL
@@ -136,7 +138,6 @@ public class Destination extends Model {
     	}
 
     	return errors.isEmpty() ? null : errors;
-
     }
 
 }

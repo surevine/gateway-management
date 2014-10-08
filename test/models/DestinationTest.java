@@ -44,7 +44,6 @@ public class DestinationTest {
 		try {
 			FileUtils.deleteDirectory(new File(DESTINATIONS_DIR + "/" + TEST_DESTINATION_ID));
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}
@@ -67,16 +66,14 @@ public class DestinationTest {
 	@Ignore
 	public void testCreateRuleFile() {
 
-		String ruleFileName = "custom.js";
-
 		Destination destination = new Destination();
 		destination.id = TEST_DESTINATION_ID;
 
 		destination.createRuleFileDirectory();
-		destination.createRuleFile(ruleFileName);
+		destination.createRuleFile(Destination.DEFAULT_RULEFILE_NAME);
 
 		// Determine whether rule file exists
-    	Path rule_file_path = Paths.get(DESTINATIONS_DIR + "/" + destination.id, ruleFileName);
+    	Path rule_file_path = Paths.get(DESTINATIONS_DIR + "/" + destination.id, Destination.DEFAULT_RULEFILE_NAME);
 		Boolean exists = Files.exists(rule_file_path);
 
 		// TODO determine that contents of file match template
