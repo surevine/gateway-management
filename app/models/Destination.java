@@ -47,12 +47,9 @@ public class Destination extends Model {
 
     @Override
     public void save() {
-
     	createRuleFileDirectory();
     	createRuleFile("custom.js");
-
     	super.save();
-
     }
 
     /**

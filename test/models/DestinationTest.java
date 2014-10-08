@@ -49,6 +49,7 @@ public class DestinationTest {
 	}
 
 	@Test
+	@Ignore
 	public void testCreateRuleDirectory() {
 
 		Destination destination = new Destination();
@@ -62,6 +63,7 @@ public class DestinationTest {
 	}
 
 	@Test
+	@Ignore
 	public void testCreateRuleFile() {
 
 		String ruleFileName = "custom.js";
