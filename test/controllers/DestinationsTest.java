@@ -33,18 +33,15 @@ public class DestinationsTest {
 
 	@Test
 	public void testCreateDestination() {
-		Result result = postCreateDestination("Surevine", "http://www.surevine.com");
+		Result result = postCreateDestination("Surevine", "file:///tmp/test");
 
 		// Expect 303 as implementation redirects to 'view' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
-
-		// TODO confirm that destination is persisted in database
-		// TODO confirm that rule-file is generated for destination
 	}
 
 	@Test
 	public void testCreateDestinationEmptyName() {
-		Result result = postCreateDestination("", "http://www.surevine.com");
+		Result result = postCreateDestination("", "file:///tmp/test");
 
 		assertThat(status(result)).isEqualTo(BAD_REQUEST);
 	}

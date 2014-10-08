@@ -6,17 +6,17 @@ import static play.test.Helpers.inMemoryDatabase;
 import static play.test.Helpers.start;
 import static play.test.Helpers.stop;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
 
-import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
 import play.test.FakeApplication;
@@ -25,8 +25,9 @@ public class DestinationTest {
 
 	public static FakeApplication app;
 
-	@Rule
-    public TemporaryFolder testFolder = new TemporaryFolder();
+	// TODO load from alternative test configuration
+	public static String DESTINATIONS_DIR = ConfigFactory.load().getString("gateway.destinations.dir");
+	public static long TEST_DESTINATION_ID = 2014;
 
 	@BeforeClass
 	public static void startApp() {
@@ -37,27 +38,47 @@ public class DestinationTest {
 	@AfterClass
 	public static void stopApp() {
 		stop(app);
+
+		// Delete all artifacts (files/directories) produced by tests in this class
+		try {
+			FileUtils.deleteDirectory(new File(DESTINATIONS_DIR + "/" + TEST_DESTINATION_ID));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testCreateRuleDirectory() {
+
+		Destination destination = new Destination();
+		destination.id = TEST_DESTINATION_ID;
+
+		destination.createRuleFileDirectory();
+
+		Path destinationDirPath = Paths.get(DESTINATIONS_DIR + "/" + destination.id);
+
+		assertThat(Files.exists(destinationDirPath)).isEqualTo(true);
 	}
 
 	@Test
 	public void testCreateRuleFile() {
 
-		Destination destination = new Destination();
-		destination.id = (long) 2014;
-
-		String destinationsDirectoryPath = testFolder.getRoot().getAbsolutePath();
 		String ruleFileName = "custom.js";
 
-		destination.createRuleFile(destinationsDirectoryPath, ruleFileName);
+		Destination destination = new Destination();
+		destination.id = TEST_DESTINATION_ID;
+
+		destination.createRuleFileDirectory();
+		destination.createRuleFile(ruleFileName);
 
 		// Determine whether rule file exists
-    	Path rule_file_path = Paths.get(destinationsDirectoryPath + "/" + destination.id, ruleFileName);
+    	Path rule_file_path = Paths.get(DESTINATIONS_DIR + "/" + destination.id, ruleFileName);
 		Boolean exists = Files.exists(rule_file_path);
 
 		// TODO determine that contents of file match template
 
 		assertThat(exists).isEqualTo(true);
-
 	}
 
 }

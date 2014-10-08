@@ -68,14 +68,44 @@ public class Destination extends Model {
     }
 
     /**
+     * Creates directory for destination rule files
+     */
+    public void createRuleFileDirectory() {
+
+    	String destinationsDirectory = ConfigFactory.load().getString("gateway.destinations.dir");
+
+    	Path destinationsDirectoryPath = Paths.get(destinationsDirectory + "/" + this.id);
+
+    	if(!Files.exists(destinationsDirectoryPath)) {
+    		try {
+    			Files.createDirectory(destinationsDirectoryPath);
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+    	}
+
+    }
+
+    /**
      * Creates rule file on disk for destination
      *
      * @param name Name of file to create
      */
-    public void createRuleFile(String destinationsDirectoryPath, String name) {
-    	// TODO
+    public void createRuleFile(String fileName) {
 
+    	String destinationsDirectory = ConfigFactory.load().getString("gateway.destinations.dir");
+    	String templateRuleFile = ConfigFactory.load().getString("gateway.template.rule.file");
 
+    	Path templateRuleFilePath = Paths.get(templateRuleFile);
+    	Path destinationRuleFilePath = Paths.get(destinationsDirectory + "/" + this.id + "/" + fileName);
+
+    	try {
+			Files.copy(templateRuleFilePath, destinationRuleFilePath);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
     }
 
