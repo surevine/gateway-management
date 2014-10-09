@@ -1,7 +1,5 @@
 language: java
-env:
-  - ACTIVATOR_VERSION=1.2.10 # Latest 2.3.x of play
-  - GATEWAY_DESTINATIONS_DIR=/tmp/gateway
+env: ACTIVATOR_VERSION=1.2.10 GATEWAY_DESTINATIONS_DIR=/tmp/gateway
 before_script:
   - mkdir /tmp/gateway
   - wget http://downloads.typesafe.com/typesafe-activator/1.2.10/typesafe-activator-${ACTIVATOR_VERSION}-minimal.zip
