@@ -42,12 +42,12 @@ public class Destination extends Model {
 	/**
 	 * Configured location of destinations rule file directories
 	 */
-	public static String DESTINATIONS_RULES_DIRECTORY = ConfigFactory.load().getString("gateway.destinations.dir");
+	public static final String DESTINATIONS_RULES_DIRECTORY = ConfigFactory.load().getString("gateway.destinations.dir");
 
 	/**
 	 * Default name of rule file generated when destination created
 	 */
-	public static String DEFAULT_RULEFILE_NAME = "custom.js";
+	public static final String DEFAULT_RULEFILE_NAME = "custom.js";
 
     /**
      * Generic query helper for entity Computer with id Long
@@ -123,7 +123,7 @@ public class Destination extends Model {
     /**
      * Perform additional validation (beyond annotations) on model properties.
      *
-     * @return List of validation error messages associated with relevant fields (if any exist)
+     * @return List of validation error messages associated with relevant properties
      */
     public List<ValidationError> validate() {
     	List<ValidationError> errors = new ArrayList<ValidationError>();
