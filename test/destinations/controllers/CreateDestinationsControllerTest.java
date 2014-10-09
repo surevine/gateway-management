@@ -19,7 +19,7 @@ import play.mvc.Result;
 import play.test.FakeRequest;
 
 /**
- * Tests for the controllers.Destinations functionality (routes/actions)
+ * Tests for the destination controller create functionality (routes/actions)
  *
  * @author jonnyheavey
  *

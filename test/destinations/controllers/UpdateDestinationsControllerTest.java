@@ -19,7 +19,7 @@ import play.mvc.Result;
 import play.test.FakeRequest;
 
 /**
- * Tests for the controllers.Destinations functionality (routes/actions)
+ * Tests for the destination controller update functionality (routes/actions)
  *
  * @author jonnyheavey
  *
@@ -48,8 +48,8 @@ public class UpdateDestinationsControllerTest extends DestinationTest {
 
 	@Test
 	public void testEditNonExistingDestination() {
-		FakeRequest request = new FakeRequest(GET, "/destinations/edit/" + 10000);
-		Result result = callAction(controllers.routes.ref.Destinations.edit(10000), request);
+		FakeRequest request = new FakeRequest(GET, "/destinations/edit/" + TEST_NON_EXISTING_DESTINATION_ID);
+		Result result = callAction(controllers.routes.ref.Destinations.edit(TEST_NON_EXISTING_DESTINATION_ID), request);
 
 		assertThat(status(result)).isEqualTo(NOT_FOUND);
 	}
@@ -85,7 +85,7 @@ public class UpdateDestinationsControllerTest extends DestinationTest {
 
 	@Test
 	public void testUpdateDestinationNonExistingID() {
-		Result result = postUpdateDestination(100000, TEST_EXISTING_DESTINATION_NAME, TEST_EXISTING_DESTINATION_URL);
+		Result result = postUpdateDestination(TEST_NON_EXISTING_DESTINATION_ID, TEST_EXISTING_DESTINATION_NAME, TEST_EXISTING_DESTINATION_URL);
 
 		assertThat(status(result)).isEqualTo(NOT_FOUND);
 	}
@@ -101,7 +101,7 @@ public class UpdateDestinationsControllerTest extends DestinationTest {
 	}
 
 	/**
-	 * Helper method for fake posting of form data to create destination route
+	 * Helper method for fake posting of form data to update destination route
 	 * @param id Id of destination to update
 	 * @param name Name of destination (fake form field value)
 	 * @param url URL of destination (fake form field value)

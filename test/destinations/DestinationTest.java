@@ -40,6 +40,7 @@ public class DestinationTest {
 	public static String TEST_EXISTING_DESTINATION_URL = "file:///tmp/desta";
 
 	public static String TEST_INVALID_URL = "/tmp/invalid";
+	public static long TEST_NON_EXISTING_DESTINATION_ID = 10000;
 
 	@BeforeClass
 	public static void setup() {
