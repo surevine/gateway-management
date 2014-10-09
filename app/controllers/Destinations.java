@@ -150,6 +150,10 @@ public class Destinations extends Controller {
     public static Result delete(Long id) {
 
     	Destination destination = Destination.find.byId(id);
+    	if(destination == null) {
+    		return notFound("Destination not found.");
+    	}
+
     	destination.delete();
 
     	return redirect(routes.Destinations.list());
