@@ -12,3 +12,5 @@ libraryDependencies ++= Seq(
   cache,
   javaWs
 )
+
+javaOptions in Test += "-Dconfig.file=conf/application.test.conf"
