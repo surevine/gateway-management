@@ -1,4 +1,4 @@
-package controllers;
+package destinations;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static play.mvc.Http.Status.BAD_REQUEST;
@@ -8,28 +8,18 @@ import static play.test.Helpers.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import play.mvc.Result;
-import play.test.FakeApplication;
 import play.test.FakeRequest;
 
-public class DestinationsTest {
-
-	public static FakeApplication app;
-
-	@BeforeClass
-	public static void startApp() {
-		app = fakeApplication(inMemoryDatabase());
-		start(app);
-	}
-
-	@AfterClass
-	public static void stopApp() {
-		stop(app);
-	}
+/**
+ * Tests for the controllers.Destinations functionality (routes/actions)
+ *
+ * @author jonnyheavey
+ *
+ */
+public class DestinationsControllerTest extends DestinationTest {
 
 	@Test
 	public void testCreateDestination() {
