@@ -86,7 +86,7 @@ public class DestinationsControllerTest extends DestinationTest {
 		FakeRequest request = new FakeRequest(GET, "/destinations/edit/" + 10000);
 		Result result = callAction(controllers.routes.ref.Destinations.edit(10000), request);
 
-		assertThat(status(result)).isEqualTo(BAD_REQUEST);
+		assertThat(status(result)).isEqualTo(NOT_FOUND);
 	}
 
 	@Test
@@ -122,7 +122,7 @@ public class DestinationsControllerTest extends DestinationTest {
 	public void testUpdateDestinationNonExistingID() {
 		Result result = postUpdateDestination(100000, TEST_EXISTING_DESTINATION_NAME, TEST_EXISTING_DESTINATION_URL);
 
-		assertThat(status(result)).isEqualTo(BAD_REQUEST);
+		assertThat(status(result)).isEqualTo(NOT_FOUND);
 	}
 
 	/**
