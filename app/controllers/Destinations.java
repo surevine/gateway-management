@@ -122,16 +122,16 @@ public class Destinations extends Controller {
      */
     public static Result update(Long id) {
 
+    	Destination destination = Destination.find.byId(id);
+    	if(destination == null) {
+    		return notFound("Destination not found.");
+    	}
+
     	Form<Destination> destinationForm = Form.form(Destination.class).bindFromRequest();
 
     	if(destinationForm.hasErrors()) {
             return badRequest(views.html.destinations.edit.render(id, destinationForm));
         }
-
-    	Destination destination = Destination.find.byId(id);
-    	if(destination == null) {
-    		return notFound("Destination not found.");
-    	}
 
     	destinationForm.get().update(id);
 
