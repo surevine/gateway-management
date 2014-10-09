@@ -22,7 +22,7 @@ public class DestinationModelTest extends DestinationTest {
 	public void testCreateRuleDirectory() {
 
 		Destination destination = new Destination();
-		destination.id = TEST_DESTINATION_ID;
+		destination.id = TEST_NEW_DESTINATION_ID;
 
 		destination.createRuleFileDirectory();
 
@@ -35,7 +35,7 @@ public class DestinationModelTest extends DestinationTest {
 	public void testCreateRuleFile() {
 
 		Destination destination = new Destination();
-		destination.id = TEST_DESTINATION_ID;
+		destination.id = TEST_NEW_DESTINATION_ID;
 
 		destination.createRuleFileDirectory();
 		destination.createRuleFile(Destination.DEFAULT_RULEFILE_NAME);

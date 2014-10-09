@@ -30,7 +30,16 @@ public class DestinationTest {
 	public static FakeApplication app;
 
 	public static String TEST_DESTINATIONS_DIR = ConfigFactory.load().getString("gateway.destinations.dir");
-	public static long TEST_DESTINATION_ID = 2014;
+
+	public static long TEST_NEW_DESTINATION_ID = 2014;
+	public static String TEST_NEW_DESTINATION_NAME = "Destination B";
+	public static String TEST_NEW_DESTINATION_URL = "file:///tmp/destb";
+
+	public static long TEST_EXISTING_DESTINATION_ID = 2013;
+	public static String TEST_EXISTING_DESTINATION_NAME = "Destination A";
+	public static String TEST_EXISTING_DESTINATION_URL = "file:///tmp/desta";
+
+	public static String TEST_INVALID_URL = "/tmp/invalid";
 
 	@BeforeClass
 	public static void setup() {
