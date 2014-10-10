@@ -40,6 +40,9 @@ public class DeleteDestinationsControllerTest extends DestinationTest {
 
 		// Expect 303 as implementation redirects to 'list' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
+
+		Destination destination = Destination.find.byId(TEST_EXISTING_DESTINATION_ID);
+		assertThat(destination).isNull();
 	}
 
 	@Test

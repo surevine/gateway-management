@@ -8,8 +8,7 @@ import play.mvc.*;
 
 /**
  * Destinations API controller.
- * Offers a sub-set of main destinations controller,
- * and generally serves JSON responses.
+ * Offers a sub-set of main destinations controller functionality.
  *
  * @author jonnyheavey
  *

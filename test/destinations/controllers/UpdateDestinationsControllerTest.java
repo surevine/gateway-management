@@ -26,6 +26,9 @@ import play.test.FakeRequest;
  */
 public class UpdateDestinationsControllerTest extends DestinationTest {
 
+	private static final String TEST_NEW_DESTINATION_URL = "file:///tmp/desta/updated";
+	private static final String TEST_NEW_DESITNATION_NAME = "Destination A Updated";
+
 	/**
 	 * Create existing destination in database (for use by update tests)
 	 */
@@ -58,11 +61,14 @@ public class UpdateDestinationsControllerTest extends DestinationTest {
 	@Test
 	public void testUpdateDestination() {
 
-		Result result = postUpdateDestination(TEST_EXISTING_DESTINATION_ID, "Destination A Updated", "file:///tmp/desta/updated");
+		Result result = postUpdateDestination(TEST_EXISTING_DESTINATION_ID, TEST_NEW_DESITNATION_NAME, TEST_NEW_DESTINATION_URL);
 
 		// Expect 303 as implementation redirects to 'view' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
 
+		Destination destination = Destination.find.byId(TEST_EXISTING_DESTINATION_ID);
+		assertThat(destination.name).isEqualTo(TEST_NEW_DESITNATION_NAME);
+		assertThat(destination.url).isEqualTo(TEST_NEW_DESTINATION_URL);
 	}
 
 	public void testUpdateDestinationEmptyName() {

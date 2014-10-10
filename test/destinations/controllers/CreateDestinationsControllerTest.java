@@ -8,6 +8,8 @@ import static play.test.Helpers.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import models.Destination;
+
 import org.junit.Test;
 
 import destinations.DestinationTest;
@@ -38,6 +40,12 @@ public class CreateDestinationsControllerTest extends DestinationTest {
 
 		// Expect 303 as implementation redirects to 'view' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
+
+		Destination destination = Destination.find.where()
+													.eq("name", TEST_NEW_DESTINATION_NAME)
+													.eq("url", TEST_NEW_DESTINATION_URL)
+													.findUnique();
+		assertThat(destination).isNotNull();
 	}
 
 	@Test
