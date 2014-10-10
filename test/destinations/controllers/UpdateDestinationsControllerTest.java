@@ -44,6 +44,7 @@ public class UpdateDestinationsControllerTest extends DestinationTest {
 		Result result = callAction(controllers.routes.ref.Destinations.edit(TEST_EXISTING_DESTINATION_ID), request);
 
 		assertThat(status(result)).isEqualTo(OK);
+		assertThat(contentType(result)).isEqualTo("text/html");
 	}
 
 	@Test
@@ -68,12 +69,14 @@ public class UpdateDestinationsControllerTest extends DestinationTest {
 		Result result = postUpdateDestination(TEST_EXISTING_DESTINATION_ID, "", TEST_EXISTING_DESTINATION_URL);
 
 		assertThat(status(result)).isEqualTo(BAD_REQUEST);
+		assertThat(contentType(result)).isEqualTo("text/html");
 	}
 
 	public void testUpdateDestinationEmptyURL() {
 		Result result = postUpdateDestination(TEST_EXISTING_DESTINATION_ID, TEST_EXISTING_DESTINATION_NAME, "");
 
 		assertThat(status(result)).isEqualTo(BAD_REQUEST);
+		assertThat(contentType(result)).isEqualTo("text/html");
 	}
 
 	@Test
@@ -81,6 +84,7 @@ public class UpdateDestinationsControllerTest extends DestinationTest {
 		Result result = postUpdateDestination(TEST_EXISTING_DESTINATION_ID, TEST_EXISTING_DESTINATION_NAME, TEST_INVALID_URL);
 
 		assertThat(status(result)).isEqualTo(BAD_REQUEST);
+		assertThat(contentType(result)).isEqualTo("text/html");
 	}
 
 	@Test
@@ -88,16 +92,6 @@ public class UpdateDestinationsControllerTest extends DestinationTest {
 		Result result = postUpdateDestination(TEST_NON_EXISTING_DESTINATION_ID, TEST_EXISTING_DESTINATION_NAME, TEST_EXISTING_DESTINATION_URL);
 
 		assertThat(status(result)).isEqualTo(NOT_FOUND);
-	}
-
-	@Test
-	public void testDeleteDestination() {
-
-		Result result = postUpdateDestination(TEST_EXISTING_DESTINATION_ID, "Destination A Updated", "file:///tmp/desta/updated");
-
-		// Expect 303 as implementation redirects to 'view' page
-		assertThat(status(result)).isEqualTo(SEE_OTHER);
-
 	}
 
 	/**

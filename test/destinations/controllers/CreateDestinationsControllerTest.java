@@ -29,6 +29,7 @@ public class CreateDestinationsControllerTest extends DestinationTest {
 		Result result = callAction(controllers.routes.ref.Destinations.add(), request);
 
 		assertThat(status(result)).isEqualTo(OK);
+		assertThat(contentType(result)).isEqualTo("text/html");
 	}
 
 	@Test
@@ -44,6 +45,7 @@ public class CreateDestinationsControllerTest extends DestinationTest {
 		Result result = postCreateDestination("", TEST_NEW_DESTINATION_URL);
 
 		assertThat(status(result)).isEqualTo(BAD_REQUEST);
+		assertThat(contentType(result)).isEqualTo("text/html");
 	}
 
 	@Test
@@ -51,6 +53,7 @@ public class CreateDestinationsControllerTest extends DestinationTest {
 		Result result = postCreateDestination(TEST_NEW_DESTINATION_NAME, "");
 
 		assertThat(status(result)).isEqualTo(BAD_REQUEST);
+		assertThat(contentType(result)).isEqualTo("text/html");
 	}
 
 	@Test
@@ -58,6 +61,7 @@ public class CreateDestinationsControllerTest extends DestinationTest {
 		Result result = postCreateDestination(TEST_NEW_DESTINATION_NAME, TEST_INVALID_URL);
 
 		assertThat(status(result)).isEqualTo(BAD_REQUEST);
+		assertThat(contentType(result)).isEqualTo("text/html");
 	}
 
 	/**
