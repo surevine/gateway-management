@@ -39,9 +39,11 @@ POST	/destinations/:id/addproject	controllers.Destinations.addProject(id: Long)
 
 # Projects list
 GET		/projects					controllers.Projects.list()
+GET		/api/projects				controllers.ProjectsAPI.list()
 
 # View project
 GET		/projects/view/:id			controllers.Projects.view(id: Long)
+GET		/api/projects/view/:id		controllers.ProjectsAPI.view(id: Long)
 
 # Add a project
 GET		/projects/add				controllers.Projects.add()

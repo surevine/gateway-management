@@ -13,7 +13,7 @@ import play.mvc.Result;
 import play.test.FakeRequest;
 import projects.ProjectTest;
 
-public class ListProjectsControllerTest extends ProjectTest {
+public class ViewProjectsControllerTest extends ProjectTest {
 
 	/**
 	 * Create existing project in database (for use by tests)
@@ -25,9 +25,9 @@ public class ListProjectsControllerTest extends ProjectTest {
 	}
 
 	@Test
-	public void testListProjects() {
-		FakeRequest request = new FakeRequest(GET, "/projects");
-		Result result = callAction(controllers.routes.ref.Projects.list(), request);
+	public void testViewProject() {
+		FakeRequest request = new FakeRequest(GET, "/projects/view/" + TEST_EXISTING_PROJECT_ID);
+		Result result = callAction(controllers.routes.ref.Projects.view(TEST_EXISTING_PROJECT_ID), request);
 
 		assertThat(status(result)).isEqualTo(OK);
 		assertThat(contentType(result)).isEqualTo("text/html");
@@ -37,10 +37,12 @@ public class ListProjectsControllerTest extends ProjectTest {
 		assertThat(content).contains(TEST_EXISTING_PROJECT_URL);
 	}
 
+	// TODO add test for viewing non-existent project (normal and API)
+
 	@Test
-	public void testListProjectsAPI() {
-		FakeRequest request = new FakeRequest(GET, "/api/projects");
-		Result result = callAction(controllers.routes.ref.ProjectsAPI.list(), request);
+	public void testViewProjectAPI() {
+		FakeRequest request = new FakeRequest(GET, "/api/projects/view/" + TEST_EXISTING_PROJECT_ID);
+		Result result = callAction(controllers.routes.ref.ProjectsAPI.view(TEST_EXISTING_PROJECT_ID), request);
 
 		assertThat(status(result)).isEqualTo(OK);
 		assertThat(contentType(result)).isEqualTo("application/json");
