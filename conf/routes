@@ -7,6 +7,7 @@ GET     /                           controllers.Application.index()
 
 # Destinations list
 GET		/destinations				controllers.Destinations.list()
+GET		/api/destinations			controllers.DestinationsAPI.list()
 
 # View destination
 GET		/destinations/view/:id		controllers.Destinations.view(id: Long)

@@ -1,23 +1,11 @@
 package controllers;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-
 import models.Destination;
-import play.*;
 import play.data.Form;
-import play.db.ebean.Model;
 import play.mvc.*;
-
-
-import views.html.*;
 
 public class Destinations extends Controller {
 
