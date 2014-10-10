@@ -1,5 +1,6 @@
 package models;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -12,6 +13,8 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
+import org.apache.commons.io.FileUtils;
 
 import com.typesafe.config.ConfigFactory;
 
@@ -62,7 +65,13 @@ public class Destination extends Model {
     	createRuleFile(DEFAULT_RULEFILE_NAME);
     }
 
-    /**
+    @Override
+    public void delete() {
+    	deleteRuleFileDirectory();
+    	super.delete();
+    }
+
+	/**
      * Loads rules for the destination from expected rule-file locations
      *
      * @return String contents of rule file
@@ -140,4 +149,15 @@ public class Destination extends Model {
     	return errors.isEmpty() ? null : errors;
     }
 
+    /**
+     * Delete this destinations rule file directory
+     */
+    private void deleteRuleFileDirectory() {
+    	try {
+			FileUtils.deleteDirectory(new File(DESTINATIONS_RULES_DIRECTORY + "/" + this.id));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+			// TODO log
+		}
+    }
 }

@@ -8,9 +8,6 @@ import static play.test.Helpers.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import models.Destination;
-
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import destinations.DestinationTest;

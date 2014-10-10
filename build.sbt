@@ -13,4 +13,6 @@ libraryDependencies ++= Seq(
   javaWs
 )
 
+libraryDependencies += "commons-io" % "commons-io" % "2.4"
+
 javaOptions in Test += "-Dconfig.file=conf/application.test.conf"

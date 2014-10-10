@@ -156,6 +156,8 @@ public class Destinations extends Controller {
 
     	destination.delete();
 
+    	// TODO delete destination rulefiles
+
     	return redirect(routes.Destinations.list());
 
     }
