@@ -9,6 +9,20 @@
 	<p>@destination.url</p>
 	<a href="@routes.Destinations.edit(destination.id)" class="btn btn-primary btn-sm">Edit</a>
 
+	<h4>Shared projects</h4>
+
+	<a href="@routes.Destinations.addProject(destination.id)" class="btn btn-primary btm-sm">Share project</a>
+
+    @if(destination.projects.isEmpty) {
+    	<p>No projects!</p>
+    } else {
+	    <ul>
+		    @for(project <- destination.projects) {
+		    	<li>@project.name (@project.url)</li>
+		    }
+	    </ul>
+    }
+
 	<h4>Destination rules</h4>
 
 	@if(error) {

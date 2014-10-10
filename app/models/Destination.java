@@ -11,8 +11,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 import org.apache.commons.io.FileUtils;
 
@@ -40,21 +43,16 @@ public class Destination extends Model {
 	public String name;
 
 	@Required
+	@Column(unique=true)
 	public String url;
 
-	/**
-	 * Configured location of destinations rule file directories
-	 */
-	public static final String DESTINATIONS_RULES_DIRECTORY = ConfigFactory.load().getString("gateway.destinations.dir");
+	@ManyToMany
+	public List<Project> projects = new ArrayList<Project>();
 
-	/**
-	 * Default name of rule file generated when destination created
-	 */
+	public static final String DESTINATIONS_RULES_DIRECTORY = ConfigFactory.load().getString("gateway.destinations.dir");
 	public static final String DEFAULT_RULEFILE_NAME = "custom.js";
 
-    /**
-     * Generic query helper for entity Computer with id Long
-     */
+    // Generic query helper for entity Computer with id Long
     public static Finder<Long,Destination> find = new Finder<Long,Destination>(Long.class, Destination.class);
 
     public Destination(long id, String name, String url) {
@@ -79,6 +77,15 @@ public class Destination extends Model {
     public void delete() {
     	deleteRuleFileDirectory();
     	super.delete();
+    }
+
+    /**
+     * Adds a project to the destination
+     * @param project project to add
+     */
+    public void addProject(Project project) {
+    	this.projects.add(project);
+    	this.update();
     }
 
 	/**

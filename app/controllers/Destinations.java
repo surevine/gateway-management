@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.List;
 
 import models.Destination;
+import models.Project;
 import play.data.Form;
-import play.mvc.*;
+import play.mvc.Controller;
+import play.mvc.Result;
 
 public class Destinations extends Controller {
 
@@ -144,9 +146,43 @@ public class Destinations extends Controller {
 
     	destination.delete();
 
-    	// TODO delete destination rulefiles
-
     	return redirect(routes.Destinations.list());
+
+    }
+
+    public static Result addProjectPage(long id) {
+
+    	Destination destination = Destination.find.byId(id);
+
+    	if(destination == null) {
+    		return notFound("Destination not found.");
+    	}
+
+    	Form<Project> projectForm = Form.form(Project.class);
+
+    	return ok(views.html.destinations.addproject.render(destination.id, projectForm));
+
+    }
+
+    /**
+     * Add a project to a destination
+     *
+     * @param id Id of destination to add project to
+     * @return
+     */
+    public static Result addProject(long id) {
+
+    	Destination destination = Destination.find.byId(id);
+    	if(destination == null) {
+    		return notFound("Destination not found.");
+    	}
+
+    	Form<Project> projectForm = Form.form(Project.class).bindFromRequest();
+    	Project project = projectForm.get();
+
+    	destination.addProject(project);
+
+    	return redirect(routes.Destinations.view(id));
 
     }
 

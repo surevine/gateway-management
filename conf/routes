@@ -3,25 +3,61 @@
 # ~~~~
 
 # Dashboard
-GET     /                           controllers.Application.index()
+GET     /                           	controllers.Application.index()
+
+
+#
+# Destinations
+#
 
 # Destinations list
-GET		/destinations				controllers.Destinations.list()
-GET		/api/destinations			controllers.DestinationsAPI.list()
+GET		/destinations					controllers.Destinations.list()
+GET		/api/destinations				controllers.DestinationsAPI.list()
 
 # View destination
-GET		/destinations/view/:id		controllers.Destinations.view(id: Long)
+GET		/destinations/view/:id			controllers.Destinations.view(id: Long)
 
 # Add a destination
-GET		/destinations/add			controllers.Destinations.add()
-POST	/destinations/add			controllers.Destinations.create()
+GET		/destinations/add				controllers.Destinations.add()
+POST	/destinations/add				controllers.Destinations.create()
 
 # Edit existing destination
-GET		/destinations/edit/:id		controllers.Destinations.edit(id: Long)
-POST	/destinations/edit/:id		controllers.Destinations.update(id: Long)
+GET		/destinations/edit/:id			controllers.Destinations.edit(id: Long)
+POST	/destinations/edit/:id			controllers.Destinations.update(id: Long)
 
 # Delete destination
-POST	/destinations/delete/:id	controllers.Destinations.delete(id: Long)
+POST	/destinations/delete/:id		controllers.Destinations.delete(id: Long)
+
+# Add project to destination
+GET		/destinations/:id/addproject	controllers.Destinations.addProjectPage(id: Long)
+POST	/destinations/:id/addproject	controllers.Destinations.addProject(id: Long)
+
+
+#
+# Projects
+#
+
+# Projects list
+GET		/projects					controllers.Projects.list()
+
+# View project
+GET		/projects/view/:id			controllers.Projects.view(id: Long)
+
+# Add a project
+GET		/projects/add				controllers.Projects.add()
+POST	/projects/add				controllers.Projects.create()
+
+# Edit existing project
+GET		/projects/edit/:id			controllers.Projects.edit(id: Long)
+POST	/projects/edit/:id			controllers.Projects.update(id: Long)
+
+# Delete project
+POST	/projects/delete/:id		controllers.Projects.delete(id: Long)
+
+
+#
+# Misc
+#
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /assets/*file               	controllers.Assets.at(path="/public", file)
