@@ -1,5 +1,7 @@
 package models;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,8 +61,15 @@ public class Project extends Model {
      * @return List of validation error messages associated with relevant properties
      */
     public List<ValidationError> validate() {
-    	// TODO implement Git URL validation
-    	return null;
+
+    	List<ValidationError> errors = new ArrayList<ValidationError>();
+
+    	if(!this.url.matches("(\\w+://)(.+@)*([\\w\\d\\.]+)(:[\\d]+){0,1}/*(.*)")) {
+    		errors.add(new ValidationError("url", "Valid URL required."));
+    	}
+
+    	return errors.isEmpty() ? null : errors;
+
     }
 
 }

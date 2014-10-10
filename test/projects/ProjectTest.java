@@ -23,11 +23,11 @@ public class ProjectTest {
 
 	public static long TEST_NEW_PROJECT_ID = 2014;
 	public static String TEST_NEW_PROJECT_NAME = "Project B";
-	public static String TEST_NEW_PROJECT_URL = "git@github.com:surevine/project-b.git";
+	public static String TEST_NEW_PROJECT_URL = "ssh://user@host.xz:port/path/to/project-b.git/";
 
 	public static long TEST_EXISTING_PROJECT_ID = 2013;
 	public static String TEST_EXISTING_PROJECT_NAME = "Project A";
-	public static String TEST_EXISTING_PROJECT_URL = "git@github.com:surevine/project-a.git";
+	public static String TEST_EXISTING_PROJECT_URL = "ssh://user@host.xz:port/path/to/project-a.git/";
 
 	public static String TEST_INVALID_URL = "/invalid";
 	public static long TEST_NON_EXISTING_PROJECT_ID = 10000;

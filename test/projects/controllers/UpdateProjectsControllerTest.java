@@ -25,7 +25,7 @@ import projects.ProjectTest;
  */
 public class UpdateProjectsControllerTest extends ProjectTest {
 
-	private static final String TEST_NEW_PROJECT_URL = "file:///tmp/desta/updated";
+	private static final String TEST_NEW_PROJECT_URL = "ssh://user@host.xz:port/path/to/project-a-updated.git/";
 	private static final String TEST_NEW_PROJECT_NAME = "Project A Updated";
 
 	/**
