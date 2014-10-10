@@ -1,0 +1,20 @@
+@(projects: List[Project])
+
+@main("Projects") {
+
+	<h2>Projects</h2>
+
+    <a href="@routes.Projects.add()" class="btn btn-primary">Add Project</a>
+
+    @if(projects.isEmpty) {
+    	<p>No projects!</p>
+    } else {
+	    <ul>
+		    @for(project <- projects) {
+		    	<li>@project.name (@project.url) - <a href="@routes.Projects.view(project.id)">View project</a></li>
+		    }
+	    </ul>
+    }
+
+
+}
