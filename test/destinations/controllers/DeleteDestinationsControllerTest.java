@@ -27,10 +27,7 @@ public class DeleteDestinationsControllerTest extends DestinationTest {
 	 */
 	@BeforeClass
 	public static void createExistingTestDestination() {
-		Destination destination = new Destination();
-		destination.id = TEST_EXISTING_DESTINATION_ID;
-		destination.name = TEST_EXISTING_DESTINATION_NAME;
-		destination.url = TEST_EXISTING_DESTINATION_URL;
+		Destination destination = new Destination(TEST_EXISTING_DESTINATION_ID, TEST_EXISTING_DESTINATION_NAME, TEST_EXISTING_DESTINATION_URL);
 		destination.save();
 	}
 

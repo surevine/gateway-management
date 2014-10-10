@@ -57,6 +57,16 @@ public class Destination extends Model {
      */
     public static Finder<Long,Destination> find = new Finder<Long,Destination>(Long.class, Destination.class);
 
+    public Destination(long id, String name, String url) {
+    	this.id = id;
+    	this.name = name;
+    	this.url = url;
+    }
+
+    public Destination(String name, String url) {
+    	this.name = name;
+    	this.url = url;
+    }
 
     @Override
     public void save() {
