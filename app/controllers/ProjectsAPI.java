@@ -26,21 +26,4 @@ public class ProjectsAPI extends Controller {
     	return ok(Json.toJson(destinations));
     }
 
-    /**
-     * View a single project
-     *
-     * @param id Id of project to view
-     * @return
-     */
-    public static Result view(long id) {
-
-    	Project project = Project.find.byId(id);
-
-    	if(project == null) {
-    		return notFound("Project not found.");
-    	}
-
-    	return ok(Json.toJson(project));
-    }
-
 }

@@ -37,19 +37,4 @@ public class ViewProjectsControllerTest extends ProjectTest {
 		assertThat(content).contains(TEST_EXISTING_PROJECT_URL);
 	}
 
-	// TODO add test for viewing non-existent project (normal and API)
-
-	@Test
-	public void testViewProjectAPI() {
-		FakeRequest request = new FakeRequest(GET, "/api/projects/view/" + TEST_EXISTING_PROJECT_ID);
-		Result result = callAction(controllers.routes.ref.ProjectsAPI.view(TEST_EXISTING_PROJECT_ID), request);
-
-		assertThat(status(result)).isEqualTo(OK);
-		assertThat(contentType(result)).isEqualTo("application/json");
-
-		String content = contentAsString(result);
-		assertThat(content).contains(TEST_EXISTING_PROJECT_NAME);
-		assertThat(content).contains(TEST_EXISTING_PROJECT_URL);
-	}
-
 }
