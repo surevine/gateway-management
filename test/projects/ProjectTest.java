@@ -22,14 +22,15 @@ public class ProjectTest {
 	public static FakeApplication app;
 
 	public static long TEST_NEW_PROJECT_ID = 2014;
-	public static String TEST_NEW_PROJECT_NAME = "Project B";
-	public static String TEST_NEW_PROJECT_URL = "ssh://user@host.xz:port/path/to/project-b.git/";
+	public static String TEST_NEW_PROJECT_DISPLAY_NAME = "Project B";
+	public static String TEST_NEW_PROJECT_SLUG_PROJECT_NAME = "partner-b";
+	public static String TEST_NEW_PROJECT_SLUG_REPO = "repo-b";
 
 	public static long TEST_EXISTING_PROJECT_ID = 2013;
-	public static String TEST_EXISTING_PROJECT_NAME = "Project A";
-	public static String TEST_EXISTING_PROJECT_URL = "ssh://user@host.xz:port/path/to/project-a.git/";
+	public static String TEST_EXISTING_PROJECT_DISPLAY_NAME = "Project A";
+	public static String TEST_EXISTING_PROJECT_SLUG_PROJECT_NAME = "partner-a";
+	public static String TEST_EXISTING_PROJECT_SLUG_REPO = "repo-a";
 
-	public static String TEST_INVALID_URL = "/invalid";
 	public static long TEST_NON_EXISTING_PROJECT_ID = 10000;
 
 	@BeforeClass

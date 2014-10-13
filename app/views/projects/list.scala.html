@@ -11,7 +11,7 @@
     } else {
 	    <ul>
 		    @for(project <- projects) {
-		    	<li>@project.name (@project.url) - <a href="@routes.Projects.view(project.id)">View project</a></li>
+		    	<li>@project.displayName (@project.projectSlug / @project.repositorySlug) - <a href="@routes.Projects.view(project.id)">View project</a></li>
 		    }
 	    </ul>
     }

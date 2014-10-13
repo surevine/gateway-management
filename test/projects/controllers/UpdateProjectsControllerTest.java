@@ -25,15 +25,15 @@ import projects.ProjectTest;
  */
 public class UpdateProjectsControllerTest extends ProjectTest {
 
-	private static final String TEST_NEW_PROJECT_URL = "ssh://user@host.xz:port/path/to/project-a-updated.git/";
-	private static final String TEST_NEW_PROJECT_NAME = "Project A Updated";
-
 	/**
 	 * Create existing project in database (for use by update tests)
 	 */
 	@BeforeClass
 	public static void createExistingTestProject() {
-		Project project = new Project(TEST_EXISTING_PROJECT_ID, TEST_EXISTING_PROJECT_NAME, TEST_EXISTING_PROJECT_URL);
+		Project project = new Project(TEST_EXISTING_PROJECT_ID,
+										TEST_EXISTING_PROJECT_DISPLAY_NAME,
+										TEST_EXISTING_PROJECT_SLUG_PROJECT_NAME,
+										TEST_EXISTING_PROJECT_SLUG_REPO);
 		project.save();
 	}
 
@@ -57,33 +57,48 @@ public class UpdateProjectsControllerTest extends ProjectTest {
 	@Test
 	public void testUpdateProject() {
 
-		Result result = postUpdateProject(TEST_EXISTING_PROJECT_ID, TEST_NEW_PROJECT_NAME, TEST_NEW_PROJECT_URL);
+		Result result = postUpdateProject(TEST_EXISTING_PROJECT_ID,
+											TEST_NEW_PROJECT_DISPLAY_NAME,
+											TEST_NEW_PROJECT_SLUG_PROJECT_NAME,
+											TEST_NEW_PROJECT_SLUG_REPO);
 
 		// Expect 303 as implementation redirects to 'view' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
 
 		Project project = Project.find.byId(TEST_EXISTING_PROJECT_ID);
-		assertThat(project.name).isEqualTo(TEST_NEW_PROJECT_NAME);
-		assertThat(project.url).isEqualTo(TEST_NEW_PROJECT_URL);
+		assertThat(project.displayName).isEqualTo(TEST_NEW_PROJECT_DISPLAY_NAME);
+		assertThat(project.projectSlug).isEqualTo(TEST_NEW_PROJECT_SLUG_PROJECT_NAME);
+		assertThat(project.repositorySlug).isEqualTo(TEST_NEW_PROJECT_SLUG_REPO);
 	}
 
+	@Test
 	public void testUpdateProjectEmptyName() {
-		Result result = postUpdateProject(TEST_EXISTING_PROJECT_ID, "", TEST_EXISTING_PROJECT_URL);
-
-		assertThat(status(result)).isEqualTo(BAD_REQUEST);
-		assertThat(contentType(result)).isEqualTo("text/html");
-	}
-
-	public void testUpdateProjectEmptyURL() {
-		Result result = postUpdateProject(TEST_EXISTING_PROJECT_ID, TEST_EXISTING_PROJECT_NAME, "");
+		Result result = postUpdateProject(TEST_EXISTING_PROJECT_ID,
+											"",
+											TEST_EXISTING_PROJECT_SLUG_PROJECT_NAME,
+											TEST_EXISTING_PROJECT_SLUG_REPO);
 
 		assertThat(status(result)).isEqualTo(BAD_REQUEST);
 		assertThat(contentType(result)).isEqualTo("text/html");
 	}
 
 	@Test
-	public void testUpdateProjectInvalidURL() {
-		Result result = postUpdateProject(TEST_EXISTING_PROJECT_ID, TEST_EXISTING_PROJECT_NAME, TEST_INVALID_URL);
+	public void testUpdateProjectEmptyProjectSlug() {
+		Result result = postUpdateProject(TEST_EXISTING_PROJECT_ID,
+												TEST_EXISTING_PROJECT_DISPLAY_NAME,
+												"",
+												TEST_EXISTING_PROJECT_SLUG_REPO);
+
+		assertThat(status(result)).isEqualTo(BAD_REQUEST);
+		assertThat(contentType(result)).isEqualTo("text/html");
+	}
+
+	@Test
+	public void testUpdateProjectEmptyRepoSlug() {
+		Result result = postUpdateProject(TEST_EXISTING_PROJECT_ID,
+											TEST_EXISTING_PROJECT_DISPLAY_NAME,
+											TEST_EXISTING_PROJECT_SLUG_PROJECT_NAME,
+											"");
 
 		assertThat(status(result)).isEqualTo(BAD_REQUEST);
 		assertThat(contentType(result)).isEqualTo("text/html");
@@ -91,7 +106,10 @@ public class UpdateProjectsControllerTest extends ProjectTest {
 
 	@Test
 	public void testUpdateProjectNonExistingID() {
-		Result result = postUpdateProject(TEST_NON_EXISTING_PROJECT_ID, TEST_EXISTING_PROJECT_NAME, TEST_EXISTING_PROJECT_URL);
+		Result result = postUpdateProject(TEST_NON_EXISTING_PROJECT_ID,
+											TEST_EXISTING_PROJECT_DISPLAY_NAME,
+											TEST_EXISTING_PROJECT_SLUG_PROJECT_NAME,
+											TEST_EXISTING_PROJECT_SLUG_REPO);
 
 		assertThat(status(result)).isEqualTo(NOT_FOUND);
 	}
@@ -99,15 +117,17 @@ public class UpdateProjectsControllerTest extends ProjectTest {
 	/**
 	 * Helper method for fake posting of form data to update project route
 	 * @param id Id of project to update
-	 * @param name Name of project (fake form field value)
-	 * @param url Project clone URL (fake form field value)
+	 * @param displayName Name of project (fake form field value)
+	 * @param projectSlug URL slug for project name (fake form field value)
+	 * @param repositorySlug URL slug for repo name (fake form field value)
 	 * @return Result Response from server
 	 */
-	private Result postUpdateProject(long id, String name, String url) {
+	private Result postUpdateProject(long id, String displayName, String projectSlug, String repositorySlug) {
 
 		Map<String,String> formData = new HashMap<String,String>();
-		formData.put("name", name);
-		formData.put("url", url);
+		formData.put("displayName", displayName);
+		formData.put("projectSlug", projectSlug);
+		formData.put("repositorySlug", repositorySlug);
 
 		FakeRequest request = new FakeRequest(POST, "/projects/update/" + id);
 		Result result = callAction(controllers.routes.ref.Projects.update(id), request.withFormUrlEncodedBody(formData));

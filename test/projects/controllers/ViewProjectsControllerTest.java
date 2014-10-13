@@ -20,7 +20,11 @@ public class ViewProjectsControllerTest extends ProjectTest {
 	 */
 	@BeforeClass
 	public static void createExistingTestProject() {
-		Project project = new Project(TEST_EXISTING_PROJECT_ID, TEST_EXISTING_PROJECT_NAME, TEST_EXISTING_PROJECT_URL);
+		Project project = new Project(TEST_EXISTING_PROJECT_ID,
+										TEST_EXISTING_PROJECT_DISPLAY_NAME,
+										TEST_EXISTING_PROJECT_SLUG_PROJECT_NAME,
+										TEST_EXISTING_PROJECT_SLUG_REPO);
+
 		project.save();
 	}
 
@@ -33,8 +37,9 @@ public class ViewProjectsControllerTest extends ProjectTest {
 		assertThat(contentType(result)).isEqualTo("text/html");
 
 		String content = contentAsString(result);
-		assertThat(content).contains(TEST_EXISTING_PROJECT_NAME);
-		assertThat(content).contains(TEST_EXISTING_PROJECT_URL);
+		assertThat(content).contains(TEST_EXISTING_PROJECT_DISPLAY_NAME);
+		assertThat(content).contains(TEST_EXISTING_PROJECT_SLUG_PROJECT_NAME);
+		assertThat(content).contains(TEST_EXISTING_PROJECT_SLUG_REPO);
 	}
 
 	@Test

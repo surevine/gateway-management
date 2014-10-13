@@ -18,7 +18,7 @@
     } else {
 	    <ul>
 		    @for(project <- destination.projects) {
-		    	<li>@project.name (@project.url)</li>
+		    	<li>@project.displayName (@project.projectSlug / @project.repositorySlug)</li>
 		    }
 	    </ul>
     }

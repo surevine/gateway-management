@@ -1,12 +1,8 @@
 package models;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -29,30 +25,48 @@ public class Project extends Model {
 	@Id
 	public Long id;
 
+	/**
+	 * Human readable name for display in console UI
+	 */
 	@Required
-	public String name;
+	public String displayName;
 
+	/**
+	 * 'Project' segment of SCM system's repository URL
+	 * e.g. github.com/project/repository
+	 */
 	@Required
-	@Column(unique=true)
-	public String url;
+	public String projectSlug;
 
+	/**
+	 * 'Repository' segment of SCM system's repository URL
+	 * e.g. github.com/project/repository
+	 */
+	@Required
+	public String repositorySlug;
+
+	/**
+	 * Destinations the project is configured to be shared with
+	 */
 	@ManyToMany(mappedBy = "projects")
 	public List<Destination> destinations = new ArrayList<Destination>();
 
     /**
-     * Generic query helper for entity Computer with id Long
+     * Generic query helper for entity Project with id Long
      */
     public static Finder<Long,Project> find = new Finder<Long,Project>(Long.class, Project.class);
 
-	public Project(long id, String name, String url) {
+	public Project(long id, String displayName, String projectSlug, String repositorySlug) {
     	this.id = id;
-    	this.name = name;
-    	this.url = url;
+    	this.displayName = displayName;
+    	this.projectSlug = projectSlug;
+    	this.repositorySlug = repositorySlug;
     }
 
-    public Project(String name, String url) {
-    	this.name = name;
-    	this.url = url;
+    public Project(String displayName, String projectSlug, String repositorySlug) {
+    	this.displayName = displayName;
+    	this.projectSlug = projectSlug;
+    	this.repositorySlug = repositorySlug;
     }
 
     /**
@@ -64,9 +78,7 @@ public class Project extends Model {
 
     	List<ValidationError> errors = new ArrayList<ValidationError>();
 
-    	if(!this.url.matches("(\\w+://)(.+@)*([\\w\\d\\.]+)(:[\\d]+){0,1}/*(.*)")) {
-    		errors.add(new ValidationError("url", "Valid URL required."));
-    	}
+    	// TODO
 
     	return errors.isEmpty() ? null : errors;
 
