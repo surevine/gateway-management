@@ -180,6 +180,8 @@ public class Destinations extends Controller {
     	Form<Project> projectForm = Form.form(Project.class).bindFromRequest();
     	Project project = projectForm.get();
 
+    	project.save();
+
     	destination.addProject(project);
 
     	return redirect(routes.Destinations.view(id));
