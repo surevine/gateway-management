@@ -37,4 +37,12 @@ public class ViewProjectsControllerTest extends ProjectTest {
 		assertThat(content).contains(TEST_EXISTING_PROJECT_URL);
 	}
 
+	@Test
+	public void testNonExistingProjectView() {
+		FakeRequest request = new FakeRequest(GET, "/projects/view/" + TEST_NON_EXISTING_PROJECT_ID);
+		Result result = callAction(controllers.routes.ref.Projects.view(TEST_NON_EXISTING_PROJECT_ID), request);
+
+		assertThat(status(result)).isEqualTo(NOT_FOUND);
+	}
+
 }

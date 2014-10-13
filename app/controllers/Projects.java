@@ -34,6 +34,10 @@ public class Projects extends Controller {
 
     	Project project = Project.find.byId(id);
 
+    	if(project == null) {
+    		return notFound("Project not found.");
+    	}
+
     	return ok(views.html.projects.view.render(project));
 
     }
