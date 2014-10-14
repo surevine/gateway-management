@@ -159,13 +159,13 @@ public class Destination extends Model {
     		try {
     			Files.createDirectory(destinationsDirectoryPath);
     		} catch (IOException e) {
-    			Logger.warn("Failed to create rule file directory for destination: " + this.name, e);
+    			Logger.error("Failed to create rule file directory for destination: " + this.name, e);
     		}
     	}
     }
 
     /**
-     * Creates rule file on disk for destination
+     * Creates rule file on disk for destination based on configured template
      *
      * @param name Name of file to create
      */
@@ -179,7 +179,7 @@ public class Destination extends Model {
     	try {
 			Files.copy(templateRuleFilePath, destinationRuleFilePath);
 		} catch (IOException e) {
-			Logger.warn("Failed to create rule file for destination: "+ this.name, e);
+			Logger.error("Failed to create rule file for destination: "+ this.name, e);
 		}
     }
 
