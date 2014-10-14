@@ -24,6 +24,7 @@ import org.apache.commons.io.FileUtils;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.typesafe.config.ConfigFactory;
 
+import play.Logger;
 import play.data.validation.Constraints.Required;
 import play.data.validation.ValidationError;
 import play.db.ebean.Model;
@@ -158,8 +159,7 @@ public class Destination extends Model {
     		try {
     			Files.createDirectory(destinationsDirectoryPath);
     		} catch (IOException e) {
-    			// TODO Auto-generated catch block
-    			e.printStackTrace();
+    			Logger.warn("Failed to create rule file directory for destination: " + this.name, e);
     		}
     	}
     }
@@ -179,8 +179,7 @@ public class Destination extends Model {
     	try {
 			Files.copy(templateRuleFilePath, destinationRuleFilePath);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.warn("Failed to create rule file for destination: "+ this.name, e);
 		}
     }
 
@@ -210,9 +209,8 @@ public class Destination extends Model {
     private void deleteRuleFileDirectory() {
     	try {
 			FileUtils.deleteDirectory(new File(DESTINATIONS_RULES_DIRECTORY + "/" + this.id));
-		} catch (IOException e1) {
-			e1.printStackTrace();
-			// TODO log
+		} catch (IOException e) {
+			Logger.warn("Failed to delete rule file directory for destination: " + this.name, e);
 		}
     }
 }
