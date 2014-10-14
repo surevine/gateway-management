@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -52,7 +53,7 @@ public class Project extends Model {
 	/**
 	 * Destinations the project is configured to be shared with
 	 */
-	@ManyToMany(mappedBy = "projects")
+	@ManyToMany(mappedBy = "projects", cascade=CascadeType.ALL)
 	@JsonBackReference
 	public List<Destination> destinations = new ArrayList<Destination>();
 

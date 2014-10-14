@@ -183,7 +183,9 @@ public class Destinations extends Controller {
     	long selectedProjectId = Long.parseLong(requestData.get("project"));
     	Project project = Project.find.byId(selectedProjectId);
 
-    	destination.addProject(project);
+    	if(!destination.projects.contains(project)) {
+    		destination.addProject(project);
+    	}
 
     	return redirect(routes.Destinations.view(id));
 

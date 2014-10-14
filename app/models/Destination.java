@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -39,21 +40,32 @@ public class Destination extends Model {
 	@Id
 	public Long id;
 
+	/**
+	 * Human-readable display name for destination
+	 */
 	@Required
 	public String name;
 
+	/**
+	 * Location of destination the gateway will send to
+	 */
 	@Required
 	@Column(unique=true)
 	public String url;
 
-	@ManyToMany
+	/**
+	 * SCM projects configured to be shared with destination
+	 */
+	@ManyToMany(cascade=CascadeType.ALL)
 	@JsonManagedReference
 	public List<Project> projects = new ArrayList<Project>();
 
 	public static final String DESTINATIONS_RULES_DIRECTORY = ConfigFactory.load().getString("gateway.destinations.dir");
 	public static final String DEFAULT_RULEFILE_NAME = "custom.js";
 
-    // Generic query helper for entity Computer with id Long
+    /**
+     *  Generic query helper for entity Destination with id Long
+     */
     public static Finder<Long,Destination> find = new Finder<Long,Destination>(Long.class, Destination.class);
 
     public Destination(long id, String name, String url) {
