@@ -38,22 +38,26 @@ POST	/destinations/:id/addproject	controllers.Destinations.addProject(id: Long)
 #
 
 # Projects list
-GET		/projects					controllers.Projects.list()
-GET		/api/projects				controllers.ProjectsAPI.list()
+GET		/projects						controllers.Projects.list()
+GET		/api/projects					controllers.ProjectsAPI.list()
 
 # View project
-GET		/projects/view/:id			controllers.Projects.view(id: Long)
+GET		/projects/view/:id				controllers.Projects.view(id: Long)
 
 # Add a project
-GET		/projects/add				controllers.Projects.add()
-POST	/projects/add				controllers.Projects.create()
+GET		/projects/add					controllers.Projects.add()
+POST	/projects/add					controllers.Projects.create()
 
 # Edit existing project
-GET		/projects/edit/:id			controllers.Projects.edit(id: Long)
-POST	/projects/edit/:id			controllers.Projects.update(id: Long)
+GET		/projects/edit/:id				controllers.Projects.edit(id: Long)
+POST	/projects/edit/:id				controllers.Projects.update(id: Long)
 
 # Delete project
-POST	/projects/delete/:id		controllers.Projects.delete(id: Long)
+POST	/projects/delete/:id			controllers.Projects.delete(id: Long)
+
+# Add destination to project
+GET		/projects/:id/adddestination	controllers.Projects.addDestinationPage(id: Long)
+POST	/projects/:id/adddestination	controllers.Projects.addDestination(id: Long)
 
 
 #

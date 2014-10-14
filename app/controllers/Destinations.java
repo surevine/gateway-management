@@ -151,9 +151,14 @@ public class Destinations extends Controller {
 
     }
 
-    public static Result addProjectPage(long id) {
+    /**
+     * Display form page to configure sharing project with destination
+     * @param destinationId Id of destination
+     * @return
+     */
+    public static Result addProjectPage(long destinationId) {
 
-    	Destination destination = Destination.find.byId(id);
+    	Destination destination = Destination.find.byId(destinationId);
 
     	if(destination == null) {
     		return notFound("Destination not found.");
@@ -166,7 +171,7 @@ public class Destinations extends Controller {
     }
 
     /**
-     * Add a project to a destination
+     * Add a project to a destination (handles form submission)
      *
      * @param id Id of destination to add project to
      * @return

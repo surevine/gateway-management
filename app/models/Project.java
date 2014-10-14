@@ -94,6 +94,19 @@ public class Project extends Model {
     }
 
     /**
+     * Adds destination to share project to
+     * @param destination destination to share to
+     */
+    public void addDestination(Destination destination) {
+    	if(!this.destinations.contains(destination)) {
+    		this.destinations.add(destination);
+    		this.update();
+
+        	// TODO Notify federated SCM components of new sharing partnership (destination/project) configuration
+    	}
+    }
+
+    /**
      * Perform additional validation (beyond annotations) on model properties.
      *
      * @return List of validation error messages associated with relevant properties

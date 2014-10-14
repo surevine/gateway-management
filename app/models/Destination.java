@@ -9,7 +9,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -67,6 +69,25 @@ public class Destination extends Model {
      *  Generic query helper for entity Destination with id Long
      */
     public static Finder<Long,Destination> find = new Finder<Long,Destination>(Long.class, Destination.class);
+
+    /**
+     * List of all destinations, used by scala helper in templates (to populate select options)
+     * @param project Project that destinations are being added to
+     * @return Map<String, String> option key/values
+     */
+    public static Map<String, String> allDestinationSelectOptions(Project project) {
+    	Map<String, String> opts = new HashMap<String, String>();
+
+    	List<Destination> destinations = find.all();
+
+    	for(Destination destination : destinations) {
+    		if(!project.destinations.contains(destination)) {
+    			opts.put(destination.id.toString(), destination.name);
+    		}
+    	}
+
+    	return opts;
+    }
 
     public Destination(long id, String name, String url) {
     	this.id = id;
