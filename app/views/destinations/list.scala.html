@@ -3,18 +3,40 @@
 @main("Destinations") {
 
 	<h2>Destinations</h2>
-
-    <a href="@routes.Destinations.add()" class="btn btn-primary">Add Destination</a>
+	<a href="@routes.Destinations.add()" class="btn btn-primary primary-action">Add Destination</a>
 
     @if(destinations.isEmpty) {
-    	<p>No destinations!</p>
-    } else {
-	    <ul>
-		    @for(destination <- destinations) {
-		    	<li>@destination.name (@destination.url) - <a href="@routes.Destinations.view(destination.id)">View destination</a></li>
-		    }
-	    </ul>
-    }
 
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">No destinations</h3>
+		  </div>
+		  <div class="panel-body">
+		    <p>No destinations have been configured. Please <a href="@routes.Destinations.add()">add a destination</a>.</p>
+		  </div>
+		</div>
+
+    } else {
+
+	    @for(destination <- destinations) {
+
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title pull-left"><a href="@routes.Destinations.view(destination.id)">@destination.name</a></h3>
+				<div class="panel-actions pull-right">
+				  	<a href="@routes.Destinations.edit(destination.id)" class="btn btn-default btn-xs">Edit</a>
+				  	<a href="@routes.Destinations.view(destination.id)" class="btn btn-primary btn-xs">View</a>
+				</div>
+				<div class="clearfix"></div>
+			  </div>
+			  <div class="panel-body">
+			    <p>@destination.url</p>
+			    <p class="text-muted">@destination.projects.length projects shared with this destination.</p>
+			  </div>
+			</div>
+
+	    }
+
+    }
 
 }

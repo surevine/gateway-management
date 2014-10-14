@@ -4,16 +4,40 @@
 
 	<h2>Projects</h2>
 
-    <a href="@routes.Projects.add()" class="btn btn-primary">Add Project</a>
+    <a href="@routes.Projects.add()" class="btn btn-primary primary-action">Add Project</a>
 
     @if(projects.isEmpty) {
-    	<p>No projects!</p>
+
+		<div class="panel panel-default">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">No projects</h3>
+		  </div>
+		  <div class="panel-body">
+		    <p>No projects have been configured. Please <a href="@routes.Projects.add()">add a project</a>.</p>
+		  </div>
+		</div>
+
     } else {
-	    <ul>
-		    @for(project <- projects) {
-		    	<li>@project.displayName (@project.projectSlug / @project.repositorySlug) - <a href="@routes.Projects.view(project.id)">View project</a></li>
-		    }
-	    </ul>
+
+	    @for(project <- projects) {
+
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title pull-left"><a href="@routes.Projects.view(project.id)">@project.displayName</a></h3>
+				<div class="panel-actions pull-right">
+				  	<a href="@routes.Projects.edit(project.id)" class="btn btn-default btn-xs">Edit</a>
+				  	<a href="@routes.Projects.view(project.id)" class="btn btn-primary btn-xs">View</a>
+				</div>
+				<div class="clearfix"></div>
+			  </div>
+			  <div class="panel-body">
+			    <p>@project.projectSlug / @project.repositorySlug</p>
+			    <p class="text-muted">Project shared with @project.destinations.length destinations.</p>
+			  </div>
+			</div>
+
+	    }
+
     }
 
 
