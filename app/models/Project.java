@@ -1,11 +1,15 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import play.data.validation.ValidationError;
 import play.data.validation.Constraints.Required;
@@ -49,12 +53,29 @@ public class Project extends Model {
 	 * Destinations the project is configured to be shared with
 	 */
 	@ManyToMany(mappedBy = "projects")
+	@JsonBackReference
 	public List<Destination> destinations = new ArrayList<Destination>();
 
     /**
      * Generic query helper for entity Project with id Long
      */
     public static Finder<Long,Project> find = new Finder<Long,Project>(Long.class, Project.class);
+
+    /**
+     * List of all projects, used by scala helper in templates (to populate select options)
+     * @return Map<String, String> option key/values
+     */
+    public static Map<String, String> allProjectSelectOptions() {
+    	Map<String, String> opts = new HashMap<String, String>();
+
+    	List<Project> projects = find.all();
+
+    	for(Project project : projects) {
+    		opts.put(project.id.toString(), project.displayName);
+    	}
+
+    	return opts;
+    }
 
 	public Project(long id, String displayName, String projectSlug, String repositorySlug) {
     	this.id = id;

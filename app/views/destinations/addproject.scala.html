@@ -1,4 +1,4 @@
-@(destinationId: Long, projectForm: Form[Project])
+@(destinationId: Long, projectForm: DynamicForm)
 
 @import helper._
 
@@ -12,9 +12,8 @@
 
 		<fieldset>
 
-			@inputText(projectForm("displayName"), '_label -> "Name", '_help -> "Name of project", 'class -> "form-control", 'placeholder -> "Name")
-			@inputText(projectForm("projectSlug"), '_label -> "Project slug", '_help -> "Project slug segment of SCM URL", 'class -> "form-control", 'placeholder -> "Project slug")
-			@inputText(projectForm("repositorySlug"), '_label -> "Repo slug", '_help -> "Repository slug segment of SCM URL", 'class -> "form-control", 'placeholder -> "Repo slug")
+			@select(projectForm("project"),
+					options = options(Project.allProjectSelectOptions))
 
 		</fieldset>
 

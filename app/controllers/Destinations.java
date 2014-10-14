@@ -5,6 +5,7 @@ import java.util.List;
 
 import models.Destination;
 import models.Project;
+import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -158,7 +159,7 @@ public class Destinations extends Controller {
     		return notFound("Destination not found.");
     	}
 
-    	Form<Project> projectForm = Form.form(Project.class);
+    	DynamicForm projectForm = Form.form();
 
     	return ok(views.html.destinations.addproject.render(destination.id, projectForm));
 
@@ -177,10 +178,10 @@ public class Destinations extends Controller {
     		return notFound("Destination not found.");
     	}
 
-    	Form<Project> projectForm = Form.form(Project.class).bindFromRequest();
-    	Project project = projectForm.get();
+    	DynamicForm requestData = Form.form().bindFromRequest();
 
-    	project.save();
+    	long selectedProjectId = Long.parseLong(requestData.get("project"));
+    	Project project = Project.find.byId(selectedProjectId);
 
     	destination.addProject(project);
 

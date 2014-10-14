@@ -11,7 +11,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -19,6 +18,7 @@ import javax.persistence.ManyToMany;
 
 import org.apache.commons.io.FileUtils;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.typesafe.config.ConfigFactory;
 
 import play.data.validation.Constraints.Required;
@@ -47,6 +47,7 @@ public class Destination extends Model {
 	public String url;
 
 	@ManyToMany
+	@JsonManagedReference
 	public List<Project> projects = new ArrayList<Project>();
 
 	public static final String DESTINATIONS_RULES_DIRECTORY = ConfigFactory.load().getString("gateway.destinations.dir");

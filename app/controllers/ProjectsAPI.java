@@ -22,8 +22,8 @@ public class ProjectsAPI extends Controller {
 	 * @return
 	 */
     public static Result list() {
-    	List<Project> destinations = Project.find.all();
-    	return ok(Json.toJson(destinations));
+    	List<Project> projects = Project.find.all();
+    	return ok(Json.toJson(projects));
     }
 
 }
