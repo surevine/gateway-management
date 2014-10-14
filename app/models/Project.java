@@ -66,13 +66,15 @@ public class Project extends Model {
      * List of all projects, used by scala helper in templates (to populate select options)
      * @return Map<String, String> option key/values
      */
-    public static Map<String, String> allProjectSelectOptions() {
+    public static Map<String, String> allProjectSelectOptions(Destination destination) {
     	Map<String, String> opts = new HashMap<String, String>();
 
     	List<Project> projects = find.all();
 
     	for(Project project : projects) {
-    		opts.put(project.id.toString(), project.displayName);
+    		if(!destination.projects.contains(project)) {
+    			opts.put(project.id.toString(), project.displayName);
+    		}
     	}
 
     	return opts;

@@ -97,8 +97,12 @@ public class Destination extends Model {
      * @param project project to add
      */
     public void addProject(Project project) {
-    	this.projects.add(project);
-    	this.update();
+    	if(!this.projects.contains(project)) {
+        	this.projects.add(project);
+        	this.update();
+
+        	// TODO Notify federated SCM components of new sharing partnership (destination/project) configuration
+    	}
     }
 
 	/**

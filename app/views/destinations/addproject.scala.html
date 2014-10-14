@@ -1,4 +1,4 @@
-@(destinationId: Long, projectForm: DynamicForm)
+@(destination: Destination, projectForm: DynamicForm)
 
 @import helper._
 
@@ -8,18 +8,18 @@
 
 	<h2>Share project with destination</h2>
 
-	@form(routes.Destinations.addProject(destinationId), 'role -> "form") {
+	@form(routes.Destinations.addProject(destination.id), 'role -> "form") {
 
 		<fieldset>
 
 			@select(projectForm("project"),
-					options = options(Project.allProjectSelectOptions))
+					options = options(Project.allProjectSelectOptions(destination)))
 
 		</fieldset>
 
 		<div class="actions">
             <input type="submit" value="Share project" class="btn btn-primary">
-            <a href="@routes.Destinations.view(destinationId)" class="btn btn-default">Cancel</a>
+            <a href="@routes.Destinations.view(destination.id)" class="btn btn-default">Cancel</a>
 		</div>
 
 	}

@@ -161,7 +161,7 @@ public class Destinations extends Controller {
 
     	DynamicForm projectForm = Form.form();
 
-    	return ok(views.html.destinations.addproject.render(destination.id, projectForm));
+    	return ok(views.html.destinations.addproject.render(destination, projectForm));
 
     }
 
@@ -183,9 +183,7 @@ public class Destinations extends Controller {
     	long selectedProjectId = Long.parseLong(requestData.get("project"));
     	Project project = Project.find.byId(selectedProjectId);
 
-    	if(!destination.projects.contains(project)) {
-    		destination.addProject(project);
-    	}
+    	destination.addProject(project);
 
     	return redirect(routes.Destinations.view(id));
 
