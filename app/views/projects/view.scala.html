@@ -4,24 +4,37 @@
 
 	<h2>View project</h2>
 
-	<h4>Project details</h4>
-	<p>@project.displayName</p>
-	<p>@project.projectSlug</p>
-	<p>@project.repositorySlug</p>
-	<a href="@routes.Projects.edit(project.id)" class="btn btn-primary btn-sm">Edit</a>
+	<section>
+		<h4>Project details <a href="@routes.Projects.edit(project.id)" class="btn btn-primary btn-xs">Edit</a></h4>
+		<table class="destination-info">
+			<tr>
+				<th>Name</th>
+				<td>@project.displayName</td>
+			</tr>
+			<tr>
+				<th>Project URL</th>
+				<td>@project.projectSlug/@project.repositorySlug</td>
+			</tr>
+		</table>
+	</section>
 
-	<h4>Shared destinations</h4>
+	<section>
+		<h4>Shared destinations</h4>
 
-	<a href="@routes.Projects.addDestination(project.id)" class="btn btn-primary btm-sm">Add destination</a>
+		<a href="@routes.Projects.addDestination(project.id)" class="btn btn-primary btm-sm">Add destination</a>
 
-    @if(project.destinations.isEmpty) {
-    	<p>No destinations!</p>
-    } else {
-	    <ul>
+		<ul class="list-group project-list">
+	    @if(project.destinations.isEmpty) {
+	    	<li class="list-group-item list-group-item-warning">No destinations being shared to</li>
+	    } else {
 		    @for(destination <- project.destinations) {
-		    	<li>@destination.name (@destination.url)</li>
+		    	<li class="list-group-item">
+					@destination.name <span class="text-muted">@destination.url</span>
+					<a href="#"  class="btn btn-danger btn-xs pull-right">Unshare</a>
+				</li>
 		    }
+	    }
 	    </ul>
-    }
+	</section>
 
 }

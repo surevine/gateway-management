@@ -4,38 +4,49 @@
 
 	<h2>View destination</h2>
 
-	<h4>Destination details</h4>
-	<p>@destination.name</p>
-	<p>@destination.url</p>
-	<a href="@routes.Destinations.edit(destination.id)" class="btn btn-primary btn-sm">Edit</a>
+	<section>
+		<h4>Destination details <a href="@routes.Destinations.edit(destination.id)" class="btn btn-primary btn-xs">Edit</a></h4>
+		<table class="destination-info">
+			<tr>
+				<th>Name</th>
+				<td>@destination.name</td>
+			</tr>
+			<tr>
+				<th>URL</th>
+				<td>@destination.url</td>
+			</tr>
+		</table>
+	</section>
 
-	<h4>Shared projects</h4>
+	<section>
+		<h4>Shared projects</h4>
+		<a href="@routes.Destinations.addProject(destination.id)" class="btn btn-primary btn-sm">Share project</a>
 
-	<a href="@routes.Destinations.addProject(destination.id)" class="btn btn-primary btm-sm">Share project</a>
-
-    @if(destination.projects.isEmpty) {
-    	<p>No projects!</p>
-    } else {
-	    <ul>
+		<ul class="list-group project-list">
+	    @if(destination.projects.isEmpty) {
+	    	<li class="list-group-item list-group-item-warning">No projects shared to this destination</li>
+	    } else {
 		    @for(project <- destination.projects) {
-		    	<li>@project.displayName (@project.projectSlug / @project.repositorySlug)</li>
+		    	<li class="list-group-item">
+		    		@project.displayName <span class="text-muted">@project.projectSlug/@project.repositorySlug</span>
+		    		<a href="#"  class="btn btn-danger btn-xs pull-right">Unshare</a>
+		    	</li>
 		    }
+	    }
 	    </ul>
-    }
+	</section>
 
-	<h4>Destination rules</h4>
+	<section>
+		<h4>Destination rules <a href="#" class="btn btn-primary btn-xs">Edit</a></h4>
 
-	@if(error) {
-
-		<h4>Error!</h4>
-		<p>Could not load rule file:</p>
-		<p>@errorMessage</p>
-		<p>This may cause issues for gateway functionality.</p>
-
-	} else {
-
-		<pre>@rules</pre>
-
-	}
+		@if(error) {
+			<h4>Error!</h4>
+			<p>Could not load rule file:</p>
+			<p>@errorMessage</p>
+			<p>This may cause issues for gateway functionality.</p>
+		} else {
+			<pre>@rules</pre>
+		}
+	</section>
 
 }

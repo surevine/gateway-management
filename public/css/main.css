@@ -1,9 +1,29 @@
+section {
+	margin: 20px 0 30px 0 ;
+}
+
 .primary-action {
 	margin: 5px 0 15px 0;
+}
+
+h4 a.btn {
+	margin: -2px 0 0 6px;
 }
 
 .project-repo-slash {
 	font-size: 20px;
 	font-weight: bold;
 	margin-left: 5px;
+}
+
+
+
+/* Destination Pages */
+
+.destination-info th {
+	padding-right: 10px;
+}
+
+.project-list {
+	margin-top: 10px;
 }
