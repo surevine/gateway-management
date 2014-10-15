@@ -14,7 +14,7 @@ create table destination (
 create table project (
   id                        bigint not null,
   display_name              varchar(255),
-  project_slug              varchar(255),
+  project_key               varchar(255),
   repository_slug           varchar(255),
   constraint pk_project primary key (id))
 ;

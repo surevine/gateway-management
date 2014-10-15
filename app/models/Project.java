@@ -50,7 +50,7 @@ public class Project extends Model {
 	 * e.g. github.com/project/repository
 	 */
 	@Required
-	public String projectSlug;
+	public String projectKey;
 
 	/**
 	 * 'Repository' segment of SCM system's repository URL
@@ -89,16 +89,16 @@ public class Project extends Model {
     	return opts;
     }
 
-	public Project(long id, String displayName, String projectSlug, String repositorySlug) {
+	public Project(long id, String displayName, String projectKey, String repositorySlug) {
     	this.id = id;
     	this.displayName = displayName;
-    	this.projectSlug = projectSlug;
+    	this.projectKey = projectKey;
     	this.repositorySlug = repositorySlug;
     }
 
-    public Project(String displayName, String projectSlug, String repositorySlug) {
+    public Project(String displayName, String projectKey, String repositorySlug) {
     	this.displayName = displayName;
-    	this.projectSlug = projectSlug;
+    	this.projectKey = projectKey;
     	this.repositorySlug = repositorySlug;
     }
 
@@ -113,7 +113,7 @@ public class Project extends Model {
     		this.update();
 
         	SCMFederatorServiceFacade scmFederatorService = new SCMFederatorServiceFacade();
-        	scmFederatorService.distribute(destination.id.toString(), this.projectSlug, this.repositorySlug);
+        	scmFederatorService.distribute(destination.id.toString(), this.projectKey, this.repositorySlug);
     	}
     }
 

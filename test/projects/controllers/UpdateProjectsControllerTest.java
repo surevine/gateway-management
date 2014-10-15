@@ -32,7 +32,7 @@ public class UpdateProjectsControllerTest extends ProjectTest {
 	public static void createExistingTestProject() {
 		Project project = new Project(TEST_EXISTING_PROJECT_ID,
 										TEST_EXISTING_PROJECT_DISPLAY_NAME,
-										TEST_EXISTING_PROJECT_SLUG_PROJECT_NAME,
+										TEST_EXISTING_PROJECT_PROJECT_KEY_NAME,
 										TEST_EXISTING_PROJECT_SLUG_REPO);
 		project.save();
 	}
@@ -67,7 +67,7 @@ public class UpdateProjectsControllerTest extends ProjectTest {
 
 		Project project = Project.find.byId(TEST_EXISTING_PROJECT_ID);
 		assertThat(project.displayName).isEqualTo(TEST_NEW_PROJECT_DISPLAY_NAME);
-		assertThat(project.projectSlug).isEqualTo(TEST_NEW_PROJECT_SLUG_PROJECT_NAME);
+		assertThat(project.projectKey).isEqualTo(TEST_NEW_PROJECT_SLUG_PROJECT_NAME);
 		assertThat(project.repositorySlug).isEqualTo(TEST_NEW_PROJECT_SLUG_REPO);
 	}
 
@@ -75,7 +75,7 @@ public class UpdateProjectsControllerTest extends ProjectTest {
 	public void testUpdateProjectEmptyName() {
 		Result result = postUpdateProject(TEST_EXISTING_PROJECT_ID,
 											"",
-											TEST_EXISTING_PROJECT_SLUG_PROJECT_NAME,
+											TEST_EXISTING_PROJECT_PROJECT_KEY_NAME,
 											TEST_EXISTING_PROJECT_SLUG_REPO);
 
 		assertThat(status(result)).isEqualTo(BAD_REQUEST);
@@ -83,7 +83,7 @@ public class UpdateProjectsControllerTest extends ProjectTest {
 	}
 
 	@Test
-	public void testUpdateProjectEmptyProjectSlug() {
+	public void testUpdateProjectEmptyProjectKey() {
 		Result result = postUpdateProject(TEST_EXISTING_PROJECT_ID,
 												TEST_EXISTING_PROJECT_DISPLAY_NAME,
 												"",
@@ -97,7 +97,7 @@ public class UpdateProjectsControllerTest extends ProjectTest {
 	public void testUpdateProjectEmptyRepoSlug() {
 		Result result = postUpdateProject(TEST_EXISTING_PROJECT_ID,
 											TEST_EXISTING_PROJECT_DISPLAY_NAME,
-											TEST_EXISTING_PROJECT_SLUG_PROJECT_NAME,
+											TEST_EXISTING_PROJECT_PROJECT_KEY_NAME,
 											"");
 
 		assertThat(status(result)).isEqualTo(BAD_REQUEST);
@@ -108,7 +108,7 @@ public class UpdateProjectsControllerTest extends ProjectTest {
 	public void testUpdateProjectNonExistingID() {
 		Result result = postUpdateProject(TEST_NON_EXISTING_PROJECT_ID,
 											TEST_EXISTING_PROJECT_DISPLAY_NAME,
-											TEST_EXISTING_PROJECT_SLUG_PROJECT_NAME,
+											TEST_EXISTING_PROJECT_PROJECT_KEY_NAME,
 											TEST_EXISTING_PROJECT_SLUG_REPO);
 
 		assertThat(status(result)).isEqualTo(NOT_FOUND);
@@ -118,15 +118,15 @@ public class UpdateProjectsControllerTest extends ProjectTest {
 	 * Helper method for fake posting of form data to update project route
 	 * @param id Id of project to update
 	 * @param displayName Name of project (fake form field value)
-	 * @param projectSlug URL slug for project name (fake form field value)
+	 * @param projectKey URL slug for project name (fake form field value)
 	 * @param repositorySlug URL slug for repo name (fake form field value)
 	 * @return Result Response from server
 	 */
-	private Result postUpdateProject(long id, String displayName, String projectSlug, String repositorySlug) {
+	private Result postUpdateProject(long id, String displayName, String projectKey, String repositorySlug) {
 
 		Map<String,String> formData = new HashMap<String,String>();
 		formData.put("displayName", displayName);
-		formData.put("projectSlug", projectSlug);
+		formData.put("projectKey", projectKey);
 		formData.put("repositorySlug", repositorySlug);
 
 		FakeRequest request = new FakeRequest(POST, "/projects/update/" + id);

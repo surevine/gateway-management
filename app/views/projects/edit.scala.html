@@ -16,7 +16,7 @@
 
 			<div class="form-inline">
 				<label>Project URL Slug</label><br />
-				@inputText(projectForm("projectSlug"), '_label -> "", '_help -> "", 'class -> "form-control", 'placeholder -> "Project name")
+				@inputText(projectForm("projectKey"), '_label -> "", '_help -> "", 'class -> "form-control", 'placeholder -> "Project name")
 				<span class="form-control-static project-repo-slash">/</span>
 				@inputText(projectForm("repositorySlug"), '_label -> "", '_help -> "", 'class -> "form-control", 'placeholder -> "Repo name")
 				<p class="help-block">Project and repository URL slugs from SCM system. E.g. surevine/gateway</p>

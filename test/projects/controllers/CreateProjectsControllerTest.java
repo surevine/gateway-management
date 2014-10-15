@@ -36,7 +36,7 @@ public class CreateProjectsControllerTest extends ProjectTest {
 	@Test
 	public void testCreateProject() {
 		Result result = postCreateProject(TEST_NEW_PROJECT_DISPLAY_NAME,
-											TEST_EXISTING_PROJECT_SLUG_PROJECT_NAME,
+											TEST_EXISTING_PROJECT_PROJECT_KEY_NAME,
 											TEST_EXISTING_PROJECT_SLUG_REPO);
 
 		// Expect 303 as implementation redirects to 'view' page
@@ -44,7 +44,7 @@ public class CreateProjectsControllerTest extends ProjectTest {
 
 		Project project = Project.find.where()
 											.eq("displayName", TEST_NEW_PROJECT_DISPLAY_NAME)
-											.eq("projectSlug", TEST_EXISTING_PROJECT_SLUG_PROJECT_NAME)
+											.eq("projectKey", TEST_EXISTING_PROJECT_PROJECT_KEY_NAME)
 											.eq("repositorySlug", TEST_EXISTING_PROJECT_SLUG_REPO)
 											.findUnique();
 		assertThat(project).isNotNull();
@@ -53,7 +53,7 @@ public class CreateProjectsControllerTest extends ProjectTest {
 	@Test
 	public void testCreateProjectEmptyName() {
 		Result result = postCreateProject("",
-										TEST_EXISTING_PROJECT_SLUG_PROJECT_NAME,
+										TEST_EXISTING_PROJECT_PROJECT_KEY_NAME,
 										TEST_EXISTING_PROJECT_SLUG_REPO);
 
 		assertThat(status(result)).isEqualTo(BAD_REQUEST);
@@ -61,7 +61,7 @@ public class CreateProjectsControllerTest extends ProjectTest {
 	}
 
 	@Test
-	public void testCreateProjectEmptyProjectSlug() {
+	public void testCreateProjectEmptyProjectKey() {
 		Result result = postCreateProject(TEST_NEW_PROJECT_DISPLAY_NAME,
 											"",
 											TEST_EXISTING_PROJECT_SLUG_REPO);
@@ -73,7 +73,7 @@ public class CreateProjectsControllerTest extends ProjectTest {
 	@Test
 	public void testCreateProjectEmptyRepoSlug() {
 		Result result = postCreateProject(TEST_NEW_PROJECT_DISPLAY_NAME,
-											TEST_EXISTING_PROJECT_SLUG_PROJECT_NAME,
+											TEST_EXISTING_PROJECT_PROJECT_KEY_NAME,
 											"");
 
 		assertThat(status(result)).isEqualTo(BAD_REQUEST);
@@ -84,14 +84,14 @@ public class CreateProjectsControllerTest extends ProjectTest {
 	/**
 	 * Helper method for fake posting of form data to create project route
 	 * @param displayName Name of project (fake form field value)
-	 * @param projectSlug URL slug for project name (fake form field value)
+	 * @param projectKey URL slug for project name (fake form field value)
 	 * @param repositorySlug URL slug for repo name (fake form field value)
 	 * @return Result Response from server
 	 */
-	private Result postCreateProject(String displayName, String projectSlug, String repositorySlug) {
+	private Result postCreateProject(String displayName, String projectKey, String repositorySlug) {
 		Map<String,String> formData = new HashMap<String,String>();
 		formData.put("displayName", displayName);
-		formData.put("projectSlug", projectSlug);
+		formData.put("projectKey", projectKey);
 		formData.put("repositorySlug", repositorySlug);
 
 		FakeRequest request = new FakeRequest(POST, "/projects/add");

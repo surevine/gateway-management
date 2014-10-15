@@ -28,7 +28,7 @@
 	    } else {
 		    @for(project <- destination.projects) {
 		    	<li class="list-group-item">
-		    		@project.displayName <span class="text-muted">@project.projectSlug/@project.repositorySlug</span>
+		    		@project.displayName <span class="text-muted">@project.projectKey/@project.repositorySlug</span>
 		    		<a href="#"  class="btn btn-danger btn-xs pull-right">Unshare</a>
 		    	</li>
 		    }

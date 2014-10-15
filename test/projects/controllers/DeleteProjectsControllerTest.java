@@ -28,7 +28,7 @@ public class DeleteProjectsControllerTest extends ProjectTest {
 	public static void createExistingTestProject() {
 		Project project = new Project(TEST_EXISTING_PROJECT_ID,
 										TEST_EXISTING_PROJECT_DISPLAY_NAME,
-										TEST_EXISTING_PROJECT_SLUG_PROJECT_NAME,
+										TEST_EXISTING_PROJECT_PROJECT_KEY_NAME,
 										TEST_EXISTING_PROJECT_SLUG_REPO);
 		project.save();
 	}
