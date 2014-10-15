@@ -1,5 +1,7 @@
 package models;
 
+import static play.mvc.Http.Status.OK;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -22,12 +24,18 @@ import javax.persistence.ManyToMany;
 import org.apache.commons.io.FileUtils;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.surevine.gateway.scm.service.SCMFederatorServiceFacade;
 import com.typesafe.config.ConfigFactory;
 
 import play.Logger;
 import play.data.validation.Constraints.Required;
 import play.data.validation.ValidationError;
 import play.db.ebean.Model;
+import play.libs.F.Callback;
+import play.libs.F.Function;
+import play.libs.F.Promise;
+import play.libs.ws.WS;
+import play.libs.ws.WSResponse;
 
 /**
  * Gateway destination end-point to share resources with.
@@ -116,6 +124,7 @@ public class Destination extends Model {
 
     /**
      * Adds a project to the destination
+     *
      * @param project project to add
      */
     public void addProject(Project project) {
@@ -123,7 +132,8 @@ public class Destination extends Model {
         	this.projects.add(project);
         	this.update();
 
-        	// TODO Notify federated SCM components of new sharing partnership (destination/project) configuration
+        	SCMFederatorServiceFacade scmFederatorService = new SCMFederatorServiceFacade();
+        	scmFederatorService.distribute(this.id.toString(), project.projectSlug, project.repositorySlug);
     	}
     }
 
@@ -213,4 +223,5 @@ public class Destination extends Model {
 			Logger.warn("Failed to delete rule file directory for destination: " + this.name, e);
 		}
     }
+
 }

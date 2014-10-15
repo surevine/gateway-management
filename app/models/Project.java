@@ -1,5 +1,7 @@
 package models;
 
+import static play.mvc.Http.Status.OK;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,10 +13,17 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.surevine.gateway.scm.service.SCMFederatorServiceFacade;
+import com.typesafe.config.ConfigFactory;
 
+import play.Logger;
 import play.data.validation.ValidationError;
 import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
+import play.libs.F.Function;
+import play.libs.F.Promise;
+import play.libs.ws.WS;
+import play.libs.ws.WSResponse;
 
 /**
  * Project maintained in SCM system to be shared across gateway.
@@ -95,6 +104,7 @@ public class Project extends Model {
 
     /**
      * Adds destination to share project to
+     *
      * @param destination destination to share to
      */
     public void addDestination(Destination destination) {
@@ -102,23 +112,9 @@ public class Project extends Model {
     		this.destinations.add(destination);
     		this.update();
 
-        	// TODO Notify federated SCM components of new sharing partnership (destination/project) configuration
+        	SCMFederatorServiceFacade scmFederatorService = new SCMFederatorServiceFacade();
+        	scmFederatorService.distribute(destination.id.toString(), this.projectSlug, this.repositorySlug);
     	}
-    }
-
-    /**
-     * Perform additional validation (beyond annotations) on model properties.
-     *
-     * @return List of validation error messages associated with relevant properties
-     */
-    public List<ValidationError> validate() {
-
-    	List<ValidationError> errors = new ArrayList<ValidationError>();
-
-    	// TODO
-
-    	return errors.isEmpty() ? null : errors;
-
     }
 
 }
