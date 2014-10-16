@@ -137,6 +137,18 @@ public class Destination extends Model {
     	}
     }
 
+    /**
+     * Removes a project from the destination
+     *
+     * @param project project to remove
+     */
+	public void removeProject(Project project) {
+		if(this.projects.contains(project)) {
+			this.projects.remove(project);
+			this.update();
+		}
+	}
+
 	/**
      * Loads rules for the destination from expected rule-file locations
      *

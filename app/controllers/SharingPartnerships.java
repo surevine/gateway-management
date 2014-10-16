@@ -43,8 +43,30 @@ public class SharingPartnerships extends Controller {
 	 * @return
 	 */
 	public static Result delete() {
-		// TODO
-		return badRequest();
+
+		DynamicForm requestData = Form.form().bindFromRequest();
+
+    	long selectedDestinationId = Long.parseLong(requestData.get("destinationId"));
+    	Destination destination = Destination.find.byId(selectedDestinationId);
+
+    	if(destination == null) {
+    		return notFound("Destination not found.");
+    	}
+
+    	long selectedProjectId = Long.parseLong(requestData.get("projectId"));
+    	Project project = Project.find.byId(selectedProjectId);
+
+    	if(project == null) {
+    		return notFound("Project not found.");
+    	}
+
+    	if(destination.projects.contains(project)) {
+        	destination.removeProject(project);
+        	return redirect(routes.Destinations.view(destination.id));
+    	}
+
+    	return notFound("Sharing partnership not found.");
+
 	}
 
 }

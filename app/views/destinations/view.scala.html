@@ -1,5 +1,7 @@
 @(destination: Destination, rules: String, error: Boolean, errorMessage: String)
 
+@import helper._
+
 @main("View destination") {
 
 	<h2>View destination</h2>
@@ -29,7 +31,13 @@
 		    @for(project <- destination.projects) {
 		    	<li class="list-group-item">
 		    		@project.displayName <span class="text-muted">@project.projectKey/@project.repositorySlug</span>
-		    		<a href="#"  class="btn btn-danger btn-xs pull-right">Unshare</a>
+
+		    		@form(routes.SharingPartnerships.delete()) {
+						<input type="hidden" name="destinationId" value="@destination.id" />
+						<input type="hidden" name="projectId" value="@project.id" />
+				        <input type="submit" value="Unshare" class="btn btn-danger btn-xs pull-right" />
+				    }
+
 		    	</li>
 		    }
 	    }

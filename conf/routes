@@ -60,8 +60,10 @@ POST	/projects/delete/:id			controllers.Projects.delete(id: Long)
 #
 
 # Create new sharing partnership
-POST	/partnerships/create				controllers.SharingPartnerships.create()
+POST	/partnerships/create			controllers.SharingPartnerships.create()
 
+# Remove existing sharing partnership
+POST	/partnerships/delete			controllers.SharingPartnerships.delete()
 
 #
 # Misc

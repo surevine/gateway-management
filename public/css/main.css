@@ -27,3 +27,7 @@ h4 a.btn {
 .project-list {
 	margin-top: 10px;
 }
+
+.project-list form {
+	display: inline;
+}
