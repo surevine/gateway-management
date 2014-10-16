@@ -8,11 +8,15 @@
 
 	<h2>Share source code project with destination</h2>
 
-	@form(routes.Destinations.addProject(destination.id), 'role -> "form") {
+	<p>Destination: @destination.name</p>
+
+	@form(routes.SharingPartnerships.create(), 'role -> "form") {
 
 		<fieldset>
 
-			@select(projectForm("project"),
+			<input type="hidden" name="destinationId" value="@destination.id" />
+
+			@select(projectForm("projectId"),
 					options = options(Project.allProjectSelectOptions(destination)))
 
 		</fieldset>

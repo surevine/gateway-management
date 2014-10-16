@@ -5,6 +5,7 @@ import java.util.List;
 
 import models.Destination;
 import models.Project;
+import play.Logger;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
@@ -156,7 +157,7 @@ public class Destinations extends Controller {
      * @param destinationId Id of destination
      * @return
      */
-    public static Result addProjectPage(long destinationId) {
+    public static Result addProjectPage(Long destinationId) {
 
     	Destination destination = Destination.find.byId(destinationId);
 
@@ -167,30 +168,6 @@ public class Destinations extends Controller {
     	DynamicForm projectForm = Form.form();
 
     	return ok(views.html.destinations.addproject.render(destination, projectForm));
-
-    }
-
-    /**
-     * Add a project to a destination (handles form submission)
-     *
-     * @param id Id of destination to add project to
-     * @return
-     */
-    public static Result addProject(long id) {
-
-    	Destination destination = Destination.find.byId(id);
-    	if(destination == null) {
-    		return notFound("Destination not found.");
-    	}
-
-    	DynamicForm requestData = Form.form().bindFromRequest();
-
-    	long selectedProjectId = Long.parseLong(requestData.get("project"));
-    	Project project = Project.find.byId(selectedProjectId);
-
-    	destination.addProject(project);
-
-    	return redirect(routes.Destinations.view(id));
 
     }
 

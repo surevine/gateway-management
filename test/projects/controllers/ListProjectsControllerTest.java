@@ -22,7 +22,7 @@ public class ListProjectsControllerTest extends ProjectTest {
 	public static void createExistingTestProject() {
 		Project project = new Project(TEST_EXISTING_PROJECT_ID,
 									TEST_EXISTING_PROJECT_DISPLAY_NAME,
-									TEST_EXISTING_PROJECT_PROJECT_KEY_NAME,
+									TEST_EXISTING_PROJECT_PROJECT_KEY,
 									TEST_EXISTING_PROJECT_SLUG_REPO);
 		project.save();
 	}
@@ -37,7 +37,7 @@ public class ListProjectsControllerTest extends ProjectTest {
 
 		String content = contentAsString(result);
 		assertThat(content).contains(TEST_EXISTING_PROJECT_DISPLAY_NAME);
-		assertThat(content).contains(TEST_EXISTING_PROJECT_PROJECT_KEY_NAME);
+		assertThat(content).contains(TEST_EXISTING_PROJECT_PROJECT_KEY);
 		assertThat(content).contains(TEST_EXISTING_PROJECT_SLUG_REPO);
 	}
 
@@ -51,7 +51,7 @@ public class ListProjectsControllerTest extends ProjectTest {
 
 		String content = contentAsString(result);
 		assertThat(content).contains(TEST_EXISTING_PROJECT_DISPLAY_NAME);
-		assertThat(content).contains(TEST_EXISTING_PROJECT_PROJECT_KEY_NAME);
+		assertThat(content).contains(TEST_EXISTING_PROJECT_PROJECT_KEY);
 		assertThat(content).contains(TEST_EXISTING_PROJECT_SLUG_REPO);
 	}
 

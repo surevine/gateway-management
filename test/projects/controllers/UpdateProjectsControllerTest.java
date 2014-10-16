@@ -32,7 +32,7 @@ public class UpdateProjectsControllerTest extends ProjectTest {
 	public static void createExistingTestProject() {
 		Project project = new Project(TEST_EXISTING_PROJECT_ID,
 										TEST_EXISTING_PROJECT_DISPLAY_NAME,
-										TEST_EXISTING_PROJECT_PROJECT_KEY_NAME,
+										TEST_EXISTING_PROJECT_PROJECT_KEY,
 										TEST_EXISTING_PROJECT_SLUG_REPO);
 		project.save();
 	}
@@ -59,7 +59,7 @@ public class UpdateProjectsControllerTest extends ProjectTest {
 
 		Result result = postUpdateProject(TEST_EXISTING_PROJECT_ID,
 											TEST_NEW_PROJECT_DISPLAY_NAME,
-											TEST_NEW_PROJECT_SLUG_PROJECT_NAME,
+											TEST_NEW_PROJECT_PROJECT_KEY,
 											TEST_NEW_PROJECT_SLUG_REPO);
 
 		// Expect 303 as implementation redirects to 'view' page
@@ -67,7 +67,7 @@ public class UpdateProjectsControllerTest extends ProjectTest {
 
 		Project project = Project.find.byId(TEST_EXISTING_PROJECT_ID);
 		assertThat(project.displayName).isEqualTo(TEST_NEW_PROJECT_DISPLAY_NAME);
-		assertThat(project.projectKey).isEqualTo(TEST_NEW_PROJECT_SLUG_PROJECT_NAME);
+		assertThat(project.projectKey).isEqualTo(TEST_NEW_PROJECT_PROJECT_KEY);
 		assertThat(project.repositorySlug).isEqualTo(TEST_NEW_PROJECT_SLUG_REPO);
 	}
 
@@ -75,7 +75,7 @@ public class UpdateProjectsControllerTest extends ProjectTest {
 	public void testUpdateProjectEmptyName() {
 		Result result = postUpdateProject(TEST_EXISTING_PROJECT_ID,
 											"",
-											TEST_EXISTING_PROJECT_PROJECT_KEY_NAME,
+											TEST_EXISTING_PROJECT_PROJECT_KEY,
 											TEST_EXISTING_PROJECT_SLUG_REPO);
 
 		assertThat(status(result)).isEqualTo(BAD_REQUEST);
@@ -97,7 +97,7 @@ public class UpdateProjectsControllerTest extends ProjectTest {
 	public void testUpdateProjectEmptyRepoSlug() {
 		Result result = postUpdateProject(TEST_EXISTING_PROJECT_ID,
 											TEST_EXISTING_PROJECT_DISPLAY_NAME,
-											TEST_EXISTING_PROJECT_PROJECT_KEY_NAME,
+											TEST_EXISTING_PROJECT_PROJECT_KEY,
 											"");
 
 		assertThat(status(result)).isEqualTo(BAD_REQUEST);
@@ -108,7 +108,7 @@ public class UpdateProjectsControllerTest extends ProjectTest {
 	public void testUpdateProjectNonExistingID() {
 		Result result = postUpdateProject(TEST_NON_EXISTING_PROJECT_ID,
 											TEST_EXISTING_PROJECT_DISPLAY_NAME,
-											TEST_EXISTING_PROJECT_PROJECT_KEY_NAME,
+											TEST_EXISTING_PROJECT_PROJECT_KEY,
 											TEST_EXISTING_PROJECT_SLUG_REPO);
 
 		assertThat(status(result)).isEqualTo(NOT_FOUND);

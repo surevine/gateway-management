@@ -23,12 +23,12 @@ public class ProjectTest {
 
 	public static long TEST_NEW_PROJECT_ID = 2014;
 	public static String TEST_NEW_PROJECT_DISPLAY_NAME = "Project B";
-	public static String TEST_NEW_PROJECT_SLUG_PROJECT_NAME = "partner-b";
+	public static String TEST_NEW_PROJECT_PROJECT_KEY = "partner-b";
 	public static String TEST_NEW_PROJECT_SLUG_REPO = "repo-b";
 
 	public static long TEST_EXISTING_PROJECT_ID = 2013;
 	public static String TEST_EXISTING_PROJECT_DISPLAY_NAME = "Project A";
-	public static String TEST_EXISTING_PROJECT_PROJECT_KEY_NAME = "partner-a";
+	public static String TEST_EXISTING_PROJECT_PROJECT_KEY = "partner-a";
 	public static String TEST_EXISTING_PROJECT_SLUG_REPO = "repo-a";
 
 	public static long TEST_NON_EXISTING_PROJECT_ID = 10000;

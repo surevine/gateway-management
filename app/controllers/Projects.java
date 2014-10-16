@@ -141,46 +141,4 @@ public class Projects extends Controller {
 
     }
 
-    /**
-     * Display form page to configure destinations to share project with
-     * @param projectId Id of project to add destinations to
-     * @return
-     */
-    public static Result addDestinationPage(long projectId) {
-
-    	Project project = Project.find.byId(projectId);
-
-    	if(project == null) {
-    		return notFound("Project not found.");
-    	}
-
-    	DynamicForm destinationForm = Form.form();
-
-    	return ok(views.html.projects.adddestination.render(project, destinationForm));
-    }
-
-    /**
-     * Add destination to a project (handles form submission)
-     * @param projectId
-     * @return
-     */
-    public static Result addDestination(long projectId) {
-
-    	Project project = Project.find.byId(projectId);
-
-    	if(project == null) {
-    		return notFound("Project not found.");
-    	}
-
-    	DynamicForm requestData = Form.form().bindFromRequest();
-
-    	long selectedDestinationId = Long.parseLong(requestData.get("destination"));
-    	Destination destination = Destination.find.byId(selectedDestinationId);
-
-    	project.addDestination(destination);
-
-    	return redirect(routes.Projects.view(projectId));
-
-    }
-
 }

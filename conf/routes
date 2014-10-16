@@ -30,7 +30,6 @@ POST	/destinations/delete/:id		controllers.Destinations.delete(id: Long)
 
 # Add project to destination
 GET		/destinations/:id/addproject	controllers.Destinations.addProjectPage(id: Long)
-POST	/destinations/:id/addproject	controllers.Destinations.addProject(id: Long)
 
 
 #
@@ -55,9 +54,13 @@ POST	/projects/edit/:id				controllers.Projects.update(id: Long)
 # Delete project
 POST	/projects/delete/:id			controllers.Projects.delete(id: Long)
 
-# Add destination to project
-GET		/projects/:id/adddestination	controllers.Projects.addDestinationPage(id: Long)
-POST	/projects/:id/adddestination	controllers.Projects.addDestination(id: Long)
+
+#
+# Sharing Partnerships
+#
+
+# Create new sharing partnership
+POST	/partnerships/create				controllers.SharingPartnerships.create()
 
 
 #

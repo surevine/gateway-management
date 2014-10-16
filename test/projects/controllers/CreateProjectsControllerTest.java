@@ -36,7 +36,7 @@ public class CreateProjectsControllerTest extends ProjectTest {
 	@Test
 	public void testCreateProject() {
 		Result result = postCreateProject(TEST_NEW_PROJECT_DISPLAY_NAME,
-											TEST_EXISTING_PROJECT_PROJECT_KEY_NAME,
+											TEST_EXISTING_PROJECT_PROJECT_KEY,
 											TEST_EXISTING_PROJECT_SLUG_REPO);
 
 		// Expect 303 as implementation redirects to 'view' page
@@ -44,7 +44,7 @@ public class CreateProjectsControllerTest extends ProjectTest {
 
 		Project project = Project.find.where()
 											.eq("displayName", TEST_NEW_PROJECT_DISPLAY_NAME)
-											.eq("projectKey", TEST_EXISTING_PROJECT_PROJECT_KEY_NAME)
+											.eq("projectKey", TEST_EXISTING_PROJECT_PROJECT_KEY)
 											.eq("repositorySlug", TEST_EXISTING_PROJECT_SLUG_REPO)
 											.findUnique();
 		assertThat(project).isNotNull();
@@ -53,7 +53,7 @@ public class CreateProjectsControllerTest extends ProjectTest {
 	@Test
 	public void testCreateProjectEmptyName() {
 		Result result = postCreateProject("",
-										TEST_EXISTING_PROJECT_PROJECT_KEY_NAME,
+										TEST_EXISTING_PROJECT_PROJECT_KEY,
 										TEST_EXISTING_PROJECT_SLUG_REPO);
 
 		assertThat(status(result)).isEqualTo(BAD_REQUEST);
@@ -73,7 +73,7 @@ public class CreateProjectsControllerTest extends ProjectTest {
 	@Test
 	public void testCreateProjectEmptyRepoSlug() {
 		Result result = postCreateProject(TEST_NEW_PROJECT_DISPLAY_NAME,
-											TEST_EXISTING_PROJECT_PROJECT_KEY_NAME,
+											TEST_EXISTING_PROJECT_PROJECT_KEY,
 											"");
 
 		assertThat(status(result)).isEqualTo(BAD_REQUEST);
