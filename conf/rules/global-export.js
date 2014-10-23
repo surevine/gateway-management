@@ -50,6 +50,9 @@ Rules.mandate(function() {
 // Rule: File copy only.
 //Rules.mandate(destination.indexOf("file://") === 0)
 
+/**
+ * Logic for stripping out metadata we don't wish to send elsewhere.
+ */
 //Strip security label properties if not sending on to ORG01 or ORG02.
 if (metadata.containsKey("organisation")) {
 	var organisations = Arrays.asList(metadata.get("organisation").split(","));
