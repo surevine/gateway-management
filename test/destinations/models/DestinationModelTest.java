@@ -53,10 +53,10 @@ public class DestinationModelTest extends DestinationTest {
 		destination.id = TEST_NEW_DESTINATION_ID;
 
 		destination.createRuleFileDirectory();
-		destination.createRuleFile(Destination.DEFAULT_RULEFILE_NAME);
+		destination.createRuleFile(Destination.DEFAULT_EXPORT_RULEFILE_NAME);
 
 		// Determine whether rule file exists
-    	Path rule_file_path = Paths.get(TEST_DESTINATIONS_DIR + "/" + destination.id, Destination.DEFAULT_RULEFILE_NAME);
+    	Path rule_file_path = Paths.get(TEST_DESTINATIONS_DIR + "/" + destination.id, Destination.DEFAULT_EXPORT_RULEFILE_NAME);
 		Boolean exists = Files.exists(rule_file_path);
 
 		// TODO determine that contents of file match template

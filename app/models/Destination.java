@@ -72,7 +72,7 @@ public class Destination extends Model {
 	public List<Project> projects = new ArrayList<Project>();
 
 	public static final String DESTINATIONS_RULES_DIRECTORY = ConfigFactory.load().getString("gateway.destinations.dir");
-	public static final String DEFAULT_RULEFILE_NAME = "custom.js";
+	public static final String DEFAULT_EXPORT_RULEFILE_NAME = "export.js";
 
     /**
      *  Generic query helper for entity Destination with id Long
@@ -113,7 +113,7 @@ public class Destination extends Model {
     public void save() {
     	super.save();
     	createRuleFileDirectory();
-    	createRuleFile(DEFAULT_RULEFILE_NAME);
+    	createRuleFile(DEFAULT_EXPORT_RULEFILE_NAME);
     }
 
     @Override
@@ -157,7 +157,7 @@ public class Destination extends Model {
      */
     public String loadRules() throws IOException {
 
-    	Path rule_file_path = Paths.get(DESTINATIONS_RULES_DIRECTORY + "/" + this.id, DEFAULT_RULEFILE_NAME);
+    	Path rule_file_path = Paths.get(DESTINATIONS_RULES_DIRECTORY + "/" + this.id, DEFAULT_EXPORT_RULEFILE_NAME);
 		List<String> lines = Files.readAllLines(rule_file_path, Charset.forName("UTF-8"));
 
     	StringBuffer parsedJsFile = new StringBuffer();
