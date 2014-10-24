@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import models.Destination;
+
 import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -29,7 +31,7 @@ public class DestinationTest {
 
 	public static FakeApplication app;
 
-	public static String TEST_DESTINATIONS_DIR = ConfigFactory.load().getString("gateway.destinations.dir");
+	public static String TEST_DESTINATIONS_DIR = Destination.DESTINATIONS_RULES_DIRECTORY;
 
 	public static long TEST_NEW_DESTINATION_ID = 2014;
 	public static String TEST_NEW_DESTINATION_NAME = "Destination B";

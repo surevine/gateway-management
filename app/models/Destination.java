@@ -1,15 +1,8 @@
 package models;
 
-import static play.mvc.Http.Status.OK;
-
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,21 +14,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
-import org.apache.commons.io.FileUtils;
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.surevine.gateway.rules.RuleFileManager;
 import com.surevine.gateway.scm.service.SCMFederatorServiceFacade;
 import com.typesafe.config.ConfigFactory;
 
-import play.Logger;
 import play.data.validation.Constraints.Required;
 import play.data.validation.ValidationError;
 import play.db.ebean.Model;
-import play.libs.F.Callback;
-import play.libs.F.Function;
-import play.libs.F.Promise;
-import play.libs.ws.WS;
-import play.libs.ws.WSResponse;
 
 /**
  * Gateway destination end-point to share resources with.
@@ -71,7 +57,7 @@ public class Destination extends Model {
 	@JsonManagedReference
 	public List<Project> projects = new ArrayList<Project>();
 
-	public static final String DESTINATIONS_RULES_DIRECTORY = ConfigFactory.load().getString("gateway.destinations.dir");
+	public static final String DESTINATIONS_RULES_DIRECTORY = ConfigFactory.load().getString("gateway.destinations.rules.dir");
 	public static final String DEFAULT_EXPORT_RULEFILE_NAME = "export.js";
 
     /**
@@ -112,13 +98,14 @@ public class Destination extends Model {
     @Override
     public void save() {
     	super.save();
-    	createRuleFileDirectory();
-    	createRuleFile(DEFAULT_EXPORT_RULEFILE_NAME);
+    	RuleFileManager ruleFileManager = RuleFileManager.getInstance();
+    	ruleFileManager.createDestinationRuleFileDirectory(this);
+    	ruleFileManager.createDestinationRuleFile(this, DEFAULT_EXPORT_RULEFILE_NAME);
     }
 
     @Override
     public void delete() {
-    	deleteRuleFileDirectory();
+    	RuleFileManager.getInstance().deleteDestinationRuleFileDirectory(this);
     	super.delete();
     }
 
@@ -156,53 +143,7 @@ public class Destination extends Model {
      * @throws IOException
      */
     public String loadRules() throws IOException {
-
-    	Path rule_file_path = Paths.get(DESTINATIONS_RULES_DIRECTORY + "/" + this.id, DEFAULT_EXPORT_RULEFILE_NAME);
-		List<String> lines = Files.readAllLines(rule_file_path, Charset.forName("UTF-8"));
-
-    	StringBuffer parsedJsFile = new StringBuffer();
-
-		for (String line : lines) {
-			parsedJsFile.append(line + System.lineSeparator());
-		}
-
-		return parsedJsFile.toString();
-
-    }
-
-    /**
-     * Creates directory for destination rule files
-     */
-    public void createRuleFileDirectory() {
-
-    	Path destinationsDirectoryPath = Paths.get(DESTINATIONS_RULES_DIRECTORY + "/" + this.id);
-
-    	if(!Files.exists(destinationsDirectoryPath)) {
-    		try {
-    			Files.createDirectory(destinationsDirectoryPath);
-    		} catch (IOException e) {
-    			Logger.error("Failed to create rule file directory for destination: " + this.name, e);
-    		}
-    	}
-    }
-
-    /**
-     * Creates rule file on disk for destination based on configured template
-     *
-     * @param name Name of file to create
-     */
-    public void createRuleFile(String fileName) {
-
-    	String templateRuleFile = ConfigFactory.load().getString("gateway.template.rule.file");
-
-    	Path templateRuleFilePath = Paths.get(templateRuleFile);
-    	Path destinationRuleFilePath = Paths.get(DESTINATIONS_RULES_DIRECTORY + "/" + this.id + "/" + fileName);
-
-    	try {
-			Files.copy(templateRuleFilePath, destinationRuleFilePath);
-		} catch (IOException e) {
-			Logger.error("Failed to create rule file for destination: "+ this.name, e);
-		}
+    	return RuleFileManager.getInstance().loadDestinationExportRules(this);
     }
 
     /**
@@ -223,17 +164,6 @@ public class Destination extends Model {
     	}
 
     	return errors.isEmpty() ? null : errors;
-    }
-
-    /**
-     * Delete this destinations rule file directory
-     */
-    private void deleteRuleFileDirectory() {
-    	try {
-			FileUtils.deleteDirectory(new File(DESTINATIONS_RULES_DIRECTORY + "/" + this.id));
-		} catch (IOException e) {
-			Logger.warn("Failed to delete rule file directory for destination: " + this.name, e);
-		}
     }
 
 }

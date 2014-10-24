@@ -1,11 +1,18 @@
 package com.surevine.gateway.rules;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+
+import play.Logger;
+
+import models.Destination;
 
 import com.typesafe.config.ConfigFactory;
 
@@ -18,6 +25,10 @@ import com.typesafe.config.ConfigFactory;
 public class RuleFileManager {
 
 	public static final String RULES_DIRECTORY = ConfigFactory.load().getString("gateway.rules.dir");
+	public static final String DESTINATIONS_RULES_DIRECTORY = ConfigFactory.load().getString("gateway.destinations.rules.dir");
+
+	public static final String DEFAULT_EXPORT_RULEFILE_NAME = "export.js";
+
 	public static final String DEFAULT_GLOBAL_EXPORT_RULEFILE_NAME = "global-export.js";
 	public static final String DEFAULT_GLOBAL_IMPORT_RULEFILE_NAME = "global-import.js";
 
@@ -36,6 +47,62 @@ public class RuleFileManager {
 			_instance = new RuleFileManager();
 		}
 		return _instance;
+	}
+
+	/**
+	 * Creates a new rule file based on configured template
+	 * @param destination
+	 * @param fileName
+	 */
+	public void createDestinationRuleFile(Destination destination, String fileName) {
+    	String templateRuleFile = ConfigFactory.load().getString("gateway.template.rule.file");
+
+    	Path templateRuleFilePath = Paths.get(templateRuleFile);
+    	Path destinationRuleFilePath = Paths.get(DESTINATIONS_RULES_DIRECTORY + "/" + destination.id + "/" + fileName);
+
+    	try {
+			Files.copy(templateRuleFilePath, destinationRuleFilePath);
+		} catch (IOException e) {
+			Logger.error("Failed to create rule file for destination: "+ destination.name, e);
+		}
+	}
+
+	/**
+	 * Creates directory on disk for destination rules
+	 * @param destination
+	 */
+	public void createDestinationRuleFileDirectory(Destination destination) {
+		Path destinationsDirectoryPath = Paths.get(DESTINATIONS_RULES_DIRECTORY + "/" + destination.id);
+
+    	if(!Files.exists(destinationsDirectoryPath)) {
+    		try {
+    			Files.createDirectory(destinationsDirectoryPath);
+    		} catch (IOException e) {
+    			Logger.error("Failed to create rule file directory for destination: " + destination.name, e);
+    		}
+    	}
+	}
+
+	/**
+	 * Delete a destinations rule file directory
+	 * @param destination destinations directory to delete
+	 */
+	public void deleteDestinationRuleFileDirectory(Destination destination) {
+    	try {
+			FileUtils.deleteDirectory(new File(DESTINATIONS_RULES_DIRECTORY + "/" + destination.id));
+		} catch (IOException e) {
+			Logger.warn("Failed to delete rule file directory for destination: " + destination.name, e);
+		}
+	}
+
+	/**
+	 * Loads export rule file for destination
+	 * @return contents of rule file
+	 * @throws IOException
+	 */
+	public String loadDestinationExportRules(Destination destination) throws IOException {
+		Path destinationExportRuleFilePath = Paths.get(DESTINATIONS_RULES_DIRECTORY + "/" + destination.id, DEFAULT_EXPORT_RULEFILE_NAME);
+		return readRuleFile(destinationExportRuleFilePath);
 	}
 
 	/**
