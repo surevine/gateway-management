@@ -1,0 +1,28 @@
+@(exportRules: String,
+	loadExportRulesError: Boolean,
+	loadExportRulesErrorMessage: String,
+	importRules: String,
+	loadImportRulesError: Boolean,
+	loadImportRulesErrorMessage: String)
+
+@main("Global Rules") {
+
+	<h2>Global Rules</h2>
+
+    <h3>global-export.js</h3>
+
+	@if(loadExportRulesError) {
+		<pre>@loadExportRulesErrorMessage</pre>
+	} else {
+		<pre>@exportRules</pre>
+	}
+
+	<h3>global-import.js</h3>
+
+	@if(loadImportRulesError) {
+		<pre>@loadImportRulesErrorMessage</pre>
+	} else {
+		<pre>@importRules</pre>
+	}
+
+}

@@ -65,6 +65,15 @@ POST	/partnerships/create			controllers.SharingPartnerships.create()
 # Remove existing sharing partnership
 POST	/partnerships/delete			controllers.SharingPartnerships.delete()
 
+
+#
+# Global rule files / filters
+#
+
+# View global files
+GET		/global-rules					controllers.GlobalRuleFiles.view()
+
+
 #
 # Misc
 #
