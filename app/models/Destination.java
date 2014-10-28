@@ -84,6 +84,14 @@ public class Destination extends Model {
     	return opts;
     }
 
+    public Destination(long id, String name, String url, List<Project> projects) {
+    	this.id = id;
+    	this.name = name;
+    	this.url = url;
+    	this.projects = projects;
+    }
+
+
     public Destination(long id, String name, String url) {
     	this.id = id;
     	this.name = name;
