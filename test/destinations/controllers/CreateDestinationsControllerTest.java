@@ -72,6 +72,14 @@ public class CreateDestinationsControllerTest extends DestinationTest {
 		assertThat(contentType(result)).isEqualTo("text/html");
 	}
 
+	@Test
+	public void testCreateDestinationExistingURL() {
+		Result result = postCreateDestination(TEST_NEW_DESTINATION_NAME, TEST_NEW_DESTINATION_URL);
+
+		assertThat(status(result)).isEqualTo(BAD_REQUEST);
+		assertThat(contentType(result)).isEqualTo("text/html");
+	}
+
 	/**
 	 * Helper method for fake posting of form data to create destination route
 	 * @param name Name of destination (fake form field value)

@@ -171,6 +171,12 @@ public class Destination extends Model {
     		errors.add(new ValidationError("url", "Valid URL required."));
     	}
 
+    	// Ensure URL unique
+    	Destination existingDestination = find.where().eq("url", url).findUnique();
+    	if(existingDestination != null) {
+    		errors.add(new ValidationError("url", "Destination URL already exists."));
+    	}
+
     	return errors.isEmpty() ? null : errors;
     }
 
