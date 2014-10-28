@@ -27,11 +27,14 @@ public class SCMFederatorServiceFacade {
 
 		String scmFederatorBaseURL = ConfigFactory.load().getString("scm.federator.api.base.url");
 
+		Logger.info(String.format("Informing SCM component of new sharing partnership %s/%s [%s]", projectKey, repoSlug, scmFederatorBaseURL + "/rest/federator/distribute"));
+
     	Promise<WSResponse> promise = WS.url(scmFederatorBaseURL + "/rest/federator/distribute")
     			.setTimeout(5000)
     			.setQueryParameter("destination", destinationId)
     			.setQueryParameter("projectKey", projectKey)
     			.setQueryParameter("repositorySlug", repoSlug)
+    			.setContentType("application/json")
     			.post("");
 
     	promise.onFailure(new Callback<Throwable>(){
