@@ -19,6 +19,7 @@ import com.surevine.gateway.rules.RuleFileManager;
 import com.surevine.gateway.scm.service.SCMFederatorServiceFacade;
 import com.typesafe.config.ConfigFactory;
 
+import play.data.validation.Constraints.MaxLength;
 import play.data.validation.Constraints.Required;
 import play.data.validation.ValidationError;
 import play.db.ebean.Model;
@@ -41,12 +42,14 @@ public class Destination extends Model {
 	 * Human-readable display name for destination
 	 */
 	@Required
+	@MaxLength(255)
 	public String name;
 
 	/**
 	 * Location of destination the gateway will send to
 	 */
 	@Required
+	@MaxLength(255)
 	@Column(unique=true)
 	public String url;
 

@@ -18,6 +18,7 @@ import com.typesafe.config.ConfigFactory;
 
 import play.Logger;
 import play.data.validation.ValidationError;
+import play.data.validation.Constraints.MaxLength;
 import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
 import play.libs.F.Function;
@@ -43,6 +44,7 @@ public class Project extends Model {
 	 * Human readable name for display in console UI
 	 */
 	@Required
+	@MaxLength(255)
 	public String displayName;
 
 	/**
@@ -50,6 +52,7 @@ public class Project extends Model {
 	 * e.g. github.com/project/repository
 	 */
 	@Required
+	@MaxLength(255)
 	public String projectKey;
 
 	/**
@@ -57,6 +60,7 @@ public class Project extends Model {
 	 * e.g. github.com/project/repository
 	 */
 	@Required
+	@MaxLength(255)
 	public String repositorySlug;
 
 	/**
