@@ -17,7 +17,7 @@
     <h3>global-export.js <a href="#" class="btn btn-primary btn-xs">Edit</a></h3>
 
 	@if(loadExportRulesError) {
-		<div class="alert alert-danger" role="alert">@loadExportRulesErrorMessage</div>
+		<div class="alert alert-danger" role="alert"><strong>Error!</strong> @loadExportRulesErrorMessage</div>
 	} else {
 		<pre id="export-rules">@exportRules</pre>
 	}
@@ -25,7 +25,7 @@
 	<h3>global-import.js <a href="#" class="btn btn-primary btn-xs">Edit</a></h3>
 
 	@if(loadImportRulesError) {
-		<div class="alert alert-danger" role="alert">@loadImportRulesErrorMessage</div>
+		<div class="alert alert-danger" role="alert"><strong>Error!</strong> @loadImportRulesErrorMessage</div>
 	} else {
 		<pre id="import-rules">@importRules</pre>
 	}
