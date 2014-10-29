@@ -2,7 +2,12 @@
 
 @import helper._
 
-@main("View destination") {
+@scripts = {
+	<script src="@routes.Assets.at("vendor/ace/ace.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.at("js/syntax-highlighting.js")" type="text/javascript"></script>
+}
+
+@main("View destination", scripts) {
 
 	<h2>View destination</h2>
 

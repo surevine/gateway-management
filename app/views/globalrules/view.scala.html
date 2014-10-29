@@ -5,7 +5,12 @@
 	loadImportRulesError: Boolean,
 	loadImportRulesErrorMessage: String)
 
-@main("Global Rules") {
+@scripts = {
+	<script src="@routes.Assets.at("vendor/ace/ace.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.at("js/syntax-highlighting.js")" type="text/javascript"></script>
+}
+
+@main("Global Rules", scripts) {
 
 	<h2>Global Rules</h2>
 
