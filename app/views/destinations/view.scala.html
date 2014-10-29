@@ -53,8 +53,12 @@
 			<p>@errorMessage</p>
 			<p>This may cause issues for gateway functionality.</p>
 		} else {
-			<pre>@rules</pre>
+			<pre id="destination-rules">@rules</pre>
 		}
 	</section>
+
+	<script type="text/javascript">
+		syntaxHighlighter.initViewCodePane(document.getElementById('destination-rules'));
+	</script>
 
 }

@@ -9,20 +9,25 @@
 
 	<h2>Global Rules</h2>
 
-    <h3>global-export.js</h3>
+    <h3>global-export.js <a href="#" class="btn btn-primary btn-xs">Edit</a></h3>
 
 	@if(loadExportRulesError) {
-		<pre>@loadExportRulesErrorMessage</pre>
+		<div class="alert alert-danger" role="alert">@loadExportRulesErrorMessage</div>
 	} else {
-		<pre>@exportRules</pre>
+		<pre id="export-rules">@exportRules</pre>
 	}
 
-	<h3>global-import.js</h3>
+	<h3>global-import.js <a href="#" class="btn btn-primary btn-xs">Edit</a></h3>
 
 	@if(loadImportRulesError) {
-		<pre>@loadImportRulesErrorMessage</pre>
+		<div class="alert alert-danger" role="alert">@loadImportRulesErrorMessage</div>
 	} else {
-		<pre>@importRules</pre>
+		<pre id="import-rules">@importRules</pre>
 	}
+
+	<script type="text/javascript">
+		syntaxHighlighter.initViewCodePane(document.getElementById('export-rules'));
+		syntaxHighlighter.initViewCodePane(document.getElementById('import-rules'));
+	</script>
 
 }
