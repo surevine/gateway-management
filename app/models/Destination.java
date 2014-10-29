@@ -19,6 +19,7 @@ import com.surevine.gateway.rules.RuleFileManager;
 import com.surevine.gateway.scm.service.SCMFederatorServiceFacade;
 import com.typesafe.config.ConfigFactory;
 
+import play.Logger;
 import play.data.validation.Constraints.MaxLength;
 import play.data.validation.Constraints.Required;
 import play.data.validation.ValidationError;
@@ -176,7 +177,7 @@ public class Destination extends Model {
 
     	// Ensure URL unique
     	Destination existingDestination = find.where().eq("url", url).findUnique();
-    	if(existingDestination != null) {
+    	if(existingDestination != null && !(existingDestination.id.equals(id))) {
     		errors.add(new ValidationError("url", "Destination URL already exists."));
     	}
 

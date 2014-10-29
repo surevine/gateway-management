@@ -53,7 +53,7 @@
 		<h4>Destination rules <a href="#" class="btn btn-primary btn-xs">Edit</a></h4>
 
 		@if(error) {
-			<div class="alert alert-danger" role="alert"><strong>Error!</strong> Could not load rule file: @errorMessage. This may cause issues for gateway functionality.</div>
+			<div class="alert alert-danger" role="alert"><strong>Error!</strong> Could not load rule file: <strong>@errorMessage</strong>. This may cause issues for gateway functionality.</div>
 		} else {
 			<pre id="destination-rules">@rules</pre>
 		}
