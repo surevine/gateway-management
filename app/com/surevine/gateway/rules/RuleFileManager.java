@@ -89,9 +89,10 @@ public class RuleFileManager {
 	 */
 	public void deleteDestinationRuleFileDirectory(Destination destination) {
     	try {
-			FileUtils.deleteDirectory(new File(DESTINATIONS_RULES_DIRECTORY + "/" + destination.id));
+    		Path destinationsDirectoryPath = Paths.get(DESTINATIONS_RULES_DIRECTORY + "/" + destination.id).toAbsolutePath();
+			FileUtils.deleteDirectory(destinationsDirectoryPath.toFile());
 		} catch (IOException e) {
-			Logger.warn("Failed to delete rule file directory for destination: " + destination.name, e);
+			Logger.warn("Failed to delete rule file directory for destination: " + destination.id, e);
 		}
 	}
 
