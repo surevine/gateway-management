@@ -99,9 +99,7 @@ public class Destinations extends Controller {
 
     	destinationForm.get().save();
 
-    	// TODO add flash
     	flash("success", "Destination created successfully.");
-
     	return redirect(routes.Destinations.view(destinationForm.get().id));
 
     }
@@ -127,9 +125,7 @@ public class Destinations extends Controller {
 
     	destinationForm.get().update(id);
 
-    	// TODO add flash
-    	//flash("success", "Destination updated successfully.");
-
+    	flash("success", "Destination updated successfully.");
     	return redirect(routes.Destinations.view(id));
 
     }
@@ -148,6 +144,7 @@ public class Destinations extends Controller {
 
     	destination.delete();
 
+    	flash("success", "Destination deleted successfully.");
     	return redirect(routes.Destinations.list());
 
     }

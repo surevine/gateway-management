@@ -68,9 +68,7 @@ public class Projects extends Controller {
 
     	projectForm.get().save();
 
-    	// TODO add flash
-    	//flash("success", "Destination created successfully.");
-
+    	flash("success", "Project created successfully.");
     	return redirect(routes.Projects.view(projectForm.get().id));
 
     }
@@ -116,9 +114,7 @@ public class Projects extends Controller {
 
     	projectForm.get().update(id);
 
-    	// TODO add flash
-    	//flash("success", "Destination updated successfully.");
-
+    	flash("success", "Project updated successfully.");
     	return redirect(routes.Projects.view(id));
 
     }
@@ -137,6 +133,7 @@ public class Projects extends Controller {
 
     	project.delete();
 
+    	flash("success", "Project deleted successfully.");
     	return redirect(routes.Projects.list());
 
     }

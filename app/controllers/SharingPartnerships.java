@@ -34,6 +34,7 @@ public class SharingPartnerships extends Controller {
 
     	destination.addProject(project);
 
+    	flash("success", "Project shared with destination successfully.");
     	return redirect(routes.Destinations.view(destination.id));
 	}
 
@@ -62,6 +63,7 @@ public class SharingPartnerships extends Controller {
 
     	if(destination.projects.contains(project)) {
         	destination.removeProject(project);
+        	flash("success", "Project unshared with destination successfully.");
         	return redirect(routes.Destinations.view(destination.id));
     	}
 
