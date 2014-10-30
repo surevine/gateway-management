@@ -100,7 +100,7 @@ public class Destinations extends Controller {
     	destinationForm.get().save();
 
     	// TODO add flash
-    	//flash("success", "Destination created successfully.");
+    	flash("success", "Destination created successfully.");
 
     	return redirect(routes.Destinations.view(destinationForm.get().id));
 
