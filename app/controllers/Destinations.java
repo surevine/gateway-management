@@ -3,6 +3,8 @@ package controllers;
 import java.io.IOException;
 import java.util.List;
 
+import com.surevine.gateway.rules.RuleFileManager;
+
 import models.Destination;
 import models.Project;
 import play.Logger;
@@ -99,7 +101,7 @@ public class Destinations extends Controller {
 
     	destinationForm.get().save();
 
-    	flash("success", "Destination created successfully.");
+    	flash("success", "Created destination.");
     	return redirect(routes.Destinations.view(destinationForm.get().id));
 
     }
@@ -125,7 +127,7 @@ public class Destinations extends Controller {
 
     	destinationForm.get().update(id);
 
-    	flash("success", "Destination updated successfully.");
+    	flash("success", "Updated destination.");
     	return redirect(routes.Destinations.view(id));
 
     }
@@ -144,7 +146,7 @@ public class Destinations extends Controller {
 
     	destination.delete();
 
-    	flash("success", "Destination deleted successfully.");
+    	flash("success", "Deleted destination.");
     	return redirect(routes.Destinations.list());
 
     }
@@ -166,6 +168,49 @@ public class Destinations extends Controller {
 
     	return ok(views.html.destinations.addproject.render(destination, projectForm));
 
+    }
+
+    public static Result editRules(Long destinationId) {
+
+    	Destination destination = Destination.find.byId(destinationId);
+
+    	if(destination == null) {
+    		return notFound("Destination not found.");
+    	}
+
+    	String destinationRules;
+		try {
+    		destinationRules = destination.loadRules();
+    	}
+    	catch(IOException e) {
+    		return notFound("Could not load destination rule file.");
+    	}
+
+		DynamicForm rulesForm = Form.form();
+
+    	return ok(views.html.destinations.editrules.render(destination, destinationRules, rulesForm));
+
+    }
+
+    public static Result updateRules(Long destinationId) {
+
+    	DynamicForm requestData = Form.form().bindFromRequest();
+    	Destination destination = Destination.find.byId(destinationId);
+    	if(destination == null) {
+    		return notFound("Destination not found.");
+    	}
+
+    	String newRuleFileContent = requestData.get("ruleFileContent");
+
+    	try {
+			destination.updateRules(newRuleFileContent);
+		} catch (IOException e) {
+			flash("error", "Could not update destination rules. " + e.getMessage());
+			return redirect(routes.Destinations.view(destinationId));
+		}
+
+    	flash("success", "Updated destination rules.");
+    	return redirect(routes.Destinations.view(destinationId));
     }
 
 }

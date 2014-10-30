@@ -68,6 +68,17 @@ public class RuleFileManager {
 	}
 
 	/**
+	 * Update a destinations rule file
+	 * @param destination
+	 * @param ruleFileContent
+	 * @throws IOException
+	 */
+	public void updateDestinationRuleFile(Destination destination, String ruleFileName, String ruleFileContent) throws IOException {
+		Path destinationRuleFilePath = Paths.get(DESTINATIONS_RULES_DIRECTORY + "/" + destination.id + "/" + ruleFileName);
+		Files.write(destinationRuleFilePath, ruleFileContent.getBytes());
+	}
+
+	/**
 	 * Creates directory on disk for destination rules
 	 * @param destination
 	 */

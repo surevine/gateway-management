@@ -1,0 +1,35 @@
+@(destination: Destination, destinationRules: String, rulesForm: DynamicForm)
+
+@import helper._
+
+@scripts = {
+	<script src="@routes.Assets.at("vendor/ace/ace.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.at("js/syntax-highlighting.js")" type="text/javascript"></script>
+}
+
+@main("Edit destination rules", scripts) {
+
+	<p>Destination: @destination.name</p>
+
+	@form(routes.Destinations.updateRules(destination.id), 'role -> "form") {
+
+		<fieldset>
+
+			<textarea name="ruleFileContent" id="ruleFileContent">@destinationRules</textarea>
+
+			<pre id="destination-rules"></pre>
+
+		</fieldset>
+
+		<div class="actions">
+            <input type="submit" value="Update Rules" class="btn btn-primary">
+            <a href="@routes.Destinations.view(destination.id)" class="btn btn-default">Cancel</a>
+		</div>
+
+	}
+
+	<script type="text/javascript">
+		syntaxHighlighter.initEditCodePane(document.getElementById('destination-rules'), document.getElementById('ruleFileContent'));
+	</script>
+
+}

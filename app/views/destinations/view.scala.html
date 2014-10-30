@@ -48,7 +48,7 @@
 	</section>
 
 	<section>
-		<h4>Destination rules <a href="#" class="btn btn-primary btn-xs">Edit</a></h4>
+		<h4>Destination rules <a href="@routes.Destinations.editRules(destination.id)" class="btn btn-primary btn-xs">Edit</a></h4>
 
 		@if(error) {
 			<div class="alert alert-danger" role="alert"><strong>Error!</strong> Could not load rule file: <strong>@errorMessage</strong>. This may cause issues for gateway functionality.</div>

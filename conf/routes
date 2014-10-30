@@ -31,6 +31,9 @@ POST	/destinations/delete/:id		controllers.Destinations.delete(id: Long)
 # Add project to destination
 GET		/destinations/:id/addproject	controllers.Destinations.addProjectPage(id: Long)
 
+# Edit destination rulefile
+GET		/destinations/:id/editrules		controllers.Destinations.editRules(id: Long)
+POST	/destinations/:id/editrules		controllers.Destinations.updateRules(id: Long)
 
 #
 # Projects

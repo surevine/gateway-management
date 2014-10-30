@@ -159,6 +159,15 @@ public class Destination extends Model {
     }
 
     /**
+     * Updates destination rule file contents
+     * @param ruleFileContent String contents for file
+     * @throws IOException
+     */
+	public void updateRules(String ruleFileContent) throws IOException {
+		RuleFileManager.getInstance().updateDestinationRuleFile(this, DEFAULT_EXPORT_RULEFILE_NAME, ruleFileContent);
+	}
+
+    /**
      * Perform additional validation (beyond annotations) on model properties.
      *
      * @return List of validation error messages associated with relevant properties

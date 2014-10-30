@@ -22,8 +22,25 @@ var syntaxHighlighter = {
 	 * Converts a DOM element to a syntax-highlighted code editor
 	 * @param editorElement DOM element to convert to code editor
 	 */
-	initEditCodePane: function(editorElement) {
-		// TODO
+	initEditCodePane: function(editorElement, textareaElement) {
+
+		if($(editorElement).length && $(textareaElement).length) {
+
+			var textarea = $(textareaElement).hide();
+
+			var editor = ace.edit(editorElement);
+			editor.getSession().setValue(textarea.val());
+			editor.getSession().setMode("ace/mode/javascript");
+			editor.setOptions({
+		        maxLines: 30
+		    });
+
+			editor.getSession().on('change', function(){
+			  textarea.val(editor.getSession().getValue());
+			});
+
+		}
+
 	}
 
 }
