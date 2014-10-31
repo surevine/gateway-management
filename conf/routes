@@ -76,6 +76,10 @@ POST	/partnerships/delete			controllers.SharingPartnerships.delete()
 # View global files
 GET		/global-rules					controllers.GlobalRuleFiles.view()
 
+# Edit gloal rule files
+GET		/global-rules/edit/:slug		controllers.GlobalRuleFiles.edit(slug: String)
+POST	/global-rules/edit/:slug		controllers.GlobalRuleFiles.update(slug: String)
+
 
 #
 # Misc

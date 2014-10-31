@@ -1,9 +1,4 @@
-@(exportRules: String,
-	loadExportRulesError: Boolean,
-	loadExportRulesErrorMessage: String,
-	importRules: String,
-	loadImportRulesError: Boolean,
-	loadImportRulesErrorMessage: String)
+@(exportRules: String, importRules: String)
 
 @scripts = {
 	<script src="@routes.Assets.at("vendor/ace/ace.js")" type="text/javascript"></script>
@@ -12,18 +7,18 @@
 
 @main("Global Rules", scripts) {
 
-    <h3>global-export.js <a href="#" class="btn btn-primary btn-xs">Edit</a></h3>
+    <h3>global-export.js <a href="@routes.GlobalRuleFiles.edit("export")" class="btn btn-primary btn-xs">Edit</a></h3>
 
-	@if(loadExportRulesError) {
-		<div class="alert alert-danger" role="alert"><strong>Error!</strong> @loadExportRulesErrorMessage</div>
+	@if(flash.contains("export-error")) {
+		<div class="alert alert-danger" role="alert"><strong>Error!</strong> @flash.get("export-error")</div>
 	} else {
 		<pre id="export-rules">@exportRules</pre>
 	}
 
-	<h3>global-import.js <a href="#" class="btn btn-primary btn-xs">Edit</a></h3>
+	<h3>global-import.js <a href="@routes.GlobalRuleFiles.edit("import")" class="btn btn-primary btn-xs">Edit</a></h3>
 
-	@if(loadImportRulesError) {
-		<div class="alert alert-danger" role="alert"><strong>Error!</strong> @loadImportRulesErrorMessage</div>
+	@if(flash.contains("import-error")) {
+		<div class="alert alert-danger" role="alert"><strong>Error!</strong> @flash.get("import-error")</div>
 	} else {
 		<pre id="import-rules">@importRules</pre>
 	}

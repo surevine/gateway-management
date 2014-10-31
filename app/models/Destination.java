@@ -164,7 +164,7 @@ public class Destination extends Model {
      * @throws IOException
      */
 	public void updateRules(String ruleFileContent) throws IOException {
-		RuleFileManager.getInstance().updateDestinationRuleFile(this, DEFAULT_EXPORT_RULEFILE_NAME, ruleFileContent);
+		RuleFileManager.getInstance().updateDestinationRuleFile(this, ruleFileContent);
 	}
 
     /**

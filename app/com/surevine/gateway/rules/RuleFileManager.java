@@ -1,6 +1,5 @@
 package com.surevine.gateway.rules;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -73,8 +72,8 @@ public class RuleFileManager {
 	 * @param ruleFileContent
 	 * @throws IOException
 	 */
-	public void updateDestinationRuleFile(Destination destination, String ruleFileName, String ruleFileContent) throws IOException {
-		Path destinationRuleFilePath = Paths.get(DESTINATIONS_RULES_DIRECTORY + "/" + destination.id + "/" + ruleFileName);
+	public void updateDestinationRuleFile(Destination destination, String ruleFileContent) throws IOException {
+		Path destinationRuleFilePath = Paths.get(DESTINATIONS_RULES_DIRECTORY + "/" + destination.id + "/" + DEFAULT_EXPORT_RULEFILE_NAME);
 		Files.write(destinationRuleFilePath, ruleFileContent.getBytes());
 	}
 
@@ -135,6 +134,26 @@ public class RuleFileManager {
 	public String loadGlobalImportRules() throws IOException {
 		Path importRuleFilePath = Paths.get(RULES_DIRECTORY, DEFAULT_GLOBAL_IMPORT_RULEFILE_NAME);
 		return readRuleFile(importRuleFilePath);
+	}
+
+	/**
+	 * Update the global export rule file
+	 * @param ruleFileContent new contents of rule file
+	 * @throws IOException
+	 */
+	public void updateGlobalExportRules(String ruleFileContent) throws IOException {
+		Path globalExportRuleFilePath = Paths.get(RULES_DIRECTORY + "/"+ DEFAULT_GLOBAL_EXPORT_RULEFILE_NAME);
+		Files.write(globalExportRuleFilePath, ruleFileContent.getBytes());
+	}
+
+	/**
+	 * Update the global export rule file
+	 * @param ruleFileContent new contents of rule file
+	 * @throws IOException
+	 */
+	public void updateGlobalImportRules(String ruleFileContent) throws IOException {
+		Path globalExportRuleFilePath = Paths.get(RULES_DIRECTORY + "/"+ DEFAULT_GLOBAL_IMPORT_RULEFILE_NAME);
+		Files.write(globalExportRuleFilePath, ruleFileContent.getBytes());
 	}
 
 	/**
