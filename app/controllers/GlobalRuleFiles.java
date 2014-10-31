@@ -13,7 +13,6 @@ import play.mvc.Result;
 
 public class GlobalRuleFiles extends Controller {
 
-
 	public static Result edit(String slug) {
 
 		String ruleFileContents = "";
