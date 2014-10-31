@@ -85,6 +85,24 @@ public class RuleFileManagerTest extends DestinationTest {
 		// TODO
 	}
 
+	@Test
+	@Ignore
+	public void testUpdateDestinationExportRules() {
+		// TODO
+	}
+
+	@Test
+	@Ignore
+	public void testUpdateGlobalExportRules() {
+		// TODO
+	}
+
+	@Test
+	@Ignore
+	public void testUpdateGlobalImportRules() {
+		// TODO
+	}
+
 	/**
 	 * Helper method to read file contents
 	 * @param filePath path of file to read

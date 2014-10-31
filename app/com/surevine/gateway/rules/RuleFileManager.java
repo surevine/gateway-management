@@ -147,7 +147,7 @@ public class RuleFileManager {
 	}
 
 	/**
-	 * Update the global export rule file
+	 * Update the global import rule file
 	 * @param ruleFileContent new contents of rule file
 	 * @throws IOException
 	 */
