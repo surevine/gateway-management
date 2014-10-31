@@ -12,13 +12,10 @@ import java.util.List;
 
 import models.Destination;
 
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.typesafe.config.ConfigFactory;
-
-import play.Logger;
 
 import destinations.DestinationTest;
 
