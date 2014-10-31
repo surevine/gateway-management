@@ -16,6 +16,7 @@ import static play.test.Helpers.start;
 import static play.test.Helpers.status;
 import static play.test.Helpers.stop;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -23,6 +24,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -52,22 +54,15 @@ public class GlobalRuleFilesControllerTest {
 		app = fakeApplication(inMemoryDatabase());
 		start(app);
 
-		Path globalExportRuleFilePath = Paths.get(RuleFileManager.RULES_DIRECTORY, RuleFileManager.DEFAULT_GLOBAL_EXPORT_RULEFILE_NAME);
-		Path globalImportRuleFilePath = Paths.get(RuleFileManager.RULES_DIRECTORY, RuleFileManager.DEFAULT_GLOBAL_IMPORT_RULEFILE_NAME);
-
-		try {
-			Files.write(globalExportRuleFilePath, TEST_ORIGINAL_EXPORT_RULE_FILE_CONTENTS.getBytes());
-			Files.write(globalImportRuleFilePath, TEST_ORIGINAL_IMPORT_RULE_FILE_CONTENTS.getBytes());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		createTestGlobalRulesDir();
+		createTestGlobalRuleFiles();
 
 	}
 
 	@AfterClass
 	public static void teardown() {
 		stop(app);
+		destroyTestGlobalRulesDir();
 	}
 
 	@Test
@@ -166,6 +161,35 @@ public class GlobalRuleFilesControllerTest {
 		Result result = callAction(controllers.routes.ref.GlobalRuleFiles.update(slug), request.withFormUrlEncodedBody(formData));
 
 		return result;
+	}
+
+	private static void createTestGlobalRulesDir() {
+		try {
+			Files.createDirectory(Paths.get(RuleFileManager.RULES_DIRECTORY));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void createTestGlobalRuleFiles() {
+		Path globalExportRuleFilePath = Paths.get(RuleFileManager.RULES_DIRECTORY, RuleFileManager.DEFAULT_GLOBAL_EXPORT_RULEFILE_NAME);
+		Path globalImportRuleFilePath = Paths.get(RuleFileManager.RULES_DIRECTORY, RuleFileManager.DEFAULT_GLOBAL_IMPORT_RULEFILE_NAME);
+
+		try {
+			Files.write(globalExportRuleFilePath, TEST_ORIGINAL_EXPORT_RULE_FILE_CONTENTS.getBytes());
+			Files.write(globalImportRuleFilePath, TEST_ORIGINAL_IMPORT_RULE_FILE_CONTENTS.getBytes());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private static void destroyTestGlobalRulesDir() {
+		try {
+			FileUtils.deleteDirectory(new File(RuleFileManager.RULES_DIRECTORY));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 }
