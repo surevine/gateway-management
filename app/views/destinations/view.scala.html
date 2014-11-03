@@ -24,12 +24,12 @@
 	</section>
 
 	<section>
-		<h4>Shared source code projects</h4>
-		<a href="@routes.Destinations.addProjectPage(destination.id)" class="btn btn-primary btn-sm">Share project</a>
+		<h4>Shared source code repositories</h4>
+		<a href="@routes.Destinations.addProjectPage(destination.id)" class="btn btn-primary btn-sm">Share repository</a>
 
 		<ul class="list-group project-list">
 	    @if(destination.projects.isEmpty) {
-	    	<li class="list-group-item list-group-item-warning">No source code projects shared to this destination</li>
+	    	<li class="list-group-item list-group-item-warning">No source code repositories shared to this destination</li>
 	    } else {
 		    @for(project <- destination.projects) {
 		    	<li class="list-group-item">

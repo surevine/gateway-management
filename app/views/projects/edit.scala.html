@@ -4,13 +4,13 @@
 
 @implicitFieldConstructor = @{ FieldConstructor(utils.twitterBootstrapInput.render) }
 
-@main("Edit source code project") {
+@main("Edit source code repository") {
 
 	@form(routes.Projects.update(id), 'role -> "form") {
 
 		<fieldset>
 
-			@inputText(projectForm("displayName"), '_label -> "Name", '_help -> "Name of project", 'class -> "form-control", 'placeholder -> "Name")
+			@inputText(projectForm("displayName"), '_label -> "Name", '_help -> "Name of repository", 'class -> "form-control", 'placeholder -> "Name")
 
 			<div class="form-inline">
 				<label>Project URL Slug</label><br />
@@ -22,16 +22,16 @@
 		</fieldset>
 
 		<div class="actions">
-            <input type="submit" value="Update project" class="btn btn-primary">
+            <input type="submit" value="Update repository" class="btn btn-primary">
             <a href="@routes.Projects.view(id)" class="btn btn-default">Cancel</a>
 		</div>
 
 	}
 
-	<h3>Delete project</h3>
+	<h3>Delete repository</h3>
 
     @form(routes.Projects.delete(id), 'class -> "topRight") {
-        <input type="submit" value="Delete this project" class="btn btn-danger">
+        <input type="submit" value="Delete this repository" class="btn btn-danger">
     }
 
 }

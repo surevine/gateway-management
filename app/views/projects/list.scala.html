@@ -1,17 +1,17 @@
 @(projects: List[Project])
 
-@main("Source code projects") {
+@main("Source code repositories") {
 
-    <a href="@routes.Projects.add()" class="btn btn-primary primary-action">Add Project</a>
+    <a href="@routes.Projects.add()" class="btn btn-primary primary-action">Add Repository</a>
 
     @if(projects.isEmpty) {
 
 		<div class="panel panel-warning">
 		  <div class="panel-heading">
-		    <h3 class="panel-title">No projects</h3>
+		    <h3 class="panel-title">No repositories</h3>
 		  </div>
 		  <div class="panel-body">
-		    <p>No projects have been configured. Please <a href="@routes.Projects.add()">add a project</a>.</p>
+		    <p>No repositories have been configured. Please <a href="@routes.Projects.add()">add a repository</a>.</p>
 		  </div>
 		</div>
 
@@ -30,7 +30,7 @@
 			  </div>
 			  <div class="panel-body">
 			    <p>@project.projectKey / @project.repositorySlug</p>
-			    <p class="text-muted">Project shared with @project.destinations.length destinations.</p>
+			    <p class="text-muted">Repository shared with @project.destinations.length destinations.</p>
 			  </div>
 			</div>
 
