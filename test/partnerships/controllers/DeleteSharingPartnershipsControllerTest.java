@@ -15,6 +15,7 @@ import models.Destination;
 import models.Project;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import play.Logger;
@@ -53,12 +54,12 @@ public class DeleteSharingPartnershipsControllerTest extends DestinationTest {
 	}
 
 	@Test
-	public void testDeleteSharingPartnership() {
+	public void testDeleteSharingPartnershipFromDestination() {
 
 		Destination destination = Destination.find.byId(TEST_EXISTING_DESTINATION_ID);
 		Project project = Project.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
 
-		Result result = postDeleteSharingPartnership(destination.id, project.id);
+		Result result = postDeleteSharingPartnershipFromDestination(destination.id, project.id);
 
 		// Expect 303 as implementation redirects to 'view' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
@@ -68,14 +69,26 @@ public class DeleteSharingPartnershipsControllerTest extends DestinationTest {
 	}
 
 	@Test
-	public void testDeleteNonExistingSharingPartnership() {
+	@Ignore
+	public void testDeleteSharingPartnershipFromProject() {
+		// TODO
+	}
+
+	@Test
+	public void testDeleteNonExistingSharingPartnershipFromDestination() {
 
 		Destination destination = Destination.find.byId(TEST_EXISTING_DESTINATION_ID);
 		Project project = Project.find.byId(ProjectTest.TEST_NEW_PROJECT_ID);
 
-		Result result = postDeleteSharingPartnership(destination.id, project.id);
+		Result result = postDeleteSharingPartnershipFromDestination(destination.id, project.id);
 
 		assertThat(status(result)).isEqualTo(NOT_FOUND);
+	}
+
+	@Test
+	@Ignore
+	public void testDeleteNonExistingSharingPartnershipFromProject() {
+		// TODO
 	}
 
 	/**
@@ -84,7 +97,7 @@ public class DeleteSharingPartnershipsControllerTest extends DestinationTest {
 	 * @param projectId id of project to stop sharing
 	 * @return
 	 */
-	private Result postDeleteSharingPartnership(Long destinationId, Long projectId) {
+	private Result postDeleteSharingPartnershipFromDestination(Long destinationId, Long projectId) {
 
 		Map<String,String> formData = new HashMap<String,String>();
 		formData.put("source", "destination");
