@@ -12,6 +12,7 @@
 
 		<fieldset>
 
+			<input type="hidden" name="source" value="destination" />
 			<input type="hidden" name="destinationId" value="@destination.id" />
 
 			@for(project <- Project.allProjectShareOptions(destination)) {
