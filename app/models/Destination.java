@@ -74,18 +74,18 @@ public class Destination extends Model {
      * @param project Project that destinations are being added to
      * @return Map<String, String> option key/values
      */
-    public static Map<String, String> allDestinationSelectOptions(Project project) {
-    	Map<String, String> opts = new HashMap<String, String>();
+    public static List<Destination> allDestinationShareOptions(Project project) {
+    	List<Destination> unsharedDestinations = new ArrayList<Destination>();
 
-    	List<Destination> destinations = find.all();
+    	List<Destination> allDestinations = find.all();
 
-    	for(Destination destination : destinations) {
+    	for(Destination destination : allDestinations) {
     		if(!project.destinations.contains(destination)) {
-    			opts.put(destination.id.toString(), destination.name);
+    			unsharedDestinations.add(destination);
     		}
     	}
 
-    	return opts;
+    	return unsharedDestinations;
     }
 
     public Destination(long id, String name, String url, List<Project> projects) {

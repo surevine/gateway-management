@@ -1,5 +1,7 @@
 @(project: Project)
 
+@import helper._
+
 @main("View source code repositories") {
 
 	<section>
@@ -18,6 +20,7 @@
 
 	<section>
 		<h4>Shared destinations</h4>
+				<a href="@routes.Projects.shareProjectPage(project.id)" class="btn btn-primary btn-sm">Share repository</a>
 
 		<ul class="list-group project-list">
 	    @if(project.destinations.isEmpty) {
@@ -26,6 +29,11 @@
 		    @for(destination <- project.destinations) {
 		    	<li class="list-group-item">
 					@destination.name <span class="text-muted">@destination.url</span>
+					@form(routes.SharingPartnerships.unshareDestinationFromProject()) {
+						<input type="hidden" name="destinationId" value="@destination.id" />
+						<input type="hidden" name="projectId" value="@project.id" />
+				        <input type="submit" value="Unshare" class="btn btn-danger btn-xs pull-right" />
+				    }
 				</li>
 		    }
 	    }

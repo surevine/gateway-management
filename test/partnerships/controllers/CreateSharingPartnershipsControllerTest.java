@@ -51,7 +51,7 @@ public class CreateSharingPartnershipsControllerTest extends DestinationTest {
 		Destination destination = Destination.find.byId(TEST_EXISTING_DESTINATION_ID);
 
 		FakeRequest request = new FakeRequest(GET, "/destinations/" + destination.id + "/addproject");
-		Result result = callAction(controllers.routes.ref.Destinations.addProjectPage(destination.id), request);
+		Result result = callAction(controllers.routes.ref.Destinations.shareProjectPage(destination.id), request);
 
 		assertThat(status(result)).isEqualTo(OK);
 		assertThat(contentType(result)).isEqualTo("text/html");

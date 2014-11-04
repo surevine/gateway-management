@@ -138,4 +138,23 @@ public class Projects extends Controller {
 
     }
 
+    /**
+     * Display form page to configure sharing project with destinations
+     * @param projectId Id of project
+     * @return
+     */
+    public static Result shareProjectPage(Long projectId) {
+
+    	Project project = Project.find.byId(projectId);
+
+    	if(project == null) {
+    		return notFound("Project not found.");
+    	}
+
+    	DynamicForm projectForm = Form.form();
+
+    	return ok(views.html.projects.shareproject.render(project, projectForm));
+
+    }
+
 }

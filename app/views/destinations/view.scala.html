@@ -25,7 +25,7 @@
 
 	<section>
 		<h4>Shared source code repositories</h4>
-		<a href="@routes.Destinations.addProjectPage(destination.id)" class="btn btn-primary btn-sm">Share repository</a>
+		<a href="@routes.Destinations.shareProjectPage(destination.id)" class="btn btn-primary btn-sm">Share repository</a>
 
 		<ul class="list-group project-list">
 	    @if(destination.projects.isEmpty) {
@@ -35,7 +35,7 @@
 		    	<li class="list-group-item">
 		    		@project.displayName <span class="text-muted">@project.projectKey/@project.repositorySlug</span>
 
-		    		@form(routes.SharingPartnerships.delete()) {
+		    		@form(routes.SharingPartnerships.unshareProjectFromDestination()) {
 						<input type="hidden" name="destinationId" value="@destination.id" />
 						<input type="hidden" name="projectId" value="@project.id" />
 				        <input type="submit" value="Unshare" class="btn btn-danger btn-xs pull-right" />

@@ -156,7 +156,7 @@ public class Destinations extends Controller {
      * @param destinationId Id of destination
      * @return
      */
-    public static Result addProjectPage(Long destinationId) {
+    public static Result shareProjectPage(Long destinationId) {
 
     	Destination destination = Destination.find.byId(destinationId);
 

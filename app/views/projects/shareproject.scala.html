@@ -1,0 +1,37 @@
+@(project: Project, projectForm: DynamicForm)
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(utils.twitterBootstrapInput.render) }
+
+@main("Share source code repository") {
+
+	<p>Please select the destinations you wish to share the repository '@project.displayName' with:</p>
+
+	@form(routes.SharingPartnerships.shareProjectWithDestinations(project.id), 'role -> "form") {
+
+		<fieldset>
+
+			<input type="hidden" name="projectId" value="@project.id" />
+
+			@for(destination <- Destination.allDestinationShareOptions(project)) {
+
+				<div class="input-group">
+			      <span class="input-group-addon">
+			        <input type="checkbox" name="selectedDestinations" id="selectedDestinations-@destination.id" value="@destination.id">
+			      </span>
+			      <label for="selectedDestinations-@destination.id" class="form-control">@destination.name <span class="text-muted">@destination.url</span></label>
+			    </div>
+
+			}
+
+		</fieldset>
+
+		<div class="actions">
+            <input type="submit" value="Share project" class="btn btn-primary">
+            <a href="@routes.Projects.view(project.id)" class="btn btn-default">Cancel</a>
+		</div>
+
+	}
+
+}
