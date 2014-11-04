@@ -116,6 +116,7 @@ public class SharingPartnerships extends Controller {
 	 * @param projectIds array of Project ids to share
 	 */
 	private static void addProjectsToDestination(Destination destination, String[] projectIds) {
+
 		List<String> selectedProjects = Arrays.asList(projectIds);
     	for(String projectId: selectedProjects) {
     		// TODO could improve to load all at once

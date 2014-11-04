@@ -21,6 +21,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import play.Logger;
 import play.mvc.Result;
 import play.test.FakeRequest;
 import projects.ProjectTest;
@@ -47,10 +48,10 @@ public class CreateSharingPartnershipsControllerTest extends DestinationTest {
 	}
 
 	@Test
-	public void testAddProjectToDestinationPage() {
+	public void testAddProjectsToDestinationPage() {
 		Destination destination = Destination.find.byId(TEST_EXISTING_DESTINATION_ID);
 
-		FakeRequest request = new FakeRequest(GET, "/destinations/" + destination.id + "/addproject");
+		FakeRequest request = new FakeRequest(GET, "/destinations/" + destination.id + "/shareprojects");
 		Result result = callAction(controllers.routes.ref.Destinations.shareProjectPage(destination.id), request);
 
 		assertThat(status(result)).isEqualTo(OK);
@@ -61,13 +62,26 @@ public class CreateSharingPartnershipsControllerTest extends DestinationTest {
 	}
 
 	@Test
-	@Ignore
-	public void testCreateSharingPartnership() {
+	public void testAddDestinationsToProjectPage() {
+		Project project = Project.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
+
+		FakeRequest request = new FakeRequest(GET, "/projects/" + project.id + "/shareproject");
+		Result result = callAction(controllers.routes.ref.Projects.shareProjectPage(project.id), request);
+
+		assertThat(status(result)).isEqualTo(OK);
+		assertThat(contentType(result)).isEqualTo("text/html");
+
+		String content = contentAsString(result);
+		assertThat(content).contains(ProjectTest.TEST_EXISTING_PROJECT_DISPLAY_NAME);
+	}
+
+	@Test
+	public void testCreateSharingPartnershipFromDestination() {
 
 		Destination destination = Destination.find.byId(TEST_EXISTING_DESTINATION_ID);
 		Project project = Project.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
 
-		Result result = postCreateSharingPartnership(destination.id, project.id);
+		Result result = postCreateSharingPartnershipFromDestination(destination.id, project.id);
 
 		// Expect 303 as implementation redirects to 'view' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
@@ -76,33 +90,73 @@ public class CreateSharingPartnershipsControllerTest extends DestinationTest {
 	}
 
 	@Test
-	@Ignore
-	public void testCreateSharingPartnershipNonExistingDestination() {
-		Result result = postCreateSharingPartnership(TEST_NON_EXISTING_DESTINATION_ID, ProjectTest.TEST_EXISTING_PROJECT_ID);
+	public void testCreateSharingPartnershipFromProject() {
 
+		Destination destination = Destination.find.byId(TEST_EXISTING_DESTINATION_ID);
+		Project project = Project.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
+
+		// Tidy data from previous tests if required
+		if(project.destinations.contains(destination)) {
+			project.destinations.remove(destination);
+			project.update();
+		}
+
+		Result result = postCreateSharingPartnershipFromProject(project.id, destination.id);
+
+		// Expect 303 as implementation redirects to 'view' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
+
+		Project updatedProject = Project.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
+		assertThat(updatedProject.destinations.contains(destination)).isEqualTo(true);
 	}
 
 	@Test
 	@Ignore
-	public void testCreateSharingPartnershipNonExistingProject() {
-		Result result = postCreateSharingPartnership(TEST_EXISTING_DESTINATION_ID, ProjectTest.TEST_NON_EXISTING_PROJECT_ID);
+	public void testDeleteSharingPartnershipFromDestination() {
+		// TODO
+	}
 
-		assertThat(status(result)).isEqualTo(SEE_OTHER);
+	@Test
+	@Ignore
+	public void testDeleteSharingPartnershipFromProject() {
+		// TODO
 	}
 
 	/**
-	 * Helper method for fake posting of form data to create sharing partnership route
+	 * Helper method for fake posting of form data to create sharing partnership route.
+	 * Simulates post from destination view page.
+	 *
 	 * @param destinationId id of destination to add project to
 	 * @param projectId id of project to add to destinaton
 	 * @return
 	 */
-	private Result postCreateSharingPartnership(Long destinationId, Long projectId) {
+	private Result postCreateSharingPartnershipFromDestination(Long destinationId, Long projectId) {
 
 		Map<String,String> formData = new HashMap<String,String>();
 		formData.put("source", "destination");
 		formData.put("destinationId", destinationId.toString());
+		formData.put("selectedProjects", projectId.toString());
+
+		FakeRequest request = new FakeRequest(POST, "/partnerships/create");
+		Result result = callAction(controllers.routes.ref.SharingPartnerships.create(), request.withFormUrlEncodedBody(formData));
+
+		return result;
+	}
+
+	/**
+	 * Helper method for fake posting of form data to create sharing partnership route.
+	 * Simulates post from project view page.
+	 *
+	 * @param projectId id of project to add to destinaton
+	 * @param destinationId id of destination to add project to
+	 * @return
+	 */
+	private Result postCreateSharingPartnershipFromProject(Long projectId, Long destinationId) {
+
+		Map<String,String> formData = new HashMap<String,String>();
+		formData.put("source", "project");
 		formData.put("projectId", projectId.toString());
+		formData.put("selectedDestinations", destinationId.toString());
 
 		FakeRequest request = new FakeRequest(POST, "/partnerships/create");
 		Result result = callAction(controllers.routes.ref.SharingPartnerships.create(), request.withFormUrlEncodedBody(formData));
