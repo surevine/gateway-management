@@ -110,18 +110,6 @@ public class CreateSharingPartnershipsControllerTest extends DestinationTest {
 		assertThat(updatedProject.destinations.contains(destination)).isEqualTo(true);
 	}
 
-	@Test
-	@Ignore
-	public void testDeleteSharingPartnershipFromDestination() {
-		// TODO
-	}
-
-	@Test
-	@Ignore
-	public void testDeleteSharingPartnershipFromProject() {
-		// TODO
-	}
-
 	/**
 	 * Helper method for fake posting of form data to create sharing partnership route.
 	 * Simulates post from destination view page.
