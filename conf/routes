@@ -30,11 +30,11 @@ POST	/destinations/:id/delete		controllers.Destinations.delete(id: Long)
 
 # Add project to destination
 GET		/destinations/:id/shareprojects	controllers.Destinations.shareProjectPage(id: Long)
-POST	/destinations/:id/shareprojects	controllers.SharingPartnerships.shareProjectsWithDestination(id: Long)
 
 # Edit destination rulefile
 GET		/destinations/:id/editrules		controllers.Destinations.editRules(id: Long)
 POST	/destinations/:id/editrules		controllers.Destinations.updateRules(id: Long)
+
 
 #
 # Projects
@@ -60,7 +60,6 @@ POST	/projects/delete/:id			controllers.Projects.delete(id: Long)
 
 # Share project with destinations
 GET		/projects/:id/shareproject		controllers.Projects.shareProjectPage(id: Long)
-POST	/projects/:id/shareproject		controllers.SharingPartnerships.shareProjectWithDestinations(id: Long)
 
 
 #
@@ -68,12 +67,10 @@ POST	/projects/:id/shareproject		controllers.SharingPartnerships.shareProjectWit
 #
 
 # Share projects with destination
-
-
+POST	/partnerships/create			controllers.SharingPartnerships.create()
 
 # Remove existing sharing partnership
-POST	/partnerships/unsharedestination	controllers.SharingPartnerships.unshareDestinationFromProject()
-POST	/partnerships/unshareproject		controllers.SharingPartnerships.unshareProjectFromDestination()
+POST	/partnerships/delete			controllers.SharingPartnerships.delete()
 
 #
 # Global rule files / filters

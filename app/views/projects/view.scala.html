@@ -29,7 +29,8 @@
 		    @for(destination <- project.destinations) {
 		    	<li class="list-group-item">
 					@destination.name <span class="text-muted">@destination.url</span>
-					@form(routes.SharingPartnerships.unshareDestinationFromProject()) {
+					@form(routes.SharingPartnerships.delete()) {
+						<input type="hidden" name="source" value="project" />
 						<input type="hidden" name="destinationId" value="@destination.id" />
 						<input type="hidden" name="projectId" value="@project.id" />
 				        <input type="submit" value="Unshare" class="btn btn-danger btn-xs pull-right" />

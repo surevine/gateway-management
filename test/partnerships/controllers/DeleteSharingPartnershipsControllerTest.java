@@ -87,6 +87,7 @@ public class DeleteSharingPartnershipsControllerTest extends DestinationTest {
 	private Result postDeleteSharingPartnership(Long destinationId, Long projectId) {
 
 		Map<String,String> formData = new HashMap<String,String>();
+		formData.put("source", "destination");
 		formData.put("destinationId", destinationId.toString());
 		formData.put("projectId", projectId.toString());
 

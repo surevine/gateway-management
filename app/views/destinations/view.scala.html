@@ -35,7 +35,8 @@
 		    	<li class="list-group-item">
 		    		@project.displayName <span class="text-muted">@project.projectKey/@project.repositorySlug</span>
 
-		    		@form(routes.SharingPartnerships.unshareProjectFromDestination()) {
+		    		@form(routes.SharingPartnerships.delete()) {
+		    			<input type="hidden" name="source" value="destination" />
 						<input type="hidden" name="destinationId" value="@destination.id" />
 						<input type="hidden" name="projectId" value="@project.id" />
 				        <input type="submit" value="Unshare" class="btn btn-danger btn-xs pull-right" />
