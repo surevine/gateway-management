@@ -79,18 +79,18 @@ public class Project extends Model {
      * List of all projects, used by scala helper in templates (to populate select options)
      * @return Map<String, String> option key/values
      */
-    public static Map<String, String> allProjectSelectOptions(Destination destination) {
-    	Map<String, String> opts = new HashMap<String, String>();
+    public static List<Project> allProjectShareOptions(Destination destination) {
+    	List<Project> unsharedProjects = new ArrayList<Project>();
 
-    	List<Project> projects = find.all();
+    	List<Project> allProjects = find.all();
 
-    	for(Project project : projects) {
+    	for(Project project : allProjects) {
     		if(!destination.projects.contains(project)) {
-    			opts.put(project.id.toString(), project.displayName);
+    			unsharedProjects.add(project);
     		}
     	}
 
-    	return opts;
+    	return unsharedProjects;
     }
 
 	public Project(long id, String displayName, String projectKey, String repositorySlug) {

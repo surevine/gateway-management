@@ -166,7 +166,7 @@ public class Destinations extends Controller {
 
     	DynamicForm projectForm = Form.form();
 
-    	return ok(views.html.destinations.addproject.render(destination, projectForm));
+    	return ok(views.html.destinations.shareprojects.render(destination, projectForm));
 
     }
 

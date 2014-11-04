@@ -29,3 +29,9 @@ h4 a.btn {
 .project-list form {
 	display: inline;
 }
+
+/* Share project pages */
+
+.input-group {
+	margin-bottom: 10px;
+}

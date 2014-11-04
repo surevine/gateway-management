@@ -1,7 +1,12 @@
 package controllers;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 import models.Destination;
 import models.Project;
+import play.Logger;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Controller;
@@ -10,11 +15,20 @@ import play.mvc.Result;
 public class SharingPartnerships extends Controller {
 
 	/**
-	 * Create new sharing partnership between destination and project
+	 * Share a source code project with (multiple) destinations
+	 * @return
+	 */
+	public static Result shareProjectWithDestinations() {
+		// TODO
+		return ok();
+	}
+
+	/**
+	 * Share (multiple) source code projects with a destination
 	 *
 	 * @return
 	 */
-	public static Result create() {
+	public static Result shareProjectsWithDestination(Long destinationId) {
 
 		DynamicForm requestData = Form.form().bindFromRequest();
 
@@ -25,16 +39,27 @@ public class SharingPartnerships extends Controller {
     		return notFound("Destination not found.");
     	}
 
-    	long selectedProjectId = Long.parseLong(requestData.get("projectId"));
-    	Project project = Project.find.byId(selectedProjectId);
+    	// Parse form contents from request
+    	Map<String, String[]> requestBody = request().body().asFormUrlEncoded();
+    	String[] selectedProjectsArr = requestBody.get("selectedProjects");
 
-    	if(project == null) {
-    		return notFound("Project not found.");
+    	// Do nothing if no projects selected
+    	if(selectedProjectsArr == null) {
+    		return redirect(routes.Destinations.view(destination.id));
     	}
 
-    	destination.addProject(project);
+    	List<String> selectedProjects = Arrays.asList(selectedProjectsArr);
 
-    	flash("success", "Project shared with destination successfully.");
+    	for(String projectId: selectedProjects) {
+    		Project project = Project.find.byId(Long.parseLong(projectId));
+    		if(project == null) {
+    			Logger.warn(String.format("Failed to shared repository with ID [%s] to destination. Repository not found.", projectId));
+    			continue;
+	    	}
+    		destination.addProject(project);
+    	}
+
+    	flash("success", "Repositories shared with destination successfully.");
     	return redirect(routes.Destinations.view(destination.id));
 	}
 
@@ -63,7 +88,7 @@ public class SharingPartnerships extends Controller {
 
     	if(destination.projects.contains(project)) {
         	destination.removeProject(project);
-        	flash("success", "Project unshared with destination successfully.");
+        	flash("success", "Repository unshared with destination successfully.");
         	return redirect(routes.Destinations.view(destination.id));
     	}
 
