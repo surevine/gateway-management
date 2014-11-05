@@ -110,6 +110,21 @@ public class CreateSharingPartnershipsControllerTest extends DestinationTest {
 		assertThat(updatedProject.destinations.contains(destination)).isEqualTo(true);
 	}
 
+	@Test
+	public void testCreateSharingPartnershipNonExistingDestination() {
+		Result result = postCreateSharingPartnershipFromDestination(TEST_NON_EXISTING_DESTINATION_ID, ProjectTest.TEST_EXISTING_PROJECT_ID);
+
+		assertThat(status(result)).isEqualTo(NOT_FOUND);
+	}
+
+	@Test
+	public void testCreateSharingPartnershipNonExistingProject() {
+		Result result = postCreateSharingPartnershipFromDestination(TEST_EXISTING_DESTINATION_ID, ProjectTest.TEST_NON_EXISTING_PROJECT_ID);
+
+		// Expecting silent fail
+		assertThat(status(result)).isEqualTo(SEE_OTHER);
+	}
+
 	/**
 	 * Helper method for fake posting of form data to create sharing partnership route.
 	 * Simulates post from destination view page.

@@ -58,20 +58,34 @@ public class DeleteSharingPartnershipsControllerTest extends DestinationTest {
 
 		Destination destination = Destination.find.byId(TEST_EXISTING_DESTINATION_ID);
 		Project project = Project.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
+		destination.addProject(project);
+		destination.update();
 
 		Result result = postDeleteSharingPartnershipFromDestination(destination.id, project.id);
 
 		// Expect 303 as implementation redirects to 'view' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
 
-		assertThat(destination.projects.contains(project)).isEqualTo(false);
+		Destination updatedDestination = Destination.find.byId(TEST_EXISTING_DESTINATION_ID);
+		assertThat(updatedDestination.projects.contains(project)).isEqualTo(false);
 
 	}
 
 	@Test
-	@Ignore
 	public void testDeleteSharingPartnershipFromProject() {
-		// TODO
+
+		Destination destination = Destination.find.byId(TEST_EXISTING_DESTINATION_ID);
+		Project project = Project.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
+		destination.addProject(project);
+		destination.update();
+
+		Result result = postDeleteSharingPartnershipFromProject(project.id, destination.id);
+
+		// Expect 303 as implementation redirects to 'view' page
+		assertThat(status(result)).isEqualTo(SEE_OTHER);
+
+		Project updatedProject = Project.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
+		assertThat(updatedProject.destinations.contains(destination)).isEqualTo(false);
 	}
 
 	@Test
@@ -86,13 +100,18 @@ public class DeleteSharingPartnershipsControllerTest extends DestinationTest {
 	}
 
 	@Test
-	@Ignore
 	public void testDeleteNonExistingSharingPartnershipFromProject() {
-		// TODO
+
+		Destination destination = Destination.find.byId(TEST_EXISTING_DESTINATION_ID);
+		Project project = Project.find.byId(ProjectTest.TEST_NEW_PROJECT_ID);
+
+		Result result = postDeleteSharingPartnershipFromProject(project.id, destination.id);
+
+		assertThat(status(result)).isEqualTo(NOT_FOUND);
 	}
 
 	/**
-	 * Helper method for fake posting of form data to delete sharing partnership route
+	 * Helper method for fake posting of form data to delete sharing partnership route (from destination)
 	 * @param destinationId id of destination to remove project sharing from
 	 * @param projectId id of project to stop sharing
 	 * @return
@@ -103,6 +122,25 @@ public class DeleteSharingPartnershipsControllerTest extends DestinationTest {
 		formData.put("source", "destination");
 		formData.put("destinationId", destinationId.toString());
 		formData.put("projectId", projectId.toString());
+
+		FakeRequest request = new FakeRequest(POST, "/partnerships/delete");
+		Result result = callAction(controllers.routes.ref.SharingPartnerships.delete(), request.withFormUrlEncodedBody(formData));
+
+		return result;
+	}
+
+	/**
+	 * Helper method for fake posting of form data to delete sharing partnership route (from project)
+	 * @param destinationId id of destination to remove project sharing from
+	 * @param projectId id of project to stop sharing
+	 * @return
+	 */
+	private Result postDeleteSharingPartnershipFromProject(Long projectId, Long destinationId) {
+
+		Map<String,String> formData = new HashMap<String,String>();
+		formData.put("source", "project");
+		formData.put("projectId", projectId.toString());
+		formData.put("destinationId", destinationId.toString());
 
 		FakeRequest request = new FakeRequest(POST, "/partnerships/delete");
 		Result result = callAction(controllers.routes.ref.SharingPartnerships.delete(), request.withFormUrlEncodedBody(formData));
