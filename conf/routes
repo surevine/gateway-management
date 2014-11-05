@@ -72,6 +72,10 @@ POST	/partnerships/create			controllers.SharingPartnerships.create()
 # Remove existing sharing partnership
 POST	/partnerships/delete			controllers.SharingPartnerships.delete()
 
+# Ad-hoc resend repo
+POST	/partnerships/resend			controllers.SharingPartnerships.resend()
+
+
 #
 # Global rule files / filters
 #

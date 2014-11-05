@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.surevine.gateway.scm.service.SCMFederatorServiceException;
+import com.surevine.gateway.scm.service.SCMFederatorServiceFacade;
+
 import models.Destination;
 import models.Project;
 import play.Logger;
@@ -108,6 +111,40 @@ public class SharingPartnerships extends Controller {
     	}
 
     	return notFound("Sharing partnership not found.");
+	}
+
+	/**
+	 * Triggers ad-hoc re-send of repository to destination across gateway
+	 * @return
+	 */
+	public static Result resend() {
+
+		DynamicForm requestData = Form.form().bindFromRequest();
+
+    	long selectedDestinationId = Long.parseLong(requestData.get("destinationId"));
+    	long selectedProjectId = Long.parseLong(requestData.get("projectId"));
+    	String source = requestData.get("source");
+
+    	Destination destination = Destination.find.byId(selectedDestinationId);
+    	if(destination == null) {
+    		return notFound("Destination not found.");
+    	}
+
+    	Project project = Project.find.byId(selectedProjectId);
+    	if(project == null) {
+    		return notFound("Project not found.");
+    	}
+
+    	try {
+        	SCMFederatorServiceFacade scmFederatorService = new SCMFederatorServiceFacade();
+        	scmFederatorService.resend(destination.id.toString(), project.projectKey, project.repositorySlug);
+    	} catch(SCMFederatorServiceException e) {
+    		flash("error", "Failed to resend project to destination.");
+    		return redirect(routes.Destinations.view(destination.id));
+    	}
+
+    	flash("success", "Resent project to destination.");
+        return redirect(routes.Destinations.view(destination.id));
 	}
 
 	/**
