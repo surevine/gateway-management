@@ -35,3 +35,9 @@ h4 a.btn {
 .input-group {
 	margin-bottom: 10px;
 }
+
+/* Form controls */
+
+.modal-form {
+	display: inline;
+}
