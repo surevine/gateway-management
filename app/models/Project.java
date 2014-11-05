@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.avaje.ebean.Expr;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.surevine.gateway.scm.service.SCMFederatorServiceFacade;
 import com.typesafe.config.ConfigFactory;
@@ -134,9 +135,10 @@ public class Project extends Model {
     	Project existingProject = find.where()
     									.eq("projectKey", projectKey)
     									.eq("repositorySlug", repositorySlug)
+    									.not(Expr.eq("id", id))
     									.findUnique();
 
-    	if(existingProject != null && !(existingProject.id.equals(id))) {
+    	if(existingProject != null) {
     		errors.add(new ValidationError("projectKey", "Project Key / Repo Slug combination already exists."));
     		errors.add(new ValidationError("repositorySlug", "Project Key / Repo Slug combination already exists."));
     	}

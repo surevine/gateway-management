@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.avaje.ebean.Expr;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.surevine.gateway.rules.RuleFileManager;
 import com.surevine.gateway.scm.service.SCMFederatorServiceFacade;
@@ -185,8 +186,12 @@ public class Destination extends Model {
     	}
 
     	// Ensure URL unique
-    	Destination existingDestination = find.where().eq("url", url).findUnique();
-    	if(existingDestination != null && !(existingDestination.id.equals(id))) {
+    	Destination existingDestination = find.where()
+    											.eq("url", url)
+    											.not(Expr.eq("id", id))
+    											.findUnique();
+
+    	if(existingDestination != null) {
     		errors.add(new ValidationError("url", "Destination URL already exists."));
     	}
 
