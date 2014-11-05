@@ -13,14 +13,9 @@
 			<input type="hidden" name="id" value="@id" />
 
 			@inputText(projectForm("displayName"), '_label -> "Name", '_help -> "Name of repository", 'class -> "form-control", 'placeholder -> "Name")
+			@inputText(projectForm("projectKey"), '_label -> "Name", '_help -> "E.g. surevine in surevine/gateway", 'class -> "form-control", 'placeholder -> "Project Key")
+			@inputText(projectForm("repositorySlug"), '_label -> "Name", '_help -> "E.g. gateway in surevine/gateway", 'class -> "form-control", 'placeholder -> "Repository Slug")
 
-			<div class="form-inline">
-				<label>Project URL Slug</label><br />
-				@inputText(projectForm("projectKey"), '_label -> "", '_help -> "", 'class -> "form-control", 'placeholder -> "Project name")
-				<span class="form-control-static project-repo-slash">/</span>
-				@inputText(projectForm("repositorySlug"), '_label -> "", '_help -> "", 'class -> "form-control", 'placeholder -> "Repo name")
-				<p class="help-block">Project and repository URL slugs from SCM system. E.g. surevine/gateway</p>
-			</div>
 		</fieldset>
 
 		<div class="actions">

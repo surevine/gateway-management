@@ -126,7 +126,7 @@ public class Project extends Model {
     /**
      * Perform additional validation (beyond annotations) on model properties.
      *
-     * @return List of validation error messages associated with relevant properties
+     * @return String validation error message
      */
     public List<ValidationError> validate() {
 
@@ -139,8 +139,8 @@ public class Project extends Model {
     									.findUnique();
 
     	if(existingProject != null) {
-    		errors.add(new ValidationError("projectKey", "Project Key / Repo Slug combination already exists."));
-    		errors.add(new ValidationError("repositorySlug", "Project Key / Repo Slug combination already exists."));
+    		errors.add(new ValidationError("projectKey", "Project key / Repository slug combination already exists."));
+    		errors.add(new ValidationError("repositorySlug", "Project key / Repository slug combination already exists."));
     	}
 
     	return errors.isEmpty() ? null : errors;

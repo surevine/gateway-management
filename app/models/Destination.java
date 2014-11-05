@@ -190,7 +190,6 @@ public class Destination extends Model {
     											.eq("url", url)
     											.not(Expr.eq("id", id))
     											.findUnique();
-
     	if(existingDestination != null) {
     		errors.add(new ValidationError("url", "Destination URL already exists."));
     	}
