@@ -2,6 +2,8 @@ package models;
 
 import static play.mvc.Http.Status.OK;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -118,6 +120,28 @@ public class Project extends Model {
         	SCMFederatorServiceFacade scmFederatorService = new SCMFederatorServiceFacade();
         	scmFederatorService.distribute(destination.id.toString(), this.projectKey, this.repositorySlug);
     	}
+    }
+
+    /**
+     * Perform additional validation (beyond annotations) on model properties.
+     *
+     * @return List of validation error messages associated with relevant properties
+     */
+    public List<ValidationError> validate() {
+
+    	List<ValidationError> errors = new ArrayList<ValidationError>();
+
+    	Project existingProject = find.where()
+    									.eq("projectKey", projectKey)
+    									.eq("repositorySlug", repositorySlug)
+    									.findUnique();
+
+    	if(existingProject != null && !(existingProject.id.equals(id))) {
+    		errors.add(new ValidationError("projectKey", "Project Key / Repo Slug combination already exists."));
+    		errors.add(new ValidationError("repositorySlug", "Project Key / Repo Slug combination already exists."));
+    	}
+
+    	return errors.isEmpty() ? null : errors;
     }
 
 }
