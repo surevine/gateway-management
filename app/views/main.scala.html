@@ -27,6 +27,7 @@
 
     		<h2>@pagename</h2>
 
+			<div id="alerts">
     		@if(flash.contains("success")) {
     			<div class="alert alert-success" role="alert">
     				<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -40,6 +41,7 @@
     				<strong>Error!</strong> @flash.get("error")
     			</div>
     		}
+			</div>
 
 	        @content
 

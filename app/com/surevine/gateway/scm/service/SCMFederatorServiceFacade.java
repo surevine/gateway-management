@@ -2,6 +2,8 @@ package com.surevine.gateway.scm.service;
 
 import static play.mvc.Http.Status.OK;
 
+import java.net.ConnectException;
+
 import play.Logger;
 import play.libs.F.Callback;
 import play.libs.F.Promise;
@@ -24,8 +26,13 @@ public class SCMFederatorServiceFacade {
 	private static final int REQUEST_TIMEOUT = 5000;
 
 	/**
-	 * Instruct federator to perform ad-hoc distribution of project to destination.
-	 * Asynchronous request.
+	 * API Base URL loaded from config
+	 */
+	private static final String SCM_FEDERATOR_BASE_URL = ConfigFactory.load().getString("scm.federator.api.base.url");
+
+	/**
+	 * Instruct federator to perform distribution of project to destination.
+	 * Asynchronous 'fire and forget' request.
 	 *
 	 * @param destinationId Id of destination to transfer project to
 	 * @param projectKey project key slug of project's SCM URL
@@ -33,17 +40,9 @@ public class SCMFederatorServiceFacade {
 	 */
 	public void distribute(String destinationId, String projectKey, String repoSlug) {
 
-		String scmFederatorBaseURL = ConfigFactory.load().getString("scm.federator.api.base.url");
+		Logger.info(String.format("Informing SCM component of new sharing partnership %s/%s [%s]", projectKey, repoSlug, SCM_FEDERATOR_BASE_URL + "/rest/federator/distribute"));
 
-		Logger.info(String.format("Informing SCM component of new sharing partnership %s/%s [%s]", projectKey, repoSlug, scmFederatorBaseURL + "/rest/federator/distribute"));
-
-    	Promise<WSResponse> promise = WS.url(scmFederatorBaseURL + "/rest/federator/distribute")
-    			.setTimeout(REQUEST_TIMEOUT)
-    			.setQueryParameter("destination", destinationId)
-    			.setQueryParameter("projectKey", projectKey)
-    			.setQueryParameter("repositorySlug", repoSlug)
-    			.setContentType("application/json")
-    			.post("");
+		Promise<WSResponse> promise = postDistributionRequest(destinationId, projectKey, repoSlug);
 
     	promise.onFailure(new Callback<Throwable>(){
 			@Override
@@ -55,7 +54,7 @@ public class SCMFederatorServiceFacade {
 	}
 
 	/**
-	 * Ad-hoc re-distribution of repo to destination.
+	 * Instruct federator to perform ad-hoc redistribution of project to destination.
 	 * This method performs synchronous request response is required.
 	 *
 	 * @param destinationId
@@ -65,16 +64,9 @@ public class SCMFederatorServiceFacade {
 	 */
 	public void resend(String destinationId, String projectKey, String repoSlug) throws SCMFederatorServiceException {
 
-		String scmFederatorBaseURL = ConfigFactory.load().getString("scm.federator.api.base.url");
+		Logger.info(String.format("Requesting redistribution of repo (%s/%s) by SCM component [%s]", projectKey, repoSlug, SCM_FEDERATOR_BASE_URL + "/rest/federator/distribute"));
 
-		Logger.info(String.format("Requesting redistribution of repo (%s/%s) by SCM component [%s]", projectKey, repoSlug, scmFederatorBaseURL + "/rest/federator/distribute"));
-
-    	Promise<WSResponse> promise = WS.url(scmFederatorBaseURL + "/rest/federator/distribute")
-    			.setQueryParameter("destination", destinationId)
-    			.setQueryParameter("projectKey", projectKey)
-    			.setQueryParameter("repositorySlug", repoSlug)
-    			.setContentType("application/json")
-    			.post("");
+    	Promise<WSResponse> promise = postDistributionRequest(destinationId, projectKey, repoSlug);
 
     	WSResponse response;
     	try {
@@ -91,6 +83,24 @@ public class SCMFederatorServiceFacade {
     															response.getBody()));
     	}
 
+	}
+
+	/**
+	 * Post request to SCM federator distribution service
+	 *
+	 * @param destinationId
+	 * @param projectKey
+	 * @param repoSlug
+	 * @return
+	 */
+	private Promise<WSResponse> postDistributionRequest(String destinationId, String projectKey, String repoSlug) {
+		return WS.url(SCM_FEDERATOR_BASE_URL + "/rest/federator/distribute")
+				.setTimeout(REQUEST_TIMEOUT)
+				.setQueryParameter("destination", destinationId)
+    			.setQueryParameter("projectKey", projectKey)
+    			.setQueryParameter("repositorySlug", repoSlug)
+    			.setContentType("application/json")
+    			.post("");
 	}
 
 }

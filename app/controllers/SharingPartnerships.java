@@ -121,16 +121,15 @@ public class SharingPartnerships extends Controller {
 
 		DynamicForm requestData = Form.form().bindFromRequest();
 
-    	long selectedDestinationId = Long.parseLong(requestData.get("destinationId"));
-    	long selectedProjectId = Long.parseLong(requestData.get("projectId"));
-    	String source = requestData.get("source");
+    	long destinationId = Long.parseLong(requestData.get("destinationId"));
+    	long projectId = Long.parseLong(requestData.get("projectId"));
 
-    	Destination destination = Destination.find.byId(selectedDestinationId);
+    	Destination destination = Destination.find.byId(destinationId);
     	if(destination == null) {
     		return notFound("Destination not found.");
     	}
 
-    	Project project = Project.find.byId(selectedProjectId);
+    	Project project = Project.find.byId(projectId);
     	if(project == null) {
     		return notFound("Project not found.");
     	}
@@ -139,12 +138,10 @@ public class SharingPartnerships extends Controller {
         	SCMFederatorServiceFacade scmFederatorService = new SCMFederatorServiceFacade();
         	scmFederatorService.resend(destination.id.toString(), project.projectKey, project.repositorySlug);
     	} catch(SCMFederatorServiceException e) {
-    		flash("error", "Failed to resend project to destination.");
-    		return redirect(routes.Destinations.view(destination.id));
+    		return internalServerError("Failed to resend project to destination.");
     	}
 
-    	flash("success", "Resent project to destination.");
-        return redirect(routes.Destinations.view(destination.id));
+        return ok("Resent project to destination.");
 	}
 
 	/**
