@@ -27,7 +27,6 @@ public class RuleFileManager {
 	public static final String DESTINATIONS_RULES_DIRECTORY = ConfigFactory.load().getString("gateway.destinations.rules.dir");
 
 	public static final String DEFAULT_EXPORT_RULEFILE_NAME = "export.js";
-
 	public static final String DEFAULT_GLOBAL_EXPORT_RULEFILE_NAME = "global-export.js";
 	public static final String DEFAULT_GLOBAL_IMPORT_RULEFILE_NAME = "global-import.js";
 
