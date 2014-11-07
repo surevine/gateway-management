@@ -31,7 +31,6 @@ public class WildflyRemoteAuthenticator extends Security.Authenticator {
 		if(authenticatedUser != null) {
 			return authenticatedUser;
 		} else {
-
 			try {
 				authenticatedUser = WildflyAuthServiceProxy.getInstance().getAuthenticatedUsername();
 			} catch (AuthServiceProxyException e) {

@@ -60,7 +60,10 @@ public class WildflyAuthServiceProxy implements AuthServiceProxy {
     															response.getBody()));
     	}
 
-		return null;
+    	// TODO potentially replace body content with commonly used header
+    	String authenticatedUsername = response.getBody();
+
+		return authenticatedUsername;
 	}
 
 }
