@@ -2,8 +2,6 @@ package com.surevine.gateway.scm.service;
 
 import static play.mvc.Http.Status.OK;
 
-import java.net.ConnectException;
-
 import play.Logger;
 import play.libs.F.Callback;
 import play.libs.F.Promise;
