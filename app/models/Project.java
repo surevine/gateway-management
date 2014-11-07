@@ -79,6 +79,11 @@ public class Project extends Model {
     public static Finder<Long,Project> find = new Finder<Long,Project>(Long.class, Project.class);
 
     /**
+     * Service facade for interaction with SCM federator component
+     */
+    public static SCMFederatorServiceFacade scmFederator = SCMFederatorServiceFacade.getInstance();
+
+    /**
      * List of all projects, used by scala helper in templates (to populate select options)
      * @return Map<String, String> option key/values
      */
@@ -119,7 +124,7 @@ public class Project extends Model {
     		this.destinations.add(destination);
     		this.update();
 
-        	SCMFederatorServiceFacade.getInstance().distribute(destination.id.toString(), this.projectKey, this.repositorySlug);
+        	scmFederator.distribute(destination.id.toString(), this.projectKey, this.repositorySlug);
     	}
     }
 
@@ -145,5 +150,9 @@ public class Project extends Model {
 
     	return errors.isEmpty() ? null : errors;
     }
+
+	public void setSCMFederatorServiceFacade(SCMFederatorServiceFacade scmFederator) {
+		this.scmFederator = scmFederator;
+	}
 
 }

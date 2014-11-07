@@ -17,6 +17,11 @@ import play.mvc.Result;
 
 public class SharingPartnerships extends Controller {
 
+    /**
+     * Service facade for interaction with SCM federator component
+     */
+    public static SCMFederatorServiceFacade scmFederator = SCMFederatorServiceFacade.getInstance();
+
 	/**
 	 * Share source code project with a destination (and vice-versa)
 	 *
@@ -135,7 +140,7 @@ public class SharingPartnerships extends Controller {
     	}
 
     	try {
-        	SCMFederatorServiceFacade.getInstance().resend(destination.id.toString(), project.projectKey, project.repositorySlug);
+        	scmFederator.resend(destination.id.toString(), project.projectKey, project.repositorySlug);
     	} catch(SCMFederatorServiceException e) {
     		return internalServerError("Failed to resend project to destination.");
     	}
@@ -178,6 +183,10 @@ public class SharingPartnerships extends Controller {
 	    	}
     		project.addDestination(destination);
     	}
+	}
+
+	public void setSCMFederatorServiceFacade(SCMFederatorServiceFacade scmFederator) {
+		this.scmFederator = scmFederator;
 	}
 
 }
