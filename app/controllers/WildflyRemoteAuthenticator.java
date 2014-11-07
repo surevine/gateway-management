@@ -1,5 +1,6 @@
 package controllers;
 
+import com.surevine.gateway.auth.AuthServiceProxy;
 import com.surevine.gateway.auth.AuthServiceProxyException;
 import com.surevine.gateway.auth.WildflyAuthServiceProxy;
 
@@ -17,7 +18,11 @@ import play.mvc.Security;
  */
 public class WildflyRemoteAuthenticator extends Security.Authenticator {
 
-	// TODO init default authenticator, have setService method (for testability)
+	private AuthServiceProxy authServiceProxy;
+
+	public WildflyRemoteAuthenticator() {
+		this.authServiceProxy = WildflyAuthServiceProxy.getInstance();
+	}
 
 	/**
 	 * Gets username of authenticated user.
@@ -32,7 +37,7 @@ public class WildflyRemoteAuthenticator extends Security.Authenticator {
 			return authenticatedUser;
 		} else {
 			try {
-				authenticatedUser = WildflyAuthServiceProxy.getInstance().getAuthenticatedUsername();
+				authenticatedUser = authServiceProxy.getAuthenticatedUsername();
 			} catch (AuthServiceProxyException e) {
 				Logger.warn("Could not authenticate current user. " + e.getMessage());
 				return null;
@@ -55,6 +60,10 @@ public class WildflyRemoteAuthenticator extends Security.Authenticator {
     @Override
     public Result onUnauthorized(Context ctx) {
         return unauthorized(views.html.unauthorised.render());
+    }
+
+    public void setAuthServiceProxy(AuthServiceProxy authServiceProxy) {
+    	this.authServiceProxy = authServiceProxy;
     }
 
 }
