@@ -132,8 +132,7 @@ public class Destination extends Model {
         	this.projects.add(project);
         	this.update();
 
-        	SCMFederatorServiceFacade scmFederatorService = new SCMFederatorServiceFacade();
-        	scmFederatorService.distribute(this.id.toString(), project.projectKey, project.repositorySlug);
+        	SCMFederatorServiceFacade.getInstance().distribute(this.id.toString(), project.projectKey, project.repositorySlug);
     	}
     }
 

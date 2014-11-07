@@ -135,8 +135,7 @@ public class SharingPartnerships extends Controller {
     	}
 
     	try {
-        	SCMFederatorServiceFacade scmFederatorService = new SCMFederatorServiceFacade();
-        	scmFederatorService.resend(destination.id.toString(), project.projectKey, project.repositorySlug);
+        	SCMFederatorServiceFacade.getInstance().resend(destination.id.toString(), project.projectKey, project.repositorySlug);
     	} catch(SCMFederatorServiceException e) {
     		return internalServerError("Failed to resend project to destination.");
     	}

@@ -118,8 +118,8 @@ public class Project extends Model {
     	if(!this.destinations.contains(destination)) {
     		this.destinations.add(destination);
     		this.update();
-        	SCMFederatorServiceFacade scmFederatorService = new SCMFederatorServiceFacade();
-        	scmFederatorService.distribute(destination.id.toString(), this.projectKey, this.repositorySlug);
+
+        	SCMFederatorServiceFacade.getInstance().distribute(destination.id.toString(), this.projectKey, this.repositorySlug);
     	}
     }
 

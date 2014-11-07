@@ -28,6 +28,19 @@ public class SCMFederatorServiceFacade {
 	 */
 	private static final String SCM_FEDERATOR_BASE_URL = ConfigFactory.load().getString("scm.federator.api.base.url");
 
+	private static SCMFederatorServiceFacade _instance = null;
+
+	private SCMFederatorServiceFacade() {
+
+	}
+
+	public static SCMFederatorServiceFacade getInstance() {
+		if(_instance == null) {
+			_instance = new SCMFederatorServiceFacade();
+		}
+		return _instance;
+	}
+
 	/**
 	 * Instruct federator to perform distribution of project to destination.
 	 * Asynchronous 'fire and forget' request.
