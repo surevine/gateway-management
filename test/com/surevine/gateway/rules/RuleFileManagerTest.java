@@ -23,7 +23,6 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import play.Logger;
 import play.test.FakeApplication;
 
 import com.typesafe.config.ConfigFactory;
@@ -150,9 +149,31 @@ public class RuleFileManagerTest {
 	}
 
 	@Test
-	@Ignore
 	public void testLoadDestinationExportRules() {
-		// TODO
+
+		Destination destination = new Destination(DestinationTest.TEST_EXISTING_DESTINATION_ID,
+													DestinationTest.TEST_EXISTING_DESTINATION_NAME,
+													DestinationTest.TEST_EXISTING_DESTINATION_URL);
+		destination.save();
+
+		Path destinationRuleFileTemplatePath = Paths.get(RuleFileManager.DESTINATION_TEMPLATE_RULE_FILE);
+
+		String expectedRuleFileContent = "";
+		try {
+
+			expectedRuleFileContent = loadFileContents(destinationRuleFileTemplatePath);
+		} catch (IOException e) {
+			fail("Could not load destination rule file template for contents comparison");
+		}
+
+		String destinationRuleFileContent = "";
+		try {
+			destinationRuleFileContent = fixture.loadDestinationExportRules(destination);
+		} catch (IOException e) {
+			fail("Failed to load destination rule file contents");
+		}
+
+		assertThat(destinationRuleFileContent).isEqualTo(expectedRuleFileContent);
 	}
 
 	@Test

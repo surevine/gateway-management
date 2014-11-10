@@ -25,6 +25,7 @@ public class RuleFileManager {
 
 	public static final String RULES_DIRECTORY = ConfigFactory.load().getString("gateway.rules.dir");
 	public static final String DESTINATIONS_RULES_DIRECTORY = ConfigFactory.load().getString("gateway.destinations.rules.dir");
+	public static final String DESTINATION_TEMPLATE_RULE_FILE = ConfigFactory.load().getString("gateway.template.rule.file");
 
 	public static final String DEFAULT_EXPORT_RULEFILE_NAME = "export.js";
 	public static final String DEFAULT_GLOBAL_EXPORT_RULEFILE_NAME = "global-export.js";
@@ -53,9 +54,8 @@ public class RuleFileManager {
 	 * @param fileName
 	 */
 	public void createDestinationRuleFile(Destination destination, String fileName) {
-    	String templateRuleFile = ConfigFactory.load().getString("gateway.template.rule.file");
 
-    	Path templateRuleFilePath = Paths.get(templateRuleFile);
+    	Path templateRuleFilePath = Paths.get(DESTINATION_TEMPLATE_RULE_FILE);
     	Path destinationRuleFilePath = Paths.get(DESTINATIONS_RULES_DIRECTORY + "/" + destination.id + "/" + fileName);
 
     	try {
