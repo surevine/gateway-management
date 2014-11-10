@@ -185,8 +185,4 @@ public class SharingPartnerships extends Controller {
     	}
 	}
 
-	public void setSCMFederatorServiceFacade(SCMFederatorServiceFacade scmFederator) {
-		this.scmFederator = scmFederator;
-	}
-
 }

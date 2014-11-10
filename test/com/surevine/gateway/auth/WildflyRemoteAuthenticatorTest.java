@@ -55,7 +55,6 @@ public class WildflyRemoteAuthenticatorTest {
 	public void testGetUsernameExistingSession() {
 
 		Context ctx = Context.current();
-
 		ctx.session().put("username", EXISTING_SESSION_USERNAME);
 
 		String authenticatedUser = fixture.getUsername(ctx);
