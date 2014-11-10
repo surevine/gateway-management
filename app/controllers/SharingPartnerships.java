@@ -139,6 +139,10 @@ public class SharingPartnerships extends Controller {
     		return notFound("Project not found.");
     	}
 
+    	if(!destination.projects.contains(project)) {
+    		return notFound("Project not shared with destination.");
+    	}
+
     	try {
         	scmFederator.resend(destination.id.toString(), project.projectKey, project.repositorySlug);
     	} catch(SCMFederatorServiceException e) {
