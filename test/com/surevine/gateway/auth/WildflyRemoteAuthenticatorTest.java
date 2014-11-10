@@ -13,10 +13,8 @@ import java.util.Map;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import play.Logger;
 import play.api.mvc.RequestHeader;
 import play.mvc.Http.Context;
 import play.mvc.Http.Request;
