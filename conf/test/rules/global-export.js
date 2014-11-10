@@ -1,0 +1,1 @@
+// Test global export rule file

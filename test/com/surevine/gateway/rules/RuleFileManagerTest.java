@@ -15,18 +15,21 @@ import models.Destination;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import play.Logger;
+
 import com.typesafe.config.ConfigFactory;
 
 import destinations.DestinationTest;
 
 public class RuleFileManagerTest extends DestinationTest {
 
+	private RuleFileManager fixture = RuleFileManager.getInstance();
+
 	@Test
 	public void testCreateDestinationRuleFileDirectory() {
 		Destination destination = new Destination(TEST_EXISTING_DESTINATION_ID, TEST_EXISTING_DESTINATION_NAME, TEST_EXISTING_DESTINATION_URL);
-		RuleFileManager ruleFileManager = RuleFileManager.getInstance();
 
-		ruleFileManager.createDestinationRuleFileDirectory(destination);
+		fixture.createDestinationRuleFileDirectory(destination);
 
 		Path destinationDirPath = Paths.get(TEST_DESTINATIONS_DIR + "/" + TEST_EXISTING_DESTINATION_ID);
 		assertThat(Files.exists(destinationDirPath)).isEqualTo(true);
@@ -36,8 +39,7 @@ public class RuleFileManagerTest extends DestinationTest {
 	public void testCreateDestinationRuleFile() {
 		Destination destination = new Destination(TEST_EXISTING_DESTINATION_ID, TEST_EXISTING_DESTINATION_NAME, TEST_EXISTING_DESTINATION_URL);
 
-		RuleFileManager ruleFileManager = RuleFileManager.getInstance();
-		ruleFileManager.createDestinationRuleFile(destination, Destination.DEFAULT_EXPORT_RULEFILE_NAME);
+		fixture.createDestinationRuleFile(destination, Destination.DEFAULT_EXPORT_RULEFILE_NAME);
 
 		Path destinationRuleFilePath = Paths.get(TEST_DESTINATIONS_DIR + "/" + TEST_EXISTING_DESTINATION_ID, Destination.DEFAULT_EXPORT_RULEFILE_NAME);
 		assertThat(Files.exists(destinationRuleFilePath)).isEqualTo(true);
@@ -57,23 +59,58 @@ public class RuleFileManagerTest extends DestinationTest {
 	public void testDeleteDestinationRuleFileDirectory() {
 		Destination destination = new Destination(TEST_EXISTING_DESTINATION_ID, TEST_EXISTING_DESTINATION_NAME, TEST_EXISTING_DESTINATION_URL);
 
-		RuleFileManager ruleFileManager = RuleFileManager.getInstance();
-		ruleFileManager.deleteDestinationRuleFileDirectory(destination);
+		fixture.deleteDestinationRuleFileDirectory(destination);
 
 		Path destinationDirPath = Paths.get(TEST_DESTINATIONS_DIR + "/" + TEST_EXISTING_DESTINATION_ID);
 		assertThat(Files.exists(destinationDirPath)).isEqualTo(false);
 	}
 
 	@Test
-	@Ignore
 	public void testLoadGlobalExportRules() {
-		// TODO
+
+		Path globalExportRuleFilePath = Paths.get(ConfigFactory.load().getString("gateway.rules.dir"), RuleFileManager.DEFAULT_GLOBAL_EXPORT_RULEFILE_NAME);
+
+		String expectedRuleFileContent = "";
+		try {
+			expectedRuleFileContent = loadFileContents(globalExportRuleFilePath);
+		} catch (IOException e) {
+			fail("Could not load global export rule file for contents comparison");
+		}
+
+		String globalRuleFileContent = "";
+		try {
+			globalRuleFileContent = fixture.loadGlobalExportRules();
+		} catch (IOException e) {
+			fail("Failed to load global export rule file contents");
+		}
+
+		assertThat(globalRuleFileContent).isEqualTo(expectedRuleFileContent);
+
 	}
 
 	@Test
-	@Ignore
 	public void testLoadGlobalImportRules() {
-		// TODO
+
+		Path globalImportRuleFilePath = Paths.get(ConfigFactory.load().getString("gateway.rules.dir"), RuleFileManager.DEFAULT_GLOBAL_IMPORT_RULEFILE_NAME);
+
+		Logger.error("***JONNY" + globalImportRuleFilePath.toString());
+
+		String expectedRuleFileContent = "";
+		try {
+			expectedRuleFileContent = loadFileContents(globalImportRuleFilePath);
+		} catch (IOException e) {
+			fail("Could not load global import rule file for contents comparison");
+		}
+
+		String globalRuleFileContent = "";
+		try {
+			globalRuleFileContent = fixture.loadGlobalImportRules();
+		} catch (IOException e) {
+			fail("Failed to load global import rule file contents");
+		}
+
+		assertThat(globalRuleFileContent).isEqualTo(expectedRuleFileContent);
+
 	}
 
 	@Test
