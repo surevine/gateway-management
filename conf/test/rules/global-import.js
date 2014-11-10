@@ -1,1 +1,0 @@
-// Test global import rule file

@@ -2,7 +2,12 @@ package com.surevine.gateway.rules;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.junit.Assert.fail;
+import static play.test.Helpers.fakeApplication;
+import static play.test.Helpers.inMemoryDatabase;
+import static play.test.Helpers.start;
+import static play.test.Helpers.stop;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -12,36 +17,67 @@ import java.util.List;
 
 import models.Destination;
 
+import org.apache.commons.io.FileUtils;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import play.Logger;
+import play.test.FakeApplication;
 
 import com.typesafe.config.ConfigFactory;
 
 import destinations.DestinationTest;
 
-public class RuleFileManagerTest extends DestinationTest {
+public class RuleFileManagerTest {
+
+	private static final String TEST_ORIGINAL_EXPORT_RULE_FILE_CONTENTS = "existing export rules";
+	private static final String TEST_ORIGINAL_IMPORT_RULE_FILE_CONTENTS = "existing import rules";
+
+	public static FakeApplication app;
 
 	private RuleFileManager fixture = RuleFileManager.getInstance();
 
+	@BeforeClass
+	public static void setup() {
+		app = fakeApplication(inMemoryDatabase());
+		start(app);
+
+		createTestDirectories();
+		createTestFiles();
+	}
+
+	@AfterClass
+	public static void teardown() {
+		stop(app);
+		destroyTestDirectories();
+	}
+
 	@Test
 	public void testCreateDestinationRuleFileDirectory() {
-		Destination destination = new Destination(TEST_EXISTING_DESTINATION_ID, TEST_EXISTING_DESTINATION_NAME, TEST_EXISTING_DESTINATION_URL);
+		Destination destination = new Destination(DestinationTest.TEST_EXISTING_DESTINATION_ID,
+													DestinationTest.TEST_EXISTING_DESTINATION_NAME,
+													DestinationTest.TEST_EXISTING_DESTINATION_URL);
 
 		fixture.createDestinationRuleFileDirectory(destination);
 
-		Path destinationDirPath = Paths.get(TEST_DESTINATIONS_DIR + "/" + TEST_EXISTING_DESTINATION_ID);
+		Path destinationDirPath = Paths.get(DestinationTest.TEST_DESTINATIONS_DIR + "/" +
+												DestinationTest.TEST_EXISTING_DESTINATION_ID);
 		assertThat(Files.exists(destinationDirPath)).isEqualTo(true);
 	}
 
 	@Test
 	public void testCreateDestinationRuleFile() {
-		Destination destination = new Destination(TEST_EXISTING_DESTINATION_ID, TEST_EXISTING_DESTINATION_NAME, TEST_EXISTING_DESTINATION_URL);
+		Destination destination = new Destination(DestinationTest.TEST_EXISTING_DESTINATION_ID,
+													DestinationTest.TEST_EXISTING_DESTINATION_NAME,
+													DestinationTest.TEST_EXISTING_DESTINATION_URL);
 
 		fixture.createDestinationRuleFile(destination, Destination.DEFAULT_EXPORT_RULEFILE_NAME);
 
-		Path destinationRuleFilePath = Paths.get(TEST_DESTINATIONS_DIR + "/" + TEST_EXISTING_DESTINATION_ID, Destination.DEFAULT_EXPORT_RULEFILE_NAME);
+		Path destinationRuleFilePath = Paths.get(DestinationTest.TEST_DESTINATIONS_DIR + "/" + DestinationTest.TEST_EXISTING_DESTINATION_ID,
+													Destination.DEFAULT_EXPORT_RULEFILE_NAME);
+
 		assertThat(Files.exists(destinationRuleFilePath)).isEqualTo(true);
 
 		Path templateRuleFilePath = Paths.get(ConfigFactory.load().getString("gateway.template.rule.file"));
@@ -57,18 +93,20 @@ public class RuleFileManagerTest extends DestinationTest {
 
 	@Test
 	public void testDeleteDestinationRuleFileDirectory() {
-		Destination destination = new Destination(TEST_EXISTING_DESTINATION_ID, TEST_EXISTING_DESTINATION_NAME, TEST_EXISTING_DESTINATION_URL);
+		Destination destination = new Destination(DestinationTest.TEST_EXISTING_DESTINATION_ID,
+													DestinationTest.TEST_EXISTING_DESTINATION_NAME,
+													DestinationTest.TEST_EXISTING_DESTINATION_URL);
 
 		fixture.deleteDestinationRuleFileDirectory(destination);
 
-		Path destinationDirPath = Paths.get(TEST_DESTINATIONS_DIR + "/" + TEST_EXISTING_DESTINATION_ID);
+		Path destinationDirPath = Paths.get(DestinationTest.TEST_DESTINATIONS_DIR + "/" + DestinationTest.TEST_EXISTING_DESTINATION_ID);
 		assertThat(Files.exists(destinationDirPath)).isEqualTo(false);
 	}
 
 	@Test
 	public void testLoadGlobalExportRules() {
 
-		Path globalExportRuleFilePath = Paths.get(ConfigFactory.load().getString("gateway.rules.dir"), RuleFileManager.DEFAULT_GLOBAL_EXPORT_RULEFILE_NAME);
+		Path globalExportRuleFilePath = Paths.get(RuleFileManager.RULES_DIRECTORY, RuleFileManager.DEFAULT_GLOBAL_EXPORT_RULEFILE_NAME);
 
 		String expectedRuleFileContent = "";
 		try {
@@ -91,9 +129,7 @@ public class RuleFileManagerTest extends DestinationTest {
 	@Test
 	public void testLoadGlobalImportRules() {
 
-		Path globalImportRuleFilePath = Paths.get(ConfigFactory.load().getString("gateway.rules.dir"), RuleFileManager.DEFAULT_GLOBAL_IMPORT_RULEFILE_NAME);
-
-		Logger.error("***JONNY" + globalImportRuleFilePath.toString());
+		Path globalImportRuleFilePath = Paths.get(RuleFileManager.RULES_DIRECTORY, RuleFileManager.DEFAULT_GLOBAL_IMPORT_RULEFILE_NAME);
 
 		String expectedRuleFileContent = "";
 		try {
@@ -150,6 +186,37 @@ public class RuleFileManagerTest extends DestinationTest {
 			parsedFile.append(line + System.lineSeparator());
 		}
 		return parsedFile.toString();
+	}
+
+	private static void createTestDirectories() {
+		try {
+			Files.createDirectory(Paths.get(RuleFileManager.RULES_DIRECTORY));
+			Files.createDirectory(Paths.get(RuleFileManager.DESTINATIONS_RULES_DIRECTORY));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void createTestFiles() {
+		Path globalExportRuleFilePath = Paths.get(RuleFileManager.RULES_DIRECTORY, RuleFileManager.DEFAULT_GLOBAL_EXPORT_RULEFILE_NAME);
+		Path globalImportRuleFilePath = Paths.get(RuleFileManager.RULES_DIRECTORY, RuleFileManager.DEFAULT_GLOBAL_IMPORT_RULEFILE_NAME);
+
+		try {
+			Files.write(globalExportRuleFilePath, TEST_ORIGINAL_EXPORT_RULE_FILE_CONTENTS.getBytes());
+			Files.write(globalImportRuleFilePath, TEST_ORIGINAL_IMPORT_RULE_FILE_CONTENTS.getBytes());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private static void destroyTestDirectories() {
+		try {
+			FileUtils.deleteDirectory(new File(RuleFileManager.RULES_DIRECTORY));
+			FileUtils.deleteDirectory(new File(RuleFileManager.DESTINATIONS_RULES_DIRECTORY));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 }
