@@ -8,6 +8,8 @@
 
 @main("Share source code repositories") {
 
+	<p>Please select the source code repositories you wish to share with '@destination.name':</p>
+
 	@if(projects.isEmpty) {
 
 		<div class="panel panel-warning">
@@ -20,8 +22,6 @@
 		</div>
 
 	} else {
-
-		<p>Please select the source code repositories you wish to share with '@destination.name':</p>
 
 		@form(routes.SharingPartnerships.create(), 'role -> "form") {
 
