@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -25,9 +26,9 @@ public class RuleFileManager {
 
 	public static final String RULES_DIRECTORY = ConfigFactory.load().getString("gateway.rules.dir");
 	public static final String DESTINATIONS_RULES_DIRECTORY = ConfigFactory.load().getString("gateway.destinations.rules.dir");
+	public static final String DESTINATION_TEMPLATE_RULE_FILE = ConfigFactory.load().getString("gateway.template.rule.file");
 
 	public static final String DEFAULT_EXPORT_RULEFILE_NAME = "export.js";
-
 	public static final String DEFAULT_GLOBAL_EXPORT_RULEFILE_NAME = "global-export.js";
 	public static final String DEFAULT_GLOBAL_IMPORT_RULEFILE_NAME = "global-import.js";
 
@@ -54,9 +55,8 @@ public class RuleFileManager {
 	 * @param fileName
 	 */
 	public void createDestinationRuleFile(Destination destination, String fileName) {
-    	String templateRuleFile = ConfigFactory.load().getString("gateway.template.rule.file");
 
-    	Path templateRuleFilePath = Paths.get(templateRuleFile);
+    	Path templateRuleFilePath = Paths.get(DESTINATION_TEMPLATE_RULE_FILE);
     	Path destinationRuleFilePath = Paths.get(DESTINATIONS_RULES_DIRECTORY + "/" + destination.id + "/" + fileName);
 
     	try {
@@ -163,11 +163,11 @@ public class RuleFileManager {
 	 * @throws IOException
 	 */
 	private String readRuleFile(Path ruleFilePath) throws IOException {
-		List<String> lines = Files.readAllLines(ruleFilePath, Charset.forName("UTF-8"));
+		List<String> lines = Files.readAllLines(ruleFilePath, Charset.defaultCharset());
     	StringBuffer parsedJsFile = new StringBuffer();
 
 		for (String line : lines) {
-			parsedJsFile.append(line + System.lineSeparator());
+			parsedJsFile.append(line + System.getProperty("line.separator"));
 		}
 
 		return parsedJsFile.toString();

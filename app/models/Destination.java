@@ -36,6 +36,8 @@ import play.db.ebean.Model;
 public class Destination extends Model {
 
     private static final long serialVersionUID = 1L;
+	public static final String DESTINATIONS_RULES_DIRECTORY = ConfigFactory.load().getString("gateway.destinations.rules.dir");
+	public static final String DEFAULT_EXPORT_RULEFILE_NAME = "export.js";
 
 	@Id
 	public Long id;
@@ -62,13 +64,15 @@ public class Destination extends Model {
 	@JsonManagedReference
 	public List<Project> projects = new ArrayList<Project>();
 
-	public static final String DESTINATIONS_RULES_DIRECTORY = ConfigFactory.load().getString("gateway.destinations.rules.dir");
-	public static final String DEFAULT_EXPORT_RULEFILE_NAME = "export.js";
-
     /**
      *  Generic query helper for entity Destination with id Long
      */
     public static Finder<Long,Destination> find = new Finder<Long,Destination>(Long.class, Destination.class);
+
+    /**
+     * Service facade for interaction with SCM federator component
+     */
+    public static SCMFederatorServiceFacade scmFederator = SCMFederatorServiceFacade.getInstance();
 
     /**
      * List of all destinations, used by scala helper in templates (to populate select options)
@@ -95,7 +99,6 @@ public class Destination extends Model {
     	this.url = url;
     	this.projects = projects;
     }
-
 
     public Destination(long id, String name, String url) {
     	this.id = id;
@@ -132,8 +135,7 @@ public class Destination extends Model {
         	this.projects.add(project);
         	this.update();
 
-        	SCMFederatorServiceFacade scmFederatorService = new SCMFederatorServiceFacade();
-        	scmFederatorService.distribute(this.id.toString(), project.projectKey, project.repositorySlug);
+        	scmFederator.distribute(this.id.toString(), project.projectKey, project.repositorySlug);
     	}
     }
 
@@ -196,5 +198,9 @@ public class Destination extends Model {
 
     	return errors.isEmpty() ? null : errors;
     }
+
+	public void setSCMFederatorServiceFacade(SCMFederatorServiceFacade scmFederator) {
+		this.scmFederator = scmFederator;
+	}
 
 }

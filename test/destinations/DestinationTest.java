@@ -18,8 +18,6 @@ import org.junit.BeforeClass;
 
 import play.test.FakeApplication;
 
-import com.typesafe.config.ConfigFactory;
-
 /**
  * Common test setup / config for Destination tests.
  * Used by other destination test classes.
