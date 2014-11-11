@@ -158,17 +158,12 @@ public class SharingPartnerships extends Controller {
 	 * @param projectIds array of Project ids to share
 	 */
 	private static void addProjectsToDestination(Destination destination, String[] projectIds) {
-
 		List<String> selectedProjects = Arrays.asList(projectIds);
-    	for(String projectId: selectedProjects) {
-    		// TODO could improve to load all at once
-    		Project project = Project.find.byId(Long.parseLong(projectId));
-    		if(project == null) {
-    			Logger.warn(String.format("Failed to share repository with ID [%s] to destination. Repository not found.", projectId));
-    			continue;
-	    	}
-    		destination.addProject(project);
-    	}
+		List<Project> projects = Project.find.where().idIn(selectedProjects).findList();
+
+		for(Project project: projects) {
+			destination.addProject(project);
+		}
 	}
 
 	/**
@@ -178,13 +173,9 @@ public class SharingPartnerships extends Controller {
 	 */
 	private static void addDestinationsToProject(Project project, String[] destinationIds) {
     	List<String> selectedDestinations = Arrays.asList(destinationIds);
-    	for(String destinationId: selectedDestinations) {
-    		// TODO could improve to load all at once
-    		Destination destination = Destination.find.byId(Long.parseLong(destinationId));
-    		if(destination == null) {
-    			Logger.warn(String.format("Failed to share repository with destination [%s]. Destination not found.", destinationId));
-    			continue;
-	    	}
+    	List<Destination> destinations = Destination.find.where().idIn(selectedDestinations).findList();
+
+    	for(Destination destination: destinations) {
     		project.addDestination(destination);
     	}
 	}
