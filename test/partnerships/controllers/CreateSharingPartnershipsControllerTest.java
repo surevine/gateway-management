@@ -9,7 +9,11 @@ import static play.test.Helpers.POST;
 import static play.test.Helpers.callAction;
 import static play.test.Helpers.contentAsString;
 import static play.test.Helpers.contentType;
+import static play.test.Helpers.fakeApplication;
+import static play.test.Helpers.inMemoryDatabase;
+import static play.test.Helpers.start;
 import static play.test.Helpers.status;
+import static play.test.Helpers.stop;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,27 +21,34 @@ import java.util.Map;
 import models.Destination;
 import models.Project;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import play.Logger;
 import play.mvc.Result;
+import play.test.FakeApplication;
 import play.test.FakeRequest;
 import projects.ProjectTest;
 
 import destinations.DestinationTest;
 
-public class CreateSharingPartnershipsControllerTest extends DestinationTest {
+public class CreateSharingPartnershipsControllerTest {
 
-	/**
-	 * Create existing destination and project in database (for use by tests)
-	 */
+	public static FakeApplication app;
+
 	@BeforeClass
-	public static void createExistingTestData() {
-		Destination destination = new Destination(TEST_EXISTING_DESTINATION_ID,
-													TEST_EXISTING_DESTINATION_NAME,
-													TEST_EXISTING_DESTINATION_URL);
+	public static void setup() {
+
+		app = fakeApplication(inMemoryDatabase());
+		start(app);
+
+		DestinationTest.createTestDestinationDirectory();
+
+		Destination destination = new Destination(DestinationTest.TEST_EXISTING_DESTINATION_ID,
+													DestinationTest.TEST_EXISTING_DESTINATION_NAME,
+													DestinationTest.TEST_EXISTING_DESTINATION_URL);
 		destination.save();
 
 		Project project = new Project(ProjectTest.TEST_EXISTING_PROJECT_ID,
@@ -47,9 +58,15 @@ public class CreateSharingPartnershipsControllerTest extends DestinationTest {
 		project.save();
 	}
 
+	@AfterClass
+	public static void teardown() {
+		stop(app);
+		DestinationTest.destroyTestDestinationDirectory();
+	}
+
 	@Test
 	public void testAddProjectsToDestinationPage() {
-		Destination destination = Destination.find.byId(TEST_EXISTING_DESTINATION_ID);
+		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
 
 		FakeRequest request = new FakeRequest(GET, "/destinations/" + destination.id + "/shareprojects");
 		Result result = callAction(controllers.routes.ref.Destinations.shareProjectPage(destination.id), request);
@@ -58,7 +75,7 @@ public class CreateSharingPartnershipsControllerTest extends DestinationTest {
 		assertThat(contentType(result)).isEqualTo("text/html");
 
 		String content = contentAsString(result);
-		assertThat(content).contains(TEST_EXISTING_DESTINATION_NAME);
+		assertThat(content).contains(DestinationTest.TEST_EXISTING_DESTINATION_NAME);
 	}
 
 	@Test
@@ -78,7 +95,7 @@ public class CreateSharingPartnershipsControllerTest extends DestinationTest {
 	@Test
 	public void testCreateSharingPartnershipFromDestination() {
 
-		Destination destination = Destination.find.byId(TEST_EXISTING_DESTINATION_ID);
+		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
 		Project project = Project.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
 
 		Result result = postCreateSharingPartnershipFromDestination(destination.id, project.id);
@@ -92,7 +109,7 @@ public class CreateSharingPartnershipsControllerTest extends DestinationTest {
 	@Test
 	public void testCreateSharingPartnershipFromProject() {
 
-		Destination destination = Destination.find.byId(TEST_EXISTING_DESTINATION_ID);
+		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
 		Project project = Project.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
 
 		// Tidy data from previous tests if required
@@ -112,14 +129,14 @@ public class CreateSharingPartnershipsControllerTest extends DestinationTest {
 
 	@Test
 	public void testCreateSharingPartnershipNonExistingDestination() {
-		Result result = postCreateSharingPartnershipFromDestination(TEST_NON_EXISTING_DESTINATION_ID, ProjectTest.TEST_EXISTING_PROJECT_ID);
+		Result result = postCreateSharingPartnershipFromDestination(DestinationTest.TEST_NON_EXISTING_DESTINATION_ID, ProjectTest.TEST_EXISTING_PROJECT_ID);
 
 		assertThat(status(result)).isEqualTo(NOT_FOUND);
 	}
 
 	@Test
 	public void testCreateSharingPartnershipNonExistingProject() {
-		Result result = postCreateSharingPartnershipFromDestination(TEST_EXISTING_DESTINATION_ID, ProjectTest.TEST_NON_EXISTING_PROJECT_ID);
+		Result result = postCreateSharingPartnershipFromDestination(DestinationTest.TEST_EXISTING_DESTINATION_ID, ProjectTest.TEST_NON_EXISTING_PROJECT_ID);
 
 		// Expecting silent fail
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
