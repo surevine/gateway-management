@@ -4,34 +4,51 @@
 
 @implicitFieldConstructor = @{ FieldConstructor(utils.twitterBootstrapInput.render) }
 
+@projects = @{ Project.allProjectShareOptions(destination) }
+
 @main("Share source code repositories") {
 
-	<p>Please select the source code repositories you wish to share with '@destination.name':</p>
+	@if(projects.isEmpty) {
 
-	@form(routes.SharingPartnerships.create(), 'role -> "form") {
-
-		<fieldset>
-
-			<input type="hidden" name="source" value="destination" />
-			<input type="hidden" name="destinationId" value="@destination.id" />
-
-			@for(project <- Project.allProjectShareOptions(destination)) {
-
-				<div class="input-group">
-			      <span class="input-group-addon">
-			        <input type="checkbox" name="selectedProjects" id="selectedProjects-@project.id" value="@project.id">
-			      </span>
-			      <label for="selectedProjects-@project.id" class="form-control">@project.displayName <span class="text-muted">@project.projectKey/@project.repositorySlug</span></label>
-			    </div>
-
-			}
-
-		</fieldset>
-
-		<div class="actions">
-            <input type="submit" value="Share repositories" class="btn btn-primary">
-            <a href="@routes.Destinations.view(destination.id)" class="btn btn-default">Cancel</a>
+		<div class="panel panel-warning">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">No repositories</h3>
+		  </div>
+		  <div class="panel-body">
+		    <p>No repositories have been configured. Please <a href="@routes.Projects.add()">add a repository</a>.</p>
+		  </div>
 		</div>
+
+	} else {
+
+		<p>Please select the source code repositories you wish to share with '@destination.name':</p>
+
+		@form(routes.SharingPartnerships.create(), 'role -> "form") {
+
+			<fieldset>
+
+				<input type="hidden" name="source" value="destination" />
+				<input type="hidden" name="destinationId" value="@destination.id" />
+
+				@for(project <- projects) {
+
+					<div class="input-group">
+				      <span class="input-group-addon">
+				        <input type="checkbox" name="selectedProjects" id="selectedProjects-@project.id" value="@project.id">
+				      </span>
+				      <label for="selectedProjects-@project.id" class="form-control">@project.displayName <span class="text-muted">@project.projectKey/@project.repositorySlug</span></label>
+				    </div>
+
+				}
+
+			</fieldset>
+
+			<div class="actions">
+	            <input type="submit" value="Share repositories" class="btn btn-primary">
+	            <a href="@routes.Destinations.view(destination.id)" class="btn btn-default">Cancel</a>
+			</div>
+
+		}
 
 	}
 
