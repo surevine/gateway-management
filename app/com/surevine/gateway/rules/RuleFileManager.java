@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -162,11 +163,11 @@ public class RuleFileManager {
 	 * @throws IOException
 	 */
 	private String readRuleFile(Path ruleFilePath) throws IOException {
-		List<String> lines = Files.readAllLines(ruleFilePath, Charset.forName("UTF-8"));
+		List<String> lines = Files.readAllLines(ruleFilePath, Charset.defaultCharset());
     	StringBuffer parsedJsFile = new StringBuffer();
 
 		for (String line : lines) {
-			parsedJsFile.append(line + System.lineSeparator());
+			parsedJsFile.append(line + System.getProperty("line.separator"));
 		}
 
 		return parsedJsFile.toString();

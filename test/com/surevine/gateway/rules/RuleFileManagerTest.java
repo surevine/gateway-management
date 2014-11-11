@@ -18,11 +18,14 @@ import java.util.List;
 import models.Destination;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import play.Logger;
 import play.test.FakeApplication;
 
 import com.typesafe.config.ConfigFactory;
@@ -33,24 +36,26 @@ public class RuleFileManagerTest {
 
 	private static final String TEST_ORIGINAL_EXPORT_RULE_FILE_CONTENTS = "existing export rules";
 	private static final String TEST_ORIGINAL_IMPORT_RULE_FILE_CONTENTS = "existing import rules";
+	private static final String TEST_UPDATED_RULE_FILE_CONTENT = "updated rule file";
 
 	public static FakeApplication app;
 
 	private RuleFileManager fixture = RuleFileManager.getInstance();
 
-	@BeforeClass
-	public static void setup() {
+	@Before
+	public void beforeTest() {
 		app = fakeApplication(inMemoryDatabase());
 		start(app);
 
 		createTestDirectories();
-		createTestFiles();
+		createTestArtifacts();
 	}
 
-	@AfterClass
-	public static void teardown() {
-		stop(app);
+	@After
+	public void afterTest() {
 		destroyTestDirectories();
+
+		stop(app);
 	}
 
 	@Test
@@ -105,14 +110,7 @@ public class RuleFileManagerTest {
 	@Test
 	public void testLoadGlobalExportRules() {
 
-		Path globalExportRuleFilePath = Paths.get(RuleFileManager.RULES_DIRECTORY, RuleFileManager.DEFAULT_GLOBAL_EXPORT_RULEFILE_NAME);
-
-		String expectedRuleFileContent = "";
-		try {
-			expectedRuleFileContent = loadFileContents(globalExportRuleFilePath);
-		} catch (IOException e) {
-			fail("Could not load global export rule file for contents comparison");
-		}
+		String expectedRuleFileContent = TEST_ORIGINAL_EXPORT_RULE_FILE_CONTENTS;
 
 		String globalRuleFileContent = "";
 		try {
@@ -121,21 +119,14 @@ public class RuleFileManagerTest {
 			fail("Failed to load global export rule file contents");
 		}
 
-		assertThat(globalRuleFileContent).isEqualTo(expectedRuleFileContent);
+		assertThat(globalRuleFileContent.trim()).isEqualTo(expectedRuleFileContent.trim());
 
 	}
 
 	@Test
 	public void testLoadGlobalImportRules() {
 
-		Path globalImportRuleFilePath = Paths.get(RuleFileManager.RULES_DIRECTORY, RuleFileManager.DEFAULT_GLOBAL_IMPORT_RULEFILE_NAME);
-
-		String expectedRuleFileContent = "";
-		try {
-			expectedRuleFileContent = loadFileContents(globalImportRuleFilePath);
-		} catch (IOException e) {
-			fail("Could not load global import rule file for contents comparison");
-		}
+		String expectedRuleFileContent = TEST_ORIGINAL_IMPORT_RULE_FILE_CONTENTS;
 
 		String globalRuleFileContent = "";
 		try {
@@ -144,17 +135,14 @@ public class RuleFileManagerTest {
 			fail("Failed to load global import rule file contents");
 		}
 
-		assertThat(globalRuleFileContent).isEqualTo(expectedRuleFileContent);
+		assertThat(globalRuleFileContent.trim()).isEqualTo(expectedRuleFileContent.trim());
 
 	}
 
 	@Test
 	public void testLoadDestinationExportRules() {
 
-		Destination destination = new Destination(DestinationTest.TEST_EXISTING_DESTINATION_ID,
-													DestinationTest.TEST_EXISTING_DESTINATION_NAME,
-													DestinationTest.TEST_EXISTING_DESTINATION_URL);
-		destination.save();
+		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
 
 		Path destinationRuleFileTemplatePath = Paths.get(RuleFileManager.DESTINATION_TEMPLATE_RULE_FILE);
 
@@ -177,21 +165,72 @@ public class RuleFileManagerTest {
 	}
 
 	@Test
-	@Ignore
 	public void testUpdateDestinationExportRules() {
-		// TODO
+
+		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
+
+		try {
+			fixture.updateDestinationRuleFile(destination, TEST_UPDATED_RULE_FILE_CONTENT);
+		} catch (IOException e) {
+			fail("Failed to update destination rule file");
+		}
+
+		Path ruleFilePath = Paths.get(RuleFileManager.DESTINATIONS_RULES_DIRECTORY + "/" + destination.id,
+										RuleFileManager.DEFAULT_EXPORT_RULEFILE_NAME);
+
+		String ruleFileContent = "";
+		try {
+			ruleFileContent = loadFileContents(ruleFilePath).trim();
+		} catch (IOException e) {
+			fail("Failed to load rule file for content inspection.");
+		}
+
+		assertThat(ruleFileContent).isEqualTo(TEST_UPDATED_RULE_FILE_CONTENT);
+
 	}
 
 	@Test
-	@Ignore
 	public void testUpdateGlobalExportRules() {
-		// TODO
+
+		try {
+			fixture.updateGlobalExportRules(TEST_UPDATED_RULE_FILE_CONTENT);
+		} catch (IOException e) {
+			fail("Failed to update global export rule file");
+		}
+
+		Path ruleFilePath = Paths.get(RuleFileManager.RULES_DIRECTORY, RuleFileManager.DEFAULT_GLOBAL_EXPORT_RULEFILE_NAME);
+
+		String ruleFileContent = "";
+		try {
+			ruleFileContent = loadFileContents(ruleFilePath).trim();
+		} catch (IOException e) {
+			fail("Failed to load rule file for content inspection.");
+		}
+
+		assertThat(ruleFileContent).isEqualTo(TEST_UPDATED_RULE_FILE_CONTENT);
+
 	}
 
 	@Test
-	@Ignore
 	public void testUpdateGlobalImportRules() {
-		// TODO
+
+		try {
+			fixture.updateGlobalImportRules(TEST_UPDATED_RULE_FILE_CONTENT);
+		} catch (IOException e) {
+			fail("Failed to update global import rule file");
+		}
+
+		Path ruleFilePath = Paths.get(RuleFileManager.RULES_DIRECTORY, RuleFileManager.DEFAULT_GLOBAL_IMPORT_RULEFILE_NAME);
+
+		String ruleFileContent = "";
+		try {
+			ruleFileContent = loadFileContents(ruleFilePath).trim();
+		} catch (IOException e) {
+			fail("Failed to load rule file for content inspection.");
+		}
+
+		assertThat(ruleFileContent).isEqualTo(TEST_UPDATED_RULE_FILE_CONTENT);
+
 	}
 
 	/**
@@ -209,7 +248,7 @@ public class RuleFileManagerTest {
 		return parsedFile.toString();
 	}
 
-	private static void createTestDirectories() {
+	private void createTestDirectories() {
 		try {
 			Files.createDirectory(Paths.get(RuleFileManager.RULES_DIRECTORY));
 			Files.createDirectory(Paths.get(RuleFileManager.DESTINATIONS_RULES_DIRECTORY));
@@ -218,7 +257,7 @@ public class RuleFileManagerTest {
 		}
 	}
 
-	private static void createTestFiles() {
+	private void createTestArtifacts() {
 		Path globalExportRuleFilePath = Paths.get(RuleFileManager.RULES_DIRECTORY, RuleFileManager.DEFAULT_GLOBAL_EXPORT_RULEFILE_NAME);
 		Path globalImportRuleFilePath = Paths.get(RuleFileManager.RULES_DIRECTORY, RuleFileManager.DEFAULT_GLOBAL_IMPORT_RULEFILE_NAME);
 
@@ -229,9 +268,14 @@ public class RuleFileManagerTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		Destination destination = new Destination(DestinationTest.TEST_EXISTING_DESTINATION_ID,
+				DestinationTest.TEST_EXISTING_DESTINATION_NAME,
+				DestinationTest.TEST_EXISTING_DESTINATION_URL);
+		destination.save();
 	}
 
-	private static void destroyTestDirectories() {
+	private void destroyTestDirectories() {
 		try {
 			FileUtils.deleteDirectory(new File(RuleFileManager.RULES_DIRECTORY));
 			FileUtils.deleteDirectory(new File(RuleFileManager.DESTINATIONS_RULES_DIRECTORY));
