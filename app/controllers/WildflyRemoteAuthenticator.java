@@ -1,8 +1,5 @@
 package controllers;
 
-import com.surevine.gateway.auditing.AuditService;
-import com.surevine.gateway.auditing.GatewayAction;
-import com.surevine.gateway.auditing.LogfileAuditServiceImpl;
 import com.surevine.gateway.auth.AuthServiceProxy;
 import com.surevine.gateway.auth.AuthServiceProxyException;
 import com.surevine.gateway.auth.WildflyAuthServiceProxy;

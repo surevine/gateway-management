@@ -112,7 +112,7 @@ public class SharingPartnerships extends Controller {
     		destination.removeProject(project);
 
     		auditService.audit(GatewayAction.UNSHARE_REPOSITORY, session().get("username"),
-    							String.format("Unshared repository %s with destination %s", project.displayName, destination.name));
+    							String.format("Unshared repository '%s' with destination '%s'", project.displayName, destination.name));
 
 	    	switch(source) {
 		    	case "destination":
@@ -161,7 +161,7 @@ public class SharingPartnerships extends Controller {
     	}
 
     	auditService.audit(GatewayAction.RESEND_REPOSITORY, session().get("username"),
-    			String.format("Manually resent shared repository %s with destination %s", project.displayName, destination.name));
+    			String.format("Manually resent shared repository '%s' with destination '%s'", project.displayName, destination.name));
 
         return ok("Resent project to destination.");
 	}
@@ -178,7 +178,7 @@ public class SharingPartnerships extends Controller {
 		for(Project project: projects) {
 			destination.addProject(project);
     		auditService.audit(GatewayAction.SHARE_REPOSITORY, session().get("username"),
-					String.format("Shared repository %s with destination %s", project.displayName, destination.name));
+					String.format("Shared repository '%s' with destination '%s'", project.displayName, destination.name));
 		}
 	}
 
@@ -194,7 +194,7 @@ public class SharingPartnerships extends Controller {
     	for(Destination destination: destinations) {
     		project.addDestination(destination);
     		auditService.audit(GatewayAction.SHARE_REPOSITORY, session().get("username"),
-					String.format("Shared repository %s with destination %s", project.displayName, destination.name));
+					String.format("Shared repository '%s' with destination '%s'", project.displayName, destination.name));
     	}
 	}
 

@@ -3,6 +3,10 @@ package controllers;
 import java.io.IOException;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import com.surevine.gateway.auditing.AuditService;
+import com.surevine.gateway.auditing.GatewayAction;
 import com.surevine.gateway.rules.RuleFileManager;
 
 import models.Destination;
@@ -14,6 +18,9 @@ import play.mvc.Controller;
 import play.mvc.Result;
 
 public class Destinations extends Controller {
+
+    @Inject
+    private AuditService auditService;
 
 	/**
 	 * Display list of all destinations
@@ -91,7 +98,7 @@ public class Destinations extends Controller {
     /**
      * Handle the 'new destination' form submission
      */
-    public static Result create() {
+    public Result create() {
 
     	Form<Destination> destinationForm = Form.form(Destination.class).bindFromRequest();
 
@@ -99,7 +106,11 @@ public class Destinations extends Controller {
             return badRequest(views.html.destinations.add.render(destinationForm));
         }
 
-    	destinationForm.get().save();
+    	Destination destination = destinationForm.get();
+    	destination.save();
+
+    	auditService.audit(GatewayAction.CREATE_DESTINATION, session().get("username"),
+    			String.format("Created destination '%s'", destination.name));
 
     	flash("success", "Created destination.");
     	return redirect(routes.Destinations.view(destinationForm.get().id));
@@ -112,7 +123,7 @@ public class Destinations extends Controller {
      * @param id Id of destination to update
      * @return
      */
-    public static Result update(Long id) {
+    public Result update(Long id) {
 
     	Destination destination = Destination.find.byId(id);
     	if(destination == null) {
@@ -125,7 +136,11 @@ public class Destinations extends Controller {
             return badRequest(views.html.destinations.edit.render(id, destinationForm));
         }
 
-    	destinationForm.get().update(id);
+    	destination = destinationForm.get();
+    	destination.update(id);
+
+    	auditService.audit(GatewayAction.MODIFY_DESTINATION, session().get("username"),
+    			String.format("Modified destination '%s'", destination.name));
 
     	flash("success", "Updated destination.");
     	return redirect(routes.Destinations.view(id));
@@ -137,7 +152,7 @@ public class Destinations extends Controller {
      *
      * @param id Id of the destination to delete
      */
-    public static Result delete(Long id) {
+    public Result delete(Long id) {
 
     	Destination destination = Destination.find.byId(id);
     	if(destination == null) {
@@ -145,6 +160,9 @@ public class Destinations extends Controller {
     	}
 
     	destination.delete();
+
+    	auditService.audit(GatewayAction.DELETE_DESTINATION, session().get("username"),
+    			String.format("Deleted destination '%s'", destination.name));
 
     	flash("success", "Deleted destination.");
     	return redirect(routes.Destinations.list());
@@ -192,7 +210,7 @@ public class Destinations extends Controller {
 
     }
 
-    public static Result updateRules(Long destinationId) {
+    public Result updateRules(Long destinationId) {
 
     	DynamicForm requestData = Form.form().bindFromRequest();
     	Destination destination = Destination.find.byId(destinationId);
@@ -208,6 +226,9 @@ public class Destinations extends Controller {
 			flash("error", "Could not update destination rules. " + e.getMessage());
 			return redirect(routes.Destinations.view(destinationId));
 		}
+
+    	auditService.audit(GatewayAction.MODIFY_DESTINATION_RULES, session().get("username"),
+    			String.format("Modified the export rule for destination '%s'", destination.name));
 
     	flash("success", "Updated destination rules.");
     	return redirect(routes.Destinations.view(destinationId));
