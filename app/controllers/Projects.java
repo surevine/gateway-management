@@ -1,11 +1,12 @@
 package controllers;
 
-import java.io.IOException;
 import java.util.List;
 
-import com.avaje.ebean.Expr;
+import javax.inject.Inject;
 
-import models.Destination;
+import com.surevine.gateway.auditing.AuditService;
+import com.surevine.gateway.auditing.GatewayAction;
+
 import models.Project;
 import play.data.DynamicForm;
 import play.data.Form;
@@ -13,6 +14,9 @@ import play.mvc.Controller;
 import play.mvc.Result;
 
 public class Projects extends Controller {
+
+    @Inject
+    private AuditService auditService;
 
 	/**
 	 * Display list of all projects
@@ -60,7 +64,7 @@ public class Projects extends Controller {
     /**
      * Handle the 'new project' form submission
      */
-    public static Result create() {
+    public Result create() {
 
     	Form<Project> projectForm = Form.form(Project.class).bindFromRequest();
 
@@ -68,7 +72,11 @@ public class Projects extends Controller {
             return badRequest(views.html.projects.add.render(projectForm));
         }
 
-    	projectForm.get().save();
+    	Project project = projectForm.get();
+    	project.save();
+
+    	auditService.audit(GatewayAction.CREATE_REPO, session().get("username"),
+    			String.format("Created repository '%s/%s'", project.projectKey, project.repositorySlug));
 
     	flash("success", "Project created successfully.");
     	return redirect(routes.Projects.view(projectForm.get().id));
@@ -101,7 +109,7 @@ public class Projects extends Controller {
      * @param id Id of project to update
      * @return
      */
-    public static Result update(Long id) {
+    public Result update(Long id) {
 
     	Project project = Project.find.byId(id);
     	if(project == null) {
@@ -114,7 +122,11 @@ public class Projects extends Controller {
             return badRequest(views.html.projects.edit.render(id, projectForm));
         }
 
-    	projectForm.get().update(id);
+    	project = projectForm.get();
+    	project.update(id);
+
+    	auditService.audit(GatewayAction.MODIFY_REPO, session().get("username"),
+    			String.format("Modified repository '%s/%s'", project.projectKey, project.repositorySlug));
 
     	flash("success", "Project updated successfully.");
     	return redirect(routes.Projects.view(id));
@@ -126,7 +138,7 @@ public class Projects extends Controller {
      *
      * @param id Id of the project to delete
      */
-    public static Result delete(Long id) {
+    public Result delete(Long id) {
 
     	Project project = Project.find.byId(id);
     	if(project == null) {
@@ -134,6 +146,9 @@ public class Projects extends Controller {
     	}
 
     	project.delete();
+
+    	auditService.audit(GatewayAction.DELETE_REPO, session().get("username"),
+    			String.format("Deleted repository '%s/%s'", project.projectKey, project.repositorySlug));
 
     	flash("success", "Project deleted successfully.");
     	return redirect(routes.Projects.list());

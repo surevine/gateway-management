@@ -49,14 +49,14 @@ GET		/projects/view/:id				controllers.Projects.view(id: Long)
 
 # Add a project
 GET		/projects/add					controllers.Projects.add()
-POST	/projects/add					controllers.Projects.create()
+POST	/projects/add					@controllers.Projects.create()
 
 # Edit existing project
 GET		/projects/edit/:id				controllers.Projects.edit(id: Long)
-POST	/projects/edit/:id				controllers.Projects.update(id: Long)
+POST	/projects/edit/:id				@controllers.Projects.update(id: Long)
 
 # Delete project
-POST	/projects/delete/:id			controllers.Projects.delete(id: Long)
+POST	/projects/delete/:id			@controllers.Projects.delete(id: Long)
 
 # Share project with destinations
 GET		/projects/:id/shareproject		controllers.Projects.shareProjectPage(id: Long)
