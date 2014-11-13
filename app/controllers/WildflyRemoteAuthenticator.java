@@ -1,5 +1,8 @@
 package controllers;
 
+import com.surevine.gateway.auditing.AuditService;
+import com.surevine.gateway.auditing.GatewayAction;
+import com.surevine.gateway.auditing.LogfileAuditServiceImpl;
 import com.surevine.gateway.auth.AuthServiceProxy;
 import com.surevine.gateway.auth.AuthServiceProxyException;
 import com.surevine.gateway.auth.WildflyAuthServiceProxy;
@@ -46,6 +49,10 @@ public class WildflyRemoteAuthenticator extends Security.Authenticator {
 			if(authenticatedUser != null) {
 				// Store authenticated username in session for future requests
 				ctx.session().put("username", authenticatedUser);
+
+				// Audit login
+				//LogfileAuditServiceImpl.getInstance().audit(GatewayAction.USER_LOG_IN, authenticatedUser, "User logged in.");
+
 				return authenticatedUser;
 			}
 		}
