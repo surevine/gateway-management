@@ -2,8 +2,12 @@ package controllers;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
+
 import models.Destination;
 
+import com.surevine.gateway.auditing.AuditService;
+import com.surevine.gateway.auditing.GatewayAction;
 import com.surevine.gateway.rules.RuleFileManager;
 
 import play.data.DynamicForm;
@@ -12,6 +16,9 @@ import play.mvc.Controller;
 import play.mvc.Result;
 
 public class GlobalRuleFiles extends Controller {
+
+    @Inject
+    private AuditService auditService;
 
 	public static Result edit(String slug) {
 
@@ -40,7 +47,7 @@ public class GlobalRuleFiles extends Controller {
 
 	}
 
-	public static Result update(String slug) {
+	public Result update(String slug) {
 
 		DynamicForm requestData = Form.form().bindFromRequest();
 		String newRuleFileContent = requestData.get("ruleFileContent");
@@ -62,6 +69,9 @@ public class GlobalRuleFiles extends Controller {
 			flash("error", "Could not update global rules. " + e.getMessage());
 			return redirect(routes.GlobalRuleFiles.view());
 		}
+
+    	auditService.audit(GatewayAction.MODIFY_GLOBAL_RULES, session().get("username"),
+    			String.format("Modified global %s rules", slug));
 
     	flash("success", String.format("Updated global %s rules.", slug));
     	return redirect(routes.GlobalRuleFiles.view());

@@ -85,7 +85,7 @@ GET		/global-rules					controllers.GlobalRuleFiles.view()
 
 # Edit gloal rule files
 GET		/global-rules/edit/:slug		controllers.GlobalRuleFiles.edit(slug: String)
-POST	/global-rules/edit/:slug		controllers.GlobalRuleFiles.update(slug: String)
+POST	/global-rules/edit/:slug		@controllers.GlobalRuleFiles.update(slug: String)
 
 
 #
