@@ -17,8 +17,6 @@ libraryDependencies += "commons-io" % "commons-io" % "2.4"
 
 libraryDependencies += "postgresql" % "postgresql" % "9.1-901-1.jdbc4"
 
-libraryDependencies += "com.google.inject" % "guice" % "3.0"
-
 javaOptions in Test += "-Dconfig.file=conf/application.test.conf"
 
 javaOptions += "-Dconfig.file=conf/application.db.conf"
