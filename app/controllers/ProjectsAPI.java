@@ -28,4 +28,18 @@ public class ProjectsAPI extends Controller {
     	return ok(Json.toJson(projects));
     }
 
+    /**
+     * Returns JSON representation of single project
+     *
+     * @param id Id of project to return
+     * @return
+     */
+    public Result view(Long id) {
+    	Project project = Project.find.byId(id);
+    	if(project == null) {
+    		return notFound("Project not found.");
+    	}
+    	return ok(Json.toJson(project));
+    }
+
 }
