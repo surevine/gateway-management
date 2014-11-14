@@ -7,6 +7,7 @@ import static play.test.Helpers.*;
 import models.Project;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import play.mvc.Result;
@@ -48,6 +49,18 @@ public class ViewProjectsControllerTest extends ProjectTest {
 		Result result = callAction(controllers.routes.ref.Projects.view(TEST_NON_EXISTING_PROJECT_ID), request);
 
 		assertThat(status(result)).isEqualTo(NOT_FOUND);
+	}
+
+	@Test
+	@Ignore
+	public void testViewProjectAPI() {
+		// TODO
+	}
+
+	@Test
+	@Ignore
+	public void testNonExistingProjectAPI() {
+		// TODO
 	}
 
 }
