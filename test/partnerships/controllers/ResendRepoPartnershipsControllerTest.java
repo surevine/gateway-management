@@ -25,6 +25,8 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import play.api.test.Helpers;
+import play.mvc.HandlerRef;
 import play.mvc.Result;
 import play.test.FakeApplication;
 import play.test.FakeRequest;
@@ -33,6 +35,7 @@ import projects.ProjectTest;
 import com.surevine.gateway.scm.service.SCMFederatorServiceException;
 import com.surevine.gateway.scm.service.SCMFederatorServiceFacade;
 
+import controllers.AuditedController;
 import controllers.SharingPartnerships;
 import destinations.DestinationTest;
 
@@ -88,7 +91,7 @@ public class ResendRepoPartnershipsControllerTest {
 			fail();
 		}
 
-		SharingPartnerships.scmFederator = mockSCMService;
+		SharingPartnerships.setSCMFederator(mockSCMService);
 
 		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
 		Project project = Project.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);

@@ -19,7 +19,7 @@ public class SharingPartnerships extends AuditedController {
     /**
      * Service facade for interaction with SCM federator component
      */
-    private SCMFederatorServiceFacade scmFederator = SCMFederatorServiceFacade.getInstance();
+    private static SCMFederatorServiceFacade scmFederator = SCMFederatorServiceFacade.getInstance();
 
 	/**
 	 * Share source code project with a destination (and vice-versa)
@@ -187,6 +187,10 @@ public class SharingPartnerships extends AuditedController {
     		audit(GatewayAction.SHARE_REPOSITORY,
 					String.format("Shared repository '%s' with destination '%s'", project.displayName, destination.name));
     	}
+	}
+
+	public static void setSCMFederator(SCMFederatorServiceFacade scmFederator)	{
+		SharingPartnerships.scmFederator = scmFederator;
 	}
 
 }
