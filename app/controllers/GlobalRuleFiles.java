@@ -2,18 +2,16 @@ package controllers;
 
 import java.io.IOException;
 
-import models.Destination;
-
+import com.surevine.gateway.auditing.GatewayAction;
 import com.surevine.gateway.rules.RuleFileManager;
 
 import play.data.DynamicForm;
 import play.data.Form;
-import play.mvc.Controller;
 import play.mvc.Result;
 
-public class GlobalRuleFiles extends Controller {
+public class GlobalRuleFiles extends AuditedController {
 
-	public static Result edit(String slug) {
+	public Result edit(String slug) {
 
 		String ruleFileContents = "";
 
@@ -40,7 +38,7 @@ public class GlobalRuleFiles extends Controller {
 
 	}
 
-	public static Result update(String slug) {
+	public Result update(String slug) {
 
 		DynamicForm requestData = Form.form().bindFromRequest();
 		String newRuleFileContent = requestData.get("ruleFileContent");
@@ -63,12 +61,14 @@ public class GlobalRuleFiles extends Controller {
 			return redirect(routes.GlobalRuleFiles.view());
 		}
 
+    	audit(GatewayAction.MODIFY_GLOBAL_RULES, String.format("Modified global %s rules", slug));
+
     	flash("success", String.format("Updated global %s rules.", slug));
     	return redirect(routes.GlobalRuleFiles.view());
 
 	}
 
-	public static Result view() {
+	public Result view() {
 
 		String exportRules = "";
 		String importRules = "";

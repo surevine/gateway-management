@@ -1,5 +1,10 @@
 package controllers;
 
+import java.util.Calendar;
+
+import com.surevine.gateway.auditing.AuditService;
+import com.surevine.gateway.auditing.GatewayAction;
+import com.surevine.gateway.auditing.LogfileAuditServiceImpl;
 import com.surevine.gateway.auth.AuthServiceProxy;
 import com.surevine.gateway.auth.AuthServiceProxyException;
 import com.surevine.gateway.auth.WildflyAuthServiceProxy;
@@ -16,12 +21,14 @@ import play.mvc.Security;
  * @author jonnyheavey
  *
  */
-public class WildflyRemoteAuthenticator extends Security.Authenticator {
+public class RemoteAuthenticator extends Security.Authenticator {
 
 	private AuthServiceProxy authServiceProxy;
+	private AuditService auditService;
 
-	public WildflyRemoteAuthenticator() {
+	public RemoteAuthenticator() {
 		this.authServiceProxy = WildflyAuthServiceProxy.getInstance();
+		this.auditService = LogfileAuditServiceImpl.getInstance();
 	}
 
 	/**
@@ -46,6 +53,10 @@ public class WildflyRemoteAuthenticator extends Security.Authenticator {
 			if(authenticatedUser != null) {
 				// Store authenticated username in session for future requests
 				ctx.session().put("username", authenticatedUser);
+
+				// Audit login
+				auditService.audit(GatewayAction.USER_LOG_IN, Calendar.getInstance().getTime(), authenticatedUser, "User logged in.");
+
 				return authenticatedUser;
 			}
 		}

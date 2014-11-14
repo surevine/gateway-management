@@ -1,25 +1,22 @@
 package controllers;
 
-import java.io.IOException;
 import java.util.List;
 
-import com.avaje.ebean.Expr;
+import com.surevine.gateway.auditing.GatewayAction;
 
-import models.Destination;
 import models.Project;
 import play.data.DynamicForm;
 import play.data.Form;
-import play.mvc.Controller;
 import play.mvc.Result;
 
-public class Projects extends Controller {
+public class Projects extends AuditedController {
 
 	/**
 	 * Display list of all projects
 	 *
 	 * @return
 	 */
-	public static Result list() {
+	public Result list() {
 
 		List<Project> projects = Project.find.all();
 
@@ -33,7 +30,7 @@ public class Projects extends Controller {
      * @param id Id of project to display
      * @return
      */
-    public static Result view(Long id) {
+    public Result view(Long id) {
 
     	Project project = Project.find.byId(id);
 
@@ -50,7 +47,7 @@ public class Projects extends Controller {
      *
      * @return
      */
-    public static Result add() {
+    public Result add() {
 
     	Form<Project> projectForm = Form.form(Project.class);
 
@@ -60,7 +57,7 @@ public class Projects extends Controller {
     /**
      * Handle the 'new project' form submission
      */
-    public static Result create() {
+    public Result create() {
 
     	Form<Project> projectForm = Form.form(Project.class).bindFromRequest();
 
@@ -68,7 +65,10 @@ public class Projects extends Controller {
             return badRequest(views.html.projects.add.render(projectForm));
         }
 
-    	projectForm.get().save();
+    	Project project = projectForm.get();
+    	project.save();
+
+    	audit(GatewayAction.CREATE_REPO, String.format("Created repository '%s/%s'", project.projectKey, project.repositorySlug));
 
     	flash("success", "Project created successfully.");
     	return redirect(routes.Projects.view(projectForm.get().id));
@@ -81,7 +81,7 @@ public class Projects extends Controller {
      * @param id Id of project to edit
      * @return
      */
-    public static Result edit(Long id) {
+    public Result edit(Long id) {
 
     	Project project = Project.find.byId(id);
 
@@ -101,7 +101,7 @@ public class Projects extends Controller {
      * @param id Id of project to update
      * @return
      */
-    public static Result update(Long id) {
+    public Result update(Long id) {
 
     	Project project = Project.find.byId(id);
     	if(project == null) {
@@ -114,7 +114,10 @@ public class Projects extends Controller {
             return badRequest(views.html.projects.edit.render(id, projectForm));
         }
 
-    	projectForm.get().update(id);
+    	project = projectForm.get();
+    	project.update(id);
+
+    	audit(GatewayAction.MODIFY_REPO, String.format("Modified repository '%s/%s'", project.projectKey, project.repositorySlug));
 
     	flash("success", "Project updated successfully.");
     	return redirect(routes.Projects.view(id));
@@ -126,7 +129,7 @@ public class Projects extends Controller {
      *
      * @param id Id of the project to delete
      */
-    public static Result delete(Long id) {
+    public Result delete(Long id) {
 
     	Project project = Project.find.byId(id);
     	if(project == null) {
@@ -134,6 +137,8 @@ public class Projects extends Controller {
     	}
 
     	project.delete();
+
+    	audit(GatewayAction.DELETE_REPO, String.format("Deleted repository '%s/%s'", project.projectKey, project.repositorySlug));
 
     	flash("success", "Project deleted successfully.");
     	return redirect(routes.Projects.list());
@@ -145,7 +150,7 @@ public class Projects extends Controller {
      * @param projectId Id of project
      * @return
      */
-    public static Result shareProjectPage(Long projectId) {
+    public Result shareProjectPage(Long projectId) {
 
     	Project project = Project.find.byId(projectId);
 

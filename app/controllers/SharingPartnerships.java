@@ -4,30 +4,29 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.surevine.gateway.auditing.GatewayAction;
 import com.surevine.gateway.scm.service.SCMFederatorServiceException;
 import com.surevine.gateway.scm.service.SCMFederatorServiceFacade;
 
 import models.Destination;
 import models.Project;
-import play.Logger;
 import play.data.DynamicForm;
 import play.data.Form;
-import play.mvc.Controller;
 import play.mvc.Result;
 
-public class SharingPartnerships extends Controller {
+public class SharingPartnerships extends AuditedController {
 
     /**
      * Service facade for interaction with SCM federator component
      */
-    public static SCMFederatorServiceFacade scmFederator = SCMFederatorServiceFacade.getInstance();
+    private static SCMFederatorServiceFacade scmFederator = SCMFederatorServiceFacade.getInstance();
 
 	/**
 	 * Share source code project with a destination (and vice-versa)
 	 *
 	 * @return
 	 */
-	public static Result create() {
+	public Result create() {
 
 		DynamicForm requestData = Form.form().bindFromRequest();
 		String source = requestData.get("source");
@@ -81,7 +80,7 @@ public class SharingPartnerships extends Controller {
 	 *
 	 * @return
 	 */
-	public static Result delete() {
+	public Result delete() {
 
 		DynamicForm requestData = Form.form().bindFromRequest();
 
@@ -103,6 +102,9 @@ public class SharingPartnerships extends Controller {
 
     		destination.removeProject(project);
 
+    		audit(GatewayAction.UNSHARE_REPOSITORY,
+    				String.format("Unshared repository '%s' with destination '%s'", project.displayName, destination.name));
+
 	    	switch(source) {
 		    	case "destination":
 		    		return redirect(routes.Destinations.view(destination.id));
@@ -122,7 +124,7 @@ public class SharingPartnerships extends Controller {
 	 * Triggers ad-hoc re-send of repository to destination across gateway
 	 * @return
 	 */
-	public static Result resend() {
+	public Result resend() {
 
 		DynamicForm requestData = Form.form().bindFromRequest();
 
@@ -149,6 +151,9 @@ public class SharingPartnerships extends Controller {
     		return internalServerError("Failed to resend project to destination.");
     	}
 
+    	audit(GatewayAction.RESEND_REPOSITORY,
+    			String.format("Manually resent shared repository '%s' with destination '%s'", project.displayName, destination.name));
+
         return ok("Resent project to destination.");
 	}
 
@@ -157,12 +162,14 @@ public class SharingPartnerships extends Controller {
 	 * @param destination Destination to share projects with
 	 * @param projectIds array of Project ids to share
 	 */
-	private static void addProjectsToDestination(Destination destination, String[] projectIds) {
+	private void addProjectsToDestination(Destination destination, String[] projectIds) {
 		List<String> selectedProjects = Arrays.asList(projectIds);
 		List<Project> projects = Project.find.where().idIn(selectedProjects).findList();
 
 		for(Project project: projects) {
 			destination.addProject(project);
+    		audit(GatewayAction.SHARE_REPOSITORY,
+					String.format("Shared repository '%s' with destination '%s'", project.displayName, destination.name));
 		}
 	}
 
@@ -171,13 +178,19 @@ public class SharingPartnerships extends Controller {
 	 * @param project Project to share
 	 * @param destinationIds array of Destination ids to share
 	 */
-	private static void addDestinationsToProject(Project project, String[] destinationIds) {
+	private void addDestinationsToProject(Project project, String[] destinationIds) {
     	List<String> selectedDestinations = Arrays.asList(destinationIds);
     	List<Destination> destinations = Destination.find.where().idIn(selectedDestinations).findList();
 
     	for(Destination destination: destinations) {
     		project.addDestination(destination);
+    		audit(GatewayAction.SHARE_REPOSITORY,
+					String.format("Shared repository '%s' with destination '%s'", project.displayName, destination.name));
     	}
+	}
+
+	public static void setSCMFederator(SCMFederatorServiceFacade scmFederator)	{
+		SharingPartnerships.scmFederator = scmFederator;
 	}
 
 }
