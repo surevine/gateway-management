@@ -102,8 +102,8 @@ public class SharingPartnerships extends AuditedController {
 
     		destination.removeProject(project);
 
-    		auditService.audit(GatewayAction.UNSHARE_REPOSITORY, session().get("username"),
-    							String.format("Unshared repository '%s' with destination '%s'", project.displayName, destination.name));
+    		audit(GatewayAction.UNSHARE_REPOSITORY,
+    				String.format("Unshared repository '%s' with destination '%s'", project.displayName, destination.name));
 
 	    	switch(source) {
 		    	case "destination":
@@ -151,7 +151,7 @@ public class SharingPartnerships extends AuditedController {
     		return internalServerError("Failed to resend project to destination.");
     	}
 
-    	auditService.audit(GatewayAction.RESEND_REPOSITORY, session().get("username"),
+    	audit(GatewayAction.RESEND_REPOSITORY,
     			String.format("Manually resent shared repository '%s' with destination '%s'", project.displayName, destination.name));
 
         return ok("Resent project to destination.");
@@ -168,7 +168,7 @@ public class SharingPartnerships extends AuditedController {
 
 		for(Project project: projects) {
 			destination.addProject(project);
-    		auditService.audit(GatewayAction.SHARE_REPOSITORY, session().get("username"),
+    		audit(GatewayAction.SHARE_REPOSITORY,
 					String.format("Shared repository '%s' with destination '%s'", project.displayName, destination.name));
 		}
 	}
@@ -184,7 +184,7 @@ public class SharingPartnerships extends AuditedController {
 
     	for(Destination destination: destinations) {
     		project.addDestination(destination);
-    		auditService.audit(GatewayAction.SHARE_REPOSITORY, session().get("username"),
+    		audit(GatewayAction.SHARE_REPOSITORY,
 					String.format("Shared repository '%s' with destination '%s'", project.displayName, destination.name));
     	}
 	}

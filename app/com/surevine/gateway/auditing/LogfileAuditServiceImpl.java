@@ -1,5 +1,9 @@
 package com.surevine.gateway.auditing;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import play.Logger;
 
 /**
@@ -13,8 +17,10 @@ public class LogfileAuditServiceImpl implements AuditService {
 
 	private static LogfileAuditServiceImpl _instance;
 
-	private LogfileAuditServiceImpl() {
+	private SimpleDateFormat dateFormat;
 
+	private LogfileAuditServiceImpl() {
+		dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	}
 
 	public static LogfileAuditServiceImpl getInstance() {
@@ -25,9 +31,8 @@ public class LogfileAuditServiceImpl implements AuditService {
 	}
 
 	@Override
-	public void audit(GatewayAction action, String username, String message) {
-		// TODO include datetime
-		Logger.info(String.format("[%s][%s] %s", action, username, message));
+	public void audit(GatewayAction action, Date datetime, String username, String message) {
+		Logger.info(String.format("[%s][%s][%s] %s", dateFormat.format(datetime), action, username, message));
 	}
 
 }

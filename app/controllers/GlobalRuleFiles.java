@@ -61,8 +61,7 @@ public class GlobalRuleFiles extends AuditedController {
 			return redirect(routes.GlobalRuleFiles.view());
 		}
 
-    	auditService.audit(GatewayAction.MODIFY_GLOBAL_RULES, session().get("username"),
-    			String.format("Modified global %s rules", slug));
+    	audit(GatewayAction.MODIFY_GLOBAL_RULES, String.format("Modified global %s rules", slug));
 
     	flash("success", String.format("Updated global %s rules.", slug));
     	return redirect(routes.GlobalRuleFiles.view());

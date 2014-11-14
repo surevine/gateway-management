@@ -99,8 +99,7 @@ public class Destinations extends AuditedController {
     	Destination destination = destinationForm.get();
     	destination.save();
 
-    	auditService.audit(GatewayAction.CREATE_DESTINATION, session().get("username"),
-    			String.format("Created destination '%s'", destination.name));
+    	audit(GatewayAction.CREATE_DESTINATION, String.format("Created destination '%s'", destination.name));
 
     	flash("success", "Created destination.");
     	return redirect(routes.Destinations.view(destinationForm.get().id));
@@ -129,8 +128,7 @@ public class Destinations extends AuditedController {
     	destination = destinationForm.get();
     	destination.update(id);
 
-    	auditService.audit(GatewayAction.MODIFY_DESTINATION, session().get("username"),
-    			String.format("Modified destination '%s'", destination.name));
+    	audit(GatewayAction.MODIFY_DESTINATION, String.format("Modified destination '%s'", destination.name));
 
     	flash("success", "Updated destination.");
     	return redirect(routes.Destinations.view(id));
@@ -151,8 +149,7 @@ public class Destinations extends AuditedController {
 
     	destination.delete();
 
-    	auditService.audit(GatewayAction.DELETE_DESTINATION, session().get("username"),
-    			String.format("Deleted destination '%s'", destination.name));
+    	audit(GatewayAction.DELETE_DESTINATION, String.format("Deleted destination '%s'", destination.name));
 
     	flash("success", "Deleted destination.");
     	return redirect(routes.Destinations.list());
@@ -217,8 +214,7 @@ public class Destinations extends AuditedController {
 			return redirect(routes.Destinations.view(destinationId));
 		}
 
-    	auditService.audit(GatewayAction.MODIFY_DESTINATION_RULES, session().get("username"),
-    			String.format("Modified the export rule for destination '%s'", destination.name));
+    	audit(GatewayAction.MODIFY_DESTINATION_RULES, String.format("Modified the export rule for destination '%s'", destination.name));
 
     	flash("success", "Updated destination rules.");
     	return redirect(routes.Destinations.view(destinationId));

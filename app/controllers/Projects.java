@@ -68,8 +68,7 @@ public class Projects extends AuditedController {
     	Project project = projectForm.get();
     	project.save();
 
-    	auditService.audit(GatewayAction.CREATE_REPO, session().get("username"),
-    			String.format("Created repository '%s/%s'", project.projectKey, project.repositorySlug));
+    	audit(GatewayAction.CREATE_REPO, String.format("Created repository '%s/%s'", project.projectKey, project.repositorySlug));
 
     	flash("success", "Project created successfully.");
     	return redirect(routes.Projects.view(projectForm.get().id));
@@ -118,8 +117,7 @@ public class Projects extends AuditedController {
     	project = projectForm.get();
     	project.update(id);
 
-    	auditService.audit(GatewayAction.MODIFY_REPO, session().get("username"),
-    			String.format("Modified repository '%s/%s'", project.projectKey, project.repositorySlug));
+    	audit(GatewayAction.MODIFY_REPO, String.format("Modified repository '%s/%s'", project.projectKey, project.repositorySlug));
 
     	flash("success", "Project updated successfully.");
     	return redirect(routes.Projects.view(id));
@@ -140,8 +138,7 @@ public class Projects extends AuditedController {
 
     	project.delete();
 
-    	auditService.audit(GatewayAction.DELETE_REPO, session().get("username"),
-    			String.format("Deleted repository '%s/%s'", project.projectKey, project.repositorySlug));
+    	audit(GatewayAction.DELETE_REPO, String.format("Deleted repository '%s/%s'", project.projectKey, project.repositorySlug));
 
     	flash("success", "Project deleted successfully.");
     	return redirect(routes.Projects.list());
