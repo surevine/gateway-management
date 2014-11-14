@@ -2,28 +2,21 @@ package controllers;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
-import com.surevine.gateway.auditing.AuditService;
 import com.surevine.gateway.auditing.GatewayAction;
 
 import models.Project;
 import play.data.DynamicForm;
 import play.data.Form;
-import play.mvc.Controller;
 import play.mvc.Result;
 
-public class Projects extends Controller {
-
-    @Inject
-    private AuditService auditService;
+public class Projects extends AuditedController {
 
 	/**
 	 * Display list of all projects
 	 *
 	 * @return
 	 */
-	public static Result list() {
+	public Result list() {
 
 		List<Project> projects = Project.find.all();
 
@@ -37,7 +30,7 @@ public class Projects extends Controller {
      * @param id Id of project to display
      * @return
      */
-    public static Result view(Long id) {
+    public Result view(Long id) {
 
     	Project project = Project.find.byId(id);
 
@@ -54,7 +47,7 @@ public class Projects extends Controller {
      *
      * @return
      */
-    public static Result add() {
+    public Result add() {
 
     	Form<Project> projectForm = Form.form(Project.class);
 
@@ -89,7 +82,7 @@ public class Projects extends Controller {
      * @param id Id of project to edit
      * @return
      */
-    public static Result edit(Long id) {
+    public Result edit(Long id) {
 
     	Project project = Project.find.byId(id);
 
@@ -160,7 +153,7 @@ public class Projects extends Controller {
      * @param projectId Id of project
      * @return
      */
-    public static Result shareProjectPage(Long projectId) {
+    public Result shareProjectPage(Long projectId) {
 
     	Project project = Project.find.byId(projectId);
 

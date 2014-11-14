@@ -4,31 +4,22 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-
-import com.surevine.gateway.auditing.AuditService;
 import com.surevine.gateway.auditing.GatewayAction;
-import com.surevine.gateway.auditing.LogfileAuditServiceImpl;
 import com.surevine.gateway.scm.service.SCMFederatorServiceException;
 import com.surevine.gateway.scm.service.SCMFederatorServiceFacade;
 
 import models.Destination;
 import models.Project;
-import play.Logger;
 import play.data.DynamicForm;
 import play.data.Form;
-import play.mvc.Controller;
 import play.mvc.Result;
 
-public class SharingPartnerships extends Controller {
+public class SharingPartnerships extends AuditedController {
 
     /**
      * Service facade for interaction with SCM federator component
      */
     private SCMFederatorServiceFacade scmFederator = SCMFederatorServiceFacade.getInstance();
-
-    @Inject
-    private AuditService auditService;
 
 	/**
 	 * Share source code project with a destination (and vice-versa)

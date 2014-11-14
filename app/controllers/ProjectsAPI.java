@@ -22,7 +22,7 @@ public class ProjectsAPI extends Controller {
 	 *
 	 * @return
 	 */
-    public static Result list() {
+    public Result list() {
     	List<Destination> destinations = Destination.find.all();
     	List<Project> projects = Project.find.where().in("destinations", destinations).findList();
     	return ok(Json.toJson(projects));

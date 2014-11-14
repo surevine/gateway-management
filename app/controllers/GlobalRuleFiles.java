@@ -2,25 +2,16 @@ package controllers;
 
 import java.io.IOException;
 
-import javax.inject.Inject;
-
-import models.Destination;
-
-import com.surevine.gateway.auditing.AuditService;
 import com.surevine.gateway.auditing.GatewayAction;
 import com.surevine.gateway.rules.RuleFileManager;
 
 import play.data.DynamicForm;
 import play.data.Form;
-import play.mvc.Controller;
 import play.mvc.Result;
 
-public class GlobalRuleFiles extends Controller {
+public class GlobalRuleFiles extends AuditedController {
 
-    @Inject
-    private AuditService auditService;
-
-	public static Result edit(String slug) {
+	public Result edit(String slug) {
 
 		String ruleFileContents = "";
 
@@ -78,7 +69,7 @@ public class GlobalRuleFiles extends Controller {
 
 	}
 
-	public static Result view() {
+	public Result view() {
 
 		String exportRules = "";
 		String importRules = "";

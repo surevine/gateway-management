@@ -3,7 +3,7 @@
 # ~~~~
 
 # Dashboard
-GET     /                           	controllers.Application.index()
+GET     /                           	@controllers.Application.index()
 
 
 #
@@ -11,28 +11,28 @@ GET     /                           	controllers.Application.index()
 #
 
 # Destinations list
-GET		/destinations					controllers.Destinations.list()
-GET		/api/destinations				controllers.DestinationsAPI.list()
+GET		/destinations					@controllers.Destinations.list()
+GET		/api/destinations				@controllers.DestinationsAPI.list()
 
 # View destination
-GET		/destinations/:id/view			controllers.Destinations.view(id: Long)
+GET		/destinations/:id/view			@controllers.Destinations.view(id: Long)
 
 # Add a destination
-GET		/destinations/add				controllers.Destinations.add()
+GET		/destinations/add				@controllers.Destinations.add()
 POST	/destinations/add				@controllers.Destinations.create()
 
 # Edit existing destination
-GET		/destinations/:id/edit			controllers.Destinations.edit(id: Long)
+GET		/destinations/:id/edit			@controllers.Destinations.edit(id: Long)
 POST	/destinations/:id/edit			@controllers.Destinations.update(id: Long)
 
 # Delete destination
 POST	/destinations/:id/delete		@controllers.Destinations.delete(id: Long)
 
 # Add project to destination
-GET		/destinations/:id/shareprojects	controllers.Destinations.shareProjectPage(id: Long)
+GET		/destinations/:id/shareprojects	@controllers.Destinations.shareProjectPage(id: Long)
 
 # Edit destination rulefile
-GET		/destinations/:id/editrules		controllers.Destinations.editRules(id: Long)
+GET		/destinations/:id/editrules		@controllers.Destinations.editRules(id: Long)
 POST	/destinations/:id/editrules		@controllers.Destinations.updateRules(id: Long)
 
 
@@ -41,25 +41,25 @@ POST	/destinations/:id/editrules		@controllers.Destinations.updateRules(id: Long
 #
 
 # Projects list
-GET		/projects						controllers.Projects.list()
-GET		/api/projects					controllers.ProjectsAPI.list()
+GET		/projects						@controllers.Projects.list()
+GET		/api/projects					@controllers.ProjectsAPI.list()
 
 # View project
-GET		/projects/view/:id				controllers.Projects.view(id: Long)
+GET		/projects/view/:id				@controllers.Projects.view(id: Long)
 
 # Add a project
-GET		/projects/add					controllers.Projects.add()
+GET		/projects/add					@controllers.Projects.add()
 POST	/projects/add					@controllers.Projects.create()
 
 # Edit existing project
-GET		/projects/edit/:id				controllers.Projects.edit(id: Long)
+GET		/projects/edit/:id				@controllers.Projects.edit(id: Long)
 POST	/projects/edit/:id				@controllers.Projects.update(id: Long)
 
 # Delete project
 POST	/projects/delete/:id			@controllers.Projects.delete(id: Long)
 
 # Share project with destinations
-GET		/projects/:id/shareproject		controllers.Projects.shareProjectPage(id: Long)
+GET		/projects/:id/shareproject		@controllers.Projects.shareProjectPage(id: Long)
 
 
 #
@@ -81,10 +81,10 @@ POST	/partnerships/resend			@controllers.SharingPartnerships.resend()
 #
 
 # View global files
-GET		/global-rules					controllers.GlobalRuleFiles.view()
+GET		/global-rules					@controllers.GlobalRuleFiles.view()
 
 # Edit gloal rule files
-GET		/global-rules/edit/:slug		controllers.GlobalRuleFiles.edit(slug: String)
+GET		/global-rules/edit/:slug		@controllers.GlobalRuleFiles.edit(slug: String)
 POST	/global-rules/edit/:slug		@controllers.GlobalRuleFiles.update(slug: String)
 
 

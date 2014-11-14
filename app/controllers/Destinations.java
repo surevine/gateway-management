@@ -3,31 +3,21 @@ package controllers;
 import java.io.IOException;
 import java.util.List;
 
-import javax.inject.Inject;
-
-import com.surevine.gateway.auditing.AuditService;
 import com.surevine.gateway.auditing.GatewayAction;
-import com.surevine.gateway.rules.RuleFileManager;
 
 import models.Destination;
-import models.Project;
-import play.Logger;
 import play.data.DynamicForm;
 import play.data.Form;
-import play.mvc.Controller;
 import play.mvc.Result;
 
-public class Destinations extends Controller {
-
-    @Inject
-    private AuditService auditService;
+public class Destinations extends AuditedController {
 
 	/**
 	 * Display list of all destinations
 	 *
 	 * @return
 	 */
-    public static Result list() {
+    public Result list() {
 
     	List<Destination> destinations = Destination.find.all();
 
@@ -41,7 +31,7 @@ public class Destinations extends Controller {
      * @param id Id of destination to display
      * @return
      */
-    public static Result view(Long id) {
+    public Result view(Long id) {
 
     	Destination destination = Destination.find.byId(id);
 
@@ -67,7 +57,7 @@ public class Destinations extends Controller {
      *
      * @return
      */
-    public static Result add() {
+    public Result add() {
 
     	Form<Destination> destinationForm = Form.form(Destination.class);
 
@@ -81,7 +71,7 @@ public class Destinations extends Controller {
      * @param id Id of destination to edit
      * @return
      */
-    public static Result edit(Long id) {
+    public Result edit(Long id) {
 
     	Destination destination = Destination.find.byId(id);
 
@@ -174,7 +164,7 @@ public class Destinations extends Controller {
      * @param destinationId Id of destination
      * @return
      */
-    public static Result shareProjectPage(Long destinationId) {
+    public Result shareProjectPage(Long destinationId) {
 
     	Destination destination = Destination.find.byId(destinationId);
 
@@ -188,7 +178,7 @@ public class Destinations extends Controller {
 
     }
 
-    public static Result editRules(Long destinationId) {
+    public Result editRules(Long destinationId) {
 
     	Destination destination = Destination.find.byId(destinationId);
 

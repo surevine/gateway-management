@@ -1,7 +1,5 @@
 package com.surevine.gateway.auditing;
 
-import javax.inject.Singleton;
-
 import play.Logger;
 
 /**
@@ -11,11 +9,24 @@ import play.Logger;
  * @author jonnyheavey
  *
  */
-@Singleton
 public class LogfileAuditServiceImpl implements AuditService {
+
+	private static LogfileAuditServiceImpl _instance;
+
+	private LogfileAuditServiceImpl() {
+
+	}
+
+	public static LogfileAuditServiceImpl getInstance() {
+		if(_instance == null) {
+			_instance = new LogfileAuditServiceImpl();
+		}
+		return _instance;
+	}
 
 	@Override
 	public void audit(GatewayAction action, String username, String message) {
+		// TODO include datetime
 		Logger.info(String.format("[%s][%s] %s", action, username, message));
 	}
 

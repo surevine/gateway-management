@@ -20,7 +20,7 @@ public class DestinationsAPI extends Controller {
 	 *
 	 * @return
 	 */
-    public static Result list() {
+    public Result list() {
 
     	List<Destination> destinations = Destination.find.all();
     	return ok(Json.toJson(destinations));
