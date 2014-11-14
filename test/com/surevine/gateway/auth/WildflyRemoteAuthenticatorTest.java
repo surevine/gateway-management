@@ -20,7 +20,7 @@ import play.mvc.Http.Context;
 import play.mvc.Http.Request;
 import play.test.FakeApplication;
 
-import controllers.WildflyRemoteAuthenticator;
+import controllers.RemoteAuthenticator;
 
 public class WildflyRemoteAuthenticatorTest {
 
@@ -29,7 +29,7 @@ public class WildflyRemoteAuthenticatorTest {
 	public static final String EXISTING_SESSION_USERNAME = "existing-username";
 	public static final String WILDFLY_AUTHENTICATED_USERNAME = "wildfly-username";
 
-	private WildflyRemoteAuthenticator fixture = new WildflyRemoteAuthenticator();
+	private RemoteAuthenticator fixture = new RemoteAuthenticator();
 
 	@BeforeClass
 	public static void setup() throws Exception {
