@@ -7,6 +7,7 @@ import play.mvc.Controller;
 import com.surevine.gateway.auditing.AuditService;
 import com.surevine.gateway.auditing.GatewayAction;
 import com.surevine.gateway.auditing.LogfileAuditServiceImpl;
+import com.surevine.gateway.auditing.XMLAuditServiceImpl;
 
 /**
  * Play controller with audit service available
@@ -19,7 +20,9 @@ public class AuditedController extends Controller {
     protected AuditService auditService;
 
     public AuditedController() {
-    	this.auditService = LogfileAuditServiceImpl.getInstance();
+    	// TODO load implementation according to configuration
+    	//this.auditService = LogfileAuditServiceImpl.getInstance();
+    	this.auditService = XMLAuditServiceImpl.getInstance();
     }
 
     public void audit(GatewayAction action, String message) {

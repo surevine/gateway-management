@@ -1,0 +1,20 @@
+<Event Id="%EVENT_ID%">
+	<EventTime>
+		<TimeCreated>%EVENT_TIME%</TimeCreated>
+	</EventTime>
+	<EventSource>
+		<System>
+			<Name>%EVENT_SYSTEM_NAME%</Name>
+			<Environment>%EVENT_SYSTEM_ENVIRONMENT%</Environment>
+		</System>
+		<Generator>%EVENT_GENERATOR%</Generator>
+		<Device>
+			<Name>Hosting platform?</Name>
+		</Device>
+		<User>%EVENT_USER%</User>
+	</EventSource>
+	<EventDetail>
+		<Description>%EVENT_MESSAGE%</Description>
+		%EVENT_ACTION%
+	</EventDetail>
+</Event>

@@ -19,7 +19,7 @@ public class LogfileAuditServiceImpl implements AuditService {
 	private SimpleDateFormat dateFormat;
 
 	private LogfileAuditServiceImpl() {
-		dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 	}
 
 	public static LogfileAuditServiceImpl getInstance() {
