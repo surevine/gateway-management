@@ -39,9 +39,7 @@ import com.typesafe.config.ConfigFactory;
  */
 public class XMLAuditServiceImpl implements AuditService {
 
-	private static final String EVENT_SYSTEM_NAME = "Community portal";
 	private static final String EVENT_SYSTEM_ENVIRONMENT = "hosting-env-123";
-	private static final String EVENT_GENERATOR = "Gateway management console";
 	private static final String XML_LOG_FILE=  ConfigFactory.load().getString("xml.audit.log.file");
 	private static final String XML_EVENT_TEMPLATE = ConfigFactory.load().getString("xml.audit.event.template");
 	private static final String XML_EVENT_ACTION_TEMPLATES_DIR = ConfigFactory.load().getString("xml.audit.event.action.templates.dir");
@@ -178,9 +176,7 @@ public class XMLAuditServiceImpl implements AuditService {
 	private String populateEventTemplate(String template, AuditEvent event) {
 
 		template = template.replace("%EVENT_TIME%", dateFormat.format(event.getDatetime()));
-		template = template.replace("%EVENT_SYSTEM_NAME%", EVENT_SYSTEM_NAME);
 		template = template.replace("%EVENT_SYSTEM_ENVIRONMENT%", EVENT_SYSTEM_ENVIRONMENT);
-		template = template.replace("%EVENT_GENERATOR%", EVENT_GENERATOR);
 		template = template.replace("%EVENT_USER%", event.getUsername());
 		template = template.replace("%EVENT_MESSAGE%", event.getMessage());
 
