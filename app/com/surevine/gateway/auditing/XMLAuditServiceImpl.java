@@ -39,7 +39,7 @@ import com.typesafe.config.ConfigFactory;
  */
 public class XMLAuditServiceImpl implements AuditService {
 
-	private static final String EVENT_SYSTEM_ENVIRONMENT = "hosting-env-123";
+	private static final String EVENT_SYSTEM_ENVIRONMENT = ConfigFactory.load().getString("xml.audit.system.environment");
 	private static final String XML_LOG_FILE=  ConfigFactory.load().getString("xml.audit.log.file");
 	private static final String XML_EVENT_TEMPLATE = ConfigFactory.load().getString("xml.audit.event.template");
 	private static final String XML_EVENT_ACTION_TEMPLATES_DIR = ConfigFactory.load().getString("xml.audit.event.action.templates.dir");
