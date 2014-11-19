@@ -5,10 +5,7 @@ public interface AuditService {
 	/**
 	 * Audit an action
 	 *
-	 * @param action Action performed
-	 * @param datatime Date/Time action was performed
-	 * @param username User who performed action
-	 * @param message
+	 * @param event event to be recorded
 	 */
 	public void audit(AuditEvent event);
 
