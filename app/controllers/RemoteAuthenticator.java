@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.Calendar;
 
+import com.surevine.gateway.auditing.AuditEvent;
 import com.surevine.gateway.auditing.AuditService;
 import com.surevine.gateway.auditing.GatewayAction;
 import com.surevine.gateway.auditing.LogfileAuditServiceImpl;
@@ -55,7 +56,8 @@ public class RemoteAuthenticator extends Security.Authenticator {
 				ctx.session().put("username", authenticatedUser);
 
 				// Audit login
-				auditService.audit(GatewayAction.USER_LOG_IN, Calendar.getInstance().getTime(), authenticatedUser, "User logged in.");
+				AuditEvent event = new AuditEvent(GatewayAction.USER_LOG_IN, Calendar.getInstance().getTime(), authenticatedUser, "User logged in.");
+				auditService.audit(event);
 
 				return authenticatedUser;
 			}

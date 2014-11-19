@@ -1,4 +1,4 @@
-<Event Id="%EVENT_ID%">
+<Event>
 	<EventTime>
 		<TimeCreated>%EVENT_TIME%</TimeCreated>
 	</EventTime>
@@ -9,9 +9,11 @@
 		</System>
 		<Generator>%EVENT_GENERATOR%</Generator>
 		<Device>
-			<Name>Hosting platform?</Name>
+			<Name>Hosted web application</Name>
 		</Device>
-		<User>%EVENT_USER%</User>
+		<User>
+			<EmailAddress>%EVENT_USER%</EmailAddress>
+		</User>
 	</EventSource>
 	<EventDetail>
 		<Description>%EVENT_MESSAGE%</Description>

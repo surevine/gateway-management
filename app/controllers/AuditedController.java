@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 import play.mvc.Controller;
 
+import com.surevine.gateway.auditing.AuditEvent;
 import com.surevine.gateway.auditing.AuditService;
 import com.surevine.gateway.auditing.GatewayAction;
 import com.surevine.gateway.auditing.LogfileAuditServiceImpl;
@@ -20,13 +21,14 @@ public class AuditedController extends Controller {
     protected AuditService auditService;
 
     public AuditedController() {
-    	// TODO load implementation according to configuration
+    	// TODO load implementation according to configuration (spring)
     	//this.auditService = LogfileAuditServiceImpl.getInstance();
     	this.auditService = XMLAuditServiceImpl.getInstance();
     }
 
     public void audit(GatewayAction action, String message) {
-    	auditService.audit(action, Calendar.getInstance().getTime(), session().get("username"), message);
+    	AuditEvent event = new AuditEvent(action, Calendar.getInstance().getTime(), session().get("username"), message);
+    	auditService.audit(event);
     }
 
     public void setAuditService(AuditService auditService) {

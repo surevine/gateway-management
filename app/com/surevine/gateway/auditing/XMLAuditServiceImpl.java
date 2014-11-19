@@ -69,12 +69,12 @@ public class XMLAuditServiceImpl implements AuditService {
 	}
 
 	@Override
-	public void audit(GatewayAction action, Date datetime, String username, String message) {
+	public void audit(AuditEvent auditEvent) {
         Document document;
         Node event;
 		try {
 			document = documentBuilder.parse(XML_LOG_FILE);
-			event = createEventXML(action, datetime, username, message);
+			event = createEventXML(auditEvent);
 		} catch (SAXException | IOException e) {
 			throw new AuditServiceException("Unable to load XML audit log file.", e);
 		}
@@ -89,19 +89,15 @@ public class XMLAuditServiceImpl implements AuditService {
 	/**
 	 * Generates a new Event node to be added to XML audit log
 	 *
-	 * @param action Audited action
-	 * @param datetime Date/time of action
-	 * @param username User who performed action
-	 * @param message Detail of action
+	 * @param event Audited action
 	 * @return XML Node representing audit event
 	 * @throws SAXException
 	 * @throws IOException
 	 */
-	private Node createEventXML(GatewayAction action, Date datetime,
-			String username, String message) throws SAXException, IOException {
+	private Node createEventXML(AuditEvent event) throws SAXException, IOException {
 
 		String eventTemplate = loadEventTemplate();
-		String populatedEvent = populateEventTemplate(eventTemplate, action, datetime, username, message);
+		String populatedEvent = populateEventTemplate(eventTemplate, event);
 		InputStream eventInputStream = new ByteArrayInputStream(populatedEvent.getBytes("UTF-8"));
 		Node eventNode = documentBuilder.parse(eventInputStream).getFirstChild();
 
@@ -176,24 +172,19 @@ public class XMLAuditServiceImpl implements AuditService {
 	 * Populates an event template with audit event values
 	 *
 	 * @param template Template to populate
-	 * @param action Audited action
-	 * @param datetime Date/time of action
-	 * @param username User who performed action
-	 * @param message Detail of action
+	 * @param event Audited action
 	 * @return String populated event template string
 	 */
-	private String populateEventTemplate(String template, GatewayAction action, Date datetime,
-			String username, String message) {
+	private String populateEventTemplate(String template, AuditEvent event) {
 
-		template = template.replace("%EVENT_ID%", "Gateway-???");
-		template = template.replace("%EVENT_TIME%", dateFormat.format(datetime));
+		template = template.replace("%EVENT_TIME%", dateFormat.format(event.getDatetime()));
 		template = template.replace("%EVENT_SYSTEM_NAME%", EVENT_SYSTEM_NAME);
 		template = template.replace("%EVENT_SYSTEM_ENVIRONMENT%", EVENT_SYSTEM_ENVIRONMENT);
 		template = template.replace("%EVENT_GENERATOR%", EVENT_GENERATOR);
-		template = template.replace("%EVENT_USER%", username);
-		template = template.replace("%EVENT_MESSAGE%", message);
+		template = template.replace("%EVENT_USER%", event.getUsername());
+		template = template.replace("%EVENT_MESSAGE%", event.getMessage());
 
-		String actionTemplate = loadActionTemplate(action);
+		String actionTemplate = loadActionTemplate(event.getAction());
 		template = template.replace("%EVENT_ACTION%", actionTemplate);
 
 		return template;

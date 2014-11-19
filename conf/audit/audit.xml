@@ -2,7 +2,7 @@
 
 <Event Id="Gateway-???">
 	<EventTime>
-		<TimeCreated>Tue Nov 18 10:50:29 GMT 2014</TimeCreated>
+		<TimeCreated>2014-11-19T10:51:19.600Z</TimeCreated>
 	</EventTime>
 	<EventSource>
 		<System>
@@ -13,111 +13,15 @@
 		<Device>
 			<Name>Hosting platform?</Name>
 		</Device>
-		<User>METHODTOCALLWILDFLY</User>
+		<User>
+			<EmailAddress>METHODTOCALLWILDFLY</EmailAddress>
+		</User>
 	</EventSource>
 	<EventDetail>
-		<Description>Unshared repository 'Jonny' with destination 'JonnyFileOutput'</Description>
-		<Type><Configuration/></Type>
-	</EventDetail>
-</Event><Event Id="Gateway-???">
-	<EventTime>
-		<TimeCreated>Tue Nov 18 11:01:24 GMT 2014</TimeCreated>
-	</EventTime>
-	<EventSource>
-		<System>
-			<Name>Community portal</Name>
-			<Environment>hosting-env-123</Environment>
-		</System>
-		<Generator>Gateway management console</Generator>
-		<Device>
-			<Name>Hosting platform?</Name>
-		</Device>
-		<User>METHODTOCALLWILDFLY</User>
-	</EventSource>
-	<EventDetail>
-		<Description>Created destination 'Testin Audit'</Description>
-		<Create><Configuration/></Create>
-	</EventDetail>
-</Event><Event Id="Gateway-???">
-	<EventTime>
-		<TimeCreated>Tue Nov 18 11:03:14 GMT 2014</TimeCreated>
-	</EventTime>
-	<EventSource>
-		<System>
-			<Name>Community portal</Name>
-			<Environment>hosting-env-123</Environment>
-		</System>
-		<Generator>Gateway management console</Generator>
-		<Device>
-			<Name>Hosting platform?</Name>
-		</Device>
-		<User>METHODTOCALLWILDFLY</User>
-	</EventSource>
-	<EventDetail>
-		<Description>Deleted destination 'Testin Audit'</Description>
-		<Type><Configuration/></Type>
-	</EventDetail>
-</Event><Event Id="Gateway-???">
-	<EventTime>
-		<TimeCreated>2014-11-18T14:56:52.202Z</TimeCreated>
-	</EventTime>
-	<EventSource>
-		<System>
-			<Name>Community portal</Name>
-			<Environment>hosting-env-123</Environment>
-		</System>
-		<Generator>Gateway management console</Generator>
-		<Device>
-			<Name>Hosting platform?</Name>
-		</Device>
-		<User>METHODTOCALLWILDFLY</User>
-	</EventSource>
-	<EventDetail>
-		<Description>Unshared repository 'Jonny' with destination 'Second file output'</Description>
-		<Type><Configuration/></Type>
-	</EventDetail>
-</Event><Event Id="Gateway-???">
-	<EventTime>
-		<TimeCreated>2014-11-18T15:11:26.707Z</TimeCreated>
-	</EventTime>
-	<EventSource>
-		<System>
-			<Name>Community portal</Name>
-			<Environment>hosting-env-123</Environment>
-		</System>
-		<Generator>Gateway management console</Generator>
-		<Device>
-			<Name>Hosting platform?</Name>
-		</Device>
-		<User>METHODTOCALLWILDFLY</User>
-	</EventSource>
-	<EventDetail>
-		<Description>Unshared repository 'Second' with destination 'Second file output'</Description>
-		<Unshare>
+		<Description>Created destination 'JONNYAUDIT2'</Description>
+		<Create>
 	<Configuration/>
-</Unshare>
-
-	</EventDetail>
-</Event><Event Id="Gateway-???">
-	<EventTime>
-		<TimeCreated>2014-11-18T15:45:12.529Z</TimeCreated>
-	</EventTime>
-	<EventSource>
-		<System>
-			<Name>Community portal</Name>
-			<Environment>hosting-env-123</Environment>
-		</System>
-		<Generator>Gateway management console</Generator>
-		<Device>
-			<Name>Hosting platform?</Name>
-		</Device>
-		<User>METHODTOCALLWILDFLY</User>
-	</EventSource>
-	<EventDetail>
-		<Description>Unshared repository 'okok:)' with destination 'Second file output'</Description>
-		<Unshare>
-	<Configuration/>
-</Unshare>
+</Create>
 
 	</EventDetail>
 </Event></Events>
