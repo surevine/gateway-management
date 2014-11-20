@@ -101,7 +101,7 @@ public class Destinations extends AuditedController {
     	destination.save();
 
     	AuditAction action = auditActionFactory.getCreateDestinationAction(destination);
-    	audit(action, String.format("Created destination '%s'", destination.name));
+    	audit(action);
 
     	flash("success", "Created destination.");
     	return redirect(routes.Destinations.view(destinationForm.get().id));
@@ -131,7 +131,7 @@ public class Destinations extends AuditedController {
     	updatedDestination.update(id);
 
     	AuditAction action = auditActionFactory.getUpdateDestinationAction(originalDestination, updatedDestination);
-    	audit(action, String.format("Modified destination '%s'", originalDestination.name));
+    	audit(action);
 
     	flash("success", "Updated destination.");
     	return redirect(routes.Destinations.view(id));
@@ -153,7 +153,7 @@ public class Destinations extends AuditedController {
     	destination.delete();
 
     	AuditAction action = auditActionFactory.getDeleteDestinationAction(destination);
-    	audit(action, String.format("Deleted destination '%s'", destination.name));
+    	audit(action);
 
     	flash("success", "Deleted destination.");
     	return redirect(routes.Destinations.list());
@@ -219,7 +219,7 @@ public class Destinations extends AuditedController {
 		}
 
     	AuditAction action = auditActionFactory.getModifyDestinationRulesAction(destination, newRuleFileContent);
-    	audit(action, String.format("Modified the export rule for destination '%s'", destination.name));
+    	audit(action);
 
     	flash("success", "Updated destination rules.");
     	return redirect(routes.Destinations.view(destinationId));

@@ -70,7 +70,7 @@ public class Projects extends AuditedController {
     	project.save();
 
     	AuditAction action = auditActionFactory.getCreateRepositoryAction(project);
-    	audit(action, String.format("Created repository '%s/%s'", project.projectKey, project.repositorySlug));
+    	audit(action);
 
     	flash("success", "Project created successfully.");
     	return redirect(routes.Projects.view(projectForm.get().id));
@@ -120,7 +120,7 @@ public class Projects extends AuditedController {
     	updatedProject.update(id);
 
     	AuditAction action = auditActionFactory.getUpdateRepositoryAction(originalProject, updatedProject);
-    	audit(action, String.format("Modified repository '%s/%s'", updatedProject.projectKey, updatedProject.repositorySlug));
+    	audit(action);
 
     	flash("success", "Project updated successfully.");
     	return redirect(routes.Projects.view(id));
@@ -142,7 +142,7 @@ public class Projects extends AuditedController {
     	project.delete();
 
     	AuditAction action = auditActionFactory.getDeleteRepositoryAction(project);
-    	audit(action, String.format("Deleted repository '%s/%s'", project.projectKey, project.repositorySlug));
+    	audit(action);
 
     	flash("success", "Project deleted successfully.");
     	return redirect(routes.Projects.list());

@@ -61,9 +61,9 @@ public class RemoteAuthenticator extends Security.Authenticator {
 				// Store authenticated username in session for future requests
 				ctx.session().put("username", authenticatedUser);
 
-		    	AuditAction action = auditActionFactory.getUserLoginAction(authenticatedUser);
 				// Audit login
-				AuditEvent event = new AuditEvent(action, Calendar.getInstance().getTime(), authenticatedUser, "User logged in.");
+		    	AuditAction action = auditActionFactory.getUserLoginAction(authenticatedUser);
+				AuditEvent event = new AuditEvent(action, Calendar.getInstance().getTime(), authenticatedUser);
 				auditService.audit(event);
 
 				return authenticatedUser;

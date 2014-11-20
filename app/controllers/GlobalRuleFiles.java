@@ -63,7 +63,7 @@ public class GlobalRuleFiles extends AuditedController {
 		}
 
     	AuditAction action = auditActionFactory.getModifyGlobalRulesAction(slug, newRuleFileContent);
-    	audit(action, String.format("Modified global %s rules", slug));
+    	audit(action);
 
     	flash("success", String.format("Updated global %s rules.", slug));
     	return redirect(routes.GlobalRuleFiles.view());

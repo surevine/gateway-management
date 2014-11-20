@@ -104,8 +104,7 @@ public class SharingPartnerships extends AuditedController {
     		destination.removeProject(project);
 
         	AuditAction action = auditActionFactory.getUnshareRepositoryAction(project, destination);
-    		audit(action,
-    				String.format("Unshared repository '%s' with destination '%s'", project.displayName, destination.name));
+        	audit(action);
 
 	    	switch(source) {
 		    	case "destination":
@@ -154,8 +153,7 @@ public class SharingPartnerships extends AuditedController {
     	}
 
     	AuditAction action = auditActionFactory.getResendRepositoryAction(project, destination);
-    	audit(action,
-    			String.format("Manually resent shared repository '%s' with destination '%s'", project.displayName, destination.name));
+    	audit(action);
 
         return ok("Resent project to destination.");
 	}
@@ -172,9 +170,8 @@ public class SharingPartnerships extends AuditedController {
 		for(Project project: projects) {
 			destination.addProject(project);
 	    	AuditAction action = auditActionFactory.getShareRepositoryAction(project, destination);
-    		audit(action,
-					String.format("Shared repository '%s' with destination '%s'", project.displayName, destination.name));
-		}
+	    	audit(action);
+	    }
 	}
 
 	/**
@@ -189,8 +186,7 @@ public class SharingPartnerships extends AuditedController {
     	for(Destination destination: destinations) {
     		project.addDestination(destination);
 	    	AuditAction action = auditActionFactory.getShareRepositoryAction(project, destination);
-    		audit(action,
-					String.format("Shared repository '%s' with destination '%s'", project.displayName, destination.name));
+	    	audit(action);
     	}
 	}
 
