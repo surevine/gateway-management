@@ -4,8 +4,8 @@ import models.Destination;
 
 public class UpdateDestinationAction implements AuditAction {
 
-	private Destination originalDestination;
-	private Destination updatedDestination;
+	protected Destination originalDestination;
+	protected Destination updatedDestination;
 
 	public UpdateDestinationAction(Destination originalDestination, Destination updatedDestination) {
 		this.originalDestination = originalDestination;

@@ -4,8 +4,8 @@ import models.Destination;
 
 public class ModifyDestinationRulesAction implements AuditAction {
 
-	private Destination destination;
-	private String ruleFileContents;
+	protected Destination destination;
+	protected String ruleFileContents;
 
 	public ModifyDestinationRulesAction(Destination destination, String ruleFileContents) {
 		this.destination = destination;

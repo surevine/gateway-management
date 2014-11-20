@@ -2,8 +2,8 @@ package com.surevine.gateway.auditing.action;
 
 public class ModifyGlobalRulesAction implements AuditAction {
 
-	private String ruleFile;
-	private String ruleFileContents;
+	protected String ruleFile;
+	protected String ruleFileContents;
 
 	public ModifyGlobalRulesAction(String ruleFile, String ruleFileContents) {
 		this.ruleFile = ruleFile;

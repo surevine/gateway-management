@@ -4,8 +4,8 @@ import models.Project;
 
 public class UpdateRepositoryAction implements AuditAction {
 
-	private Project originalProject;
-	private Project updatedProject;
+	protected Project originalProject;
+	protected Project updatedProject;
 
 	public UpdateRepositoryAction(Project originalProject, Project updatedProject) {
 		this.originalProject = originalProject;

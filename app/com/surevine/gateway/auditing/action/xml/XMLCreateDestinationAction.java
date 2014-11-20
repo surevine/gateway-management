@@ -4,7 +4,6 @@ import models.Destination;
 
 import com.surevine.gateway.auditing.action.CreateDestinationAction;
 
-
 public class XMLCreateDestinationAction extends CreateDestinationAction {
 
 	public XMLCreateDestinationAction(Destination destination) {
@@ -13,8 +12,16 @@ public class XMLCreateDestinationAction extends CreateDestinationAction {
 
 	@Override
 	public String serialize() {
-		return "<xml></xml>";
-		// TODO produce proper expected XML
+
+		StringBuilder xml = new StringBuilder();
+		xml.append(String.format("<Description>%s</Description>", getDescription()) + System.getProperty("line.separator"));
+		xml.append("<Create>");
+		xml.append("<Outcome>");
+		xml.append(String.format("<Data name=\"destinationName\" value=\"%s\" />", destination.name));
+		xml.append("</Outcome>");
+		xml.append("</Create>");
+
+		return xml.toString();
 	}
 
 }

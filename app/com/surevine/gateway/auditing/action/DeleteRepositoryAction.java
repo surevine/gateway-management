@@ -4,7 +4,7 @@ import models.Project;
 
 public class DeleteRepositoryAction implements AuditAction {
 
-	private Project project;
+	protected Project project;
 
 	public DeleteRepositoryAction(Project project) {
 		this.project = project;

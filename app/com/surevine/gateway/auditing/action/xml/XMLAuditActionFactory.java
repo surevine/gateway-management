@@ -17,7 +17,12 @@ import com.surevine.gateway.auditing.action.UpdateDestinationAction;
 import com.surevine.gateway.auditing.action.UpdateRepositoryAction;
 import com.surevine.gateway.auditing.action.UserLoginAction;
 
-
+/**
+ * AuditActionFactory producing actions to be audited in XML file
+ *
+ * @author jonnyheavey
+ *
+ */
 public class XMLAuditActionFactory implements AuditActionFactory {
 
 	@Override
@@ -27,76 +32,65 @@ public class XMLAuditActionFactory implements AuditActionFactory {
 
 	@Override
 	public UserLoginAction getUserLoginAction(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		return new XMLUserLoginAction(username);
 	}
 
 	@Override
 	public UpdateDestinationAction getUpdateDestinationAction(
 			Destination originalDestination, Destination updatedDestination) {
-		// TODO Auto-generated method stub
-		return null;
+		return new XMLUpdateDestinationAction(originalDestination, updatedDestination);
 	}
 
 	@Override
 	public DeleteDestinationAction getDeleteDestinationAction(
 			Destination destination) {
-		// TODO Auto-generated method stub
-		return null;
+		return new XMLDeleteDestinationAction(destination);
 	}
 
 	@Override
 	public CreateRepositoryAction getCreateRepositoryAction(Project project) {
-		// TODO Auto-generated method stub
-		return null;
+		return new XMLCreateRepositoryAction(project);
 	}
 
 	@Override
 	public UpdateRepositoryAction getUpdateRepositoryAction(
 			Project originalProject, Project updatedProject) {
-		// TODO Auto-generated method stub
-		return null;
+		return new XMLUpdateRepositoryAction(originalProject, updatedProject);
 	}
 
 	@Override
 	public DeleteRepositoryAction getDeleteRepositoryAction(Project project) {
-		// TODO Auto-generated method stub
-		return null;
+		return new XMLDeleteRepositoryAction(project);
 	}
 
 	@Override
 	public ModifyGlobalRulesAction getModifyGlobalRulesAction(String ruleFile,
 			String ruleFileContents) {
-		// TODO Auto-generated method stub
-		return null;
+		return new XMLModifyGlobalRulesAction(ruleFile, ruleFileContents);
 	}
 
 	@Override
 	public ModifyDestinationRulesAction getModifyDestinationRulesAction(
 			Destination destination, String ruleFileContents) {
-		// TODO Auto-generated method stub
-		return null;
+		return new XMLModifyDestinationRulesAction(destination, ruleFileContents);
 	}
 
 	@Override
 	public ShareRepositoryAction getShareRepositoryAction(Project project,
 			Destination destination) {
-		// TODO Auto-generated method stub
-		return null;
+		return new XMLShareRepositoryAction(project, destination);
 	}
 
 	@Override
 	public UnshareRepositoryAction getUnshareRepositoryAction(Project project,
 			Destination destination) {
-		// TODO Auto-generated method stub
-		return null;
+		return new XMLUnshareRepositoryAction(project, destination);
 	}
 
 	@Override
 	public ResendRepositoryAction getResendRepositoryAction(Project project,
 			Destination destination) {
-		// TODO Auto-generated method stub
-		return null;
+		return new XMLResendRepositoryAction(project, destination);
 	}
 
 }

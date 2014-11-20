@@ -4,7 +4,7 @@ import models.Destination;
 
 public class DeleteDestinationAction implements AuditAction {
 
-	private Destination destination;
+	protected Destination destination;
 
 	public DeleteDestinationAction(Destination destination) {
 		this.destination = destination;

@@ -3,7 +3,7 @@ package com.surevine.gateway.auditing.action;
 public interface AuditAction {
 
 	/**
-	 * Get human-readable description of action
+	 * Human-readable description of action
 	 *
 	 * @return
 	 */

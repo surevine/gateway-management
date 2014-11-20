@@ -5,8 +5,8 @@ import models.Project;
 
 public class UnshareRepositoryAction implements AuditAction {
 
-	private Project project;
-	private Destination destination;
+	protected Project project;
+	protected Destination destination;
 
 	public UnshareRepositoryAction(Project project, Destination destination) {
 		this.project = project;

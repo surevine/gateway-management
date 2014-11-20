@@ -4,7 +4,7 @@ import models.Project;
 
 public class CreateRepositoryAction implements AuditAction {
 
-	private Project project;
+	protected Project project;
 
 	public CreateRepositoryAction(Project project) {
 		this.project = project;

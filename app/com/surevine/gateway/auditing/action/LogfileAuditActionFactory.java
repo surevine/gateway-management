@@ -3,6 +3,12 @@ package com.surevine.gateway.auditing.action;
 import models.Destination;
 import models.Project;
 
+/**
+ * AuditActionFactory producing actions to be audited in logfile
+ *
+ * @author jonnyheavey
+ *
+ */
 public class LogfileAuditActionFactory implements AuditActionFactory {
 
 	@Override

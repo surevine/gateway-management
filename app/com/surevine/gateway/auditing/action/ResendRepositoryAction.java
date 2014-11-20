@@ -5,8 +5,8 @@ import models.Project;
 
 public class ResendRepositoryAction implements AuditAction {
 
-	private Project project;
-	private Destination destination;
+	protected Project project;
+	protected Destination destination;
 
 	public ResendRepositoryAction(Project project, Destination destination) {
 		this.project = project;
