@@ -4,7 +4,6 @@ import java.util.Calendar;
 
 import com.surevine.gateway.auditing.AuditEvent;
 import com.surevine.gateway.auditing.AuditService;
-import com.surevine.gateway.auditing.GatewayAction;
 import com.surevine.gateway.auditing.LogfileAuditServiceImpl;
 import com.surevine.gateway.auditing.action.AuditAction;
 import com.surevine.gateway.auditing.action.AuditActionFactory;

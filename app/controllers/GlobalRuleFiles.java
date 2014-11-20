@@ -2,7 +2,6 @@ package controllers;
 
 import java.io.IOException;
 
-import com.surevine.gateway.auditing.GatewayAction;
 import com.surevine.gateway.auditing.action.AuditAction;
 import com.surevine.gateway.rules.RuleFileManager;
 

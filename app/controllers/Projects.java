@@ -2,7 +2,6 @@ package controllers;
 
 import java.util.List;
 
-import com.surevine.gateway.auditing.GatewayAction;
 import com.surevine.gateway.auditing.action.AuditAction;
 
 import models.Project;

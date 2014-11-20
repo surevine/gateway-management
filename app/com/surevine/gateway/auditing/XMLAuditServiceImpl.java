@@ -154,7 +154,6 @@ public class XMLAuditServiceImpl implements AuditService {
 		template = template.replace("%EVENT_TIME%", dateFormat.format(event.getDatetime()));
 		template = template.replace("%EVENT_SYSTEM_ENVIRONMENT%", EVENT_SYSTEM_ENVIRONMENT);
 		template = template.replace("%EVENT_USER%", event.getUsername());
-		template = template.replace("%EVENT_MESSAGE%", event.getMessage());
 		template = template.replace("%EVENT_ACTION%", event.getAction().serialize());
 
 		return template;

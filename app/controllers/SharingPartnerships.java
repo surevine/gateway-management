@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import com.surevine.gateway.auditing.GatewayAction;
 import com.surevine.gateway.auditing.action.AuditAction;
 import com.surevine.gateway.scm.service.SCMFederatorServiceException;
 import com.surevine.gateway.scm.service.SCMFederatorServiceFacade;

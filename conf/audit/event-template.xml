@@ -16,7 +16,6 @@
 		</User>
 	</EventSource>
 	<EventDetail>
-		<Description>%EVENT_MESSAGE%</Description>
 		%EVENT_ACTION%
 	</EventDetail>
 </Event>

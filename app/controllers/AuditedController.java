@@ -6,7 +6,6 @@ import play.mvc.Controller;
 
 import com.surevine.gateway.auditing.AuditEvent;
 import com.surevine.gateway.auditing.AuditService;
-import com.surevine.gateway.auditing.GatewayAction;
 import com.surevine.gateway.auditing.LogfileAuditServiceImpl;
 import com.surevine.gateway.auditing.XMLAuditServiceImpl;
 import com.surevine.gateway.auditing.action.AuditAction;
