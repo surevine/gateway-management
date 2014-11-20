@@ -2,6 +2,8 @@ package com.surevine.gateway.auditing;
 
 import java.util.Date;
 
+import com.surevine.gateway.auditing.action.AuditAction;
+
 /**
  * Represents an auditable action in the system
  *
@@ -13,7 +15,7 @@ public class AuditEvent {
 	/**
 	 * Audit action that occurred
 	 */
-	private GatewayAction action;
+	private AuditAction action;
 
 	/**
 	 * Date/time event occurred
@@ -25,23 +27,17 @@ public class AuditEvent {
 	 */
 	private String username;
 
-	/**
-	 * Descriptive message about event
-	 */
-	private String message;
-
-	public AuditEvent(GatewayAction action, Date datetime, String username, String message) {
+	public AuditEvent(AuditAction action, Date datetime, String username) {
 		this.action = action;
 		this.datetime = datetime;
 		this.username = username;
-		this.message = message;
 	}
 
-	public GatewayAction getAction() {
+	public AuditAction getAction() {
 		return action;
 	}
 
-	public void setAction(GatewayAction action) {
+	public void setAction(AuditAction action) {
 		this.action = action;
 	}
 
@@ -59,14 +55,6 @@ public class AuditEvent {
 
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
 	}
 
 }

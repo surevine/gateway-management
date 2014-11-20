@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.surevine.gateway.auditing.GatewayAction;
+import com.surevine.gateway.auditing.action.AuditAction;
 
 import models.Destination;
 import play.data.DynamicForm;
@@ -99,7 +100,8 @@ public class Destinations extends AuditedController {
     	Destination destination = destinationForm.get();
     	destination.save();
 
-    	audit(GatewayAction.CREATE_DESTINATION, String.format("Created destination '%s'", destination.name));
+    	AuditAction action = auditActionFactory.getCreateDestinationAction(destination);
+    	audit(action, String.format("Created destination '%s'", destination.name));
 
     	flash("success", "Created destination.");
     	return redirect(routes.Destinations.view(destinationForm.get().id));
@@ -114,8 +116,8 @@ public class Destinations extends AuditedController {
      */
     public Result update(Long id) {
 
-    	Destination destination = Destination.find.byId(id);
-    	if(destination == null) {
+    	Destination originalDestination = Destination.find.byId(id);
+    	if(originalDestination == null) {
     		return notFound("Destination not found.");
     	}
 
@@ -125,10 +127,11 @@ public class Destinations extends AuditedController {
             return badRequest(views.html.destinations.edit.render(id, destinationForm));
         }
 
-    	destination = destinationForm.get();
-    	destination.update(id);
+    	Destination updatedDestination = destinationForm.get();
+    	updatedDestination.update(id);
 
-    	audit(GatewayAction.MODIFY_DESTINATION, String.format("Modified destination '%s'", destination.name));
+    	AuditAction action = auditActionFactory.getUpdateDestinationAction(originalDestination, updatedDestination);
+    	audit(action, String.format("Modified destination '%s'", originalDestination.name));
 
     	flash("success", "Updated destination.");
     	return redirect(routes.Destinations.view(id));
@@ -149,7 +152,8 @@ public class Destinations extends AuditedController {
 
     	destination.delete();
 
-    	audit(GatewayAction.DELETE_DESTINATION, String.format("Deleted destination '%s'", destination.name));
+    	AuditAction action = auditActionFactory.getDeleteDestinationAction(destination);
+    	audit(action, String.format("Deleted destination '%s'", destination.name));
 
     	flash("success", "Deleted destination.");
     	return redirect(routes.Destinations.list());
@@ -214,7 +218,8 @@ public class Destinations extends AuditedController {
 			return redirect(routes.Destinations.view(destinationId));
 		}
 
-    	audit(GatewayAction.MODIFY_DESTINATION_RULES, String.format("Modified the export rule for destination '%s'", destination.name));
+    	AuditAction action = auditActionFactory.getModifyDestinationRulesAction(destination, newRuleFileContent);
+    	audit(action, String.format("Modified the export rule for destination '%s'", destination.name));
 
     	flash("success", "Updated destination rules.");
     	return redirect(routes.Destinations.view(destinationId));

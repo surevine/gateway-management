@@ -3,6 +3,7 @@ package controllers;
 import java.util.List;
 
 import com.surevine.gateway.auditing.GatewayAction;
+import com.surevine.gateway.auditing.action.AuditAction;
 
 import models.Project;
 import play.data.DynamicForm;
@@ -68,7 +69,8 @@ public class Projects extends AuditedController {
     	Project project = projectForm.get();
     	project.save();
 
-    	audit(GatewayAction.CREATE_REPOSITORY, String.format("Created repository '%s/%s'", project.projectKey, project.repositorySlug));
+    	AuditAction action = auditActionFactory.getCreateRepositoryAction(project);
+    	audit(action, String.format("Created repository '%s/%s'", project.projectKey, project.repositorySlug));
 
     	flash("success", "Project created successfully.");
     	return redirect(routes.Projects.view(projectForm.get().id));
@@ -103,8 +105,8 @@ public class Projects extends AuditedController {
      */
     public Result update(Long id) {
 
-    	Project project = Project.find.byId(id);
-    	if(project == null) {
+    	Project originalProject = Project.find.byId(id);
+    	if(originalProject == null) {
     		return notFound("Project not found.");
     	}
 
@@ -114,10 +116,11 @@ public class Projects extends AuditedController {
             return badRequest(views.html.projects.edit.render(id, projectForm));
         }
 
-    	project = projectForm.get();
-    	project.update(id);
+    	Project updatedProject = projectForm.get();
+    	updatedProject.update(id);
 
-    	audit(GatewayAction.MODIFY_REPOSITORY, String.format("Modified repository '%s/%s'", project.projectKey, project.repositorySlug));
+    	AuditAction action = auditActionFactory.getUpdateRepositoryAction(originalProject, updatedProject);
+    	audit(action, String.format("Modified repository '%s/%s'", updatedProject.projectKey, updatedProject.repositorySlug));
 
     	flash("success", "Project updated successfully.");
     	return redirect(routes.Projects.view(id));
@@ -138,7 +141,8 @@ public class Projects extends AuditedController {
 
     	project.delete();
 
-    	audit(GatewayAction.DELETE_REPOSITORY, String.format("Deleted repository '%s/%s'", project.projectKey, project.repositorySlug));
+    	AuditAction action = auditActionFactory.getDeleteRepositoryAction(project);
+    	audit(action, String.format("Deleted repository '%s/%s'", project.projectKey, project.repositorySlug));
 
     	flash("success", "Project deleted successfully.");
     	return redirect(routes.Projects.list());

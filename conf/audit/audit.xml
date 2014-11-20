@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><Events>
 
-<Event Id="Gateway-???">
+<Event>
 	<EventTime>
-		<TimeCreated>2014-11-19T10:51:19.600Z</TimeCreated>
+		<TimeCreated>2014-11-19T16:58:46.143Z</TimeCreated>
 	</EventTime>
 	<EventSource>
 		<System>
 			<Name>Community portal</Name>
-			<Environment>hosting-env-123</Environment>
+			<Environment>DEVELOPMENT</Environment>
 		</System>
 		<Generator>Gateway management console</Generator>
 		<Device>
-			<Name>Hosting platform?</Name>
+			<Name>Hosted web application</Name>
 		</Device>
 		<User>
 			<EmailAddress>METHODTOCALLWILDFLY</EmailAddress>
 		</User>
 	</EventSource>
 	<EventDetail>
-		<Description>Created destination 'JONNYAUDIT2'</Description>
-		<Create>
-	<Configuration/>
-</Create>
-
+		<Description>Created destination 'NewAudit'</Description>
+		<xml/>
 	</EventDetail>
 </Event></Events>

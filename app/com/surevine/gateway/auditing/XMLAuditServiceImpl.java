@@ -42,7 +42,6 @@ public class XMLAuditServiceImpl implements AuditService {
 	private static final String EVENT_SYSTEM_ENVIRONMENT = ConfigFactory.load().getString("xml.audit.system.environment");
 	private static final String XML_LOG_FILE=  ConfigFactory.load().getString("xml.audit.log.file");
 	private static final String XML_EVENT_TEMPLATE = ConfigFactory.load().getString("xml.audit.event.template");
-	private static final String XML_EVENT_ACTION_TEMPLATES_DIR = ConfigFactory.load().getString("xml.audit.event.action.templates.dir");
 
 	private static XMLAuditServiceImpl _instance = null;
 
@@ -103,29 +102,6 @@ public class XMLAuditServiceImpl implements AuditService {
 	}
 
 	/**
-	 * Loads the XML template for a specific audit event action
-	 *
-	 * @param action action to load template for
-	 * @return Contents of action template
-	 */
-	private String loadActionTemplate(GatewayAction action) {
-		String filename = action.toString().toLowerCase() + ".xml";
-		Path actionTemplatePath = Paths.get(XML_EVENT_ACTION_TEMPLATES_DIR, filename);
-		StringBuffer parsedActionTemplate = new StringBuffer();
-
-		try {
-			List<String> lines = Files.readAllLines(actionTemplatePath, Charset.defaultCharset());
-			for (String line : lines) {
-				parsedActionTemplate.append(line + System.getProperty("line.separator"));
-			}
-		} catch (IOException e) {
-			throw new AuditServiceException("Unable to load audit event action template.", e);
-		}
-
-		return parsedActionTemplate.toString();
-	}
-
-	/**
 	 * Loads the XML template for an event from disk
 	 *
 	 * @return Contents of event template
@@ -179,9 +155,7 @@ public class XMLAuditServiceImpl implements AuditService {
 		template = template.replace("%EVENT_SYSTEM_ENVIRONMENT%", EVENT_SYSTEM_ENVIRONMENT);
 		template = template.replace("%EVENT_USER%", event.getUsername());
 		template = template.replace("%EVENT_MESSAGE%", event.getMessage());
-
-		String actionTemplate = loadActionTemplate(event.getAction());
-		template = template.replace("%EVENT_ACTION%", actionTemplate);
+		template = template.replace("%EVENT_ACTION%", event.getAction().serialize());
 
 		return template;
 	}

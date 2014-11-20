@@ -31,10 +31,10 @@ public class LogfileAuditServiceImpl implements AuditService {
 
 	@Override
 	public void audit(AuditEvent event) {
-		Logger.info(String.format("[%s][%s][%s] %s",
+		Logger.info(String.format("[%s][%s][%s]",
 				dateFormat.format(event.getDatetime()),
-				event.getAction(), event.getUsername(),
-				event.getMessage()));
+				event.getUsername(),
+				event.getAction().serialize()));
 	}
 
 }
