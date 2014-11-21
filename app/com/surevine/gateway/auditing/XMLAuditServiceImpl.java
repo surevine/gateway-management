@@ -8,14 +8,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.TransformerFactoryConfigurationError;
@@ -27,8 +25,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
-import play.Logger;
-
 import com.typesafe.config.ConfigFactory;
 
 /**
@@ -39,8 +35,23 @@ import com.typesafe.config.ConfigFactory;
  */
 public class XMLAuditServiceImpl implements AuditService {
 
+	/**
+	 * Environment the management console is deployed to (used for auditing purposes)
+	 */
 	private static final String EVENT_SYSTEM_ENVIRONMENT = ConfigFactory.load().getString("xml.audit.system.environment");
+
+	/**
+	 * XML file to log audit events to. Expects a root <Events/> Element to be present.
+	 */
 	private static final String XML_LOG_FILE=  ConfigFactory.load().getString("xml.audit.log.file");
+
+	/**
+	 * Template including tokens to represent event. Valid tokens include:
+	 * %EVENT_TIME%
+	 * %EVENT_SYSTEM_ENVIRONMENT%
+	 * %EVENT_USER%
+	 * %EVENT_ACTION%
+	 */
 	private static final String XML_EVENT_TEMPLATE = ConfigFactory.load().getString("xml.audit.event.template");
 
 	private static XMLAuditServiceImpl _instance = null;
