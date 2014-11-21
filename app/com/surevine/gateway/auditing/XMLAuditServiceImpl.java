@@ -7,7 +7,9 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -41,9 +43,14 @@ public class XMLAuditServiceImpl implements AuditService {
 	private static final String EVENT_SYSTEM_ENVIRONMENT = ConfigFactory.load().getString("xml.audit.system.environment");
 
 	/**
-	 * XML file to log audit events to. Expects a root <Events/> Element to be present.
+	 * Directory where XML log files should be created and written to.
 	 */
-	private static final String XML_LOG_FILE=  ConfigFactory.load().getString("xml.audit.log.file");
+	private static final String XML_LOG_FILE_DIRECTORY = ConfigFactory.load().getString("xml.audit.log.file.directory");
+
+	/**
+	 * Template for new audit.xml log file to created from
+	 */
+	private static final String XML_LOG_FILE_TEMPLATE = ConfigFactory.load().getString("xml.audit.log.file.template");
 
 	/**
 	 * Template including tokens to represent event. Valid tokens include:
@@ -55,18 +62,21 @@ public class XMLAuditServiceImpl implements AuditService {
 	private static final String XML_EVENT_TEMPLATE = ConfigFactory.load().getString("xml.audit.event.template");
 
 	private static XMLAuditServiceImpl _instance = null;
-
 	private DocumentBuilder documentBuilder;
 	private SimpleDateFormat dateFormat;
+	private String auditLogFile;
 
 	private XMLAuditServiceImpl() {
 		dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         try {
 			documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
 			throw new AuditServiceException("Unable to init XML audit service.", e);
 		}
+
+        createAuditFile();
 	}
 
 	public static XMLAuditServiceImpl getInstance() {
@@ -81,7 +91,7 @@ public class XMLAuditServiceImpl implements AuditService {
         Document document;
         Node event;
 		try {
-			document = documentBuilder.parse(XML_LOG_FILE);
+			document = documentBuilder.parse(auditLogFile);
 			event = createEventXML(auditEvent);
 		} catch (SAXException | IOException e) {
 			throw new AuditServiceException("Unable to load XML audit log file.", e);
@@ -92,6 +102,45 @@ public class XMLAuditServiceImpl implements AuditService {
 		events.appendChild(importedEventNode);
 
         persistEvent(document);
+	}
+
+	/**
+	 * Creates audit XML file to log events to.
+	 */
+	private void createAuditFile() {
+
+		Path auditFile = Paths.get(XML_LOG_FILE_DIRECTORY, "audit.xml");
+
+		if(Files.exists(auditFile)) {
+			rotateExistingAuditfile(auditFile);
+		}
+
+		Path AuditFileTemplate = Paths.get(XML_LOG_FILE_TEMPLATE);
+		try {
+			Files.copy(AuditFileTemplate, auditFile);
+		} catch (IOException e) {
+			throw new AuditServiceException("Could not create new XML audit log file.", e);
+		}
+
+		this.auditLogFile = auditFile.toString();
+	}
+
+	/**
+	 * Renames existing audit log file
+	 * @param auditFile
+	 */
+	private void rotateExistingAuditfile(Path auditFile) {
+
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HHmmss");
+		Date currentDateTime = new Date();
+		String rotatedFileName = String.format("audit-%s.xml", dateFormat.format(currentDateTime));
+
+		Path rotatedFilePath = Paths.get(XML_LOG_FILE_DIRECTORY, rotatedFileName);
+		try {
+			Files.move(auditFile, rotatedFilePath);
+		} catch (IOException e) {
+			throw new AuditServiceException("Could not rotate existing XML audit log file.", e);
+		}
 	}
 
 	/**
@@ -142,7 +191,7 @@ public class XMLAuditServiceImpl implements AuditService {
 	 */
 	private void persistEvent(Document document) {
 		DOMSource source = new DOMSource(document);
-        StreamResult result = new StreamResult(XML_LOG_FILE);
+        StreamResult result = new StreamResult(auditLogFile);
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer;
 		try {
