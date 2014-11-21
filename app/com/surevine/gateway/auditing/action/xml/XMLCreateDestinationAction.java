@@ -18,6 +18,7 @@ public class XMLCreateDestinationAction extends CreateDestinationAction {
 		xml.append("<Create>");
 		xml.append("<Outcome>");
 		xml.append(String.format("<Data name=\"destinationName\" value=\"%s\" />", destination.name));
+		xml.append(String.format("<Data name=\"destinationURL\" value=\"%s\" />", destination.url));
 		xml.append("</Outcome>");
 		xml.append("</Create>");
 

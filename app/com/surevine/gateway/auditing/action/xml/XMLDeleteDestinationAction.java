@@ -12,7 +12,16 @@ public class XMLDeleteDestinationAction extends DeleteDestinationAction {
 
 	@Override
 	public String serialize() {
-		return "<Delete/>";
+		StringBuilder xml = new StringBuilder();
+		xml.append(String.format("<Description>%s</Description>", getDescription()) + System.getProperty("line.separator"));
+		xml.append("<Delete>");
+		xml.append("<Outcome>");
+		xml.append(String.format("<Data name=\"destinationName\" value=\"%s\" />", destination.name));
+		xml.append(String.format("<Data name=\"destinationURL\" value=\"%s\" />", destination.url));
+		xml.append("</Outcome>");
+		xml.append("</Delete>");
+
+		return xml.toString();
 	}
 
 }

@@ -12,7 +12,16 @@ public class XMLDeleteRepositoryAction extends DeleteRepositoryAction {
 
 	@Override
 	public String serialize() {
-		return "<Delete/>";
+		StringBuilder xml = new StringBuilder();
+		xml.append(String.format("<Description>%s</Description>", getDescription()) + System.getProperty("line.separator"));
+		xml.append("<Delete>");
+		xml.append("<Outcome>");
+		xml.append(String.format("<Data name=\"destinationName\" value=\"%s\" />", project.displayName));
+		xml.append(String.format("<Data name=\"destinationURL\" value=\"%s/%s\" />", project.projectKey, project.repositorySlug));
+		xml.append("</Outcome>");
+		xml.append("</Delete>");
+
+		return xml.toString();
 	}
 
 }

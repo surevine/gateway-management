@@ -13,7 +13,15 @@ public class XMLUnshareRepositoryAction extends UnshareRepositoryAction {
 
 	@Override
 	public String serialize() {
-		return "<Unshare/>";
+		StringBuilder xml = new StringBuilder();
+		xml.append(String.format("<Description>%s</Description>", getDescription()) + System.getProperty("line.separator"));
+		xml.append("<Unknown>");
+		xml.append("<Data name=\"action\" value=\"unshare\" />");
+		xml.append(String.format("<Data name=\"destinationName\" value=\"%s\" />", destination.name));
+		xml.append(String.format("<Data name=\"repositoryName\" value=\"%s\" />", project.displayName));
+		xml.append("</Unknown>");
+
+		return xml.toString();
 	}
 
 }

@@ -12,7 +12,16 @@ public class XMLCreateRepositoryAction extends CreateRepositoryAction {
 
 	@Override
 	public String serialize() {
-		return "<Create/>";
+		StringBuilder xml = new StringBuilder();
+		xml.append(String.format("<Description>%s</Description>", getDescription()) + System.getProperty("line.separator"));
+		xml.append("<Create>");
+		xml.append("<Outcome>");
+		xml.append(String.format("<Data name=\"repositoryName\" value=\"%s\" />", project.displayName));
+		xml.append(String.format("<Data name=\"repositorySlug\" value=\"%s/%s\" />", project.projectKey, project.repositorySlug ));
+		xml.append("</Outcome>");
+		xml.append("</Create>");
+
+		return xml.toString();
 	}
 
 }
