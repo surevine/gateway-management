@@ -2,9 +2,12 @@ package controllers;
 
 import java.util.Calendar;
 
+import com.surevine.gateway.auditing.AuditEvent;
 import com.surevine.gateway.auditing.AuditService;
-import com.surevine.gateway.auditing.GatewayAction;
 import com.surevine.gateway.auditing.LogfileAuditServiceImpl;
+import com.surevine.gateway.auditing.action.AuditAction;
+import com.surevine.gateway.auditing.action.AuditActionFactory;
+import com.surevine.gateway.auditing.action.xml.XMLAuditActionFactory;
 import com.surevine.gateway.auth.AuthServiceProxy;
 import com.surevine.gateway.auth.AuthServiceProxyException;
 import com.surevine.gateway.auth.WildflyAuthServiceProxy;
@@ -25,10 +28,13 @@ public class RemoteAuthenticator extends Security.Authenticator {
 
 	private AuthServiceProxy authServiceProxy;
 	private AuditService auditService;
+	private AuditActionFactory auditActionFactory;
 
 	public RemoteAuthenticator() {
 		this.authServiceProxy = WildflyAuthServiceProxy.getInstance();
 		this.auditService = LogfileAuditServiceImpl.getInstance();
+		// TODO make singleton?
+    	this.auditActionFactory = new XMLAuditActionFactory();
 	}
 
 	/**
@@ -55,7 +61,9 @@ public class RemoteAuthenticator extends Security.Authenticator {
 				ctx.session().put("username", authenticatedUser);
 
 				// Audit login
-				auditService.audit(GatewayAction.USER_LOG_IN, Calendar.getInstance().getTime(), authenticatedUser, "User logged in.");
+		    	AuditAction action = auditActionFactory.getUserLoginAction(authenticatedUser);
+				AuditEvent event = new AuditEvent(action, Calendar.getInstance().getTime(), authenticatedUser);
+				auditService.audit(event);
 
 				return authenticatedUser;
 			}

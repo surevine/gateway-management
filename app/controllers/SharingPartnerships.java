@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import com.surevine.gateway.auditing.GatewayAction;
+import com.surevine.gateway.auditing.action.AuditAction;
 import com.surevine.gateway.scm.service.SCMFederatorServiceException;
 import com.surevine.gateway.scm.service.SCMFederatorServiceFacade;
 
@@ -102,8 +102,8 @@ public class SharingPartnerships extends AuditedController {
 
     		destination.removeProject(project);
 
-    		audit(GatewayAction.UNSHARE_REPOSITORY,
-    				String.format("Unshared repository '%s' with destination '%s'", project.displayName, destination.name));
+        	AuditAction action = auditActionFactory.getUnshareRepositoryAction(project, destination);
+        	audit(action);
 
 	    	switch(source) {
 		    	case "destination":
@@ -151,8 +151,8 @@ public class SharingPartnerships extends AuditedController {
     		return internalServerError("Failed to resend project to destination.");
     	}
 
-    	audit(GatewayAction.RESEND_REPOSITORY,
-    			String.format("Manually resent shared repository '%s' with destination '%s'", project.displayName, destination.name));
+    	AuditAction action = auditActionFactory.getResendRepositoryAction(project, destination);
+    	audit(action);
 
         return ok("Resent project to destination.");
 	}
@@ -168,9 +168,9 @@ public class SharingPartnerships extends AuditedController {
 
 		for(Project project: projects) {
 			destination.addProject(project);
-    		audit(GatewayAction.SHARE_REPOSITORY,
-					String.format("Shared repository '%s' with destination '%s'", project.displayName, destination.name));
-		}
+	    	AuditAction action = auditActionFactory.getShareRepositoryAction(project, destination);
+	    	audit(action);
+	    }
 	}
 
 	/**
@@ -184,8 +184,8 @@ public class SharingPartnerships extends AuditedController {
 
     	for(Destination destination: destinations) {
     		project.addDestination(destination);
-    		audit(GatewayAction.SHARE_REPOSITORY,
-					String.format("Shared repository '%s' with destination '%s'", project.displayName, destination.name));
+	    	AuditAction action = auditActionFactory.getShareRepositoryAction(project, destination);
+	    	audit(action);
     	}
 	}
 
