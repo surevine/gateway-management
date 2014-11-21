@@ -1,0 +1,1 @@
+This directory is the default location for xml audit log files to be created.
