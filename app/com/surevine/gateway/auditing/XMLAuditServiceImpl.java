@@ -27,6 +27,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
+import play.Logger;
+
 import com.typesafe.config.ConfigFactory;
 
 /**
@@ -105,41 +107,24 @@ public class XMLAuditServiceImpl implements AuditService {
 	}
 
 	/**
-	 * Creates audit XML file to log events to.
+	 * Creates audit XML file to log events to (if file doesn't exist)
 	 */
 	private void createAuditFile() {
 
 		Path auditFile = Paths.get(XML_LOG_FILE_DIRECTORY, "audit.xml");
-		if(Files.exists(auditFile)) {
-			rotateExistingAuditfile(auditFile);
-		}
-
-		Path AuditFileTemplate = Paths.get(XML_LOG_FILE_TEMPLATE);
-		try {
-			Files.copy(AuditFileTemplate, auditFile);
-		} catch (IOException e) {
-			throw new AuditServiceException("Could not create new XML audit log file.", e);
+		if(!Files.exists(auditFile)) {
+			Logger.info("No existing XML audit file found. Creating new file.");
+			Path AuditFileTemplate = Paths.get(XML_LOG_FILE_TEMPLATE);
+			try {
+				Files.copy(AuditFileTemplate, auditFile);
+			} catch (IOException e) {
+				throw new AuditServiceException("Could not create new XML audit log file.", e);
+			}
+		} else {
+			Logger.info("Found existing XML audit file.");
 		}
 
 		this.auditLogFile = auditFile.toString();
-	}
-
-	/**
-	 * Renames existing audit log file
-	 * @param auditFile
-	 */
-	private void rotateExistingAuditfile(Path auditFile) {
-
-		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-		Date currentDateTime = new Date();
-		String rotatedFileName = String.format("audit-%s.xml", dateFormat.format(currentDateTime));
-
-		Path rotatedFilePath = Paths.get(XML_LOG_FILE_DIRECTORY, rotatedFileName);
-		try {
-			Files.move(auditFile, rotatedFilePath);
-		} catch (IOException e) {
-			throw new AuditServiceException("Could not rotate existing XML audit log file.", e);
-		}
 	}
 
 	/**
