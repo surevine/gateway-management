@@ -19,7 +19,7 @@ public class LogfileAuditServiceImpl implements AuditService {
 	private SimpleDateFormat dateFormat;
 
 	private LogfileAuditServiceImpl() {
-		dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 	}
 
 	public static LogfileAuditServiceImpl getInstance() {
@@ -30,8 +30,11 @@ public class LogfileAuditServiceImpl implements AuditService {
 	}
 
 	@Override
-	public void audit(GatewayAction action, Date datetime, String username, String message) {
-		Logger.info(String.format("[%s][%s][%s] %s", dateFormat.format(datetime), action, username, message));
+	public void audit(AuditEvent event) {
+		Logger.info(String.format("[%s][%s][%s]",
+				dateFormat.format(event.getDatetime()),
+				event.getUsername(),
+				event.getAction().serialize()));
 	}
 
 }

@@ -2,7 +2,7 @@ package controllers;
 
 import java.io.IOException;
 
-import com.surevine.gateway.auditing.GatewayAction;
+import com.surevine.gateway.auditing.action.AuditAction;
 import com.surevine.gateway.rules.RuleFileManager;
 
 import play.data.DynamicForm;
@@ -61,7 +61,8 @@ public class GlobalRuleFiles extends AuditedController {
 			return redirect(routes.GlobalRuleFiles.view());
 		}
 
-    	audit(GatewayAction.MODIFY_GLOBAL_RULES, String.format("Modified global %s rules", slug));
+    	AuditAction action = auditActionFactory.getModifyGlobalRulesAction(slug, newRuleFileContent);
+    	audit(action);
 
     	flash("success", String.format("Updated global %s rules.", slug));
     	return redirect(routes.GlobalRuleFiles.view());
