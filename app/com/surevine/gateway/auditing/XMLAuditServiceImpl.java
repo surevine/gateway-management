@@ -110,7 +110,6 @@ public class XMLAuditServiceImpl implements AuditService {
 	private void createAuditFile() {
 
 		Path auditFile = Paths.get(XML_LOG_FILE_DIRECTORY, "audit.xml");
-
 		if(Files.exists(auditFile)) {
 			rotateExistingAuditfile(auditFile);
 		}
@@ -131,7 +130,7 @@ public class XMLAuditServiceImpl implements AuditService {
 	 */
 	private void rotateExistingAuditfile(Path auditFile) {
 
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HHmmss");
+		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 		Date currentDateTime = new Date();
 		String rotatedFileName = String.format("audit-%s.xml", dateFormat.format(currentDateTime));
 
