@@ -26,10 +26,10 @@ public class AuditedController extends Controller {
 
     public AuditedController() {
     	// TODO load implementation according to configuration (spring)
-    	this.auditService = XMLAuditServiceImpl.getInstance();
-    	this.auditActionFactory = new XMLAuditActionFactory();
-//    	this.auditService = LogfileAuditServiceImpl.getInstance();
-//    	this.auditActionFactory = new LogfileAuditActionFactory();
+//    	this.auditService = XMLAuditServiceImpl.getInstance();
+//    	this.auditActionFactory = new XMLAuditActionFactory();
+    	this.auditService = LogfileAuditServiceImpl.getInstance();
+    	this.auditActionFactory = new LogfileAuditActionFactory();
     }
 
     public void audit(AuditAction action) {
