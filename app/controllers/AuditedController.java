@@ -2,16 +2,15 @@ package controllers;
 
 import java.util.Calendar;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
 import play.mvc.Controller;
 
 import com.surevine.gateway.auditing.AuditEvent;
 import com.surevine.gateway.auditing.AuditService;
-import com.surevine.gateway.auditing.LogfileAuditServiceImpl;
-import com.surevine.gateway.auditing.XMLAuditServiceImpl;
 import com.surevine.gateway.auditing.action.AuditAction;
 import com.surevine.gateway.auditing.action.AuditActionFactory;
-import com.surevine.gateway.auditing.action.LogfileAuditActionFactory;
-import com.surevine.gateway.auditing.action.xml.XMLAuditActionFactory;
 
 /**
  * Play controller with audit service available
@@ -19,18 +18,16 @@ import com.surevine.gateway.auditing.action.xml.XMLAuditActionFactory;
  * @author jonnyheavey
  *
  */
+@org.springframework.stereotype.Controller
 public class AuditedController extends Controller {
 
+	@Autowired
+	@Qualifier("auditService")
     private AuditService auditService;
-    protected AuditActionFactory auditActionFactory;
 
-    public AuditedController() {
-    	// TODO load implementation according to configuration (spring)
-    	this.auditService = XMLAuditServiceImpl.getInstance();
-    	this.auditActionFactory = new XMLAuditActionFactory();
-//    	this.auditService = LogfileAuditServiceImpl.getInstance();
-//    	this.auditActionFactory = new LogfileAuditActionFactory();
-    }
+	@Autowired
+	@Qualifier("auditActionFactory")
+    protected AuditActionFactory auditActionFactory;
 
     public void audit(AuditAction action) {
     	AuditEvent event = new AuditEvent(action, Calendar.getInstance().getTime(), session().get("username"));
@@ -39,6 +36,10 @@ public class AuditedController extends Controller {
 
     public void setAuditService(AuditService auditService) {
     	this.auditService = auditService;
+    }
+
+    public void setAuditActionFactory(AuditActionFactory auditActionFactory) {
+    	this.auditActionFactory = auditActionFactory;
     }
 
 }

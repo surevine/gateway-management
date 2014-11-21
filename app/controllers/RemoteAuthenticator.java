@@ -2,11 +2,15 @@ package controllers;
 
 import java.util.Calendar;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
 import com.surevine.gateway.auditing.AuditEvent;
 import com.surevine.gateway.auditing.AuditService;
 import com.surevine.gateway.auditing.LogfileAuditServiceImpl;
 import com.surevine.gateway.auditing.action.AuditAction;
 import com.surevine.gateway.auditing.action.AuditActionFactory;
+import com.surevine.gateway.auditing.action.LogfileAuditActionFactory;
 import com.surevine.gateway.auditing.action.xml.XMLAuditActionFactory;
 import com.surevine.gateway.auth.AuthServiceProxy;
 import com.surevine.gateway.auth.AuthServiceProxyException;
@@ -24,18 +28,20 @@ import play.mvc.Security;
  * @author jonnyheavey
  *
  */
+@org.springframework.stereotype.Controller
 public class RemoteAuthenticator extends Security.Authenticator {
 
+	@Autowired
+	@Qualifier("authServiceProxy")
 	private AuthServiceProxy authServiceProxy;
-	private AuditService auditService;
-	private AuditActionFactory auditActionFactory;
 
-	public RemoteAuthenticator() {
-		this.authServiceProxy = WildflyAuthServiceProxy.getInstance();
-		this.auditService = LogfileAuditServiceImpl.getInstance();
-		// TODO make singleton?
-    	this.auditActionFactory = new XMLAuditActionFactory();
-	}
+	@Autowired
+	@Qualifier("auditService")
+    private AuditService auditService;
+
+	@Autowired
+	@Qualifier("auditActionFactory")
+    private AuditActionFactory auditActionFactory;
 
 	/**
 	 * Gets username of authenticated user.
@@ -83,6 +89,14 @@ public class RemoteAuthenticator extends Security.Authenticator {
 
     public void setAuthServiceProxy(AuthServiceProxy authServiceProxy) {
     	this.authServiceProxy = authServiceProxy;
+    }
+
+    public void setAuditService(AuditService auditService) {
+    	this.auditService = auditService;
+    }
+
+    public void setAuditActionFactory(AuditActionFactory auditActionFactory) {
+    	this.auditActionFactory = auditActionFactory;
     }
 
 }

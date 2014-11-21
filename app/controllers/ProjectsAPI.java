@@ -15,6 +15,7 @@ import play.mvc.*;
  * @author jonnyheavey
  *
  */
+@org.springframework.stereotype.Controller
 public class ProjectsAPI extends Controller {
 
 	/**

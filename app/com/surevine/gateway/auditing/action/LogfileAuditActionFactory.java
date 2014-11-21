@@ -9,6 +9,7 @@ import models.Project;
  * @author jonnyheavey
  *
  */
+@org.springframework.stereotype.Component
 public class LogfileAuditActionFactory implements AuditActionFactory {
 
 	@Override

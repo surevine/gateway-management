@@ -37,6 +37,7 @@ import com.typesafe.config.ConfigFactory;
  * @author jonnyheavey
  *
  */
+@org.springframework.stereotype.Service
 public class XMLAuditServiceImpl implements AuditService {
 
 	/**

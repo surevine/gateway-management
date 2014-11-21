@@ -2,6 +2,7 @@ package controllers;
 
 import play.mvc.*;
 
+@org.springframework.stereotype.Controller
 public class Application extends AuditedController {
 
 	//@Security.Authenticated(RemoteAuthenticator.class)
