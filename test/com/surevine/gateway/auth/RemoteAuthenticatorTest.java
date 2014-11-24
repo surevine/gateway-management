@@ -12,9 +12,15 @@ import java.util.Collections;
 import java.util.Map;
 
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.surevine.gateway.auditing.LogfileAuditServiceImpl;
+import com.surevine.gateway.auditing.action.AuditActionFactory;
+import com.surevine.gateway.auditing.action.LogfileAuditActionFactory;
+
+import play.Logger;
 import play.api.mvc.RequestHeader;
 import play.mvc.Http.Context;
 import play.mvc.Http.Request;
@@ -22,7 +28,7 @@ import play.test.FakeApplication;
 
 import controllers.RemoteAuthenticator;
 
-public class WildflyRemoteAuthenticatorTest {
+public class RemoteAuthenticatorTest {
 
 	public static FakeApplication app;
 
@@ -35,20 +41,20 @@ public class WildflyRemoteAuthenticatorTest {
 	public static void setup() throws Exception {
 		app = fakeApplication(inMemoryDatabase());
 		start(app);
-
-		// Set HTTP context
-		Map<String, String> flashData = Collections.emptyMap();
-	    Map<String, Object> argData = Collections.emptyMap();
-	    Long id = 2L;
-	    Request request = mock(Request.class);
-	    RequestHeader header = mock(RequestHeader.class);
-	    Context context = new Context(id, header, request, flashData, flashData, argData);
-	    Context.current.set(context);
 	}
 
 	@AfterClass
 	public static void teardown() {
 		stop(app);
+	}
+
+	@Before
+	public void beforeTest() {
+		setupContext();
+
+		LogfileAuditActionFactory auditActionFactory = new LogfileAuditActionFactory();
+		fixture.setAuditActionFactory(auditActionFactory);
+		fixture.setAuditService(LogfileAuditServiceImpl.getInstance());
 	}
 
 	@Test
@@ -111,11 +117,25 @@ public class WildflyRemoteAuthenticatorTest {
 	@Test
 	public void testGetUsernameServiceDown() {
 
-		// Service already down so no need to mock
+		AuthServiceProxy mockUnauthenticatedAuthServiceProxy = mock(WildflyAuthServiceProxy.class);
+		fixture.setAuthServiceProxy(mockUnauthenticatedAuthServiceProxy);
 
 		String authenticatedUser = fixture.getUsername(Context.current());
 
 		assertThat(authenticatedUser).isNull();
+	}
+
+	/**
+	 * Helper method to reset http context for test execution
+	 */
+	private void setupContext() {
+		Map<String, String> flashData = Collections.emptyMap();
+	    Map<String, Object> argData = Collections.emptyMap();
+	    Long id = 2L;
+	    Request request = mock(Request.class);
+	    RequestHeader header = mock(RequestHeader.class);
+	    Context context = new Context(id, header, request, flashData, flashData, argData);
+	    Context.current.set(context);
 	}
 
 }
