@@ -23,6 +23,7 @@ import com.surevine.gateway.auditing.action.UserLoginAction;
  * @author jonnyheavey
  *
  */
+@org.springframework.stereotype.Component
 public class XMLAuditActionFactory implements AuditActionFactory {
 
 	@Override

@@ -12,6 +12,7 @@ import play.Logger;
  * @author jonnyheavey
  *
  */
+@org.springframework.stereotype.Service
 public class LogfileAuditServiceImpl implements AuditService {
 
 	private static LogfileAuditServiceImpl _instance;

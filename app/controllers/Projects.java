@@ -9,6 +9,7 @@ import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Result;
 
+@org.springframework.stereotype.Controller
 public class Projects extends AuditedController {
 
 	/**
