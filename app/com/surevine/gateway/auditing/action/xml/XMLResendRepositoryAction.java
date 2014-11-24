@@ -13,7 +13,15 @@ public class XMLResendRepositoryAction extends ResendRepositoryAction {
 
 	@Override
 	public String serialize() {
-		return "<Export/>";
+		StringBuilder xml = new StringBuilder();
+		xml.append(String.format("<Description>%s</Description>", getDescription()) + System.getProperty("line.separator"));
+		xml.append("<Export>");
+		xml.append("<Data name=\"action\" value=\"share\" />");
+		xml.append(String.format("<Data name=\"destinationName\" value=\"%s\" />", destination.name));
+		xml.append(String.format("<Data name=\"repositoryName\" value=\"%s\" />", project.displayName));
+		xml.append("</Export>");
+
+		return xml.toString();
 	}
 
 }
