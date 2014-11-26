@@ -10,9 +10,22 @@
 
 		<fieldset>
 
-			@inputText(projectForm("displayName"), '_label -> "Name", '_help -> "Name of repository", 'class -> "form-control", 'placeholder -> "Name")
-			@inputText(projectForm("projectKey"), '_label -> "Name", '_help -> "E.g. surevine in surevine/gateway", 'class -> "form-control", 'placeholder -> "Project Key")
-			@inputText(projectForm("repositorySlug"), '_label -> "Name", '_help -> "E.g. gateway in surevine/gateway", 'class -> "form-control", 'placeholder -> "Repository Slug")
+			@inputText(projectForm("displayName"),
+						'_label -> "Name",
+						'_help -> "Name of repository",
+						'class -> "form-control",
+						'placeholder -> "Name",
+						'autofocus -> "autofocus")
+			@inputText(projectForm("projectKey"),
+						'_label -> "Name",
+						'_help -> "E.g. surevine in surevine/gateway",
+						'class -> "form-control",
+						'placeholder -> "Project Key")
+			@inputText(projectForm("repositorySlug"),
+						'_label -> "Name",
+						'_help -> "E.g. gateway in surevine/gateway",
+						'class -> "form-control",
+						'placeholder -> "Repository Slug")
 
 		</fieldset>
 

@@ -10,8 +10,17 @@
 
 		<fieldset>
 
-			@inputText(destinationForm("name"), '_label -> "Name", '_help -> "Name of destination", 'class -> "form-control", 'placeholder -> "Name")
-			@inputText(destinationForm("url"), '_label -> "URL", '_help -> "URL of destination", 'class -> "form-control", 'placeholder -> "URL")
+			@inputText(destinationForm("name"),
+						'_label -> "Name",
+						'_help -> "Name of destination",
+						'class -> "form-control",
+						'placeholder -> "Name",
+						'autofocus -> "autofocus")
+			@inputText(destinationForm("url"),
+						'_label -> "URL",
+						'_help -> "URL of destination",
+						'class -> "form-control",
+						'placeholder -> "URL")
 
 		</fieldset>
 
