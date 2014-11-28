@@ -15,20 +15,20 @@ import com.typesafe.config.ConfigFactory;
  * @author jonnyheavey
  *
  */
-public class WildflyAuthServiceProxy implements AuthServiceProxy {
+public class WildflyAuthService implements AuthService {
 
 	private static int REQUEST_TIMEOUT = 5000;
 	private static String WILDFLY_AUTH_SERVICE_BASE_URL =  ConfigFactory.load().getString("wildfly.auth.service.base.url");
 
-	private static WildflyAuthServiceProxy _instance = null;
+	private static WildflyAuthService _instance = null;
 
-	private WildflyAuthServiceProxy() {
+	private WildflyAuthService() {
 
 	}
 
-	public static WildflyAuthServiceProxy getInstance() {
+	public static WildflyAuthService getInstance() {
 		if(_instance == null) {
-			_instance = new WildflyAuthServiceProxy();
+			_instance = new WildflyAuthService();
 		}
 		return _instance;
 	}
@@ -36,9 +36,9 @@ public class WildflyAuthServiceProxy implements AuthServiceProxy {
 	/**
 	 * Get username of remotely authenticated user
 	 * @return
-	 * @throws AuthServiceProxyException
+	 * @throws AuthServiceException
 	 */
-	public String getAuthenticatedUsername() throws AuthServiceProxyException {
+	public String getAuthenticatedUsername() throws AuthServiceException {
 
 		// TODO confirm actual API URL
 		Promise<WSResponse> promise = WS.url(WILDFLY_AUTH_SERVICE_BASE_URL + "/currentuser")
@@ -50,12 +50,12 @@ public class WildflyAuthServiceProxy implements AuthServiceProxy {
         	response = promise.get(REQUEST_TIMEOUT);
     	} catch(Exception e) {
     		Logger.warn("Error connecting to Wildfly auth-proxy component. " + e.getMessage());
-    		throw new AuthServiceProxyException("Failed to connect to wildfly PKI authentication component.");
+    		throw new AuthServiceException("Failed to connect to wildfly PKI authentication component.");
     	}
 
     	if(response.getStatus() != OK) {
     		Logger.warn(String.format("Wildfly auth-proxy component returned non-ok response code: ", response.getStatus()));
-    		throw new AuthServiceProxyException(String.format("Error response %s from get authenticated username request. %s.",
+    		throw new AuthServiceException(String.format("Error response %s from get authenticated username request. %s.",
     															response.getStatus(),
     															response.getBody()));
     	}

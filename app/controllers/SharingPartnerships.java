@@ -13,6 +13,7 @@ import models.Project;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Result;
+import play.mvc.Security;
 
 @org.springframework.stereotype.Controller
 public class SharingPartnerships extends AuditedController {
@@ -27,6 +28,7 @@ public class SharingPartnerships extends AuditedController {
 	 *
 	 * @return
 	 */
+	@Security.Authenticated(AppAuthenticator.class)
 	public Result create() {
 
 		DynamicForm requestData = Form.form().bindFromRequest();
@@ -81,6 +83,7 @@ public class SharingPartnerships extends AuditedController {
 	 *
 	 * @return
 	 */
+	@Security.Authenticated(AppAuthenticator.class)
 	public Result delete() {
 
 		DynamicForm requestData = Form.form().bindFromRequest();
@@ -125,6 +128,7 @@ public class SharingPartnerships extends AuditedController {
 	 * Triggers ad-hoc re-send of repository to destination across gateway
 	 * @return
 	 */
+	@Security.Authenticated(AppAuthenticator.class)
 	public Result resend() {
 
 		DynamicForm requestData = Form.form().bindFromRequest();

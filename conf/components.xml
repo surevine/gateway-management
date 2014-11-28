@@ -12,6 +12,6 @@
 	<bean id="auditService" class="com.surevine.gateway.auditing.LogfileAuditServiceImpl" />
 	<bean id="auditActionFactory" class="com.surevine.gateway.auditing.action.LogfileAuditActionFactory" />
 
-	<bean id="authServiceProxy" class="com.surevine.gateway.auth.WildflyAuthServiceProxy" />
+	<bean id="authService" class="com.surevine.gateway.auth.PublicAuthService" />
 
 </beans>

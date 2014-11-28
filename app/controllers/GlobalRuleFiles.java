@@ -8,10 +8,12 @@ import com.surevine.gateway.rules.RuleFileManager;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Result;
+import play.mvc.Security;
 
 @org.springframework.stereotype.Controller
 public class GlobalRuleFiles extends AuditedController {
 
+	@Security.Authenticated(AppAuthenticator.class)
 	public Result edit(String slug) {
 
 		String ruleFileContents = "";
@@ -39,6 +41,7 @@ public class GlobalRuleFiles extends AuditedController {
 
 	}
 
+	@Security.Authenticated(AppAuthenticator.class)
 	public Result update(String slug) {
 
 		DynamicForm requestData = Form.form().bindFromRequest();
@@ -70,6 +73,7 @@ public class GlobalRuleFiles extends AuditedController {
 
 	}
 
+	@Security.Authenticated(AppAuthenticator.class)
 	public Result view() {
 
 		String exportRules = "";

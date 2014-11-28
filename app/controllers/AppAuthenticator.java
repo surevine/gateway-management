@@ -12,9 +12,9 @@ import com.surevine.gateway.auditing.action.AuditAction;
 import com.surevine.gateway.auditing.action.AuditActionFactory;
 import com.surevine.gateway.auditing.action.LogfileAuditActionFactory;
 import com.surevine.gateway.auditing.action.xml.XMLAuditActionFactory;
-import com.surevine.gateway.auth.AuthServiceProxy;
-import com.surevine.gateway.auth.AuthServiceProxyException;
-import com.surevine.gateway.auth.WildflyAuthServiceProxy;
+import com.surevine.gateway.auth.AuthService;
+import com.surevine.gateway.auth.AuthServiceException;
+import com.surevine.gateway.auth.WildflyAuthService;
 
 import play.Logger;
 import play.mvc.Http.Context;
@@ -23,17 +23,17 @@ import play.mvc.Security;
 
 /**
  * Application authenticator.
- * Interacts with wildfly auth proxy component to retrieve authenticated user information.
+ * Interacts with auth service to authenticate user.
  *
  * @author jonnyheavey
  *
  */
 @org.springframework.stereotype.Controller
-public class RemoteAuthenticator extends Security.Authenticator {
+public class AppAuthenticator extends Security.Authenticator {
 
 	@Autowired
-	@Qualifier("authServiceProxy")
-	private AuthServiceProxy authServiceProxy;
+	@Qualifier("authService")
+	private AuthService authService;
 
 	@Autowired
 	@Qualifier("auditService")
@@ -56,8 +56,8 @@ public class RemoteAuthenticator extends Security.Authenticator {
 			return authenticatedUser;
 		} else {
 			try {
-				authenticatedUser = authServiceProxy.getAuthenticatedUsername();
-			} catch (AuthServiceProxyException e) {
+				authenticatedUser = authService.getAuthenticatedUsername();
+			} catch (AuthServiceException e) {
 				Logger.warn("Could not authenticate current user. " + e.getMessage());
 				return null;
 			}
@@ -87,8 +87,8 @@ public class RemoteAuthenticator extends Security.Authenticator {
         return unauthorized(views.html.unauthorised.render());
     }
 
-    public void setAuthServiceProxy(AuthServiceProxy authServiceProxy) {
-    	this.authServiceProxy = authServiceProxy;
+    public void setAuthServiceProxy(AuthService authServiceProxy) {
+    	this.authService = authServiceProxy;
     }
 
     public void setAuditService(AuditService auditService) {

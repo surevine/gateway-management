@@ -8,6 +8,7 @@ import models.Project;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Result;
+import play.mvc.Security;
 
 @org.springframework.stereotype.Controller
 public class Projects extends AuditedController {
@@ -17,6 +18,7 @@ public class Projects extends AuditedController {
 	 *
 	 * @return
 	 */
+	@Security.Authenticated(AppAuthenticator.class)
 	public Result list() {
 
 		List<Project> projects = Project.find.all();
@@ -31,6 +33,7 @@ public class Projects extends AuditedController {
      * @param id Id of project to display
      * @return
      */
+	@Security.Authenticated(AppAuthenticator.class)
     public Result view(Long id) {
 
     	Project project = Project.find.byId(id);
@@ -48,6 +51,7 @@ public class Projects extends AuditedController {
      *
      * @return
      */
+	@Security.Authenticated(AppAuthenticator.class)
     public Result add() {
 
     	Form<Project> projectForm = Form.form(Project.class);
@@ -58,6 +62,7 @@ public class Projects extends AuditedController {
     /**
      * Handle the 'new project' form submission
      */
+	@Security.Authenticated(AppAuthenticator.class)
     public Result create() {
 
     	Form<Project> projectForm = Form.form(Project.class).bindFromRequest();
@@ -83,6 +88,7 @@ public class Projects extends AuditedController {
      * @param id Id of project to edit
      * @return
      */
+	@Security.Authenticated(AppAuthenticator.class)
     public Result edit(Long id) {
 
     	Project project = Project.find.byId(id);
@@ -103,6 +109,7 @@ public class Projects extends AuditedController {
      * @param id Id of project to update
      * @return
      */
+	@Security.Authenticated(AppAuthenticator.class)
     public Result update(Long id) {
 
     	Project originalProject = Project.find.byId(id);
@@ -132,6 +139,7 @@ public class Projects extends AuditedController {
      *
      * @param id Id of the project to delete
      */
+	@Security.Authenticated(AppAuthenticator.class)
     public Result delete(Long id) {
 
     	Project project = Project.find.byId(id);
@@ -154,6 +162,7 @@ public class Projects extends AuditedController {
      * @param projectId Id of project
      * @return
      */
+	@Security.Authenticated(AppAuthenticator.class)
     public Result shareProjectPage(Long projectId) {
 
     	Project project = Project.find.byId(projectId);

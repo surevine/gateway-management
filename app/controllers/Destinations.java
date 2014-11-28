@@ -9,6 +9,7 @@ import models.Destination;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Result;
+import play.mvc.Security;
 
 @org.springframework.stereotype.Controller
 public class Destinations extends AuditedController {
@@ -18,6 +19,7 @@ public class Destinations extends AuditedController {
 	 *
 	 * @return
 	 */
+	@Security.Authenticated(AppAuthenticator.class)
     public Result list() {
 
     	List<Destination> destinations = Destination.find.all();
@@ -32,6 +34,7 @@ public class Destinations extends AuditedController {
      * @param id Id of destination to display
      * @return
      */
+	@Security.Authenticated(AppAuthenticator.class)
     public Result view(Long id) {
 
     	Destination destination = Destination.find.byId(id);
@@ -58,6 +61,7 @@ public class Destinations extends AuditedController {
      *
      * @return
      */
+	@Security.Authenticated(AppAuthenticator.class)
     public Result add() {
 
     	Form<Destination> destinationForm = Form.form(Destination.class);
@@ -72,6 +76,7 @@ public class Destinations extends AuditedController {
      * @param id Id of destination to edit
      * @return
      */
+	@Security.Authenticated(AppAuthenticator.class)
     public Result edit(Long id) {
 
     	Destination destination = Destination.find.byId(id);
@@ -89,6 +94,7 @@ public class Destinations extends AuditedController {
     /**
      * Handle the 'new destination' form submission
      */
+	@Security.Authenticated(AppAuthenticator.class)
     public Result create() {
 
     	Form<Destination> destinationForm = Form.form(Destination.class).bindFromRequest();
@@ -114,6 +120,7 @@ public class Destinations extends AuditedController {
      * @param id Id of destination to update
      * @return
      */
+	@Security.Authenticated(AppAuthenticator.class)
     public Result update(Long id) {
 
     	Destination originalDestination = Destination.find.byId(id);
@@ -143,6 +150,7 @@ public class Destinations extends AuditedController {
      *
      * @param id Id of the destination to delete
      */
+	@Security.Authenticated(AppAuthenticator.class)
     public Result delete(Long id) {
 
     	Destination destination = Destination.find.byId(id);
@@ -165,6 +173,7 @@ public class Destinations extends AuditedController {
      * @param destinationId Id of destination
      * @return
      */
+	@Security.Authenticated(AppAuthenticator.class)
     public Result shareProjectPage(Long destinationId) {
 
     	Destination destination = Destination.find.byId(destinationId);
@@ -179,6 +188,7 @@ public class Destinations extends AuditedController {
 
     }
 
+	@Security.Authenticated(AppAuthenticator.class)
     public Result editRules(Long destinationId) {
 
     	Destination destination = Destination.find.byId(destinationId);
@@ -201,6 +211,7 @@ public class Destinations extends AuditedController {
 
     }
 
+	@Security.Authenticated(AppAuthenticator.class)
     public Result updateRules(Long destinationId) {
 
     	DynamicForm requestData = Form.form().bindFromRequest();
