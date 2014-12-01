@@ -5,16 +5,18 @@ import java.util.Calendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import com.surevine.gateway.auditing.Audit;
 import com.surevine.gateway.auditing.AuditEvent;
 import com.surevine.gateway.auditing.AuditService;
-import com.surevine.gateway.auditing.LogfileAuditServiceImpl;
+import com.surevine.gateway.auditing.AuditServiceException;
 import com.surevine.gateway.auditing.action.AuditAction;
 import com.surevine.gateway.auditing.action.AuditActionFactory;
-import com.surevine.gateway.auditing.action.LogfileAuditActionFactory;
-import com.surevine.gateway.auditing.action.xml.XMLAuditActionFactory;
+import com.surevine.gateway.auditing.action.UserLoginAction;
 import com.surevine.gateway.auth.AuthService;
 import com.surevine.gateway.auth.AuthServiceException;
+import com.surevine.gateway.auth.PublicAuthService;
 import com.surevine.gateway.auth.WildflyAuthService;
+import com.typesafe.config.ConfigFactory;
 
 import play.Logger;
 import play.mvc.Http.Context;
@@ -28,20 +30,28 @@ import play.mvc.Security;
  * @author jonnyheavey
  *
  */
-@org.springframework.stereotype.Controller
+@org.springframework.stereotype.Component
 public class AppAuthenticator extends Security.Authenticator {
 
-	@Autowired
-	@Qualifier("authService")
+	private static final String PUBLIC = "public";
+	private static final String REMOTE = "remote";
+
 	private AuthService authService;
 
-	@Autowired
-	@Qualifier("auditService")
-    private AuditService auditService;
+	public AppAuthenticator() {
 
-	@Autowired
-	@Qualifier("auditActionFactory")
-    private AuditActionFactory auditActionFactory;
+		switch(ConfigFactory.load().getString("gateway.auth.mode")) {
+			case PUBLIC:
+				this.authService = new PublicAuthService();
+				break;
+			case REMOTE:
+				this.authService = WildflyAuthService.getInstance();
+				break;
+			default:
+				throw new AuditServiceException("Could not initialise App authentication. Authentication mode not correctly configured.");
+		}
+
+	}
 
 	/**
 	 * Gets username of authenticated user.
@@ -67,9 +77,9 @@ public class AppAuthenticator extends Security.Authenticator {
 				ctx.session().put("username", authenticatedUser);
 
 				// Audit login
-		    	AuditAction action = auditActionFactory.getUserLoginAction(authenticatedUser);
+				UserLoginAction action = Audit.getUserLoginAction(authenticatedUser);
 				AuditEvent event = new AuditEvent(action, Calendar.getInstance().getTime(), authenticatedUser);
-				auditService.audit(event);
+				Audit.audit(event);
 
 				return authenticatedUser;
 			}
@@ -87,16 +97,14 @@ public class AppAuthenticator extends Security.Authenticator {
         return unauthorized(views.html.unauthorised.render());
     }
 
-    public void setAuthServiceProxy(AuthService authServiceProxy) {
-    	this.authService = authServiceProxy;
-    }
-
-    public void setAuditService(AuditService auditService) {
-    	this.auditService = auditService;
-    }
-
-    public void setAuditActionFactory(AuditActionFactory auditActionFactory) {
-    	this.auditActionFactory = auditActionFactory;
+    /**
+     * Explicitly set an AuthService.
+	 * Primarily used for unit test mocking.
+     *
+     * @param authService
+     */
+    public void setAuthService(AuthService authService) {
+    	this.authService = authService;
     }
 
 }

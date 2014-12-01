@@ -2,7 +2,11 @@ package controllers;
 
 import java.util.List;
 
+import com.surevine.gateway.auditing.Audit;
 import com.surevine.gateway.auditing.action.AuditAction;
+import com.surevine.gateway.auditing.action.CreateRepositoryAction;
+import com.surevine.gateway.auditing.action.DeleteRepositoryAction;
+import com.surevine.gateway.auditing.action.UpdateRepositoryAction;
 
 import models.Project;
 import play.data.DynamicForm;
@@ -74,7 +78,7 @@ public class Projects extends AuditedController {
     	Project project = projectForm.get();
     	project.save();
 
-    	AuditAction action = auditActionFactory.getCreateRepositoryAction(project);
+    	CreateRepositoryAction action = Audit.getCreateRepositoryAction(project);
     	audit(action);
 
     	flash("success", "Project created successfully.");
@@ -126,7 +130,7 @@ public class Projects extends AuditedController {
     	Project updatedProject = projectForm.get();
     	updatedProject.update(id);
 
-    	AuditAction action = auditActionFactory.getUpdateRepositoryAction(originalProject, updatedProject);
+    	UpdateRepositoryAction action = Audit.getUpdateRepositoryAction(originalProject, updatedProject);
     	audit(action);
 
     	flash("success", "Project updated successfully.");
@@ -149,7 +153,7 @@ public class Projects extends AuditedController {
 
     	project.delete();
 
-    	AuditAction action = auditActionFactory.getDeleteRepositoryAction(project);
+    	DeleteRepositoryAction action = Audit.getDeleteRepositoryAction(project);
     	audit(action);
 
     	flash("success", "Project deleted successfully.");

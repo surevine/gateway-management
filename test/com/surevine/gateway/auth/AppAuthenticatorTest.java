@@ -28,7 +28,7 @@ import play.test.FakeApplication;
 
 import controllers.AppAuthenticator;
 
-public class RemoteAuthenticatorTest {
+public class AppAuthenticatorTest {
 
 	public static FakeApplication app;
 
@@ -51,10 +51,6 @@ public class RemoteAuthenticatorTest {
 	@Before
 	public void beforeTest() {
 		setupContext();
-
-		LogfileAuditActionFactory auditActionFactory = new LogfileAuditActionFactory();
-		fixture.setAuditActionFactory(auditActionFactory);
-		fixture.setAuditService(LogfileAuditServiceImpl.getInstance());
 	}
 
 	@Test
@@ -76,15 +72,15 @@ public class RemoteAuthenticatorTest {
 
 		Context ctx = Context.current();
 
-		AuthService mockAuthServiceProxy = mock(WildflyAuthService.class);
+		AuthService mockAuthService = mock(WildflyAuthService.class);
 		try {
-			when(mockAuthServiceProxy.getAuthenticatedUsername()).thenReturn(WILDFLY_AUTHENTICATED_USERNAME);
+			when(mockAuthService.getAuthenticatedUsername()).thenReturn(WILDFLY_AUTHENTICATED_USERNAME);
 		} catch (AuthServiceException e) {
 			// Not expecting to catch this due to mock.
 			fail();
 		}
 
-		fixture.setAuthServiceProxy(mockAuthServiceProxy);
+		fixture.setAuthService(mockAuthService);
 
 		String authenticatedUser = fixture.getUsername(ctx);
 
@@ -98,16 +94,16 @@ public class RemoteAuthenticatorTest {
 	@Test
 	public void testGetUsernameUnauthenticatedUser() {
 
-		AuthService mockUnauthenticatedAuthServiceProxy = mock(WildflyAuthService.class);
+		AuthService mockUnauthenticatedAuthService = mock(WildflyAuthService.class);
 		try {
-			// AuthServiceProxy returns null if no authenticated user found
-			when(mockUnauthenticatedAuthServiceProxy.getAuthenticatedUsername()).thenReturn(null);
+			// AuthService returns null if no authenticated user found
+			when(mockUnauthenticatedAuthService.getAuthenticatedUsername()).thenReturn(null);
 		} catch (AuthServiceException e) {
 			// Not expecting to catch this due to mock.
 			fail();
 		}
 
-		fixture.setAuthServiceProxy(mockUnauthenticatedAuthServiceProxy);
+		fixture.setAuthService(mockUnauthenticatedAuthService);
 
 		String authenticatedUser = fixture.getUsername(Context.current());
 
@@ -117,8 +113,8 @@ public class RemoteAuthenticatorTest {
 	@Test
 	public void testGetUsernameServiceDown() {
 
-		AuthService mockUnauthenticatedAuthServiceProxy = mock(WildflyAuthService.class);
-		fixture.setAuthServiceProxy(mockUnauthenticatedAuthServiceProxy);
+		AuthService mockOfflineAuthService = mock(WildflyAuthService.class);
+		fixture.setAuthService(mockOfflineAuthService);
 
 		String authenticatedUser = fixture.getUsername(Context.current());
 

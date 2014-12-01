@@ -3,7 +3,12 @@ package controllers;
 import java.io.IOException;
 import java.util.List;
 
+import com.surevine.gateway.auditing.Audit;
 import com.surevine.gateway.auditing.action.AuditAction;
+import com.surevine.gateway.auditing.action.CreateDestinationAction;
+import com.surevine.gateway.auditing.action.DeleteDestinationAction;
+import com.surevine.gateway.auditing.action.ModifyDestinationRulesAction;
+import com.surevine.gateway.auditing.action.UpdateDestinationAction;
 
 import models.Destination;
 import play.data.DynamicForm;
@@ -106,7 +111,7 @@ public class Destinations extends AuditedController {
     	Destination destination = destinationForm.get();
     	destination.save();
 
-    	AuditAction action = auditActionFactory.getCreateDestinationAction(destination);
+    	CreateDestinationAction action = Audit.getCreateDestinationAction(destination);
     	audit(action);
 
     	flash("success", "Created destination.");
@@ -137,7 +142,7 @@ public class Destinations extends AuditedController {
     	Destination updatedDestination = destinationForm.get();
     	updatedDestination.update(id);
 
-    	AuditAction action = auditActionFactory.getUpdateDestinationAction(originalDestination, updatedDestination);
+    	UpdateDestinationAction action = Audit.getUpdateDestinationAction(originalDestination, updatedDestination);
     	audit(action);
 
     	flash("success", "Updated destination.");
@@ -160,7 +165,7 @@ public class Destinations extends AuditedController {
 
     	destination.delete();
 
-    	AuditAction action = auditActionFactory.getDeleteDestinationAction(destination);
+    	DeleteDestinationAction action = Audit.getDeleteDestinationAction(destination);
     	audit(action);
 
     	flash("success", "Deleted destination.");
@@ -229,7 +234,7 @@ public class Destinations extends AuditedController {
 			return redirect(routes.Destinations.view(destinationId));
 		}
 
-    	AuditAction action = auditActionFactory.getModifyDestinationRulesAction(destination, newRuleFileContent);
+    	ModifyDestinationRulesAction action = Audit.getModifyDestinationRulesAction(destination, newRuleFileContent);
     	audit(action);
 
     	flash("success", "Updated destination rules.");

@@ -4,7 +4,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.surevine.gateway.auditing.Audit;
 import com.surevine.gateway.auditing.action.AuditAction;
+import com.surevine.gateway.auditing.action.ResendRepositoryAction;
+import com.surevine.gateway.auditing.action.ShareRepositoryAction;
+import com.surevine.gateway.auditing.action.UnshareRepositoryAction;
 import com.surevine.gateway.scm.service.SCMFederatorServiceException;
 import com.surevine.gateway.scm.service.SCMFederatorServiceFacade;
 
@@ -106,7 +110,7 @@ public class SharingPartnerships extends AuditedController {
 
     		destination.removeProject(project);
 
-        	AuditAction action = auditActionFactory.getUnshareRepositoryAction(project, destination);
+    		UnshareRepositoryAction action = Audit.getUnshareRepositoryAction(project, destination);
         	audit(action);
 
 	    	switch(source) {
@@ -156,7 +160,7 @@ public class SharingPartnerships extends AuditedController {
     		return internalServerError("Failed to resend project to destination.");
     	}
 
-    	AuditAction action = auditActionFactory.getResendRepositoryAction(project, destination);
+    	ResendRepositoryAction action = Audit.getResendRepositoryAction(project, destination);
     	audit(action);
 
         return ok("Resent project to destination.");
@@ -173,7 +177,7 @@ public class SharingPartnerships extends AuditedController {
 
 		for(Project project: projects) {
 			destination.addProject(project);
-	    	AuditAction action = auditActionFactory.getShareRepositoryAction(project, destination);
+			ShareRepositoryAction action = Audit.getShareRepositoryAction(project, destination);
 	    	audit(action);
 	    }
 	}
@@ -189,7 +193,7 @@ public class SharingPartnerships extends AuditedController {
 
     	for(Destination destination: destinations) {
     		project.addDestination(destination);
-	    	AuditAction action = auditActionFactory.getShareRepositoryAction(project, destination);
+			ShareRepositoryAction action = Audit.getShareRepositoryAction(project, destination);
 	    	audit(action);
     	}
 	}
