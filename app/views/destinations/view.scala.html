@@ -64,28 +64,30 @@
 	</section>
 
 	<script type="text/javascript">
-		syntaxHighlighter.initViewCodePane(document.getElementById('destination-rules'));
+		$( document ).ready(function() {
+			syntaxHighlighter.initViewCodePane(document.getElementById('destination-rules'));
 
-		// Initialise resend ajax requests
-		$('.resend').on('click', function () {
+			// Initialise resend ajax requests
+			$('.resend').on('click', function () {
 
-		    var $btn = $(this).button('loading');
+			    var $btn = $(this).button('loading');
 
-			$.ajax({
-				url: "@routes.SharingPartnerships.resend()",
-				type: "POST",
-				data: {
-					projectId: $btn.data("project-id"),
-					destinationId: $btn.data("destination-id")
-				},
-				success: function(data){
-					notifications.success(data);
-				},
-				error: function(data){
-					notifications.error(data.responseText);
-				}
-			}).always(function(){
-				 $btn.button('reset');
+				$.ajax({
+					url: "@routes.SharingPartnerships.resend()",
+					type: "POST",
+					data: {
+						projectId: $btn.data("project-id"),
+						destinationId: $btn.data("destination-id")
+					},
+					success: function(data){
+						notifications.success(data);
+					},
+					error: function(data){
+						notifications.error(data.responseText);
+					}
+				}).always(function(){
+					 $btn.button('reset');
+				});
 			});
 		});
 	</script>

@@ -24,8 +24,10 @@
 	}
 
 	<script type="text/javascript">
-		syntaxHighlighter.initViewCodePane(document.getElementById('export-rules'));
-		syntaxHighlighter.initViewCodePane(document.getElementById('import-rules'));
+		$( document ).ready(function() {
+			syntaxHighlighter.initViewCodePane(document.getElementById('export-rules'));
+			syntaxHighlighter.initViewCodePane(document.getElementById('import-rules'));
+		});
 	</script>
 
 }

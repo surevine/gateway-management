@@ -51,26 +51,29 @@
 	</section>
 
 	<script type="text/javascript">
-		// Initialise resend ajax requests
-		$('.resend').on('click', function () {
+		$( document ).ready(function() {
 
-		    var $btn = $(this).button('loading');
+			// Initialise resend ajax requests
+			$('.resend').on('click', function () {
 
-			$.ajax({
-				url: "@routes.SharingPartnerships.resend()",
-				type: "POST",
-				data: {
-					projectId: $btn.data("project-id"),
-					destinationId: $btn.data("destination-id")
-				},
-				success: function(data){
-					notifications.success(data);
-				},
-				error: function(data){
-					notifications.error(data.responseText);
-				}
-			}).always(function(){
-				 $btn.button('reset');
+			    var $btn = $(this).button('loading');
+
+				$.ajax({
+					url: "@routes.SharingPartnerships.resend()",
+					type: "POST",
+					data: {
+						projectId: $btn.data("project-id"),
+						destinationId: $btn.data("destination-id")
+					},
+					success: function(data){
+						notifications.success(data);
+					},
+					error: function(data){
+						notifications.error(data.responseText);
+					}
+				}).always(function(){
+					 $btn.button('reset');
+				});
 			});
 		});
 	</script>

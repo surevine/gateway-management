@@ -26,7 +26,9 @@
 	}
 
 	<script type="text/javascript">
-		syntaxHighlighter.initEditCodePane(document.getElementById('destination-rules'), document.getElementById('ruleFileContent'));
+		$( document ).ready(function() {
+			syntaxHighlighter.initEditCodePane(document.getElementById('destination-rules'), document.getElementById('ruleFileContent'));
+		});
 	</script>
 
 }
