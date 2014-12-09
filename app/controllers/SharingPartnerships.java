@@ -55,7 +55,7 @@ public class SharingPartnerships extends AuditedController {
 
 		    	addProjectsToDestination(destination, selectedProjectsArr);
 
-		    	flash("success", "Repositories shared with destination successfully.");
+		    	flash("success", "Repositories sent to the Gateway to be shared with destination.");
 		    	return redirect(routes.Destinations.view(destination.id));
 
 	    	case "project":
@@ -73,7 +73,7 @@ public class SharingPartnerships extends AuditedController {
 
 	        	addDestinationsToProject(project, selectedDestinationsArr);
 
-	        	flash("success", "Repository shared with destinations successfully.");
+	        	flash("success", "Repository sent to the Gateway to be shared with the destinations.");
 	        	return redirect(routes.Projects.view(project.id));
 
 	    	default:
