@@ -75,7 +75,8 @@ public class SCMFederatorServiceFacade {
 	 */
 	public void resend(String destinationId, String projectKey, String repoSlug) throws SCMFederatorServiceException {
 
-		Logger.info(String.format("Requesting redistribution of repo (%s/%s) by SCM component [%s]", projectKey, repoSlug, SCM_FEDERATOR_BASE_URL + "/rest/federator/distribute"));
+		Logger.info(String.format("Requesting redistribution of repo (%s/%s) by SCM component [%s]",
+				projectKey, repoSlug, SCM_FEDERATOR_BASE_URL + "/rest/federator/distribute"));
 
     	Promise<WSResponse> promise = postDistributionRequest(destinationId, projectKey, repoSlug);
 

@@ -80,6 +80,44 @@ public class CreateProjectsControllerTest extends ProjectTest {
 		assertThat(contentType(result)).isEqualTo("text/html");
 	}
 
+	@Test
+	public void testCreateProjectInvalidSpace() {
+
+		Result resultKey = postCreateProject(TEST_NEW_PROJECT_DISPLAY_NAME,
+											"includes space",
+											TEST_EXISTING_PROJECT_SLUG_REPO);
+
+		Result resultSlug = postCreateProject(TEST_NEW_PROJECT_DISPLAY_NAME,
+				TEST_EXISTING_PROJECT_PROJECT_KEY,
+				"includes space");
+
+		assertThat(status(resultKey)).isEqualTo(BAD_REQUEST);
+		assertThat(contentType(resultKey)).isEqualTo("text/html");
+
+		assertThat(status(resultSlug)).isEqualTo(BAD_REQUEST);
+		assertThat(contentType(resultSlug)).isEqualTo("text/html");
+
+	}
+
+	@Test
+	public void testCreateProjectInvalidProjectKeyChar() {
+
+		Result resultKey = postCreateProject(TEST_NEW_PROJECT_DISPLAY_NAME,
+											"includes?invalidchar",
+											TEST_EXISTING_PROJECT_SLUG_REPO);
+
+		Result resultSlug = postCreateProject(TEST_NEW_PROJECT_DISPLAY_NAME,
+				TEST_EXISTING_PROJECT_PROJECT_KEY,
+				"includes?invalidchar");
+
+		assertThat(status(resultKey)).isEqualTo(BAD_REQUEST);
+		assertThat(contentType(resultKey)).isEqualTo("text/html");
+
+		assertThat(status(resultSlug)).isEqualTo(BAD_REQUEST);
+		assertThat(contentType(resultSlug)).isEqualTo("text/html");
+
+	}
+
 
 	/**
 	 * Helper method for fake posting of form data to create project route

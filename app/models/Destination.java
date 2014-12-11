@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,7 +18,6 @@ import com.surevine.gateway.rules.RuleFileManager;
 import com.surevine.gateway.scm.service.SCMFederatorServiceFacade;
 import com.typesafe.config.ConfigFactory;
 
-import play.Logger;
 import play.data.validation.Constraints.MaxLength;
 import play.data.validation.Constraints.Required;
 import play.data.validation.ValidationError;
