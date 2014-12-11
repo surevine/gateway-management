@@ -52,15 +52,30 @@ public class ViewProjectsControllerTest extends ProjectTest {
 	}
 
 	@Test
-	@Ignore
 	public void testViewProjectAPI() {
-		// TODO
+
+		FakeRequest request = new FakeRequest(GET, "/api/project/" + TEST_EXISTING_PROJECT_ID);
+		Result result = callAction(controllers.routes.ref.ProjectsAPI.view(TEST_EXISTING_PROJECT_ID), request);
+
+		assertThat(status(result)).isEqualTo(OK);
+		assertThat(contentType(result)).isEqualTo("application/json");
+
+		// Ensure correct content
+		String content = contentAsString(result);
+		assertThat(content).contains(TEST_EXISTING_PROJECT_DISPLAY_NAME);
+		assertThat(content).contains(TEST_EXISTING_PROJECT_PROJECT_KEY);
+		assertThat(content).contains(TEST_EXISTING_PROJECT_SLUG_REPO);
+
 	}
 
 	@Test
-	@Ignore
 	public void testNonExistingProjectAPI() {
-		// TODO
+
+		FakeRequest request = new FakeRequest(GET, "/api/project/" + TEST_NON_EXISTING_PROJECT_ID);
+		Result result = callAction(controllers.routes.ref.ProjectsAPI.view(TEST_NON_EXISTING_PROJECT_ID), request);
+
+		assertThat(status(result)).isEqualTo(NOT_FOUND);
+
 	}
 
 }
