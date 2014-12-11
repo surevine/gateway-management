@@ -65,7 +65,7 @@ public class Destination extends Model {
 	public List<Project> projects = new ArrayList<Project>();
 
     /**
-     *  Generic query helper for entity Destination with id Long
+     * Generic query helper for entity Destination with id Long
      */
     public static Finder<Long,Destination> find = new Finder<Long,Destination>(Long.class, Destination.class);
 
