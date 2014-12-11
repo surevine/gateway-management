@@ -64,7 +64,7 @@ public class Destination extends Model {
     /**
      * Generic query helper for entity Destination with id Long
      */
-    public static Finder<Long,Destination> find = new Finder<Long,Destination>(Long.class, Destination.class);
+    public static Model.Finder<Long,Destination> find = new Model.Finder<Long,Destination>(Long.class, Destination.class);
 
     /**
      * Service facade for interaction with SCM federator component

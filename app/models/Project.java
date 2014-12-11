@@ -2,6 +2,8 @@ package models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -64,7 +66,7 @@ public class Project extends Model {
     /**
      * Generic query helper for entity Project with id Long
      */
-    public static Finder<Long,Project> find = new Finder<Long,Project>(Long.class, Project.class);
+    public static Model.Finder<Long,Project> find = new Model.Finder<Long,Project>(Long.class, Project.class);
 
     /**
      * Service facade for interaction with SCM federator component
@@ -135,6 +137,16 @@ public class Project extends Model {
     		errors.add(new ValidationError("projectKey", "Project key / Repository slug combination already exists."));
     		errors.add(new ValidationError("repositorySlug", "Project key / Repository slug combination already exists."));
     	}
+
+    	Pattern p = Pattern.compile("([^-a-zA-Z0-9])");
+    	Matcher projectKeyMatcher = p.matcher(projectKey);
+        if (projectKeyMatcher.find()) {
+        	errors.add(new ValidationError("projectKey", "Project key contains invalid characters."));
+        }
+    	Matcher repoSlugMatcher = p.matcher(repositorySlug);
+        if (repoSlugMatcher.find()) {
+        	errors.add(new ValidationError("repositorySlug", "Repository slug contains invalid characters."));
+        }
 
     	return errors.isEmpty() ? null : errors;
     }

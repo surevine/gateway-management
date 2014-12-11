@@ -13,6 +13,8 @@ import models.Destination;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import destinations.DestinationTest;
+
 import play.mvc.Result;
 import play.test.FakeRequest;
 

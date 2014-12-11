@@ -44,6 +44,10 @@ public class Destinations extends AuditedController {
 
     	Destination destination = Destination.find.byId(id);
 
+    	if(destination == null) {
+    		return notFound("Destination not found.");
+    	}
+
     	String destinationRules = "";
     	String errorMessage = "";
     	Boolean error = false;
