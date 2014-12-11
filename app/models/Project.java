@@ -152,7 +152,7 @@ public class Project extends Model {
     }
 
 	public void setSCMFederatorServiceFacade(SCMFederatorServiceFacade scmFederator) {
-		this.scmFederator = scmFederator;
+		Project.scmFederator = scmFederator;
 	}
 
 }
