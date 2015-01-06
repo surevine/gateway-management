@@ -93,5 +93,8 @@ POST	/global-rules/edit/:slug		@controllers.GlobalRuleFiles.update(slug: String)
 # Misc
 #
 
+# Sanitisation
+POST	/api/sanitise					@controllers.Sanitisation.sanitise()
+
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               	controllers.Assets.at(path="/public", file)
