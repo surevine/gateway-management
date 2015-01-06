@@ -56,12 +56,12 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 			return false;
 		}
 
-		if(scriptResponse == SANITISATION_SUCCESS_CODE) {
-			return true;
+		if(scriptResponse != SANITISATION_SUCCESS_CODE) {
+			// Sanitisation script returned error, so commit not sane.
+			return false;
 		}
 
-		// Sanitisation script returned error, so commit not sane.
-		return false;
+		return true;
 	}
 
 	/**
