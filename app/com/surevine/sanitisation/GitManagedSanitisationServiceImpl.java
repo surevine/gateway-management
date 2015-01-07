@@ -40,23 +40,14 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 	}
 
 	@Override
-	public SanitisationResult sanitise(File archive) {
+	public SanitisationResult sanitise(File archive) throws SanitisationServiceException {
 
 		try {
 			initSanitisationScript();
 			updateSanitisationScript();
-		} catch (IllegalStateException | GitAPIException | IOException e1) {
-			String errorMessage = "Failed to initialise sanitisation script. Rejecting commit.";
-			Logger.error(errorMessage, e1);
-			return new SanitisationResult(archive, false, errorMessage);
-		}
-
-		try {
 			return executeSanitisationScript(archive);
-		} catch (IOException | InterruptedException e2) {
-			String errorMessage = "Error during sanitisation script execution.";
-			Logger.error(errorMessage, e2);
-			return new SanitisationResult(archive, false, errorMessage);
+		} catch (IOException | GitAPIException | InterruptedException e) {
+			throw new SanitisationServiceException("Error with sanitisation service.", e);
 		}
 
 	}

@@ -9,6 +9,6 @@ public interface SanitisationService {
 	 * @param archive tar.gz archive to be sanitised
 	 * @return SanitisationResult result of sanitisation execution
 	 */
-	SanitisationResult sanitise(File archive);
+	SanitisationResult sanitise(File archive) throws SanitisationServiceException;
 
 }

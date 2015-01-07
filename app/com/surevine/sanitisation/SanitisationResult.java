@@ -2,6 +2,9 @@ package com.surevine.sanitisation;
 
 import java.io.File;
 
+import play.api.libs.json.JsObject;
+import play.twirl.api.Content;
+
 /**
  * Represents the result of a sanitisation execution
  * @author jonnyheavey
