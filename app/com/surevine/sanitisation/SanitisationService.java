@@ -7,8 +7,8 @@ public interface SanitisationService {
 	/**
 	 * Determine's whether an archive passes the sanitisation rules.
 	 * @param archive tar.gz archive to be sanitised
-	 * @return boolean True if archive is valid
+	 * @return SanitisationResult result of sanitisation execution
 	 */
-	public boolean isSane(File archive);
+	SanitisationResult sanitise(File archive);
 
 }

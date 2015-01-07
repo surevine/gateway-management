@@ -3,7 +3,9 @@ package controllers;
 import java.io.File;
 
 import com.surevine.sanitisation.GitManagedSanitisationServiceImpl;
+import com.surevine.sanitisation.SanitisationResult;
 
+import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Result;
@@ -24,14 +26,13 @@ public class Sanitisation extends Controller {
 		}
 
 		File archive = postedArchive.getFile();
+		SanitisationResult result = GitManagedSanitisationServiceImpl.getInstance().sanitise(archive);
 
-		boolean isSane = GitManagedSanitisationServiceImpl.getInstance().isSane(archive);
-
-		if(isSane) {
-			return ok("Archive passed sanitisation.");
+		if(result.isSane()) {
+			return ok();
 		}
 
-		return badRequest("Archive failed sanitisation.");
+		return badRequest(result.getOutput());
 	}
 
 }

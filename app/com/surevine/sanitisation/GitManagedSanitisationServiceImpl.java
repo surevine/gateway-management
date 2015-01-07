@@ -2,7 +2,9 @@ package com.surevine.sanitisation;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
+import org.apache.commons.io.IOUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
@@ -14,8 +16,8 @@ import com.typesafe.config.ConfigFactory;
 import play.Logger;
 
 /**
- * SanitisationService implementation which executes scripts
- * maintained in a Git repository.
+ * SanitisationService implementation which executes sanitisation
+ * scripts maintained in a Git repository.
  *
  * @author jonnyheavey
  */
@@ -38,30 +40,25 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 	}
 
 	@Override
-	public boolean isSane(File archive) {
+	public SanitisationResult sanitise(File archive) {
 
 		try {
 			initSanitisationScript();
 			updateSanitisationScript();
 		} catch (IllegalStateException | GitAPIException | IOException e1) {
-			Logger.error("Failed to initialise sanitisation script. Rejecting commit.", e1);
-			return false;
+			String errorMessage = "Failed to initialise sanitisation script. Rejecting commit.";
+			Logger.error(errorMessage, e1);
+			return new SanitisationResult(archive, false, errorMessage);
 		}
 
-		int scriptResponse;
 		try {
-			scriptResponse = executeSanitisationScript(archive);
+			return executeSanitisationScript(archive);
 		} catch (IOException | InterruptedException e2) {
-			Logger.error("Error during sanitisation script execution.", e2);
-			return false;
+			String errorMessage = "Error during sanitisation script execution.";
+			Logger.error(errorMessage, e2);
+			return new SanitisationResult(archive, false, errorMessage);
 		}
 
-		if(scriptResponse != SANITISATION_SUCCESS_CODE) {
-			// Sanitisation script returned error, so commit not sane.
-			return false;
-		}
-
-		return true;
 	}
 
 	/**
@@ -108,17 +105,31 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 	/**
 	 * Executes sanitisation shell script.
 	 * @param archive archive file to be sanitised.
+	 * @param scriptOutput
 	 * @return
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	private int executeSanitisationScript(File archive) throws IOException, InterruptedException {
+	private SanitisationResult executeSanitisationScript(File archive) throws IOException, InterruptedException {
+
+		// TODO include other params (archive, project slug, commit id, destination urls, destination names
 
 		Process p = Runtime.getRuntime().exec(SANITISATION_WORKING_DIR + "/" + SANITISATION_SCRIPT_NAME);
+		String scriptOutput = IOUtils.toString(p.getInputStream(), Charset.defaultCharset());
 		int exitValue = p.waitFor();
 
-		// TODO read output from script (to relay back to client)
-		return exitValue;
+		SanitisationResult result = new SanitisationResult(archive, false, scriptOutput);
+
+		if(exitValue == SANITISATION_SUCCESS_CODE) {
+			result.setSane(true);
+		} else {
+			// TODO replace tmpfile path  with commit id as more helpful
+			Logger.info(String.format("Archive (%s) failed sanitisation: %s",
+										result.getArchive().toString(),
+										result.getOutput()));
+		}
+
+		return result;
 	}
 
 }
