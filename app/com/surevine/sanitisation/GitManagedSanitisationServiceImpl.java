@@ -3,6 +3,10 @@ package com.surevine.sanitisation;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Iterator;
+import java.util.List;
+
+import models.Destination;
 
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jgit.api.Git;
@@ -40,12 +44,22 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 	}
 
 	@Override
-	public SanitisationResult sanitise(File archive) throws SanitisationServiceException {
+	public SanitisationResult sanitise(File archive,
+										String projectSlug,
+										String commitId,
+										List<Destination> destinations)
+										throws SanitisationServiceException {
 
 		try {
 			initSanitisationScript();
 			updateSanitisationScript();
-			return executeSanitisationScript(archive);
+
+			return executeSanitisationScripts(archive,
+												projectSlug,
+												commitId,
+												buildDestinationURLs(destinations),
+												buildDestinationNames(destinations));
+
 		} catch (IOException | GitAPIException | InterruptedException e) {
 			throw new SanitisationServiceException("Error with sanitisation service.", e);
 		}
@@ -94,18 +108,29 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 	}
 
 	/**
-	 * Executes sanitisation shell script.
+	 * Executes sanitisation shell scripts in cloned repository.
 	 * @param archive archive file to be sanitised.
+	 * @param destinationNames
+	 * @param destinationURLs
+	 * @param commitId
+	 * @param projectSlug
 	 * @param scriptOutput
 	 * @return
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	private SanitisationResult executeSanitisationScript(File archive) throws IOException, InterruptedException {
+	private SanitisationResult executeSanitisationScripts(File archive,
+														String projectSlug,
+														String commitId,
+														String destinationURLs,
+														String destinationNames)
+														throws IOException, InterruptedException {
 
-		// TODO include other params (archive, project slug, commit id, destination urls, destination names
+		// TODO find all sanitisation scripts with given name in the repo, execute each
+		String sanitisationCommand = buildSanitisationCommand(SANITISATION_WORKING_DIR + "/" + SANITISATION_SCRIPT_NAME,
+																archive, projectSlug, commitId, destinationURLs, destinationNames);
 
-		Process p = Runtime.getRuntime().exec(SANITISATION_WORKING_DIR + "/" + SANITISATION_SCRIPT_NAME);
+		Process p = Runtime.getRuntime().exec(sanitisationCommand);
 		String scriptOutput = IOUtils.toString(p.getInputStream(), Charset.defaultCharset());
 		int exitValue = p.waitFor();
 
@@ -114,13 +139,84 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 		if(exitValue == SANITISATION_SUCCESS_CODE) {
 			result.setSane(true);
 		} else {
-			// TODO replace tmpfile path  with commit id as more helpful
-			Logger.info(String.format("Archive (%s) failed sanitisation: %s",
-										result.getArchive().toString(),
+			Logger.info(String.format("Archive of changes for commit '%s' failed sanitisation: %s",
+										commitId,
 										result.getOutput()));
 		}
 
 		return result;
+	}
+
+	/**
+	 * Assembles sanitisation script execution command (bash) inc args
+	 *
+	 * @param scriptPath path of script to execute
+	 * @param archive File to be sanitised
+	 * @param projectSlug slug of project the file contains changes for
+	 * @param commitId SCM id of the commit that made the changes
+	 * @param destinationURLs bar (|) separated list of destination URLs the project is being shared with
+	 * @param destinationNames bar (|) separated list of destination names the project is being shared with
+	 * @return String command to be executed in shell
+	 */
+	private String buildSanitisationCommand(String scriptPath,
+											File archive,
+											String projectSlug,
+											String commitId,
+											String destinationURLs,
+											String destinationNames) {
+
+		StringBuilder command = new StringBuilder();
+		command.append(scriptPath + " ");
+		command.append(archive.toString() + " ");
+		command.append(projectSlug + " ");
+		command.append(commitId + " ");
+		command.append(destinationURLs + " ");
+		command.append(destinationNames);
+
+		Logger.info("Executing sanitisation command: " + command.toString());
+
+		return command.toString();
+	}
+
+	/**
+	 * Creates a bar separated list of destination names
+	 * @param destinations the destination to compose the list from
+	 * @return
+	 */
+	private String buildDestinationNames(List<Destination> destinations) {
+
+		StringBuilder destinationNames = new StringBuilder();
+
+		Iterator<Destination> it = destinations.iterator();
+		while(it.hasNext()) {
+			Destination destination = it.next();
+			destinationNames.append(destination.name);
+			if(it.hasNext()) {
+				destinationNames.append("|");
+			}
+		}
+
+		return destinationNames.toString();
+	}
+
+	/**
+	 * Creates a bar separated list of destination URLs
+	 * @param destinations the destination to compose the list from
+	 * @return
+	 */
+	private String buildDestinationURLs(List<Destination> destinations) {
+		StringBuilder destinationURLs = new StringBuilder();
+
+		Iterator<Destination> it = destinations.iterator();
+		while(it.hasNext()) {
+			Destination destination = it.next();
+			destinationURLs.append(destination.url);
+			if(it.hasNext()) {
+				destinationURLs.append("|");
+			}
+		}
+
+		return destinationURLs.toString();
 	}
 
 }

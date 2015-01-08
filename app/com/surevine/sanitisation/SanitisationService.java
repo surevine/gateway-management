@@ -1,6 +1,9 @@
 package com.surevine.sanitisation;
 
 import java.io.File;
+import java.util.List;
+
+import models.Destination;
 
 public interface SanitisationService {
 
@@ -9,6 +12,10 @@ public interface SanitisationService {
 	 * @param archive tar.gz archive to be sanitised
 	 * @return SanitisationResult result of sanitisation execution
 	 */
-	SanitisationResult sanitise(File archive) throws SanitisationServiceException;
+	SanitisationResult sanitise(File archive,
+								String projectSlug,
+								String commitId,
+								List<Destination> destinations)
+								throws SanitisationServiceException;
 
 }

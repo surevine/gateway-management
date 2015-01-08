@@ -1,8 +1,8 @@
 package controllers;
 
-import java.io.File;
+import java.util.Map;
 
-import org.eclipse.jgit.api.errors.GitAPIException;
+import models.Project;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.surevine.sanitisation.GitManagedSanitisationServiceImpl;
@@ -19,22 +19,49 @@ public class Sanitisation extends Controller {
 
 	/**
 	 * Confirms whether posted archive meets sanitisation rules.
-	 * @return 200 if archive passed sanitisation, else 400.
+	 * @return 200 if sanitisation executed successfully, else 400.
 	 */
 	public Result sanitise() {
 
 		MultipartFormData body = request().body().asMultipartFormData();
-		MultipartFormData.FilePart postedArchive = body.getFile("archive");
+		Map<String,String[]> postedProperties = body.asFormUrlEncoded();
 
-		// TODO extend to ensure that other properties have also been posted
+		String projectKey = postedProperties.get("projectKey")[0];
+		if(projectKey == null) {
+			return badRequest("projectKey is missing from request");
+		}
+
+		String repoSlug = postedProperties.get("repoSlug")[0];
+		if(repoSlug == null) {
+			return badRequest("repoSlug is missing from request");
+		}
+
+		String commitId = postedProperties.get("commitId")[0];
+		if(commitId == null) {
+			return badRequest("commitId is missing from request");
+		}
+
+		MultipartFormData.FilePart postedArchive = body.getFile("archive");
 		if(postedArchive == null) {
 			return badRequest("Archive is missing from request.");
 		}
 
-		File archive = postedArchive.getFile();
+		String projectSlug = projectKey + "/" + repoSlug;
+		Project project = Project.find.where()
+										.eq("projectKey", projectKey)
+										.eq("repositorySlug", repoSlug)
+										.findUnique();
+		if(project == null) {
+			Logger.error("PROJECT NOT FOUND: " + projectSlug);
+			return notFound("No project configured with slug: " + projectSlug);
+		}
+
 		SanitisationResult sanitisationResult;
 		try {
-			sanitisationResult = GitManagedSanitisationServiceImpl.getInstance().sanitise(archive);
+			sanitisationResult = GitManagedSanitisationServiceImpl.getInstance().sanitise(postedArchive.getFile(),
+																							projectSlug,
+																							commitId,
+																							project.destinations);
 		} catch (SanitisationServiceException e) {
 			String errorMessage = "Error executing sanitisation script.";
 			Logger.error(errorMessage, e);
@@ -48,7 +75,7 @@ public class Sanitisation extends Controller {
 	/**
 	 * Creates a JSON representation of a sanitisation result
 	 * @param result result to convert to JSON
-	 * @return
+	 * @return JSON representation of result
 	 */
 	private ObjectNode buildJsonResult(SanitisationResult result) {
 		ObjectNode jsonResult = Json.newObject();
