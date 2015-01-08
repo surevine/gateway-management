@@ -131,6 +131,8 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 		List<File> sanitisationScripts = findSanitisationScripts(new File(SANITISATION_WORKING_DIR), new ArrayList<File>());
 		for(File script : sanitisationScripts) {
 
+			Logger.info(String.format("Sanitising archive of files changed in commit '%s'.", commitId));
+
 			String sanitisationCommand = buildSanitisationCommand(script.getAbsolutePath(),
 																	archive,
 																	projectSlug,
@@ -141,13 +143,16 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 			String scriptOutput = IOUtils.toString(p.getInputStream(), Charset.defaultCharset());
 			int exitValue = p.waitFor();
 
+			if((scriptOutput != null) && (scriptOutput != "")) {
+				Logger.info(String.format("%s (%s)", scriptOutput, script.getAbsolutePath()));
+			}
+
 			if(exitValue != SANITISATION_SUCCESS_CODE) {
 				result.setSane(false);
 				result.addError(scriptOutput);
-				Logger.info(String.format("Archive of changes for commit '%s' failed sanitisation by script: '%s'. Reason: ",
-											commitId,
-											script.getAbsolutePath(),
-											scriptOutput));
+				Logger.info(String.format("Archive failed sanitisation check by script '%s', marking commit unsafe.", script.getAbsolutePath()));
+			} else {
+				Logger.info(String.format("Archive passed sanitisation check by script '%s'.", script.getAbsolutePath()));
 			}
 
 		}
@@ -156,7 +161,7 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 	}
 
 	/**
-	 * Assembles sanitisation script execution command (bash) inc args
+	 * Assembles sanitisation script execution command (bash) including args
 	 *
 	 * @param scriptPath path of script to execute
 	 * @param archive File to be sanitised

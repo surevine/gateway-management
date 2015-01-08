@@ -20,7 +20,7 @@ public class Sanitisation extends Controller {
 
 	/**
 	 * Confirms whether posted archive meets sanitisation rules.
-	 * @return 200 if sanitisation executed successfully, else 400.
+	 * @return HTTP 200 if sanitisation executed successfully, else 400.
 	 */
 	public Result sanitise() {
 
