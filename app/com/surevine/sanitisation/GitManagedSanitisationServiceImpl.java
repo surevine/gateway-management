@@ -3,6 +3,7 @@ package com.surevine.sanitisation;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -109,12 +110,11 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 
 	/**
 	 * Executes sanitisation shell scripts in cloned repository.
-	 * @param archive archive file to be sanitised.
-	 * @param destinationNames
-	 * @param destinationURLs
-	 * @param commitId
+	 * @param archive
 	 * @param projectSlug
-	 * @param scriptOutput
+	 * @param commitId
+	 * @param destinationURLs
+	 * @param destinationNames
 	 * @return
 	 * @throws IOException
 	 * @throws InterruptedException
@@ -126,22 +126,30 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 														String destinationNames)
 														throws IOException, InterruptedException {
 
-		// TODO find all sanitisation scripts with given name in the repo, execute each
-		String sanitisationCommand = buildSanitisationCommand(SANITISATION_WORKING_DIR + "/" + SANITISATION_SCRIPT_NAME,
-																archive, projectSlug, commitId, destinationURLs, destinationNames);
+		SanitisationResult result = new SanitisationResult(archive, true);
 
-		Process p = Runtime.getRuntime().exec(sanitisationCommand);
-		String scriptOutput = IOUtils.toString(p.getInputStream(), Charset.defaultCharset());
-		int exitValue = p.waitFor();
+		List<File> sanitisationScripts = findSanitisationScripts(new File(SANITISATION_WORKING_DIR), new ArrayList<File>());
+		for(File script : sanitisationScripts) {
 
-		SanitisationResult result = new SanitisationResult(archive, false, scriptOutput);
+			String sanitisationCommand = buildSanitisationCommand(script.getAbsolutePath(),
+																	archive,
+																	projectSlug,
+																	commitId,
+																	destinationURLs,
+																	destinationNames);
+			Process p = Runtime.getRuntime().exec(sanitisationCommand);
+			String scriptOutput = IOUtils.toString(p.getInputStream(), Charset.defaultCharset());
+			int exitValue = p.waitFor();
 
-		if(exitValue == SANITISATION_SUCCESS_CODE) {
-			result.setSane(true);
-		} else {
-			Logger.info(String.format("Archive of changes for commit '%s' failed sanitisation: %s",
-										commitId,
-										result.getOutput()));
+			if(exitValue != SANITISATION_SUCCESS_CODE) {
+				result.setSane(false);
+				result.addError(scriptOutput);
+				Logger.info(String.format("Archive of changes for commit '%s' failed sanitisation by script: '%s'. Reason: ",
+											commitId,
+											script.getAbsolutePath(),
+											scriptOutput));
+			}
+
 		}
 
 		return result;
@@ -217,6 +225,27 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 		}
 
 		return destinationURLs.toString();
+	}
+
+	/**
+	 * Finds all files in directory with configured
+	 * sanitisation script name.
+	 * @param directory Directory to search for files
+	 * @param sanitisationScripts collection of scripts to
+	 * @return list of all files found
+	 */
+	private List<File> findSanitisationScripts(File directory, List<File> sanitisationScripts) {
+		File[] files = directory.listFiles();
+		for(File file: files) {
+			if(file.isDirectory()) {
+				findSanitisationScripts(file, sanitisationScripts);
+			} else {
+				if(file.getName().equals(SANITISATION_SCRIPT_NAME)) {
+					sanitisationScripts.add(file);
+				}
+			}
+		}
+		return sanitisationScripts;
 	}
 
 }

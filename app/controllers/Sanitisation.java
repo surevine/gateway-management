@@ -4,6 +4,7 @@ import java.util.Map;
 
 import models.Project;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.surevine.sanitisation.GitManagedSanitisationServiceImpl;
 import com.surevine.sanitisation.SanitisationResult;
@@ -52,7 +53,6 @@ public class Sanitisation extends Controller {
 										.eq("repositorySlug", repoSlug)
 										.findUnique();
 		if(project == null) {
-			Logger.error("PROJECT NOT FOUND: " + projectSlug);
 			return notFound("No project configured with slug: " + projectSlug);
 		}
 
@@ -80,7 +80,9 @@ public class Sanitisation extends Controller {
 	private ObjectNode buildJsonResult(SanitisationResult result) {
 		ObjectNode jsonResult = Json.newObject();
 		jsonResult.put("safe", result.isSane());
-		jsonResult.put("message", result.getOutput());
+		JsonNode errors = Json.toJson(result.getErrors());
+		jsonResult.put("errors", errors);
+
 		return jsonResult;
 	}
 
