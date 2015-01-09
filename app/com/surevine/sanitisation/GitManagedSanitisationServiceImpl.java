@@ -55,11 +55,21 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 			initSanitisationScript();
 			updateSanitisationScript();
 
-			return executeSanitisationScripts(archive,
+			Logger.info(String.format("Sanitising archive of files with identifier '%s'.", identifier));
+
+			SanitisationResult result = executeSanitisationScripts(archive,
 												projectSlug,
 												identifier,
 												buildDestinationURLs(destinations),
 												buildDestinationNames(destinations));
+
+			if(result.isSane()) {
+				Logger.info(String.format("Archive with identifier '%s' passed sanitisation.", identifier));
+			} else {
+				Logger.info(String.format("Archive with identifier '%s' failed sanitisation.", identifier));
+			}
+
+			return result;
 
 		} catch (IOException | GitAPIException | InterruptedException e) {
 			throw new SanitisationServiceException("Error with sanitisation service.", e);
@@ -127,13 +137,9 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 														throws IOException, InterruptedException {
 
 		SanitisationResult result = new SanitisationResult(archive, true);
-
 		List<File> sanitisationScripts = findSanitisationScripts(new File(SANITISATION_WORKING_DIR), new ArrayList<File>());
-		for(File script : sanitisationScripts) {
 
-			Logger.info(String.format("Sanitising archive of files with identifier '%s'.",
-					archive.getAbsolutePath(),
-					identifier));
+		for(File script : sanitisationScripts) {
 
 			String sanitisationCommand = buildSanitisationCommand(script.getAbsolutePath(),
 																	archive,
@@ -141,6 +147,7 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 																	identifier,
 																	destinationURLs,
 																	destinationNames);
+
 			Process p = Runtime.getRuntime().exec(sanitisationCommand);
 			String scriptOutput = IOUtils.toString(p.getInputStream(), Charset.defaultCharset());
 			int exitValue = p.waitFor();
@@ -152,9 +159,8 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 			if(exitValue != SANITISATION_SUCCESS_CODE) {
 				result.setSane(false);
 				result.addError(scriptOutput);
-				Logger.info(String.format("Archive failed sanitisation check by script '%s', marking commit unsafe.", script.getAbsolutePath()));
-			} else {
-				Logger.info(String.format("Archive passed sanitisation check by script '%s'.", script.getAbsolutePath()));
+				Logger.info(String.format("Sanitisation script '%s' failed, marking archive unsafe.",
+											script.getAbsolutePath()));
 			}
 
 		}
