@@ -2,15 +2,9 @@ package controllers;
 
 import java.util.Calendar;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-
 import com.surevine.gateway.auditing.Audit;
 import com.surevine.gateway.auditing.AuditEvent;
-import com.surevine.gateway.auditing.AuditService;
 import com.surevine.gateway.auditing.AuditServiceException;
-import com.surevine.gateway.auditing.action.AuditAction;
-import com.surevine.gateway.auditing.action.AuditActionFactory;
 import com.surevine.gateway.auditing.action.UserLoginAction;
 import com.surevine.gateway.auth.AuthService;
 import com.surevine.gateway.auth.AuthServiceException;
@@ -30,7 +24,6 @@ import play.mvc.Security;
  * @author jonnyheavey
  *
  */
-@org.springframework.stereotype.Component
 public class AppAuthenticator extends Security.Authenticator {
 
 	private static final String PUBLIC = "public";

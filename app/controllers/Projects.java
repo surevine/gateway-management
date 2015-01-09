@@ -3,7 +3,6 @@ package controllers;
 import java.util.List;
 
 import com.surevine.gateway.auditing.Audit;
-import com.surevine.gateway.auditing.action.AuditAction;
 import com.surevine.gateway.auditing.action.CreateRepositoryAction;
 import com.surevine.gateway.auditing.action.DeleteRepositoryAction;
 import com.surevine.gateway.auditing.action.UpdateRepositoryAction;
@@ -14,7 +13,6 @@ import play.data.Form;
 import play.mvc.Result;
 import play.mvc.Security;
 
-@org.springframework.stereotype.Controller
 public class Projects extends AuditedController {
 
 	/**

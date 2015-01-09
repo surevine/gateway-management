@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.surevine.gateway.auditing.Audit;
-import com.surevine.gateway.auditing.action.AuditAction;
 import com.surevine.gateway.auditing.action.ResendRepositoryAction;
 import com.surevine.gateway.auditing.action.ShareRepositoryAction;
 import com.surevine.gateway.auditing.action.UnshareRepositoryAction;
@@ -19,7 +18,6 @@ import play.data.Form;
 import play.mvc.Result;
 import play.mvc.Security;
 
-@org.springframework.stereotype.Controller
 public class SharingPartnerships extends AuditedController {
 
     /**

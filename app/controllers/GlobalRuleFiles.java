@@ -12,7 +12,6 @@ import play.data.Form;
 import play.mvc.Result;
 import play.mvc.Security;
 
-@org.springframework.stereotype.Controller
 public class GlobalRuleFiles extends AuditedController {
 
 	@Security.Authenticated(AppAuthenticator.class)

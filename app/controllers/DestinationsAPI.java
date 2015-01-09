@@ -13,7 +13,6 @@ import play.mvc.*;
  * @author jonnyheavey
  *
  */
-@org.springframework.stereotype.Controller
 public class DestinationsAPI extends Controller {
 
 	/**
