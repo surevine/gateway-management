@@ -47,7 +47,7 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 	@Override
 	public SanitisationResult sanitise(File archive,
 										String projectSlug,
-										String commitId,
+										String identifier,
 										List<Destination> destinations)
 										throws SanitisationServiceException {
 
@@ -57,7 +57,7 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 
 			return executeSanitisationScripts(archive,
 												projectSlug,
-												commitId,
+												identifier,
 												buildDestinationURLs(destinations),
 												buildDestinationNames(destinations));
 
@@ -112,7 +112,7 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 	 * Executes sanitisation shell scripts in cloned repository.
 	 * @param archive
 	 * @param projectSlug
-	 * @param commitId
+	 * @param identifier
 	 * @param destinationURLs
 	 * @param destinationNames
 	 * @return
@@ -121,7 +121,7 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 	 */
 	private SanitisationResult executeSanitisationScripts(File archive,
 														String projectSlug,
-														String commitId,
+														String identifier,
 														String destinationURLs,
 														String destinationNames)
 														throws IOException, InterruptedException {
@@ -131,12 +131,14 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 		List<File> sanitisationScripts = findSanitisationScripts(new File(SANITISATION_WORKING_DIR), new ArrayList<File>());
 		for(File script : sanitisationScripts) {
 
-			Logger.info(String.format("Sanitising archive of files changed in commit '%s'.", commitId));
+			Logger.info(String.format("Sanitising archive of files changed with identifier '%s'.",
+					archive.getAbsolutePath(),
+					identifier));
 
 			String sanitisationCommand = buildSanitisationCommand(script.getAbsolutePath(),
 																	archive,
 																	projectSlug,
-																	commitId,
+																	identifier,
 																	destinationURLs,
 																	destinationNames);
 			Process p = Runtime.getRuntime().exec(sanitisationCommand);
@@ -166,7 +168,7 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 	 * @param scriptPath path of script to execute
 	 * @param archive File to be sanitised
 	 * @param projectSlug slug of project the file contains changes for
-	 * @param commitId SCM id of the commit that made the changes
+	 * @param identifier Unique identifier to help clarify source of archive e.g. specific commit or export
 	 * @param destinationURLs bar (|) separated list of destination URLs the project is being shared with
 	 * @param destinationNames bar (|) separated list of destination names the project is being shared with
 	 * @return String command to be executed in shell
@@ -174,7 +176,7 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 	private String buildSanitisationCommand(String scriptPath,
 											File archive,
 											String projectSlug,
-											String commitId,
+											String identifier,
 											String destinationURLs,
 											String destinationNames) {
 
@@ -182,7 +184,7 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 		command.append(scriptPath + " ");
 		command.append(archive.toString() + " ");
 		command.append(projectSlug + " ");
-		command.append(commitId + " ");
+		command.append(identifier + " ");
 		command.append(destinationURLs + " ");
 		command.append(destinationNames);
 

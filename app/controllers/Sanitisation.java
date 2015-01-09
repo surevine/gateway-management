@@ -37,9 +37,9 @@ public class Sanitisation extends Controller {
 			return badRequest("repoSlug is missing from request");
 		}
 
-		String commitId = postedProperties.get("commitId")[0];
-		if(commitId == null) {
-			return badRequest("commitId is missing from request");
+		String identifier = postedProperties.get("identifier")[0];
+		if(identifier == null) {
+			return badRequest("identifier is missing from request");
 		}
 
 		MultipartFormData.FilePart postedArchive = body.getFile("archive");
@@ -60,7 +60,7 @@ public class Sanitisation extends Controller {
 		try {
 			sanitisationResult = GitManagedSanitisationServiceImpl.getInstance().sanitise(postedArchive.getFile(),
 																							projectSlug,
-																							commitId,
+																							identifier,
 																							project.destinations);
 		} catch (SanitisationServiceException e) {
 			String errorMessage = "Error executing sanitisation script.";
