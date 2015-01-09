@@ -131,7 +131,7 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 		List<File> sanitisationScripts = findSanitisationScripts(new File(SANITISATION_WORKING_DIR), new ArrayList<File>());
 		for(File script : sanitisationScripts) {
 
-			Logger.info(String.format("Sanitising archive of files changed with identifier '%s'.",
+			Logger.info(String.format("Sanitising archive of files with identifier '%s'.",
 					archive.getAbsolutePath(),
 					identifier));
 
