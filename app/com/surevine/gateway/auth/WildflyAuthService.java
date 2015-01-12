@@ -5,6 +5,7 @@ import play.Logger;
 import play.libs.F.Promise;
 import play.libs.ws.WS;
 import play.libs.ws.WSResponse;
+import play.mvc.Http.Context;
 
 import com.typesafe.config.ConfigFactory;
 
@@ -38,9 +39,8 @@ public class WildflyAuthService implements AuthService {
 	 * @return
 	 * @throws AuthServiceException
 	 */
-	public String getAuthenticatedUsername() throws AuthServiceException {
+	public String getAuthenticatedUsername(Context ctx) throws AuthServiceException {
 
-		// TODO confirm actual API URL
 		Promise<WSResponse> promise = WS.url(WILDFLY_AUTH_SERVICE_BASE_URL + "/currentuser")
 										.setTimeout(REQUEST_TIMEOUT)
 						    			.get();
@@ -60,10 +60,7 @@ public class WildflyAuthService implements AuthService {
     															response.getBody()));
     	}
 
-    	// TODO potentially replace body content with commonly used header
-    	String authenticatedUsername = response.getBody();
-
-		return authenticatedUsername;
+		return response.getBody();
 	}
 
 }

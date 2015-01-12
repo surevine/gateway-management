@@ -8,6 +8,7 @@ import com.surevine.gateway.auditing.AuditServiceException;
 import com.surevine.gateway.auditing.action.UserLoginAction;
 import com.surevine.gateway.auth.AuthService;
 import com.surevine.gateway.auth.AuthServiceException;
+import com.surevine.gateway.auth.LdapAuthService;
 import com.surevine.gateway.auth.PublicAuthService;
 import com.surevine.gateway.auth.WildflyAuthService;
 import com.typesafe.config.ConfigFactory;
@@ -28,6 +29,7 @@ public class AppAuthenticator extends Security.Authenticator {
 
 	private static final String PUBLIC = "public";
 	private static final String REMOTE = "remote";
+	private static final String LDAP = "ldap";
 
 	private AuthService authService;
 
@@ -39,6 +41,9 @@ public class AppAuthenticator extends Security.Authenticator {
 				break;
 			case REMOTE:
 				this.authService = WildflyAuthService.getInstance();
+				break;
+			case LDAP:
+				this.authService = LdapAuthService.getInstance();
 				break;
 			default:
 				throw new AuditServiceException("Could not initialise App authentication. Authentication mode not correctly configured.");
@@ -59,7 +64,7 @@ public class AppAuthenticator extends Security.Authenticator {
 			return authenticatedUser;
 		} else {
 			try {
-				authenticatedUser = authService.getAuthenticatedUsername();
+				authenticatedUser = authService.getAuthenticatedUsername(ctx);
 			} catch (AuthServiceException e) {
 				Logger.warn("Could not authenticate current user. " + e.getMessage());
 				return null;
