@@ -100,7 +100,6 @@ public class LdapAuthService implements AuthService {
 		boolean isMember = false;
 
 		try {
-
 			Entry groupEntry = getConnection().getEntry(groupDN);
 			String[] members = groupEntry.getAttribute(LDAP_GROUP_MEMBER_ATTRIBUTE).getValues();
 
@@ -116,7 +115,6 @@ public class LdapAuthService implements AuthService {
 		}
 
 		return isMember;
-
 	}
 
 	/**
