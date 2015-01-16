@@ -30,6 +30,7 @@ public class LdapAuthService implements AuthService {
 	private static String LDAP_ADMIN_PASSWORD = ConfigFactory.load().getString("ldap.admin.password");
 	private static String LDAP_AUTHORISED_GROUP_DN = ConfigFactory.load().getString("ldap.authorised.group.dn");
 	private static String LDAP_GROUP_MEMBER_ATTRIBUTE = ConfigFactory.load().getString("ldap.group.member.attribute");
+	private static String REMOTE_USER_HEADER =  ConfigFactory.load().getString("remote.user.header");
 
 	private static String DN_PATTERN = "(?:(?:[^\\\\]\\\\(?:\\\\\\\\)*\\/)|[^\\/])+";
 
@@ -63,9 +64,9 @@ public class LdapAuthService implements AuthService {
 	 */
 	private String getUserDN(Request request) throws AuthServiceException {
 
-		String remoteUser = request.getHeader("REMOTE_USER");
+		String remoteUser = request.getHeader(REMOTE_USER_HEADER);
 		if(remoteUser == null) {
-			throw new AuthServiceException("REMOTE_USER header not set in request.");
+			throw new AuthServiceException(String.format("%s header not set in request.", REMOTE_USER_HEADER));
 		}
 
 		List<String> dnParts = new ArrayList<String>();
