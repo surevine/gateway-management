@@ -57,7 +57,7 @@ public class LdapAuthService implements AuthService {
 
 	/**
 	 * Parses user DN from request header.
-	 * (Header provided by apache)
+	 * (Header provided by proxy)
 	 * @param request Current request
 	 * @return
 	 * @throws AuthServiceException
@@ -95,17 +95,24 @@ public class LdapAuthService implements AuthService {
 	 * @param userDN current user DN (to check authorisation)
 	 * @param groupDN DN of group containing all authorised users
 	 * @return
+	 * @throws AuthServiceException
 	 */
-	private boolean isUserGroupMember(String userDN, String groupDN) {
+	private boolean isUserGroupMember(String userDN, String groupDN) throws AuthServiceException {
 
 		boolean isMember = false;
 
 		try {
+
 			Entry groupEntry = getConnection().getEntry(groupDN);
+			if(groupEntry == null) {
+				throw new AuthServiceException(
+						String.format("Couldn't find the configured authorised users group (%s) in LDAP directory.", groupDN));
+			}
+
 			String[] members = groupEntry.getAttribute(LDAP_GROUP_MEMBER_ATTRIBUTE).getValues();
 
 			for(String member: members) {
-				if(member.equals(userDN)) {
+				if(member.equalsIgnoreCase(userDN)) {
 					isMember = true;
 					break;
 				}
@@ -123,12 +130,23 @@ public class LdapAuthService implements AuthService {
 	 * @return
 	 * @throws LDAPException
 	 * @throws GeneralSecurityException
+	 * @throws AuthServiceException
 	 */
-	private LDAPConnection getConnection() throws LDAPException, GeneralSecurityException {
-		return new LDAPConnection(LDAP_HOST,
-									LDAP_PORT,
-									LDAP_ADMIN_DN,
-									LDAP_ADMIN_PASSWORD);
+	private LDAPConnection getConnection() throws LDAPException, GeneralSecurityException, AuthServiceException {
+
+		LDAPConnection connection = new LDAPConnection(LDAP_HOST,
+														LDAP_PORT,
+														LDAP_ADMIN_DN,
+														LDAP_ADMIN_PASSWORD);
+
+		if(!connection.isConnected()) {
+			throw new AuthServiceException(
+					String.format("Could not connect to LDAP server (%s:%s)",
+									LDAP_HOST,
+									LDAP_PORT));
+		}
+
+		return connection;
 	}
 
 	/**
