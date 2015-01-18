@@ -68,6 +68,7 @@ GET		/projects/:id/shareproject		@controllers.Projects.shareProjectPage(id: Long
 
 # Projects list
 GET		/whitelist						@controllers.WhitelistedProjects.list()
+GET		/api/whitelist					@controllers.WhitelistedProjectsAPI.list()
 
 # Add a project
 GET		/whitelist/add					@controllers.WhitelistedProjects.add()
