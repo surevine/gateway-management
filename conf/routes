@@ -62,6 +62,23 @@ POST	/projects/delete/:id			@controllers.Projects.delete(id: Long)
 # Share project with destinations
 GET		/projects/:id/shareproject		@controllers.Projects.shareProjectPage(id: Long)
 
+#
+# Whitelisted (inbound) projects
+#
+
+# Projects list
+GET		/whitelist						@controllers.WhitelistedProjects.list()
+
+# Add a project
+GET		/whitelist/add					@controllers.WhitelistedProjects.add()
+POST	/whitelist/add					@controllers.WhitelistedProjects.create()
+
+# Edit existing project
+GET		/whitelist/edit/:id				@controllers.WhitelistedProjects.edit(id: Long)
+POST	/whitelist/edit/:id				@controllers.WhitelistedProjects.update(id: Long)
+
+# Delete project
+POST	/whitelist/delete/:id			@controllers.WhitelistedProjects.delete(id: Long)
 
 #
 # Sharing Partnerships

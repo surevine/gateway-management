@@ -1,0 +1,42 @@
+@(projects: List[WhitelistedProject])
+
+@main("Whitelisted source code repositories") {
+
+    <a href="@routes.WhitelistedProjects.add()" class="btn btn-primary primary-action">Add Repository</a>
+
+    @if(projects.isEmpty) {
+
+		<div class="panel panel-warning">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">No whitelisted repositories</h3>
+		  </div>
+		  <div class="panel-body">
+		    <p>No whitelisted repositories have been configured. Please <a href="@routes.WhitelistedProjects.add()">add a repository to whitelist</a>.</p>
+		  </div>
+		</div>
+
+    } else {
+
+    	TODO change to simple list
+
+	    @for(project <- projects) {
+
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title pull-left">@project.sourceOrganisation</h3>
+				<div class="panel-actions pull-right">
+				  	<a href="@routes.WhitelistedProjects.edit(project.id)" class="btn btn-default btn-xs">Edit</a>
+				</div>
+				<div class="clearfix"></div>
+			  </div>
+			  <div class="panel-body">
+			    <p>@project.projectKey / @project.repositorySlug</p>
+			  </div>
+			</div>
+
+	    }
+
+    }
+
+
+}

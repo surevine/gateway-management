@@ -19,6 +19,14 @@ create table project (
   constraint pk_project primary key (id))
 ;
 
+create table whitelisted_project (
+  id                        bigint not null,
+  source_organisation       varchar(255),
+  project_key               varchar(255),
+  repository_slug           varchar(255),
+  constraint pk_whitelisted_project primary key (id))
+;
+
 
 create table destination_project (
   destination_id                 bigint not null,
@@ -28,6 +36,8 @@ create table destination_project (
 create sequence destination_seq;
 
 create sequence project_seq;
+
+create sequence whitelisted_project_seq;
 
 
 
@@ -44,7 +54,11 @@ drop table if exists destination_project cascade;
 
 drop table if exists project cascade;
 
+drop table if exists whitelisted_project cascade;
+
 drop sequence if exists destination_seq;
 
 drop sequence if exists project_seq;
+
+drop sequence if exists whitelisted_project_seq;
 
