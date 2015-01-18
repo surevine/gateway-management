@@ -17,6 +17,7 @@ import play.mvc.Security;
 public class WhitelistedProjects extends Controller {
 
 	/**
+	 * Display list of all whitelisted projects
 	 *
 	 * @return
 	 */
@@ -26,20 +27,22 @@ public class WhitelistedProjects extends Controller {
         return ok(views.html.whitelist.list.render(projects));
 	}
 
-	/**
-	 *
-	 * @return
-	 */
+    /**
+     * Display the 'add whitelisted project' form page
+     *
+     * @return
+     */
 	@Security.Authenticated(AppAuthenticator.class)
 	public Result add() {
 		Form<WhitelistedProject> projectForm = Form.form(WhitelistedProject.class);
 		return ok(views.html.whitelist.add.render(projectForm));
 	}
 
-	/**
-	 *
-	 * @return
-	 */
+    /**
+     * Handle the 'new project' form submission
+     *
+     * @return
+     */
 	@Security.Authenticated(AppAuthenticator.class)
 	public Result create() {
     	Form<WhitelistedProject> projectForm = Form.form(WhitelistedProject.class).bindFromRequest();
@@ -55,11 +58,12 @@ public class WhitelistedProjects extends Controller {
     	return redirect(routes.WhitelistedProjects.list());
 	}
 
-	/**
-	 *
-	 * @param id
-	 * @return
-	 */
+    /**
+     * Display the 'edit whitelisted project' form page
+     *
+     * @param id Id of project to edit
+     * @return
+     */
 	@Security.Authenticated(AppAuthenticator.class)
 	public Result edit(Long id) {
 
@@ -74,11 +78,12 @@ public class WhitelistedProjects extends Controller {
 		return ok(views.html.whitelist.edit.render(id, projectForm));
 	}
 
-	/**
-	 *
-	 * @param id
-	 * @return
-	 */
+    /**
+     * Handle the 'update whitelisted project' form submission
+     *
+     * @param id Id of project to update
+     * @return
+     */
 	@Security.Authenticated(AppAuthenticator.class)
 	public Result update(Long id) {
 		WhitelistedProject originalProject = WhitelistedProject.find.byId(id);
@@ -99,11 +104,11 @@ public class WhitelistedProjects extends Controller {
     	return redirect(routes.WhitelistedProjects.list());
 	}
 
-	/**
-	 *
-	 * @param id
-	 * @return
-	 */
+    /**
+     * Handles the 'delete whitelisted project' form submission
+     *
+     * @param id Id of the project to delete
+     */
 	@Security.Authenticated(AppAuthenticator.class)
 	public Result delete(Long id) {
 		WhitelistedProject project = WhitelistedProject.find.byId(id);

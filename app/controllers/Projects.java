@@ -61,8 +61,11 @@ public class Projects extends AuditedController {
     	return ok(views.html.projects.add.render(projectForm));
 
     }
+
     /**
      * Handle the 'new project' form submission
+     *
+     * @return
      */
 	@Security.Authenticated(AppAuthenticator.class)
     public Result create() {
