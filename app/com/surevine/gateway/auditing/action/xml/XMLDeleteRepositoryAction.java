@@ -1,12 +1,12 @@
 package com.surevine.gateway.auditing.action.xml;
 
-import models.Project;
+import models.OutboundProject;
 
 import com.surevine.gateway.auditing.action.DeleteRepositoryAction;
 
 public class XMLDeleteRepositoryAction extends DeleteRepositoryAction {
 
-	public XMLDeleteRepositoryAction(Project project) {
+	public XMLDeleteRepositoryAction(OutboundProject project) {
 		super(project);
 	}
 

@@ -4,9 +4,9 @@
 
 @implicitFieldConstructor = @{ FieldConstructor(utils.twitterBootstrapInput.render) }
 
-@projectCount = @{ Project.find.all().size() }
+@projectCount = @{ OutboundProject.find.all().size() }
 
-@projects = @{ Project.allProjectShareOptions(destination) }
+@projects = @{ OutboundProject.allProjectShareOptions(destination) }
 
 @main("Share source code repositories") {
 
@@ -19,7 +19,7 @@
 		    <h3 class="panel-title">No repositories</h3>
 		  </div>
 		  <div class="panel-body">
-		    <p>No repositories have been configured. Please <a href="@routes.Projects.add()">add a repository</a>.</p>
+		    <p>No repositories have been configured. Please <a href="@routes.OutboundProjects.add()">add a repository</a>.</p>
 		  </div>
 		</div>
 
@@ -32,7 +32,7 @@
 			    <h3 class="panel-title">All repositories shared</h3>
 			  </div>
 			  <div class="panel-body">
-			    <p>All configured repositories have been shared with this destination. Please <a href="@routes.Projects.add()">add another repository</a>.</p>
+			    <p>All configured repositories have been shared with this destination. Please <a href="@routes.OutboundProjects.add()">add another repository</a>.</p>
 			  </div>
 			</div>
 

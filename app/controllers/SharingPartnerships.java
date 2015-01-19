@@ -12,7 +12,7 @@ import com.surevine.gateway.scm.service.SCMFederatorServiceException;
 import com.surevine.gateway.scm.service.SCMFederatorServiceFacade;
 
 import models.Destination;
-import models.Project;
+import models.OutboundProject;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Result;
@@ -59,20 +59,20 @@ public class SharingPartnerships extends AuditedController {
 	    	case "project":
 
 	    		long selectedProjectId = Long.parseLong(requestData.get("projectId"));
-	        	Project project = Project.find.byId(selectedProjectId);
+	        	OutboundProject project = OutboundProject.find.byId(selectedProjectId);
 	        	if(project == null) {
 	        		return notFound("Project not found.");
 	        	}
 
 	        	String[] selectedDestinationsArr = requestBody.get("selectedDestinations");
 	        	if(selectedDestinationsArr == null) {
-	        		return redirect(routes.Projects.view(project.id));
+	        		return redirect(routes.OutboundProjects.view(project.id));
 	        	}
 
 	        	addDestinationsToProject(project, selectedDestinationsArr);
 
 	        	flash("success", "Repository sent to the Gateway to be shared with the destinations.");
-	        	return redirect(routes.Projects.view(project.id));
+	        	return redirect(routes.OutboundProjects.view(project.id));
 
 	    	default:
 	    		return badRequest("Request source not expected value. Should be either destination or project.");
@@ -99,7 +99,7 @@ public class SharingPartnerships extends AuditedController {
     		return notFound("Destination not found.");
     	}
 
-    	Project project = Project.find.byId(selectedProjectId);
+    	OutboundProject project = OutboundProject.find.byId(selectedProjectId);
     	if(project == null) {
     		return notFound("Project not found.");
     	}
@@ -116,7 +116,7 @@ public class SharingPartnerships extends AuditedController {
 		    		return redirect(routes.Destinations.view(destination.id));
 
 		    	case "project":
-		    		return redirect(routes.Projects.view(project.id));
+		    		return redirect(routes.OutboundProjects.view(project.id));
 
 		    	default:
 		    		return badRequest("Request source not expected value. Should be either destination or project.");
@@ -143,7 +143,7 @@ public class SharingPartnerships extends AuditedController {
     		return notFound("Destination not found.");
     	}
 
-    	Project project = Project.find.byId(projectId);
+    	OutboundProject project = OutboundProject.find.byId(projectId);
     	if(project == null) {
     		return notFound("Project not found.");
     	}
@@ -171,9 +171,9 @@ public class SharingPartnerships extends AuditedController {
 	 */
 	private void addProjectsToDestination(Destination destination, String[] projectIds) {
 		List<String> selectedProjects = Arrays.asList(projectIds);
-		List<Project> projects = Project.find.where().idIn(selectedProjects).findList();
+		List<OutboundProject> projects = OutboundProject.find.where().idIn(selectedProjects).findList();
 
-		for(Project project: projects) {
+		for(OutboundProject project: projects) {
 			destination.addProject(project);
 			ShareRepositoryAction action = Audit.getShareRepositoryAction(project, destination);
 	    	audit(action);
@@ -185,7 +185,7 @@ public class SharingPartnerships extends AuditedController {
 	 * @param project Project to share
 	 * @param destinationIds array of Destination ids to share
 	 */
-	private void addDestinationsToProject(Project project, String[] destinationIds) {
+	private void addDestinationsToProject(OutboundProject project, String[] destinationIds) {
     	List<String> selectedDestinations = Arrays.asList(destinationIds);
     	List<Destination> destinations = Destination.find.where().idIn(selectedDestinations).findList();
 

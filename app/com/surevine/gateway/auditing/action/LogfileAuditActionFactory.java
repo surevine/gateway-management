@@ -1,7 +1,7 @@
 package com.surevine.gateway.auditing.action;
 
 import models.Destination;
-import models.Project;
+import models.OutboundProject;
 
 /**
  * AuditActionFactory producing actions to be audited in logfile
@@ -35,18 +35,18 @@ public class LogfileAuditActionFactory implements AuditActionFactory {
 	}
 
 	@Override
-	public CreateRepositoryAction getCreateRepositoryAction(Project project) {
+	public CreateRepositoryAction getCreateRepositoryAction(OutboundProject project) {
 		return new CreateRepositoryAction(project);
 	}
 
 	@Override
 	public UpdateRepositoryAction getUpdateRepositoryAction(
-			Project originalProject, Project updatedProject) {
+			OutboundProject originalProject, OutboundProject updatedProject) {
 		return new UpdateRepositoryAction(originalProject, updatedProject);
 	}
 
 	@Override
-	public DeleteRepositoryAction getDeleteRepositoryAction(Project project) {
+	public DeleteRepositoryAction getDeleteRepositoryAction(OutboundProject project) {
 		return new DeleteRepositoryAction(project);
 	}
 
@@ -63,19 +63,19 @@ public class LogfileAuditActionFactory implements AuditActionFactory {
 	}
 
 	@Override
-	public ShareRepositoryAction getShareRepositoryAction(Project project,
+	public ShareRepositoryAction getShareRepositoryAction(OutboundProject project,
 			Destination destination) {
 		return new ShareRepositoryAction(project, destination);
 	}
 
 	@Override
-	public UnshareRepositoryAction getUnshareRepositoryAction(Project project,
+	public UnshareRepositoryAction getUnshareRepositoryAction(OutboundProject project,
 			Destination destination) {
 		return new UnshareRepositoryAction(project, destination);
 	}
 
 	@Override
-	public ResendRepositoryAction getResendRepositoryAction(Project project,
+	public ResendRepositoryAction getResendRepositoryAction(OutboundProject project,
 			Destination destination) {
 		return new ResendRepositoryAction(project, destination);
 	}

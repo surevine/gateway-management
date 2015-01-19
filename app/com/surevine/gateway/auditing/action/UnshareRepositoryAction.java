@@ -1,14 +1,14 @@
 package com.surevine.gateway.auditing.action;
 
 import models.Destination;
-import models.Project;
+import models.OutboundProject;
 
 public class UnshareRepositoryAction implements AuditAction {
 
-	protected Project project;
+	protected OutboundProject project;
 	protected Destination destination;
 
-	public UnshareRepositoryAction(Project project, Destination destination) {
+	public UnshareRepositoryAction(OutboundProject project, Destination destination) {
 		this.project = project;
 		this.destination = destination;
 	}

@@ -59,7 +59,7 @@ public class Destination extends Model {
 	 */
 	@ManyToMany(cascade=CascadeType.ALL)
 	@JsonManagedReference
-	public List<Project> projects = new ArrayList<Project>();
+	public List<OutboundProject> projects = new ArrayList<OutboundProject>();
 
     /**
      * Generic query helper for entity Destination with id Long
@@ -76,7 +76,7 @@ public class Destination extends Model {
      * @param project Project that destinations are being added to
      * @return Map<String, String> option key/values
      */
-    public static List<Destination> allDestinationShareOptions(Project project) {
+    public static List<Destination> allDestinationShareOptions(OutboundProject project) {
     	List<Destination> unsharedDestinations = new ArrayList<Destination>();
 
     	List<Destination> allDestinations = find.all();
@@ -90,7 +90,7 @@ public class Destination extends Model {
     	return unsharedDestinations;
     }
 
-    public Destination(long id, String name, String url, List<Project> projects) {
+    public Destination(long id, String name, String url, List<OutboundProject> projects) {
     	this.id = id;
     	this.name = name;
     	this.url = url;
@@ -127,7 +127,7 @@ public class Destination extends Model {
      *
      * @param project project to add
      */
-    public void addProject(Project project) {
+    public void addProject(OutboundProject project) {
     	if(!this.projects.contains(project)) {
         	this.projects.add(project);
         	this.update();
@@ -141,7 +141,7 @@ public class Destination extends Model {
      *
      * @param project project to remove
      */
-	public void removeProject(Project project) {
+	public void removeProject(OutboundProject project) {
 		if(this.projects.contains(project)) {
 			this.projects.remove(project);
 			this.update();

@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import models.Destination;
-import models.Project;
+import models.OutboundProject;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -59,11 +59,11 @@ public class ResendRepoPartnershipsControllerTest {
 													DestinationTest.TEST_EXISTING_DESTINATION_URL);
 		destination.save();
 
-		Project project1 = new Project(ProjectTest.TEST_EXISTING_PROJECT_ID,
+		OutboundProject project1 = new OutboundProject(ProjectTest.TEST_EXISTING_PROJECT_ID,
 										ProjectTest.TEST_EXISTING_PROJECT_DISPLAY_NAME,
 										ProjectTest.TEST_EXISTING_PROJECT_PROJECT_KEY,
 										ProjectTest.TEST_EXISTING_PROJECT_SLUG_REPO);
-		Project project2 = new Project(ProjectTest.TEST_NEW_PROJECT_ID,
+		OutboundProject project2 = new OutboundProject(ProjectTest.TEST_NEW_PROJECT_ID,
 				ProjectTest.TEST_NEW_PROJECT_DISPLAY_NAME,
 				ProjectTest.TEST_NEW_PROJECT_PROJECT_KEY,
 				ProjectTest.TEST_NEW_PROJECT_SLUG_REPO);
@@ -94,7 +94,7 @@ public class ResendRepoPartnershipsControllerTest {
 		SharingPartnerships.setSCMFederator(mockSCMService);
 
 		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
-		Project project = Project.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
+		OutboundProject project = OutboundProject.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
 
 		Result result = postResend(destination.id, project.id);
 
@@ -106,7 +106,7 @@ public class ResendRepoPartnershipsControllerTest {
 	public void testResendRepoFederatorDown() {
 
 		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
-		Project project = Project.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
+		OutboundProject project = OutboundProject.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
 
 		Result result = postResend(destination.id, project.id);
 
@@ -125,7 +125,7 @@ public class ResendRepoPartnershipsControllerTest {
 
 	@Test
 	public void testResendRepoNonExistingDestination() {
-		Project project = Project.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
+		OutboundProject project = OutboundProject.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
 
 		Result result = postResend(NON_EXISTING_DESTINATION_ID, project.id);
 
@@ -135,7 +135,7 @@ public class ResendRepoPartnershipsControllerTest {
 	@Test
 	public void testResendUnsharedProject() {
 		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
-		Project project = Project.find.byId(ProjectTest.TEST_NEW_PROJECT_ID);
+		OutboundProject project = OutboundProject.find.byId(ProjectTest.TEST_NEW_PROJECT_ID);
 
 		Result result = postResend(destination.id, project.id);
 

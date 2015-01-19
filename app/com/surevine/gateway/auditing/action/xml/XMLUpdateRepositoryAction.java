@@ -1,13 +1,13 @@
 package com.surevine.gateway.auditing.action.xml;
 
-import models.Project;
+import models.OutboundProject;
 
 import com.surevine.gateway.auditing.action.UpdateRepositoryAction;
 
 public class XMLUpdateRepositoryAction extends UpdateRepositoryAction {
 
-	public XMLUpdateRepositoryAction(Project originalProject,
-			Project updatedProject) {
+	public XMLUpdateRepositoryAction(OutboundProject originalProject,
+			OutboundProject updatedProject) {
 		super(originalProject, updatedProject);
 	}
 

@@ -4,7 +4,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import static play.mvc.Http.Status.SEE_OTHER;
 import static play.test.Helpers.*;
 
-import models.Project;
+import models.OutboundProject;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -26,7 +26,7 @@ public class DeleteProjectsControllerTest extends ProjectTest {
 	 */
 	@BeforeClass
 	public static void createExistingTestProject() {
-		Project project = new Project(TEST_EXISTING_PROJECT_ID,
+		OutboundProject project = new OutboundProject(TEST_EXISTING_PROJECT_ID,
 										TEST_EXISTING_PROJECT_DISPLAY_NAME,
 										TEST_EXISTING_PROJECT_PROJECT_KEY,
 										TEST_EXISTING_PROJECT_SLUG_REPO);
@@ -40,7 +40,7 @@ public class DeleteProjectsControllerTest extends ProjectTest {
 		// Expect 303 as implementation redirects to 'list' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
 
-		Project project = Project.find.byId(TEST_EXISTING_PROJECT_ID);
+		OutboundProject project = OutboundProject.find.byId(TEST_EXISTING_PROJECT_ID);
 		assertThat(project).isNull();
 	}
 
@@ -59,7 +59,7 @@ public class DeleteProjectsControllerTest extends ProjectTest {
 	private Result postDeleteProject(long id) {
 
 		FakeRequest request = new FakeRequest(POST, "/projects/delete/" + id);
-		Result result = callAction(controllers.routes.ref.Projects.delete(id), request);
+		Result result = callAction(controllers.routes.ref.OutboundProjects.delete(id), request);
 
 		return result;
 	}

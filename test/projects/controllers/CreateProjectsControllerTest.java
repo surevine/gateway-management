@@ -8,7 +8,7 @@ import static play.test.Helpers.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import models.Project;
+import models.OutboundProject;
 
 import org.junit.Test;
 
@@ -27,7 +27,7 @@ public class CreateProjectsControllerTest extends ProjectTest {
 	@Test
 	public void testAddProject() {
 		FakeRequest request = new FakeRequest(GET, "/projects/add");
-		Result result = callAction(controllers.routes.ref.Projects.add(), request);
+		Result result = callAction(controllers.routes.ref.OutboundProjects.add(), request);
 
 		assertThat(status(result)).isEqualTo(OK);
 		assertThat(contentType(result)).isEqualTo("text/html");
@@ -42,7 +42,7 @@ public class CreateProjectsControllerTest extends ProjectTest {
 		// Expect 303 as implementation redirects to 'view' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
 
-		Project project = Project.find.where()
+		OutboundProject project = OutboundProject.find.where()
 											.eq("displayName", TEST_NEW_PROJECT_DISPLAY_NAME)
 											.eq("projectKey", TEST_EXISTING_PROJECT_PROJECT_KEY)
 											.eq("repositorySlug", TEST_EXISTING_PROJECT_SLUG_REPO)
@@ -133,7 +133,7 @@ public class CreateProjectsControllerTest extends ProjectTest {
 		formData.put("repositorySlug", repositorySlug);
 
 		FakeRequest request = new FakeRequest(POST, "/projects/add");
-		Result result = callAction(controllers.routes.ref.Projects.create(), request.withFormUrlEncodedBody(formData));
+		Result result = callAction(controllers.routes.ref.OutboundProjects.create(), request.withFormUrlEncodedBody(formData));
 
 		return result;
 	}

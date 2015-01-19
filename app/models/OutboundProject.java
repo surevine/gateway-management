@@ -26,7 +26,7 @@ import play.db.ebean.Model;
  *
  */
 @Entity
-public class Project extends Model {
+public class OutboundProject extends Model {
 
     private static final long serialVersionUID = 1L;
 
@@ -66,7 +66,7 @@ public class Project extends Model {
     /**
      * Generic query helper for entity Project with id Long
      */
-    public static Model.Finder<Long,Project> find = new Model.Finder<Long,Project>(Long.class, Project.class);
+    public static Model.Finder<Long,OutboundProject> find = new Model.Finder<Long,OutboundProject>(Long.class, OutboundProject.class);
 
     /**
      * Service facade for interaction with SCM federator component
@@ -77,12 +77,12 @@ public class Project extends Model {
      * List of all projects, used by scala helper in templates (to populate select options)
      * @return Map<String, String> option key/values
      */
-    public static List<Project> allProjectShareOptions(Destination destination) {
-    	List<Project> unsharedProjects = new ArrayList<Project>();
+    public static List<OutboundProject> allProjectShareOptions(Destination destination) {
+    	List<OutboundProject> unsharedProjects = new ArrayList<OutboundProject>();
 
-    	List<Project> allProjects = find.all();
+    	List<OutboundProject> allProjects = find.all();
 
-    	for(Project project : allProjects) {
+    	for(OutboundProject project : allProjects) {
     		if(!destination.projects.contains(project)) {
     			unsharedProjects.add(project);
     		}
@@ -91,14 +91,14 @@ public class Project extends Model {
     	return unsharedProjects;
     }
 
-	public Project(long id, String displayName, String projectKey, String repositorySlug) {
+	public OutboundProject(long id, String displayName, String projectKey, String repositorySlug) {
     	this.id = id;
     	this.displayName = displayName;
     	this.projectKey = projectKey;
     	this.repositorySlug = repositorySlug;
     }
 
-    public Project(String displayName, String projectKey, String repositorySlug) {
+    public OutboundProject(String displayName, String projectKey, String repositorySlug) {
     	this.displayName = displayName;
     	this.projectKey = projectKey;
     	this.repositorySlug = repositorySlug;
@@ -127,7 +127,7 @@ public class Project extends Model {
 
     	List<ValidationError> errors = new ArrayList<ValidationError>();
 
-    	Project existingProject = find.where()
+    	OutboundProject existingProject = find.where()
     									.eq("projectKey", projectKey)
     									.eq("repositorySlug", repositorySlug)
     									.not(Expr.eq("id", id))
@@ -152,7 +152,7 @@ public class Project extends Model {
     }
 
 	public void setSCMFederatorServiceFacade(SCMFederatorServiceFacade scmFederator) {
-		Project.scmFederator = scmFederator;
+		OutboundProject.scmFederator = scmFederator;
 	}
 
 }

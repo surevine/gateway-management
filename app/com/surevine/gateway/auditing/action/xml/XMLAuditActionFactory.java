@@ -1,7 +1,7 @@
 package com.surevine.gateway.auditing.action.xml;
 
 import models.Destination;
-import models.Project;
+import models.OutboundProject;
 
 import com.surevine.gateway.auditing.action.AuditActionFactory;
 import com.surevine.gateway.auditing.action.CreateDestinationAction;
@@ -49,18 +49,18 @@ public class XMLAuditActionFactory implements AuditActionFactory {
 	}
 
 	@Override
-	public CreateRepositoryAction getCreateRepositoryAction(Project project) {
+	public CreateRepositoryAction getCreateRepositoryAction(OutboundProject project) {
 		return new XMLCreateRepositoryAction(project);
 	}
 
 	@Override
 	public UpdateRepositoryAction getUpdateRepositoryAction(
-			Project originalProject, Project updatedProject) {
+			OutboundProject originalProject, OutboundProject updatedProject) {
 		return new XMLUpdateRepositoryAction(originalProject, updatedProject);
 	}
 
 	@Override
-	public DeleteRepositoryAction getDeleteRepositoryAction(Project project) {
+	public DeleteRepositoryAction getDeleteRepositoryAction(OutboundProject project) {
 		return new XMLDeleteRepositoryAction(project);
 	}
 
@@ -77,19 +77,19 @@ public class XMLAuditActionFactory implements AuditActionFactory {
 	}
 
 	@Override
-	public ShareRepositoryAction getShareRepositoryAction(Project project,
+	public ShareRepositoryAction getShareRepositoryAction(OutboundProject project,
 			Destination destination) {
 		return new XMLShareRepositoryAction(project, destination);
 	}
 
 	@Override
-	public UnshareRepositoryAction getUnshareRepositoryAction(Project project,
+	public UnshareRepositoryAction getUnshareRepositoryAction(OutboundProject project,
 			Destination destination) {
 		return new XMLUnshareRepositoryAction(project, destination);
 	}
 
 	@Override
-	public ResendRepositoryAction getResendRepositoryAction(Project project,
+	public ResendRepositoryAction getResendRepositoryAction(OutboundProject project,
 			Destination destination) {
 		return new XMLResendRepositoryAction(project, destination);
 	}

@@ -8,7 +8,7 @@ import static play.test.Helpers.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import models.Project;
+import models.OutboundProject;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -30,7 +30,7 @@ public class UpdateProjectsControllerTest extends ProjectTest {
 	 */
 	@BeforeClass
 	public static void createExistingTestProject() {
-		Project project = new Project(TEST_EXISTING_PROJECT_ID,
+		OutboundProject project = new OutboundProject(TEST_EXISTING_PROJECT_ID,
 										TEST_EXISTING_PROJECT_DISPLAY_NAME,
 										TEST_EXISTING_PROJECT_PROJECT_KEY,
 										TEST_EXISTING_PROJECT_SLUG_REPO);
@@ -40,7 +40,7 @@ public class UpdateProjectsControllerTest extends ProjectTest {
 	@Test
 	public void testEditProject() {
 		FakeRequest request = new FakeRequest(GET, "/projects/edit/" + TEST_EXISTING_PROJECT_ID);
-		Result result = callAction(controllers.routes.ref.Projects.edit(TEST_EXISTING_PROJECT_ID), request);
+		Result result = callAction(controllers.routes.ref.OutboundProjects.edit(TEST_EXISTING_PROJECT_ID), request);
 
 		assertThat(status(result)).isEqualTo(OK);
 		assertThat(contentType(result)).isEqualTo("text/html");
@@ -49,7 +49,7 @@ public class UpdateProjectsControllerTest extends ProjectTest {
 	@Test
 	public void testEditNonExistingProject() {
 		FakeRequest request = new FakeRequest(GET, "/projects/edit/" + TEST_NON_EXISTING_PROJECT_ID);
-		Result result = callAction(controllers.routes.ref.Projects.edit(TEST_NON_EXISTING_PROJECT_ID), request);
+		Result result = callAction(controllers.routes.ref.OutboundProjects.edit(TEST_NON_EXISTING_PROJECT_ID), request);
 
 		assertThat(status(result)).isEqualTo(NOT_FOUND);
 	}
@@ -65,7 +65,7 @@ public class UpdateProjectsControllerTest extends ProjectTest {
 		// Expect 303 as implementation redirects to 'view' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
 
-		Project project = Project.find.byId(TEST_EXISTING_PROJECT_ID);
+		OutboundProject project = OutboundProject.find.byId(TEST_EXISTING_PROJECT_ID);
 		assertThat(project.displayName).isEqualTo(TEST_NEW_PROJECT_DISPLAY_NAME);
 		assertThat(project.projectKey).isEqualTo(TEST_NEW_PROJECT_PROJECT_KEY);
 		assertThat(project.repositorySlug).isEqualTo(TEST_NEW_PROJECT_SLUG_REPO);
@@ -130,7 +130,7 @@ public class UpdateProjectsControllerTest extends ProjectTest {
 		formData.put("repositorySlug", repositorySlug);
 
 		FakeRequest request = new FakeRequest(POST, "/projects/update/" + id);
-		Result result = callAction(controllers.routes.ref.Projects.update(id), request.withFormUrlEncodedBody(formData));
+		Result result = callAction(controllers.routes.ref.OutboundProjects.update(id), request.withFormUrlEncodedBody(formData));
 
 		return result;
 	}

@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import models.Destination;
-import models.Project;
+import models.OutboundProject;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -29,13 +29,13 @@ public class ListProjectsControllerTest extends ProjectTest {
 	@BeforeClass
 	public static void createExistingTestProject() {
 
-		Project project = new Project(TEST_EXISTING_PROJECT_ID,
+		OutboundProject project = new OutboundProject(TEST_EXISTING_PROJECT_ID,
 				TEST_EXISTING_PROJECT_DISPLAY_NAME,
 				TEST_EXISTING_PROJECT_PROJECT_KEY,
 				TEST_EXISTING_PROJECT_SLUG_REPO);
 		project.save();
 
-		List<Project> destinationProjects = new ArrayList<Project>();
+		List<OutboundProject> destinationProjects = new ArrayList<OutboundProject>();
 		destinationProjects.add(project);
 
 		Destination destination = new Destination(DestinationTest.TEST_EXISTING_DESTINATION_ID,
@@ -44,7 +44,7 @@ public class ListProjectsControllerTest extends ProjectTest {
 												destinationProjects);
 		destination.save();
 
-		Project unsharedProject = new Project(TEST_NEW_PROJECT_ID,
+		OutboundProject unsharedProject = new OutboundProject(TEST_NEW_PROJECT_ID,
 											TEST_NEW_PROJECT_DISPLAY_NAME,
 											TEST_NEW_PROJECT_PROJECT_KEY,
 											TEST_NEW_PROJECT_SLUG_REPO);
@@ -54,7 +54,7 @@ public class ListProjectsControllerTest extends ProjectTest {
 	@Test
 	public void testListProjects() {
 		FakeRequest request = new FakeRequest(GET, "/projects");
-		Result result = callAction(controllers.routes.ref.Projects.list(), request);
+		Result result = callAction(controllers.routes.ref.OutboundProjects.list(), request);
 
 		assertThat(status(result)).isEqualTo(OK);
 		assertThat(contentType(result)).isEqualTo("text/html");
@@ -68,7 +68,7 @@ public class ListProjectsControllerTest extends ProjectTest {
 	@Test
 	public void testListProjectsAPI() {
 		FakeRequest request = new FakeRequest(GET, "/api/projects");
-		Result result = callAction(controllers.routes.ref.ProjectsAPI.list(), request);
+		Result result = callAction(controllers.routes.ref.OutboundProjectsAPI.list(), request);
 
 		assertThat(status(result)).isEqualTo(OK);
 		assertThat(contentType(result)).isEqualTo("application/json");

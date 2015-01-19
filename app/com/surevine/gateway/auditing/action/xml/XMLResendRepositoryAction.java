@@ -1,13 +1,13 @@
 package com.surevine.gateway.auditing.action.xml;
 
 import models.Destination;
-import models.Project;
+import models.OutboundProject;
 
 import com.surevine.gateway.auditing.action.ResendRepositoryAction;
 
 public class XMLResendRepositoryAction extends ResendRepositoryAction {
 
-	public XMLResendRepositoryAction(Project project, Destination destination) {
+	public XMLResendRepositoryAction(OutboundProject project, Destination destination) {
 		super(project, destination);
 	}
 

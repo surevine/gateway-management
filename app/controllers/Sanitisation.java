@@ -2,7 +2,7 @@ package controllers;
 
 import java.util.Map;
 
-import models.Project;
+import models.OutboundProject;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -48,7 +48,7 @@ public class Sanitisation extends Controller {
 		}
 
 		String projectSlug = projectKey + "/" + repoSlug;
-		Project project = Project.find.where()
+		OutboundProject project = OutboundProject.find.where()
 										.eq("projectKey", projectKey)
 										.eq("repositorySlug", repoSlug)
 										.findUnique();

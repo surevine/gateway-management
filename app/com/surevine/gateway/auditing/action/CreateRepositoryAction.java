@@ -1,12 +1,12 @@
 package com.surevine.gateway.auditing.action;
 
-import models.Project;
+import models.OutboundProject;
 
 public class CreateRepositoryAction implements AuditAction {
 
-	protected Project project;
+	protected OutboundProject project;
 
-	public CreateRepositoryAction(Project project) {
+	public CreateRepositoryAction(OutboundProject project) {
 		this.project = project;
 	}
 

@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import models.Destination;
-import models.Project;
+import models.OutboundProject;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -48,12 +48,12 @@ public class DeleteSharingPartnershipsControllerTest {
 													DestinationTest.TEST_EXISTING_DESTINATION_URL);
 		destination.save();
 
-		Project project1 = new Project(ProjectTest.TEST_EXISTING_PROJECT_ID,
+		OutboundProject project1 = new OutboundProject(ProjectTest.TEST_EXISTING_PROJECT_ID,
 										ProjectTest.TEST_EXISTING_PROJECT_DISPLAY_NAME,
 										ProjectTest.TEST_EXISTING_PROJECT_PROJECT_KEY,
 										ProjectTest.TEST_EXISTING_PROJECT_SLUG_REPO);
 
-		Project project2 = new Project(ProjectTest.TEST_NEW_PROJECT_ID,
+		OutboundProject project2 = new OutboundProject(ProjectTest.TEST_NEW_PROJECT_ID,
 										ProjectTest.TEST_NEW_PROJECT_DISPLAY_NAME,
 										ProjectTest.TEST_NEW_PROJECT_PROJECT_KEY,
 										ProjectTest.TEST_NEW_PROJECT_SLUG_REPO);
@@ -74,7 +74,7 @@ public class DeleteSharingPartnershipsControllerTest {
 	public void testDeleteSharingPartnershipFromDestination() {
 
 		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
-		Project project = Project.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
+		OutboundProject project = OutboundProject.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
 		destination.addProject(project);
 		destination.update();
 
@@ -92,7 +92,7 @@ public class DeleteSharingPartnershipsControllerTest {
 	public void testDeleteSharingPartnershipFromProject() {
 
 		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
-		Project project = Project.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
+		OutboundProject project = OutboundProject.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
 		destination.addProject(project);
 		destination.update();
 
@@ -101,7 +101,7 @@ public class DeleteSharingPartnershipsControllerTest {
 		// Expect 303 as implementation redirects to 'view' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
 
-		Project updatedProject = Project.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
+		OutboundProject updatedProject = OutboundProject.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
 		assertThat(updatedProject.destinations.contains(destination)).isEqualTo(false);
 	}
 
@@ -109,7 +109,7 @@ public class DeleteSharingPartnershipsControllerTest {
 	public void testDeleteNonExistingSharingPartnershipFromDestination() {
 
 		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
-		Project project = Project.find.byId(ProjectTest.TEST_NEW_PROJECT_ID);
+		OutboundProject project = OutboundProject.find.byId(ProjectTest.TEST_NEW_PROJECT_ID);
 
 		Result result = postDeleteSharingPartnershipFromDestination(destination.id, project.id);
 
@@ -120,7 +120,7 @@ public class DeleteSharingPartnershipsControllerTest {
 	public void testDeleteNonExistingSharingPartnershipFromProject() {
 
 		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
-		Project project = Project.find.byId(ProjectTest.TEST_NEW_PROJECT_ID);
+		OutboundProject project = OutboundProject.find.byId(ProjectTest.TEST_NEW_PROJECT_ID);
 
 		Result result = postDeleteSharingPartnershipFromProject(project.id, destination.id);
 

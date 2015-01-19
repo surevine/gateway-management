@@ -4,7 +4,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import static play.mvc.Http.Status.OK;
 import static play.test.Helpers.*;
 
-import models.Project;
+import models.OutboundProject;
 
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -21,7 +21,7 @@ public class ViewProjectsControllerTest extends ProjectTest {
 	 */
 	@BeforeClass
 	public static void createExistingTestProject() {
-		Project project = new Project(TEST_EXISTING_PROJECT_ID,
+		OutboundProject project = new OutboundProject(TEST_EXISTING_PROJECT_ID,
 										TEST_EXISTING_PROJECT_DISPLAY_NAME,
 										TEST_EXISTING_PROJECT_PROJECT_KEY,
 										TEST_EXISTING_PROJECT_SLUG_REPO);
@@ -32,7 +32,7 @@ public class ViewProjectsControllerTest extends ProjectTest {
 	@Test
 	public void testViewProject() {
 		FakeRequest request = new FakeRequest(GET, "/projects/view/" + TEST_EXISTING_PROJECT_ID);
-		Result result = callAction(controllers.routes.ref.Projects.view(TEST_EXISTING_PROJECT_ID), request);
+		Result result = callAction(controllers.routes.ref.OutboundProjects.view(TEST_EXISTING_PROJECT_ID), request);
 
 		assertThat(status(result)).isEqualTo(OK);
 		assertThat(contentType(result)).isEqualTo("text/html");
@@ -46,7 +46,7 @@ public class ViewProjectsControllerTest extends ProjectTest {
 	@Test
 	public void testNonExistingProjectView() {
 		FakeRequest request = new FakeRequest(GET, "/projects/view/" + TEST_NON_EXISTING_PROJECT_ID);
-		Result result = callAction(controllers.routes.ref.Projects.view(TEST_NON_EXISTING_PROJECT_ID), request);
+		Result result = callAction(controllers.routes.ref.OutboundProjects.view(TEST_NON_EXISTING_PROJECT_ID), request);
 
 		assertThat(status(result)).isEqualTo(NOT_FOUND);
 	}
@@ -55,7 +55,7 @@ public class ViewProjectsControllerTest extends ProjectTest {
 	public void testViewProjectAPI() {
 
 		FakeRequest request = new FakeRequest(GET, "/api/project/" + TEST_EXISTING_PROJECT_ID);
-		Result result = callAction(controllers.routes.ref.ProjectsAPI.view(TEST_EXISTING_PROJECT_ID), request);
+		Result result = callAction(controllers.routes.ref.OutboundProjectsAPI.view(TEST_EXISTING_PROJECT_ID), request);
 
 		assertThat(status(result)).isEqualTo(OK);
 		assertThat(contentType(result)).isEqualTo("application/json");
@@ -72,7 +72,7 @@ public class ViewProjectsControllerTest extends ProjectTest {
 	public void testNonExistingProjectAPI() {
 
 		FakeRequest request = new FakeRequest(GET, "/api/project/" + TEST_NON_EXISTING_PROJECT_ID);
-		Result result = callAction(controllers.routes.ref.ProjectsAPI.view(TEST_NON_EXISTING_PROJECT_ID), request);
+		Result result = callAction(controllers.routes.ref.OutboundProjectsAPI.view(TEST_NON_EXISTING_PROJECT_ID), request);
 
 		assertThat(status(result)).isEqualTo(NOT_FOUND);
 

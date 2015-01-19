@@ -3,7 +3,7 @@ package com.surevine.gateway.auditing;
 import java.util.Date;
 
 import models.Destination;
-import models.Project;
+import models.OutboundProject;
 
 import com.surevine.gateway.auditing.action.AuditAction;
 import com.surevine.gateway.auditing.action.AuditActionFactory;
@@ -98,32 +98,32 @@ public abstract class Audit {
 	}
 
 	public static CreateRepositoryAction getCreateRepositoryAction(
-			Project project) {
+			OutboundProject project) {
 		return getAuditActionFactory().getCreateRepositoryAction(project);
 	}
 
 	public static UpdateRepositoryAction getUpdateRepositoryAction(
-			Project originalProject, Project updatedProject) {
+			OutboundProject originalProject, OutboundProject updatedProject) {
 		return getAuditActionFactory().getUpdateRepositoryAction(originalProject, updatedProject);
 	}
 
 	public static DeleteRepositoryAction getDeleteRepositoryAction(
-			Project project) {
+			OutboundProject project) {
 		return getAuditActionFactory().getDeleteRepositoryAction(project);
 	}
 
 	public static UnshareRepositoryAction getUnshareRepositoryAction(
-			Project project, Destination destination) {
+			OutboundProject project, Destination destination) {
 		return getAuditActionFactory().getUnshareRepositoryAction(project, destination);
 	}
 
 	public static ResendRepositoryAction getResendRepositoryAction(
-			Project project, Destination destination) {
+			OutboundProject project, Destination destination) {
 		return getAuditActionFactory().getResendRepositoryAction(project, destination);
 	}
 
 	public static ShareRepositoryAction getShareRepositoryAction(
-			Project project, Destination destination) {
+			OutboundProject project, Destination destination) {
 		return getAuditActionFactory().getShareRepositoryAction(project, destination);
 	}
 

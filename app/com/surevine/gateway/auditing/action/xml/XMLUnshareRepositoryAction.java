@@ -1,13 +1,13 @@
 package com.surevine.gateway.auditing.action.xml;
 
 import models.Destination;
-import models.Project;
+import models.OutboundProject;
 
 import com.surevine.gateway.auditing.action.UnshareRepositoryAction;
 
 public class XMLUnshareRepositoryAction extends UnshareRepositoryAction {
 
-	public XMLUnshareRepositoryAction(Project project, Destination destination) {
+	public XMLUnshareRepositoryAction(OutboundProject project, Destination destination) {
 		super(project, destination);
 	}
 

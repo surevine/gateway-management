@@ -1,12 +1,12 @@
 package com.surevine.gateway.auditing.action;
 
-import models.Project;
+import models.OutboundProject;
 
 public class DeleteRepositoryAction implements AuditAction {
 
-	protected Project project;
+	protected OutboundProject project;
 
-	public DeleteRepositoryAction(Project project) {
+	public DeleteRepositoryAction(OutboundProject project) {
 		this.project = project;
 	}
 

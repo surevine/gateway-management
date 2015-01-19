@@ -1,14 +1,14 @@
 package com.surevine.gateway.auditing.action;
 
 import models.Destination;
-import models.Project;
+import models.OutboundProject;
 
 public class ResendRepositoryAction implements AuditAction {
 
-	protected Project project;
+	protected OutboundProject project;
 	protected Destination destination;
 
-	public ResendRepositoryAction(Project project, Destination destination) {
+	public ResendRepositoryAction(OutboundProject project, Destination destination) {
 		this.project = project;
 		this.destination = destination;
 	}
