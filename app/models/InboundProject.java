@@ -8,13 +8,13 @@ import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
 
 /**
- * Whitelisted SCM project, shared from a remote partner.
+ * Inbound (whitelisted) SCM project, shared from a remote partner.
  *
  * @author jonnyheavey
  *
  */
 @Entity
-public class WhitelistedProject extends Model {
+public class InboundProject extends Model {
 
 	private static final long serialVersionUID = 1L;
 
@@ -47,7 +47,7 @@ public class WhitelistedProject extends Model {
     /**
      * Generic query helper for entity InboundProject with id Long
      */
-    public static Model.Finder<Long,WhitelistedProject> find = new Model.Finder<Long,WhitelistedProject>(Long.class, WhitelistedProject.class);
+    public static Model.Finder<Long,InboundProject> find = new Model.Finder<Long,InboundProject>(Long.class, InboundProject.class);
 
 
 }

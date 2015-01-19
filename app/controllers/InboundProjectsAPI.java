@@ -2,19 +2,19 @@ package controllers;
 
 import java.util.List;
 
-import models.WhitelistedProject;
+import models.InboundProject;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 
 /**
- * Whitelisted projects API controller.
+ * Inbound (whitelisted) projects API controller.
  * Offers a sub-set of main WhitelistedProjects controller functionality.
  *
  * @author jonnyheavey
  *
  */
-public class WhitelistedProjectsAPI extends Controller {
+public class InboundProjectsAPI extends Controller {
 
 	/**
 	 * Returns a list of projects that are whitelisted to be accepted through gateway
@@ -22,7 +22,7 @@ public class WhitelistedProjectsAPI extends Controller {
 	 * @return
 	 */
 	public Result list() {
-		List<WhitelistedProject> projects = WhitelistedProject.find.all();
+		List<InboundProject> projects = InboundProject.find.all();
     	return ok(Json.toJson(projects));
 	}
 
