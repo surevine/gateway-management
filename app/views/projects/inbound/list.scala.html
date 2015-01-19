@@ -2,6 +2,10 @@
 
 @main("Inbound source code repositories") {
 
+	<p>Inbound repositories are those being shared by remote partners through the gateway.</p>
+	<p>This acts as a whitelist, where only repositories listed below will be transferred to your
+		source code management system.</p>
+
     <a href="@routes.InboundProjects.add()" class="btn btn-primary primary-action">Add Repository</a>
 
     @if(projects.isEmpty) {

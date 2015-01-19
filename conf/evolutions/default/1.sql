@@ -42,23 +42,19 @@ create sequence outbound_project_seq;
 
 
 
-alter table destination_outbound_project add constraint fk_destination_outbound_proje_01 foreign key (destination_id) references destination (id) on delete restrict on update restrict;
+alter table destination_outbound_project add constraint fk_destination_outbound_proje_01 foreign key (destination_id) references destination (id);
 
-alter table destination_outbound_project add constraint fk_destination_outbound_proje_02 foreign key (outbound_project_id) references outbound_project (id) on delete restrict on update restrict;
+alter table destination_outbound_project add constraint fk_destination_outbound_proje_02 foreign key (outbound_project_id) references outbound_project (id);
 
 # --- !Downs
 
-SET REFERENTIAL_INTEGRITY FALSE;
+drop table if exists destination cascade;
 
-drop table if exists destination;
+drop table if exists destination_outbound_project cascade;
 
-drop table if exists destination_outbound_project;
+drop table if exists inbound_project cascade;
 
-drop table if exists inbound_project;
-
-drop table if exists outbound_project;
-
-SET REFERENTIAL_INTEGRITY TRUE;
+drop table if exists outbound_project cascade;
 
 drop sequence if exists destination_seq;
 
