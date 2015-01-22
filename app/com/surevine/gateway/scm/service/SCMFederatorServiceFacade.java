@@ -89,7 +89,7 @@ public class SCMFederatorServiceFacade {
     	}
 
     	if(response.getStatus() != OK) {
-    		Logger.warn(String.format("SCM Federator service returned non-ok response code: ", response.getStatus()));
+    		Logger.warn(String.format("SCM Federator service returned non-ok response: %s, %s", response.getStatus(), response.getStatusText()));
     		throw new SCMFederatorServiceException(String.format("Error response %s from resend repository request. %s.",
     															response.getStatus(),
     															response.getBody()));
