@@ -191,8 +191,8 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 		command.append(archive.toString() + " ");
 		command.append(projectSlug + " ");
 		command.append(identifier + " ");
-		command.append(destinationURLs + " ");
-		command.append(destinationNames);
+		command.append("\"" + destinationURLs + "\" ");
+		command.append("\"" + destinationNames + "\"");
 
 		Logger.info("Executing sanitisation command: " + command.toString());
 
