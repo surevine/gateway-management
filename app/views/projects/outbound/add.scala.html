@@ -8,6 +8,12 @@
 
 	@form(routes.OutboundProjects.create(), 'role -> "form") {
 
+		@if(projectForm.hasGlobalErrors) {
+		    <p class="has-error">
+		    	<span class="help-block">@projectForm.globalError.message</span>
+		    </p>
+		}
+
 		<fieldset>
 
 			@inputText(projectForm("displayName"),

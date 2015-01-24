@@ -134,8 +134,7 @@ public class OutboundProject extends Model {
     									.findUnique();
 
     	if(existingProject != null) {
-    		errors.add(new ValidationError("projectKey", "Project key / Repository slug combination already exists."));
-    		errors.add(new ValidationError("repositorySlug", "Project key / Repository slug combination already exists."));
+    		errors.add(new ValidationError("", "Project key / Repository slug combination already exists."));
     	}
 
     	Pattern p = Pattern.compile("([^-_a-zA-Z0-9])");

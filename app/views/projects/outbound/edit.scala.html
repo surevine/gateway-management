@@ -8,6 +8,12 @@
 
 	@form(routes.OutboundProjects.update(id), 'role -> "form") {
 
+		@if(projectForm.hasGlobalErrors) {
+		    <p class="has-error">
+		    	<span class="help-block">@projectForm.globalError.message</span>
+		    </p>
+		}
+
 		<fieldset>
 
 			<input type="hidden" name="id" value="@id" />
