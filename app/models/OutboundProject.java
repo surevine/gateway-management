@@ -138,7 +138,7 @@ public class OutboundProject extends Model {
     		errors.add(new ValidationError("repositorySlug", "Project key / Repository slug combination already exists."));
     	}
 
-    	Pattern p = Pattern.compile("([^-a-zA-Z0-9])");
+    	Pattern p = Pattern.compile("([^-_a-zA-Z0-9])");
     	Matcher projectKeyMatcher = p.matcher(projectKey);
         if (projectKeyMatcher.find()) {
         	errors.add(new ValidationError("projectKey", "Project key contains invalid characters."));
