@@ -22,20 +22,16 @@ import com.typesafe.config.ConfigFactory;
 
 public abstract class Audit {
 
-	// Supported audit modes
-	private static final String LOG_AUDIT_MODE = "log";
-	private static final String XML_AUDIT_MODE = "xml";
-
 	private static AuditService auditServiceImpl;
 	private static AuditActionFactory auditActionFactoryImpl;
 
 	private static AuditActionFactory getAuditActionFactory() {
 		if(auditActionFactoryImpl == null) {
-			switch(ConfigFactory.load().getString("gateway.audit.mode")) {
-				case LOG_AUDIT_MODE:
+			switch(AuditMode.getMode(ConfigFactory.load().getString("gateway.audit.mode"))) {
+				case LOG:
 					auditActionFactoryImpl = new LogfileAuditActionFactory();
 					break;
-				case XML_AUDIT_MODE:
+				case XML:
 					auditActionFactoryImpl = new XMLAuditActionFactory();
 					break;
 				default:
@@ -47,11 +43,11 @@ public abstract class Audit {
 
 	private static AuditService getAuditService() {
 		if(auditServiceImpl == null) {
-			switch(ConfigFactory.load().getString("gateway.audit.mode")) {
-				case LOG_AUDIT_MODE:
+			switch(AuditMode.getMode(ConfigFactory.load().getString("gateway.audit.mode"))) {
+				case LOG:
 					auditServiceImpl = LogfileAuditServiceImpl.getInstance();
 					break;
-				case XML_AUDIT_MODE:
+				case XML:
 					auditServiceImpl = XMLAuditServiceImpl.getInstance();
 					break;
 				default:
