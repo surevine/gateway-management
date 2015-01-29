@@ -1,5 +1,7 @@
 package com.surevine.gateway.auditing;
 
+import java.io.IOException;
+
 import models.Destination;
 import models.OutboundProject;
 
@@ -27,7 +29,7 @@ public abstract class Audit {
 
 	private static AuditActionFactory getAuditActionFactory() {
 		if(auditActionFactoryImpl == null) {
-			switch(AuditMode.getMode(ConfigFactory.load().getString("gateway.audit.mode"))) {
+			switch(getAuditModeSetting()) {
 				case LOG:
 					auditActionFactoryImpl = new LogfileAuditActionFactory();
 					break;
@@ -43,7 +45,7 @@ public abstract class Audit {
 
 	private static AuditService getAuditService() {
 		if(auditServiceImpl == null) {
-			switch(AuditMode.getMode(ConfigFactory.load().getString("gateway.audit.mode"))) {
+			switch(getAuditModeSetting()) {
 				case LOG:
 					auditServiceImpl = LogfileAuditServiceImpl.getInstance();
 					break;
@@ -55,6 +57,17 @@ public abstract class Audit {
 			}
 		}
 		return auditServiceImpl;
+	}
+
+	/**
+	 * Retrieve audit mode setting from property file.
+	 * Used to conditionally initialise services.
+	 *
+	 * @return configured audit mode
+	 */
+	private static AuditMode getAuditModeSetting() {
+		String auditMode = ConfigFactory.load().getString("gateway.audit.mode");
+		return AuditMode.getMode(auditMode);
 	}
 
 	/**
