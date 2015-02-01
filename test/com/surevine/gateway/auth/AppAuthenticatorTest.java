@@ -1,7 +1,6 @@
 package com.surevine.gateway.auth;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
 import static play.test.Helpers.fakeApplication;
 import static play.test.Helpers.inMemoryDatabase;
@@ -17,11 +16,6 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.surevine.gateway.auditing.LogfileAuditServiceImpl;
-import com.surevine.gateway.auditing.action.AuditActionFactory;
-import com.surevine.gateway.auditing.action.LogfileAuditActionFactory;
-
-import play.Logger;
 import play.api.mvc.RequestHeader;
 import play.mvc.Http.Context;
 import play.mvc.Http.Request;
@@ -34,7 +28,6 @@ public class AppAuthenticatorTest {
 	public static FakeApplication app;
 
 	public static final String EXISTING_SESSION_USERNAME = "existing-username";
-	public static final String WILDFLY_AUTHENTICATED_USERNAME = "wildfly-username";
 
 	private AppAuthenticator fixture = new AppAuthenticator();
 
