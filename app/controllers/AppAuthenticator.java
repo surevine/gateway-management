@@ -10,7 +10,6 @@ import com.surevine.gateway.auth.AuthService;
 import com.surevine.gateway.auth.AuthServiceException;
 import com.surevine.gateway.auth.LdapAuthService;
 import com.surevine.gateway.auth.PublicAuthService;
-import com.surevine.gateway.auth.WildflyAuthService;
 import com.typesafe.config.ConfigFactory;
 
 import play.Logger;
@@ -28,7 +27,6 @@ import play.mvc.Security;
 public class AppAuthenticator extends Security.Authenticator {
 
 	private static final String PUBLIC = "public";
-	private static final String REMOTE = "remote";
 	private static final String LDAP = "ldap";
 
 	private AuthService authService;
@@ -38,9 +36,6 @@ public class AppAuthenticator extends Security.Authenticator {
 		switch(ConfigFactory.load().getString("gateway.auth.mode")) {
 			case PUBLIC:
 				this.authService = new PublicAuthService();
-				break;
-			case REMOTE:
-				this.authService = WildflyAuthService.getInstance();
 				break;
 			case LDAP:
 				this.authService = LdapAuthService.getInstance();
