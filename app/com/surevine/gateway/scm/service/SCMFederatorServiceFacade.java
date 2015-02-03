@@ -21,7 +21,7 @@ public class SCMFederatorServiceFacade {
 	/**
 	 * Default request timeout in milliseconds
 	 */
-	private static final int REQUEST_TIMEOUT = 5000;
+	private static final int REQUEST_TIMEOUT = 10000;
 
 	/**
 	 * API Base URL loaded from config
