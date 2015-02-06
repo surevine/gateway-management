@@ -152,7 +152,7 @@ public class XMLAuditServiceImpl implements AuditService {
 	private String loadEventTemplate() {
 
 		Path eventTemplatePath = Paths.get(XML_EVENT_TEMPLATE);
-		StringBuffer parsedEventTemplate = new StringBuffer();
+		StringBuilder parsedEventTemplate = new StringBuilder();
 
 		try {
 			List<String> lines = Files.readAllLines(eventTemplatePath, Charset.defaultCharset());

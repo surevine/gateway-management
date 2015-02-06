@@ -176,11 +176,9 @@ public class Destination extends Model {
     	List<ValidationError> errors = new ArrayList<ValidationError>();
 
     	// Validate URL
-    	final URL u;
     	try {
-    		u = new URL(url);
-    	}
-    	catch(MalformedURLException e) {
+    		new URL(url);
+    	} catch(MalformedURLException e) {
     		errors.add(new ValidationError("url", "Valid URL required."));
     	}
 
