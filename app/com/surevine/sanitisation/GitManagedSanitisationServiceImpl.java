@@ -35,7 +35,8 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 	private static final String SANITISATION_SCRIPT_NAME = ConfigFactory.load().getString("sanitisation.script.name");
 	private static final String SANITISATION_WORKING_DIR = ConfigFactory.load().getString("sanitisation.working.dir");
 
-	private GitManagedSanitisationServiceImpl() {}
+	private GitManagedSanitisationServiceImpl() {
+	}
 
 	public static GitManagedSanitisationServiceImpl getInstance() {
 		if(_instance == null) {

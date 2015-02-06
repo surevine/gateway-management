@@ -8,9 +8,9 @@ public enum AuditMode {
 
 	public static AuditMode getMode(final String mode) {
 
-		if(mode.equalsIgnoreCase("xml")) {
+		if("xml".equalsIgnoreCase(mode)) {
 			return XML;
-		} else if(mode.equalsIgnoreCase("log")) {
+		} else if("log".equalsIgnoreCase(mode)) {
 			return LOG;
 		} else {
 			return UNKNOWN;

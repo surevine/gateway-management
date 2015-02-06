@@ -113,9 +113,9 @@ public class XMLAuditServiceImpl implements AuditService {
 		Path auditFile = Paths.get(XML_LOG_FILE_DIRECTORY, "audit.xml");
 		if(!Files.exists(auditFile)) {
 			Logger.info("No existing XML audit file found. Creating new file.");
-			Path AuditFileTemplate = Paths.get(XML_LOG_FILE_TEMPLATE);
+			Path auditFileTemplate = Paths.get(XML_LOG_FILE_TEMPLATE);
 			try {
-				Files.copy(AuditFileTemplate, auditFile);
+				Files.copy(auditFileTemplate, auditFile);
 			} catch (IOException e) {
 				throw new AuditServiceException("Could not create new XML audit log file.", e);
 			}

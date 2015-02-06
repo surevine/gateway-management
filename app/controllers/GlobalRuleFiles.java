@@ -82,8 +82,7 @@ public class GlobalRuleFiles extends AuditedController {
 
     	try {
     		exportRules = RuleFileManager.getInstance().loadGlobalExportRules();
-    	}
-    	catch(IOException e) {
+    	} catch(IOException e) {
     		flash("export-error", "Could not load global export rules: " + e.getMessage());
     	}
 

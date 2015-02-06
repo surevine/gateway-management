@@ -53,8 +53,7 @@ public class Destinations extends AuditedController {
 
     	try {
     		destinationRules = destination.loadRules();
-    	}
-    	catch(IOException e) {
+    	} catch(IOException e) {
     		// Display error to user, but continue render of destination page
     		error = true;
     		errorMessage = e.getMessage();
@@ -208,8 +207,7 @@ public class Destinations extends AuditedController {
     	String destinationRules;
 		try {
     		destinationRules = destination.loadRules();
-    	}
-    	catch(IOException e) {
+    	} catch(IOException e) {
     		return notFound("Could not load destination rule file.");
     	}
 
