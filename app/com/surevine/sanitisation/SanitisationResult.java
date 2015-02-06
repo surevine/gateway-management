@@ -4,9 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import play.api.libs.json.JsObject;
-import play.twirl.api.Content;
-
 /**
  * Represents the result of a sanitisation execution
  * @author jonnyheavey

@@ -2,12 +2,6 @@ package controllers;
 
 import java.util.List;
 
-import com.surevine.gateway.auditing.Audit;
-import com.surevine.gateway.auditing.action.CreateRepositoryAction;
-import com.surevine.gateway.auditing.action.DeleteRepositoryAction;
-import com.surevine.gateway.auditing.action.UpdateRepositoryAction;
-
-import models.OutboundProject;
 import models.InboundProject;
 import play.data.Form;
 import play.mvc.Controller;

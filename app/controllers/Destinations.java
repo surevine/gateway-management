@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 
 import com.surevine.gateway.auditing.Audit;
-import com.surevine.gateway.auditing.action.AuditAction;
 import com.surevine.gateway.auditing.action.CreateDestinationAction;
 import com.surevine.gateway.auditing.action.DeleteDestinationAction;
 import com.surevine.gateway.auditing.action.ModifyDestinationRulesAction;
