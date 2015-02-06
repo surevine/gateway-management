@@ -64,12 +64,12 @@ public class Destination extends Model {
     /**
      * Generic query helper for entity Destination with id Long
      */
-    public static Model.Finder<Long,Destination> find = new Model.Finder<Long,Destination>(Long.class, Destination.class);
+    public static final Model.Finder<Long,Destination> find = new Model.Finder<Long,Destination>(Long.class, Destination.class);
 
     /**
      * Service facade for interaction with SCM federator component
      */
-    public static SCMFederatorServiceFacade scmFederator = SCMFederatorServiceFacade.getInstance();
+    public static final SCMFederatorServiceFacade scmFederator = SCMFederatorServiceFacade.getInstance();
 
     /**
      * List of all destinations, used by scala helper in templates (to populate select options)
@@ -193,9 +193,5 @@ public class Destination extends Model {
 
     	return errors.isEmpty() ? null : errors;
     }
-
-	public void setSCMFederatorServiceFacade(SCMFederatorServiceFacade scmFederator) {
-		this.scmFederator = scmFederator;
-	}
 
 }

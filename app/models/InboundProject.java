@@ -55,7 +55,7 @@ public class InboundProject extends Model {
     /**
      * Generic query helper for entity InboundProject with id Long
      */
-    public static Model.Finder<Long,InboundProject> find = new Model.Finder<Long,InboundProject>(Long.class, InboundProject.class);
+    public static final Model.Finder<Long,InboundProject> find = new Model.Finder<Long,InboundProject>(Long.class, InboundProject.class);
 
     /**
      * Perform additional validation (beyond annotations) on model properties.

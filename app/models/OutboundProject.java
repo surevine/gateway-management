@@ -66,12 +66,12 @@ public class OutboundProject extends Model {
     /**
      * Generic query helper for entity Project with id Long
      */
-    public static Model.Finder<Long,OutboundProject> find = new Model.Finder<Long,OutboundProject>(Long.class, OutboundProject.class);
+    public static final Model.Finder<Long,OutboundProject> find = new Model.Finder<Long,OutboundProject>(Long.class, OutboundProject.class);
 
     /**
      * Service facade for interaction with SCM federator component
      */
-    public static SCMFederatorServiceFacade scmFederator = SCMFederatorServiceFacade.getInstance();
+    public static final SCMFederatorServiceFacade scmFederator = SCMFederatorServiceFacade.getInstance();
 
     /**
      * List of all projects, used by scala helper in templates (to populate select options)
@@ -149,9 +149,5 @@ public class OutboundProject extends Model {
 
     	return errors.isEmpty() ? null : errors;
     }
-
-	public void setSCMFederatorServiceFacade(SCMFederatorServiceFacade scmFederator) {
-		OutboundProject.scmFederator = scmFederator;
-	}
 
 }
