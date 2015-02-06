@@ -1,7 +1,5 @@
 package com.surevine.gateway.auditing;
 
-import java.io.IOException;
-
 import models.Destination;
 import models.OutboundProject;
 
@@ -26,6 +24,10 @@ public abstract class Audit {
 
 	private static AuditService auditServiceImpl;
 	private static AuditActionFactory auditActionFactoryImpl;
+
+	private Audit() {
+
+	}
 
 	private static AuditActionFactory getAuditActionFactory() {
 		if(auditActionFactoryImpl == null) {
