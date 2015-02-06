@@ -13,6 +13,7 @@ import com.surevine.gateway.scm.service.SCMFederatorServiceFacade;
 
 import models.Destination;
 import models.OutboundProject;
+import play.Logger;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Result;
@@ -155,7 +156,9 @@ public class SharingPartnerships extends AuditedController {
     	try {
         	scmFederator.resend(destination.id.toString(), project.projectKey, project.repositorySlug);
     	} catch(SCMFederatorServiceException e) {
-    		return internalServerError("Failed to resend project to destination.");
+    		String errorMessage = "Failed to resend project to destination.";
+    		Logger.error(errorMessage, e);
+    		return internalServerError(errorMessage);
     	}
 
     	ResendRepositoryAction action = Audit.getResendRepositoryAction(project, destination);

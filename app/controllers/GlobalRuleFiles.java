@@ -3,10 +3,10 @@ package controllers;
 import java.io.IOException;
 
 import com.surevine.gateway.auditing.Audit;
-import com.surevine.gateway.auditing.action.AuditAction;
 import com.surevine.gateway.auditing.action.ModifyGlobalRulesAction;
 import com.surevine.gateway.rules.RuleFileManager;
 
+import play.Logger;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Result;
@@ -33,7 +33,9 @@ public class GlobalRuleFiles extends AuditedController {
 			}
 
 		} catch (IOException e) {
-			flash("load-error", "Could not load global rule file: " + e.getMessage());
+			String errorMessage = "Could not load global rule file: " + e.getMessage();
+			Logger.error(errorMessage, e);
+			flash("load-error", errorMessage);
 		}
 
 		DynamicForm rulesForm = Form.form();
@@ -62,7 +64,9 @@ public class GlobalRuleFiles extends AuditedController {
 			}
 
 		} catch (IOException e) {
-			flash("error", "Could not update global rules. " + e.getMessage());
+			String errorMessage = "Could not update global rules. " + e.getMessage();
+			Logger.error(errorMessage, e);
+			flash("error", errorMessage);
 			return redirect(routes.GlobalRuleFiles.view());
 		}
 
@@ -83,13 +87,17 @@ public class GlobalRuleFiles extends AuditedController {
     	try {
     		exportRules = RuleFileManager.getInstance().loadGlobalExportRules();
     	} catch(IOException e) {
-    		flash("export-error", "Could not load global export rules: " + e.getMessage());
+    		String errorMessage = "Could not load global export rules: " + e.getMessage();
+    		Logger.error(errorMessage, e);
+    		flash("export-error", errorMessage);
     	}
 
     	try {
     		importRules = RuleFileManager.getInstance().loadGlobalImportRules();
     	} catch(IOException e) {
-			flash("import-error", "Could not load global import rules: " + e.getMessage());
+    		String errorMessage = "Could not load global import rules: " + e.getMessage();
+    		Logger.error(errorMessage, e);
+			flash("import-error", errorMessage);
 		}
 
 		return ok(views.html.globalrules.view.render(exportRules, importRules));

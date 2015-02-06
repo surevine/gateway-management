@@ -11,12 +11,15 @@ import com.surevine.gateway.auditing.action.ModifyDestinationRulesAction;
 import com.surevine.gateway.auditing.action.UpdateDestinationAction;
 
 import models.Destination;
+import play.Logger;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Result;
 import play.mvc.Security;
 
 public class Destinations extends AuditedController {
+
+	private static final String DESTINATION_NOT_FOUND = "Destination not found.";
 
 	/**
 	 * Display list of all destinations
@@ -44,7 +47,7 @@ public class Destinations extends AuditedController {
     	Destination destination = Destination.find.byId(id);
 
     	if(destination == null) {
-    		return notFound("Destination not found.");
+    		return notFound();
     	}
 
     	String destinationRules = "";
@@ -57,6 +60,7 @@ public class Destinations extends AuditedController {
     		// Display error to user, but continue render of destination page
     		error = true;
     		errorMessage = e.getMessage();
+    		Logger.error(errorMessage, e);
     	}
 
     	return ok(views.html.destinations.view.render(destination, destinationRules, error, errorMessage));
@@ -89,7 +93,7 @@ public class Destinations extends AuditedController {
     	Destination destination = Destination.find.byId(id);
 
     	if(destination == null) {
-    		return notFound("Destination not found.");
+    		return notFound(DESTINATION_NOT_FOUND);
     	}
 
     	Form<Destination> destinationForm = Form.form(Destination.class).fill(destination);
@@ -132,7 +136,7 @@ public class Destinations extends AuditedController {
 
     	Destination originalDestination = Destination.find.byId(id);
     	if(originalDestination == null) {
-    		return notFound("Destination not found.");
+    		return notFound(DESTINATION_NOT_FOUND);
     	}
 
     	Form<Destination> destinationForm = Form.form(Destination.class).bindFromRequest();
@@ -162,7 +166,7 @@ public class Destinations extends AuditedController {
 
     	Destination destination = Destination.find.byId(id);
     	if(destination == null) {
-    		return notFound("Destination not found.");
+    		return notFound(DESTINATION_NOT_FOUND);
     	}
 
     	destination.delete();
@@ -186,7 +190,7 @@ public class Destinations extends AuditedController {
     	Destination destination = Destination.find.byId(destinationId);
 
     	if(destination == null) {
-    		return notFound("Destination not found.");
+    		return notFound(DESTINATION_NOT_FOUND);
     	}
 
     	DynamicForm projectForm = Form.form();
@@ -201,14 +205,16 @@ public class Destinations extends AuditedController {
     	Destination destination = Destination.find.byId(destinationId);
 
     	if(destination == null) {
-    		return notFound("Destination not found.");
+    		return notFound(DESTINATION_NOT_FOUND);
     	}
 
     	String destinationRules;
 		try {
     		destinationRules = destination.loadRules();
     	} catch(IOException e) {
-    		return notFound("Could not load destination rule file.");
+    		String errorMessage = "Could not load destination rule file.";
+    		Logger.error(errorMessage, e);
+    		return notFound(errorMessage);
     	}
 
 		DynamicForm rulesForm = Form.form();
@@ -223,7 +229,7 @@ public class Destinations extends AuditedController {
     	DynamicForm requestData = Form.form().bindFromRequest();
     	Destination destination = Destination.find.byId(destinationId);
     	if(destination == null) {
-    		return notFound("Destination not found.");
+    		return notFound(DESTINATION_NOT_FOUND);
     	}
 
     	String newRuleFileContent = requestData.get("ruleFileContent");
@@ -231,7 +237,9 @@ public class Destinations extends AuditedController {
     	try {
 			destination.updateRules(newRuleFileContent);
 		} catch (IOException e) {
-			flash("error", "Could not update destination rules. " + e.getMessage());
+			String errorMessage = "Could not update destination rules. " + e.getMessage();
+			Logger.error(errorMessage, e);
+			flash("error", errorMessage);
 			return redirect(routes.Destinations.view(destinationId));
 		}
 

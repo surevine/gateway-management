@@ -84,8 +84,9 @@ public class SCMFederatorServiceFacade {
     	try {
         	response = promise.get(REQUEST_TIMEOUT);
     	} catch(Exception e) {
-    		Logger.warn("Error connecting to SCM federator service. " + e.getMessage());
-    		throw new SCMFederatorServiceException("Error connecting to SCM federator service. " + e.getMessage());
+    		String errorMessage = "Error connecting to SCM federator service.";
+    		Logger.warn(errorMessage, e);
+    		throw new SCMFederatorServiceException(errorMessage, e);
     	}
 
     	if(response.getStatus() != OK) {

@@ -61,7 +61,7 @@ public class AppAuthenticator extends Security.Authenticator {
 			try {
 				authenticatedUser = authService.getAuthenticatedUsername(ctx);
 			} catch (AuthServiceException e) {
-				Logger.warn("Could not authenticate current user. " + e.getMessage());
+				Logger.warn("Could not authenticate current user.", e);
 				return null;
 			}
 

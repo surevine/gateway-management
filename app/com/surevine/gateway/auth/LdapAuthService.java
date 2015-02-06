@@ -13,6 +13,7 @@ import com.unboundid.ldap.sdk.Entry;
 import com.unboundid.ldap.sdk.LDAPConnection;
 import com.unboundid.ldap.sdk.LDAPException;
 
+import play.Logger;
 import play.mvc.Http.Context;
 import play.mvc.Http.Request;
 
@@ -119,7 +120,7 @@ public class LdapAuthService implements AuthService {
 			}
 
 		} catch (LDAPException | GeneralSecurityException e) {
-			e.printStackTrace();
+			Logger.error("Failed to determine group membership for user.", e);
 		}
 
 		return isMember;
