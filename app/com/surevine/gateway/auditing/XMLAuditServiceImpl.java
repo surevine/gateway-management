@@ -136,13 +136,10 @@ public class XMLAuditServiceImpl implements AuditService {
 	 * @throws IOException
 	 */
 	private Node createEventXML(AuditEvent event) throws SAXException, IOException {
-
 		String eventTemplate = loadEventTemplate();
 		String populatedEvent = populateEventTemplate(eventTemplate, event);
 		InputStream eventInputStream = new ByteArrayInputStream(populatedEvent.getBytes("UTF-8"));
-		Node eventNode = documentBuilder.parse(eventInputStream).getFirstChild();
-
-		return eventNode;
+		return documentBuilder.parse(eventInputStream).getFirstChild();
 	}
 
 	/**
@@ -210,9 +207,7 @@ public class XMLAuditServiceImpl implements AuditService {
 										EVENT_SYSTEM_ENVIRONMENT,
 										event.getAction().serialize()};
 
-		String populatedTemplate = StringUtils.replaceEach(template, tokens, values);
-
-		return populatedTemplate;
+		return StringUtils.replaceEach(template, tokens, values);
 	}
 
 }
