@@ -20,6 +20,7 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -194,18 +195,24 @@ public class XMLAuditServiceImpl implements AuditService {
 	 */
 	private String populateEventTemplate(String template, AuditEvent event) {
 
-		template = template.replace("%EVENT_TIME%", dateFormat.format(event.getDatetime()));
-		template = template.replace("%EVENT_SYSTEM_ENVIRONMENT%", EVENT_SYSTEM_ENVIRONMENT);
-
 		String autheticatedUser = event.getUsername();
-		if(autheticatedUser != null) {
-			template = template.replace("%EVENT_USER%", event.getUsername());
-		} else {
-			template = template.replace("%EVENT_USER%", "Unauthticated user");
+		if(autheticatedUser == null) {
+			autheticatedUser = "Unauthticated user";
 		}
-		template = template.replace("%EVENT_ACTION%", event.getAction().serialize());
 
-		return template;
+		String[] tokens = new String[]{"%EVENT_USER%",
+										"%EVENT_TIME%",
+										"%EVENT_SYSTEM_ENVIRONMENT%",
+										"%EVENT_ACTION%"};
+
+		String[] values = new String[]{autheticatedUser,
+										dateFormat.format(event.getDatetime()),
+										EVENT_SYSTEM_ENVIRONMENT,
+										event.getAction().serialize()};
+
+		String populatedTemplate = StringUtils.replaceEach(template, tokens, values);
+
+		return populatedTemplate;
 	}
 
 }
