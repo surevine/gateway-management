@@ -21,6 +21,9 @@ import play.mvc.Security;
 
 public class SharingPartnerships extends AuditedController {
 
+	private static final String DESTINATION_NOT_FOUND = "Destination not found.";
+	private static final String PROJECT_NOT_FOUND = "Project not found.";
+
     /**
      * Service facade for interaction with SCM federator component
      */
@@ -40,41 +43,9 @@ public class SharingPartnerships extends AuditedController {
 
 		switch(source) {
 			case "destination":
-
-		    	long selectedDestinationId = Long.parseLong(requestData.get("destinationId"));
-		    	Destination destination = Destination.find.byId(selectedDestinationId);
-		    	if(destination == null) {
-		    		return notFound("Destination not found.");
-		    	}
-
-		    	String[] selectedProjectsArr = requestBody.get("selectedProjects");
-		    	if(selectedProjectsArr == null) {
-		    		return redirect(routes.Destinations.view(destination.id));
-		    	}
-
-		    	addProjectsToDestination(destination, selectedProjectsArr);
-
-		    	flash("success", "Repositories sent to the Gateway to be shared with destination.");
-		    	return redirect(routes.Destinations.view(destination.id));
-
+				return createFromDestination(requestData, requestBody);
 	    	case "project":
-
-	    		long selectedProjectId = Long.parseLong(requestData.get("projectId"));
-	        	OutboundProject project = OutboundProject.find.byId(selectedProjectId);
-	        	if(project == null) {
-	        		return notFound("Project not found.");
-	        	}
-
-	        	String[] selectedDestinationsArr = requestBody.get("selectedDestinations");
-	        	if(selectedDestinationsArr == null) {
-	        		return redirect(routes.OutboundProjects.view(project.id));
-	        	}
-
-	        	addDestinationsToProject(project, selectedDestinationsArr);
-
-	        	flash("success", "Repository sent to the Gateway to be shared with the destinations.");
-	        	return redirect(routes.OutboundProjects.view(project.id));
-
+	    		return createFromProject(requestData, requestBody);
 	    	default:
 	    		return badRequest("Request source not expected value. Should be either destination or project.");
 		}
@@ -97,12 +68,12 @@ public class SharingPartnerships extends AuditedController {
 
     	Destination destination = Destination.find.byId(selectedDestinationId);
     	if(destination == null) {
-    		return notFound("Destination not found.");
+    		return notFound(DESTINATION_NOT_FOUND);
     	}
 
     	OutboundProject project = OutboundProject.find.byId(selectedProjectId);
     	if(project == null) {
-    		return notFound("Project not found.");
+    		return notFound(PROJECT_NOT_FOUND);
     	}
 
     	if(destination.projects.contains(project)) {
@@ -141,12 +112,12 @@ public class SharingPartnerships extends AuditedController {
 
     	Destination destination = Destination.find.byId(destinationId);
     	if(destination == null) {
-    		return notFound("Destination not found.");
+    		return notFound(DESTINATION_NOT_FOUND);
     	}
 
     	OutboundProject project = OutboundProject.find.byId(projectId);
     	if(project == null) {
-    		return notFound("Project not found.");
+    		return notFound(PROJECT_NOT_FOUND);
     	}
 
     	if(!destination.projects.contains(project)) {
@@ -197,6 +168,44 @@ public class SharingPartnerships extends AuditedController {
 			ShareRepositoryAction action = Audit.getShareRepositoryAction(project, destination);
 	    	audit(action);
     	}
+	}
+
+	private Result createFromProject(DynamicForm requestData,
+			Map<String, String[]> requestBody) {
+		long selectedProjectId = Long.parseLong(requestData.get("projectId"));
+		OutboundProject project = OutboundProject.find.byId(selectedProjectId);
+		if(project == null) {
+			return notFound(PROJECT_NOT_FOUND);
+		}
+
+		String[] selectedDestinationsArr = requestBody.get("selectedDestinations");
+		if(selectedDestinationsArr == null) {
+			return redirect(routes.OutboundProjects.view(project.id));
+		}
+
+		addDestinationsToProject(project, selectedDestinationsArr);
+
+		flash("success", "Repository sent to the Gateway to be shared with the destinations.");
+		return redirect(routes.OutboundProjects.view(project.id));
+	}
+
+	private Result createFromDestination(DynamicForm requestData,
+			Map<String, String[]> requestBody) {
+		long selectedDestinationId = Long.parseLong(requestData.get("destinationId"));
+		Destination destination = Destination.find.byId(selectedDestinationId);
+		if(destination == null) {
+			return notFound(DESTINATION_NOT_FOUND);
+		}
+
+		String[] selectedProjectsArr = requestBody.get("selectedProjects");
+		if(selectedProjectsArr == null) {
+			return redirect(routes.Destinations.view(destination.id));
+		}
+
+		addProjectsToDestination(destination, selectedProjectsArr);
+
+		flash("success", "Repositories sent to the Gateway to be shared with destination.");
+		return redirect(routes.Destinations.view(destination.id));
 	}
 
 	public static void setSCMFederator(SCMFederatorServiceFacade scmFederator)	{
