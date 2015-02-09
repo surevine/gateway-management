@@ -26,7 +26,9 @@ public class SCMFederatorServiceFacade {
 	/**
 	 * API Base URL loaded from config
 	 */
-	private static final String SCM_FEDERATOR_BASE_URL = ConfigFactory.load().getString("scm.federator.api.base.url");
+	private static final String SCM_FEDERATOR_API_BASE_URL = ConfigFactory.load().getString("scm.federator.api.base.url");
+
+	private static final String SCM_FEDERATOR_API_DISTRIBUTE_PATH = "/rest/federator/distribute";
 
 	private static SCMFederatorServiceFacade _instance = null;
 
@@ -51,7 +53,7 @@ public class SCMFederatorServiceFacade {
 	 */
 	public void distribute(String destinationId, String projectKey, String repoSlug) {
 
-		Logger.info(String.format("Informing SCM component of new sharing partnership %s/%s [%s]", projectKey, repoSlug, SCM_FEDERATOR_BASE_URL + "/rest/federator/distribute"));
+		Logger.info(String.format("Informing SCM component of new sharing partnership %s/%s [%s]", projectKey, repoSlug, SCM_FEDERATOR_API_BASE_URL + SCM_FEDERATOR_API_DISTRIBUTE_PATH));
 
 		Promise<WSResponse> promise = postDistributionRequest(destinationId, projectKey, repoSlug);
 
@@ -76,7 +78,7 @@ public class SCMFederatorServiceFacade {
 	public void resend(String destinationId, String projectKey, String repoSlug) throws SCMFederatorServiceException {
 
 		Logger.info(String.format("Requesting redistribution of repo (%s/%s) by SCM component [%s]",
-				projectKey, repoSlug, SCM_FEDERATOR_BASE_URL + "/rest/federator/distribute"));
+				projectKey, repoSlug, SCM_FEDERATOR_API_BASE_URL + SCM_FEDERATOR_API_DISTRIBUTE_PATH));
 
     	Promise<WSResponse> promise = postDistributionRequest(destinationId, projectKey, repoSlug);
 
@@ -107,7 +109,7 @@ public class SCMFederatorServiceFacade {
 	 * @return
 	 */
 	private Promise<WSResponse> postDistributionRequest(String destinationId, String projectKey, String repoSlug) {
-		return WS.url(SCM_FEDERATOR_BASE_URL + "/rest/federator/distribute")
+		return WS.url(SCM_FEDERATOR_API_BASE_URL + SCM_FEDERATOR_API_DISTRIBUTE_PATH)
 				.setTimeout(REQUEST_TIMEOUT)
 				.setQueryParameter("destination", destinationId)
     			.setQueryParameter("projectKey", projectKey)
