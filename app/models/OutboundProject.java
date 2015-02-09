@@ -68,6 +68,19 @@ public class OutboundProject extends Model {
      */
     public static final Model.Finder<Long,OutboundProject> FIND = new Model.Finder<Long,OutboundProject>(Long.class, OutboundProject.class);
 
+    public OutboundProject(String displayName, String projectKey, String repositorySlug) {
+    	this.displayName = displayName;
+    	this.projectKey = projectKey;
+    	this.repositorySlug = repositorySlug;
+    }
+
+	public OutboundProject(long id, String displayName, String projectKey, String repositorySlug) {
+    	this.id = id;
+    	this.displayName = displayName;
+    	this.projectKey = projectKey;
+    	this.repositorySlug = repositorySlug;
+    }
+
     /**
      * List of all projects, used by scala helper in templates (to populate select options)
      * @return Map<String, String> option key/values
@@ -84,19 +97,6 @@ public class OutboundProject extends Model {
     	}
 
     	return unsharedProjects;
-    }
-
-    public OutboundProject(String displayName, String projectKey, String repositorySlug) {
-    	this.displayName = displayName;
-    	this.projectKey = projectKey;
-    	this.repositorySlug = repositorySlug;
-    }
-
-	public OutboundProject(long id, String displayName, String projectKey, String repositorySlug) {
-    	this.id = id;
-    	this.displayName = displayName;
-    	this.projectKey = projectKey;
-    	this.repositorySlug = repositorySlug;
     }
 
     /**

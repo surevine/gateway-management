@@ -66,6 +66,24 @@ public class Destination extends Model {
      */
     public static final Model.Finder<Long,Destination> FIND = new Model.Finder<Long,Destination>(Long.class, Destination.class);
 
+    public Destination(String name, String url) {
+    	this.name = name;
+    	this.url = url;
+    }
+
+    public Destination(long id, String name, String url) {
+    	this.id = id;
+    	this.name = name;
+    	this.url = url;
+    }
+
+    public Destination(long id, String name, String url, List<OutboundProject> projects) {
+    	this.id = id;
+    	this.name = name;
+    	this.url = url;
+    	this.projects = projects;
+    }
+
     /**
      * List of all destinations, used by scala helper in templates (to populate select options)
      * @param project Project that destinations are being added to
@@ -83,24 +101,6 @@ public class Destination extends Model {
     	}
 
     	return unsharedDestinations;
-    }
-
-    public Destination(String name, String url) {
-    	this.name = name;
-    	this.url = url;
-    }
-
-    public Destination(long id, String name, String url) {
-    	this.id = id;
-    	this.name = name;
-    	this.url = url;
-    }
-
-    public Destination(long id, String name, String url, List<OutboundProject> projects) {
-    	this.id = id;
-    	this.name = name;
-    	this.url = url;
-    	this.projects = projects;
     }
 
     @Override
