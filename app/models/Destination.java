@@ -85,11 +85,9 @@ public class Destination extends Model {
     	return unsharedDestinations;
     }
 
-    public Destination(long id, String name, String url, List<OutboundProject> projects) {
-    	this.id = id;
+    public Destination(String name, String url) {
     	this.name = name;
     	this.url = url;
-    	this.projects = projects;
     }
 
     public Destination(long id, String name, String url) {
@@ -98,9 +96,11 @@ public class Destination extends Model {
     	this.url = url;
     }
 
-    public Destination(String name, String url) {
+    public Destination(long id, String name, String url, List<OutboundProject> projects) {
+    	this.id = id;
     	this.name = name;
     	this.url = url;
+    	this.projects = projects;
     }
 
     @Override

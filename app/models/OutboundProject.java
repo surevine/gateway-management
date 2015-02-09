@@ -86,14 +86,14 @@ public class OutboundProject extends Model {
     	return unsharedProjects;
     }
 
-	public OutboundProject(long id, String displayName, String projectKey, String repositorySlug) {
-    	this.id = id;
+    public OutboundProject(String displayName, String projectKey, String repositorySlug) {
     	this.displayName = displayName;
     	this.projectKey = projectKey;
     	this.repositorySlug = repositorySlug;
     }
 
-    public OutboundProject(String displayName, String projectKey, String repositorySlug) {
+	public OutboundProject(long id, String displayName, String projectKey, String repositorySlug) {
+    	this.id = id;
     	this.displayName = displayName;
     	this.projectKey = projectKey;
     	this.repositorySlug = repositorySlug;

@@ -62,16 +62,12 @@ public class SharingPartnerships extends AuditedController {
 
 		DynamicForm requestData = Form.form().bindFromRequest();
 
-    	long selectedDestinationId = Long.parseLong(requestData.get("destinationId"));
-    	long selectedProjectId = Long.parseLong(requestData.get("projectId"));
-    	String source = requestData.get("source");
-
-    	Destination destination = Destination.FIND.byId(selectedDestinationId);
+    	Destination destination = Destination.FIND.byId(Long.parseLong(requestData.get("destinationId")));
     	if(destination == null) {
     		return notFound(DESTINATION_NOT_FOUND);
     	}
 
-    	OutboundProject project = OutboundProject.FIND.byId(selectedProjectId);
+    	OutboundProject project = OutboundProject.FIND.byId(Long.parseLong(requestData.get("projectId")));
     	if(project == null) {
     		return notFound(PROJECT_NOT_FOUND);
     	}
@@ -83,13 +79,11 @@ public class SharingPartnerships extends AuditedController {
     		UnshareRepositoryAction action = Audit.getUnshareRepositoryAction(project, destination);
         	audit(action);
 
-	    	switch(source) {
+	    	switch(requestData.get("source")) {
 		    	case "destination":
 		    		return redirect(routes.Destinations.view(destination.id));
-
 		    	case "project":
 		    		return redirect(routes.OutboundProjects.view(project.id));
-
 		    	default:
 		    		return badRequest("Request source not expected value. Should be either destination or project.");
 	    	}
@@ -107,15 +101,12 @@ public class SharingPartnerships extends AuditedController {
 
 		DynamicForm requestData = Form.form().bindFromRequest();
 
-    	long destinationId = Long.parseLong(requestData.get("destinationId"));
-    	long projectId = Long.parseLong(requestData.get("projectId"));
-
-    	Destination destination = Destination.FIND.byId(destinationId);
+    	Destination destination = Destination.FIND.byId(Long.parseLong(requestData.get("destinationId")));
     	if(destination == null) {
     		return notFound(DESTINATION_NOT_FOUND);
     	}
 
-    	OutboundProject project = OutboundProject.FIND.byId(projectId);
+    	OutboundProject project = OutboundProject.FIND.byId(Long.parseLong(requestData.get("projectId")));
     	if(project == null) {
     		return notFound(PROJECT_NOT_FOUND);
     	}
@@ -172,8 +163,8 @@ public class SharingPartnerships extends AuditedController {
 
 	private Result createFromProject(DynamicForm requestData,
 			Map<String, String[]> requestBody) {
-		long selectedProjectId = Long.parseLong(requestData.get("projectId"));
-		OutboundProject project = OutboundProject.FIND.byId(selectedProjectId);
+
+		OutboundProject project = OutboundProject.FIND.byId(Long.parseLong(requestData.get("projectId")));
 		if(project == null) {
 			return notFound(PROJECT_NOT_FOUND);
 		}
@@ -191,8 +182,8 @@ public class SharingPartnerships extends AuditedController {
 
 	private Result createFromDestination(DynamicForm requestData,
 			Map<String, String[]> requestBody) {
-		long selectedDestinationId = Long.parseLong(requestData.get("destinationId"));
-		Destination destination = Destination.FIND.byId(selectedDestinationId);
+
+		Destination destination = Destination.FIND.byId(Long.parseLong(requestData.get("destinationId")));
 		if(destination == null) {
 			return notFound(DESTINATION_NOT_FOUND);
 		}
