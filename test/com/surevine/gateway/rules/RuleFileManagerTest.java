@@ -138,7 +138,7 @@ public class RuleFileManagerTest {
 	@Test
 	public void testLoadDestinationExportRules() {
 
-		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
+		Destination destination = Destination.FIND.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
 
 		Path destinationRuleFileTemplatePath = Paths.get(RuleFileManager.DESTINATION_TEMPLATE_RULE_FILE);
 
@@ -163,7 +163,7 @@ public class RuleFileManagerTest {
 	@Test
 	public void testUpdateDestinationExportRules() {
 
-		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
+		Destination destination = Destination.FIND.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
 
 		try {
 			fixture.updateDestinationRuleFile(destination, TEST_UPDATED_RULE_FILE_CONTENT);

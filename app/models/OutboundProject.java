@@ -66,12 +66,7 @@ public class OutboundProject extends Model {
     /**
      * Generic query helper for entity Project with id Long
      */
-    public static final Model.Finder<Long,OutboundProject> find = new Model.Finder<Long,OutboundProject>(Long.class, OutboundProject.class);
-
-    /**
-     * Service facade for interaction with SCM federator component
-     */
-    public static final SCMFederatorServiceFacade scmFederator = SCMFederatorServiceFacade.getInstance();
+    public static final Model.Finder<Long,OutboundProject> FIND = new Model.Finder<Long,OutboundProject>(Long.class, OutboundProject.class);
 
     /**
      * List of all projects, used by scala helper in templates (to populate select options)
@@ -80,7 +75,7 @@ public class OutboundProject extends Model {
     public static List<OutboundProject> allProjectShareOptions(Destination destination) {
     	List<OutboundProject> unsharedProjects = new ArrayList<OutboundProject>();
 
-    	List<OutboundProject> allProjects = find.all();
+    	List<OutboundProject> allProjects = FIND.all();
 
     	for(OutboundProject project : allProjects) {
     		if(!destination.projects.contains(project)) {
@@ -114,7 +109,7 @@ public class OutboundProject extends Model {
     		this.destinations.add(destination);
     		this.update();
 
-        	scmFederator.distribute(destination.id.toString(), this.projectKey, this.repositorySlug);
+    		SCMFederatorServiceFacade.getInstance().distribute(destination.id.toString(), this.projectKey, this.repositorySlug);
     	}
     }
 
@@ -127,7 +122,7 @@ public class OutboundProject extends Model {
 
     	List<ValidationError> errors = new ArrayList<ValidationError>();
 
-    	OutboundProject existingProject = find.where()
+    	OutboundProject existingProject = FIND.where()
     									.eq("projectKey", projectKey)
     									.eq("repositorySlug", repositorySlug)
     									.not(Expr.eq("id", id))

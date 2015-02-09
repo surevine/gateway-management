@@ -41,7 +41,7 @@ public class CreateDestinationsControllerTest extends DestinationTest {
 		// Expect 303 as implementation redirects to 'view' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
 
-		Destination destination = Destination.find.where()
+		Destination destination = Destination.FIND.where()
 													.eq("name", TEST_NEW_DESTINATION_NAME)
 													.eq("url", TEST_NEW_DESTINATION_URL)
 													.findUnique();

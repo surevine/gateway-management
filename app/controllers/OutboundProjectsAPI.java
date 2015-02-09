@@ -23,8 +23,8 @@ public class OutboundProjectsAPI extends Controller {
 	 * @return
 	 */
     public Result list() {
-    	List<Destination> destinations = Destination.find.all();
-    	List<OutboundProject> projects = OutboundProject.find.where().in("destinations", destinations).findList();
+    	List<Destination> destinations = Destination.FIND.all();
+    	List<OutboundProject> projects = OutboundProject.FIND.where().in("destinations", destinations).findList();
     	return ok(Json.toJson(projects));
     }
 
@@ -35,7 +35,7 @@ public class OutboundProjectsAPI extends Controller {
      * @return
      */
     public Result view(Long id) {
-    	OutboundProject project = OutboundProject.find.byId(id);
+    	OutboundProject project = OutboundProject.FIND.byId(id);
     	if(project == null) {
     		return notFound("Project not found.");
     	}

@@ -93,8 +93,8 @@ public class ResendRepoPartnershipsControllerTest {
 
 		SharingPartnerships.setSCMFederator(mockSCMService);
 
-		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
-		OutboundProject project = OutboundProject.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
+		Destination destination = Destination.FIND.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
+		OutboundProject project = OutboundProject.FIND.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
 
 		Result result = postResend(destination.id, project.id);
 
@@ -105,8 +105,8 @@ public class ResendRepoPartnershipsControllerTest {
 	@Test
 	public void testResendRepoFederatorDown() {
 
-		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
-		OutboundProject project = OutboundProject.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
+		Destination destination = Destination.FIND.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
+		OutboundProject project = OutboundProject.FIND.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
 
 		Result result = postResend(destination.id, project.id);
 
@@ -116,7 +116,7 @@ public class ResendRepoPartnershipsControllerTest {
 
 	@Test
 	public void testResendRepoNonExistingProject() {
-		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
+		Destination destination = Destination.FIND.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
 
 		Result result = postResend(destination.id, NON_EXISTING_PROJECT_ID);
 
@@ -125,7 +125,7 @@ public class ResendRepoPartnershipsControllerTest {
 
 	@Test
 	public void testResendRepoNonExistingDestination() {
-		OutboundProject project = OutboundProject.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
+		OutboundProject project = OutboundProject.FIND.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
 
 		Result result = postResend(NON_EXISTING_DESTINATION_ID, project.id);
 
@@ -134,8 +134,8 @@ public class ResendRepoPartnershipsControllerTest {
 
 	@Test
 	public void testResendUnsharedProject() {
-		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
-		OutboundProject project = OutboundProject.find.byId(ProjectTest.TEST_NEW_PROJECT_ID);
+		Destination destination = Destination.FIND.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
+		OutboundProject project = OutboundProject.FIND.byId(ProjectTest.TEST_NEW_PROJECT_ID);
 
 		Result result = postResend(destination.id, project.id);
 

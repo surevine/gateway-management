@@ -65,7 +65,7 @@ public class UpdateProjectsControllerTest extends ProjectTest {
 		// Expect 303 as implementation redirects to 'view' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
 
-		OutboundProject project = OutboundProject.find.byId(TEST_EXISTING_PROJECT_ID);
+		OutboundProject project = OutboundProject.FIND.byId(TEST_EXISTING_PROJECT_ID);
 		assertThat(project.displayName).isEqualTo(TEST_NEW_PROJECT_DISPLAY_NAME);
 		assertThat(project.projectKey).isEqualTo(TEST_NEW_PROJECT_PROJECT_KEY);
 		assertThat(project.repositorySlug).isEqualTo(TEST_NEW_PROJECT_SLUG_REPO);

@@ -22,7 +22,7 @@ public class InboundProjectsAPI extends Controller {
 	 * @return
 	 */
 	public Result list() {
-		List<InboundProject> projects = InboundProject.find.all();
+		List<InboundProject> projects = InboundProject.FIND.all();
     	return ok(Json.toJson(projects));
 	}
 

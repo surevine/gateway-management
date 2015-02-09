@@ -64,12 +64,7 @@ public class Destination extends Model {
     /**
      * Generic query helper for entity Destination with id Long
      */
-    public static final Model.Finder<Long,Destination> find = new Model.Finder<Long,Destination>(Long.class, Destination.class);
-
-    /**
-     * Service facade for interaction with SCM federator component
-     */
-    public static final SCMFederatorServiceFacade scmFederator = SCMFederatorServiceFacade.getInstance();
+    public static final Model.Finder<Long,Destination> FIND = new Model.Finder<Long,Destination>(Long.class, Destination.class);
 
     /**
      * List of all destinations, used by scala helper in templates (to populate select options)
@@ -79,7 +74,7 @@ public class Destination extends Model {
     public static List<Destination> allDestinationShareOptions(OutboundProject project) {
     	List<Destination> unsharedDestinations = new ArrayList<Destination>();
 
-    	List<Destination> allDestinations = find.all();
+    	List<Destination> allDestinations = FIND.all();
 
     	for(Destination destination : allDestinations) {
     		if(!project.destinations.contains(destination)) {
@@ -132,7 +127,7 @@ public class Destination extends Model {
         	this.projects.add(project);
         	this.update();
 
-        	scmFederator.distribute(this.id.toString(), project.projectKey, project.repositorySlug);
+        	SCMFederatorServiceFacade.getInstance().distribute(this.id.toString(), project.projectKey, project.repositorySlug);
     	}
     }
 
@@ -183,7 +178,7 @@ public class Destination extends Model {
     	}
 
     	// Ensure URL unique
-    	Destination existingDestination = find.where()
+    	Destination existingDestination = FIND.where()
     											.eq("url", url)
     											.not(Expr.eq("id", id))
     											.findUnique();

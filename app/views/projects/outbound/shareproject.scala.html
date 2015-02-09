@@ -4,7 +4,7 @@
 
 @implicitFieldConstructor = @{ FieldConstructor(utils.twitterBootstrapInput.render) }
 
-@destinationCount = @{ Destination.find.all().size() }
+@destinationCount = @{ Destination.FIND.all().size() }
 
 @destinations = @{ Destination.allDestinationShareOptions(project) }
 

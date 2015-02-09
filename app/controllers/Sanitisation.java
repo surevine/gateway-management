@@ -48,7 +48,7 @@ public class Sanitisation extends Controller {
 		}
 
 		String projectSlug = projectKey + "/" + repoSlug;
-		OutboundProject project = OutboundProject.find.where()
+		OutboundProject project = OutboundProject.FIND.where()
 										.ieq("projectKey", projectKey)
 										.ieq("repositorySlug", repoSlug)
 										.findUnique();

@@ -42,7 +42,7 @@ public class CreateProjectsControllerTest extends ProjectTest {
 		// Expect 303 as implementation redirects to 'view' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
 
-		OutboundProject project = OutboundProject.find.where()
+		OutboundProject project = OutboundProject.FIND.where()
 											.eq("displayName", TEST_NEW_PROJECT_DISPLAY_NAME)
 											.eq("projectKey", TEST_EXISTING_PROJECT_PROJECT_KEY)
 											.eq("repositorySlug", TEST_EXISTING_PROJECT_SLUG_REPO)

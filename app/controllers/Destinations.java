@@ -28,7 +28,7 @@ public class Destinations extends AuditedController {
 	@Security.Authenticated(AppAuthenticator.class)
     public Result list() {
 
-    	List<Destination> destinations = Destination.find.all();
+    	List<Destination> destinations = Destination.FIND.all();
 
         return ok(views.html.destinations.list.render(destinations));
 
@@ -43,7 +43,7 @@ public class Destinations extends AuditedController {
 	@Security.Authenticated(AppAuthenticator.class)
     public Result view(Long id) {
 
-    	Destination destination = Destination.find.byId(id);
+    	Destination destination = Destination.FIND.byId(id);
 
     	if(destination == null) {
     		return notFound();
@@ -89,7 +89,7 @@ public class Destinations extends AuditedController {
 	@Security.Authenticated(AppAuthenticator.class)
     public Result edit(Long id) {
 
-    	Destination destination = Destination.find.byId(id);
+    	Destination destination = Destination.FIND.byId(id);
 
     	if(destination == null) {
     		return notFound(DESTINATION_NOT_FOUND);
@@ -133,7 +133,7 @@ public class Destinations extends AuditedController {
 	@Security.Authenticated(AppAuthenticator.class)
     public Result update(Long id) {
 
-    	Destination originalDestination = Destination.find.byId(id);
+    	Destination originalDestination = Destination.FIND.byId(id);
     	if(originalDestination == null) {
     		return notFound(DESTINATION_NOT_FOUND);
     	}
@@ -163,7 +163,7 @@ public class Destinations extends AuditedController {
 	@Security.Authenticated(AppAuthenticator.class)
     public Result delete(Long id) {
 
-    	Destination destination = Destination.find.byId(id);
+    	Destination destination = Destination.FIND.byId(id);
     	if(destination == null) {
     		return notFound(DESTINATION_NOT_FOUND);
     	}
@@ -186,7 +186,7 @@ public class Destinations extends AuditedController {
 	@Security.Authenticated(AppAuthenticator.class)
     public Result shareProjectPage(Long destinationId) {
 
-    	Destination destination = Destination.find.byId(destinationId);
+    	Destination destination = Destination.FIND.byId(destinationId);
 
     	if(destination == null) {
     		return notFound(DESTINATION_NOT_FOUND);
@@ -201,7 +201,7 @@ public class Destinations extends AuditedController {
 	@Security.Authenticated(AppAuthenticator.class)
     public Result editRules(Long destinationId) {
 
-    	Destination destination = Destination.find.byId(destinationId);
+    	Destination destination = Destination.FIND.byId(destinationId);
 
     	if(destination == null) {
     		return notFound(DESTINATION_NOT_FOUND);
@@ -226,7 +226,7 @@ public class Destinations extends AuditedController {
     public Result updateRules(Long destinationId) {
 
     	DynamicForm requestData = Form.form().bindFromRequest();
-    	Destination destination = Destination.find.byId(destinationId);
+    	Destination destination = Destination.FIND.byId(destinationId);
     	if(destination == null) {
     		return notFound(DESTINATION_NOT_FOUND);
     	}

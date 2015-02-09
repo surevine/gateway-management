@@ -17,7 +17,7 @@ public class InboundProjects extends Controller {
 	 */
 	@Security.Authenticated(AppAuthenticator.class)
 	public Result list() {
-		List<InboundProject> projects = InboundProject.find.all();
+		List<InboundProject> projects = InboundProject.FIND.all();
         return ok(views.html.projects.inbound.list.render(projects));
 	}
 
@@ -61,7 +61,7 @@ public class InboundProjects extends Controller {
 	@Security.Authenticated(AppAuthenticator.class)
 	public Result edit(Long id) {
 
-		InboundProject project = InboundProject.find.byId(id);
+		InboundProject project = InboundProject.FIND.byId(id);
 
     	if(project == null) {
     		return notFound("Inbound project not found.");
@@ -80,7 +80,7 @@ public class InboundProjects extends Controller {
      */
 	@Security.Authenticated(AppAuthenticator.class)
 	public Result update(Long id) {
-		InboundProject originalProject = InboundProject.find.byId(id);
+		InboundProject originalProject = InboundProject.FIND.byId(id);
     	if(originalProject == null) {
     		return notFound("Inbound project not found.");
     	}
@@ -105,7 +105,7 @@ public class InboundProjects extends Controller {
      */
 	@Security.Authenticated(AppAuthenticator.class)
 	public Result delete(Long id) {
-		InboundProject project = InboundProject.find.byId(id);
+		InboundProject project = InboundProject.FIND.byId(id);
     	if(project == null) {
     		return notFound("Inbound project not found.");
     	}

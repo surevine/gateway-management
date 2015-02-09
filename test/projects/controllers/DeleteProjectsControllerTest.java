@@ -40,7 +40,7 @@ public class DeleteProjectsControllerTest extends ProjectTest {
 		// Expect 303 as implementation redirects to 'list' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
 
-		OutboundProject project = OutboundProject.find.byId(TEST_EXISTING_PROJECT_ID);
+		OutboundProject project = OutboundProject.FIND.byId(TEST_EXISTING_PROJECT_ID);
 		assertThat(project).isNull();
 	}
 

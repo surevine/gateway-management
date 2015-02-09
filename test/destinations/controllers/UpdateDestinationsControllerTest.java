@@ -63,7 +63,7 @@ public class UpdateDestinationsControllerTest extends DestinationTest {
 		// Expect 303 as implementation redirects to 'view' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
 
-		Destination destination = Destination.find.byId(TEST_EXISTING_DESTINATION_ID);
+		Destination destination = Destination.FIND.byId(TEST_EXISTING_DESTINATION_ID);
 		assertThat(destination.name).isEqualTo(TEST_NEW_DESITNATION_NAME);
 		assertThat(destination.url).isEqualTo(TEST_NEW_DESTINATION_URL);
 	}

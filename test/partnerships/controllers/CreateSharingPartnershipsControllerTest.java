@@ -66,7 +66,7 @@ public class CreateSharingPartnershipsControllerTest {
 
 	@Test
 	public void testAddProjectsToDestinationPage() {
-		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
+		Destination destination = Destination.FIND.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
 
 		FakeRequest request = new FakeRequest(GET, "/destinations/" + destination.id + "/shareprojects");
 		Result result = callAction(controllers.routes.ref.Destinations.shareProjectPage(destination.id), request);
@@ -80,7 +80,7 @@ public class CreateSharingPartnershipsControllerTest {
 
 	@Test
 	public void testAddDestinationsToProjectPage() {
-		OutboundProject project = OutboundProject.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
+		OutboundProject project = OutboundProject.FIND.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
 
 		FakeRequest request = new FakeRequest(GET, "/projects/" + project.id + "/shareproject");
 		Result result = callAction(controllers.routes.ref.OutboundProjects.shareProjectPage(project.id), request);
@@ -95,8 +95,8 @@ public class CreateSharingPartnershipsControllerTest {
 	@Test
 	public void testCreateSharingPartnershipFromDestination() {
 
-		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
-		OutboundProject project = OutboundProject.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
+		Destination destination = Destination.FIND.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
+		OutboundProject project = OutboundProject.FIND.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
 
 		Result result = postCreateSharingPartnershipFromDestination(destination.id, project.id);
 
@@ -109,8 +109,8 @@ public class CreateSharingPartnershipsControllerTest {
 	@Test
 	public void testCreateSharingPartnershipFromProject() {
 
-		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
-		OutboundProject project = OutboundProject.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
+		Destination destination = Destination.FIND.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
+		OutboundProject project = OutboundProject.FIND.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
 
 		// Tidy data from previous tests if required
 		if(project.destinations.contains(destination)) {
@@ -123,7 +123,7 @@ public class CreateSharingPartnershipsControllerTest {
 		// Expect 303 as implementation redirects to 'view' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
 
-		OutboundProject updatedProject = OutboundProject.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
+		OutboundProject updatedProject = OutboundProject.FIND.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
 		assertThat(updatedProject.destinations.contains(destination)).isEqualTo(true);
 	}
 

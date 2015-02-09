@@ -23,7 +23,7 @@ public class OutboundProjects extends AuditedController {
 	@Security.Authenticated(AppAuthenticator.class)
 	public Result list() {
 
-		List<OutboundProject> projects = OutboundProject.find.all();
+		List<OutboundProject> projects = OutboundProject.FIND.all();
 
         return ok(views.html.projects.outbound.list.render(projects));
 
@@ -38,7 +38,7 @@ public class OutboundProjects extends AuditedController {
 	@Security.Authenticated(AppAuthenticator.class)
     public Result view(Long id) {
 
-    	OutboundProject project = OutboundProject.find.byId(id);
+    	OutboundProject project = OutboundProject.FIND.byId(id);
 
     	if(project == null) {
     		return notFound("Outbound project not found.");
@@ -96,7 +96,7 @@ public class OutboundProjects extends AuditedController {
 	@Security.Authenticated(AppAuthenticator.class)
     public Result edit(Long id) {
 
-    	OutboundProject project = OutboundProject.find.byId(id);
+    	OutboundProject project = OutboundProject.FIND.byId(id);
 
     	if(project == null) {
     		return notFound("Outbound project not found.");
@@ -117,7 +117,7 @@ public class OutboundProjects extends AuditedController {
 	@Security.Authenticated(AppAuthenticator.class)
     public Result update(Long id) {
 
-    	OutboundProject originalProject = OutboundProject.find.byId(id);
+    	OutboundProject originalProject = OutboundProject.FIND.byId(id);
     	if(originalProject == null) {
     		return notFound("Outbound project not found.");
     	}
@@ -147,7 +147,7 @@ public class OutboundProjects extends AuditedController {
 	@Security.Authenticated(AppAuthenticator.class)
     public Result delete(Long id) {
 
-    	OutboundProject project = OutboundProject.find.byId(id);
+    	OutboundProject project = OutboundProject.FIND.byId(id);
     	if(project == null) {
     		return notFound("Outbound project not found.");
     	}
@@ -170,7 +170,7 @@ public class OutboundProjects extends AuditedController {
 	@Security.Authenticated(AppAuthenticator.class)
     public Result shareProjectPage(Long projectId) {
 
-    	OutboundProject project = OutboundProject.find.byId(projectId);
+    	OutboundProject project = OutboundProject.FIND.byId(projectId);
 
     	if(project == null) {
     		return notFound("Outbound project not found.");

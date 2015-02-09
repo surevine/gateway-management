@@ -73,8 +73,8 @@ public class DeleteSharingPartnershipsControllerTest {
 	@Test
 	public void testDeleteSharingPartnershipFromDestination() {
 
-		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
-		OutboundProject project = OutboundProject.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
+		Destination destination = Destination.FIND.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
+		OutboundProject project = OutboundProject.FIND.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
 		destination.addProject(project);
 		destination.update();
 
@@ -83,7 +83,7 @@ public class DeleteSharingPartnershipsControllerTest {
 		// Expect 303 as implementation redirects to 'view' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
 
-		Destination updatedDestination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
+		Destination updatedDestination = Destination.FIND.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
 		assertThat(updatedDestination.projects.contains(project)).isEqualTo(false);
 
 	}
@@ -91,8 +91,8 @@ public class DeleteSharingPartnershipsControllerTest {
 	@Test
 	public void testDeleteSharingPartnershipFromProject() {
 
-		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
-		OutboundProject project = OutboundProject.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
+		Destination destination = Destination.FIND.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
+		OutboundProject project = OutboundProject.FIND.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
 		destination.addProject(project);
 		destination.update();
 
@@ -101,15 +101,15 @@ public class DeleteSharingPartnershipsControllerTest {
 		// Expect 303 as implementation redirects to 'view' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
 
-		OutboundProject updatedProject = OutboundProject.find.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
+		OutboundProject updatedProject = OutboundProject.FIND.byId(ProjectTest.TEST_EXISTING_PROJECT_ID);
 		assertThat(updatedProject.destinations.contains(destination)).isEqualTo(false);
 	}
 
 	@Test
 	public void testDeleteNonExistingSharingPartnershipFromDestination() {
 
-		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
-		OutboundProject project = OutboundProject.find.byId(ProjectTest.TEST_NEW_PROJECT_ID);
+		Destination destination = Destination.FIND.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
+		OutboundProject project = OutboundProject.FIND.byId(ProjectTest.TEST_NEW_PROJECT_ID);
 
 		Result result = postDeleteSharingPartnershipFromDestination(destination.id, project.id);
 
@@ -119,8 +119,8 @@ public class DeleteSharingPartnershipsControllerTest {
 	@Test
 	public void testDeleteNonExistingSharingPartnershipFromProject() {
 
-		Destination destination = Destination.find.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
-		OutboundProject project = OutboundProject.find.byId(ProjectTest.TEST_NEW_PROJECT_ID);
+		Destination destination = Destination.FIND.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
+		OutboundProject project = OutboundProject.FIND.byId(ProjectTest.TEST_NEW_PROJECT_ID);
 
 		Result result = postDeleteSharingPartnershipFromProject(project.id, destination.id);
 

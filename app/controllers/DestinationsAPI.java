@@ -22,7 +22,7 @@ public class DestinationsAPI extends Controller {
 	 */
     public Result list() {
 
-    	List<Destination> destinations = Destination.find.all();
+    	List<Destination> destinations = Destination.FIND.all();
     	return ok(Json.toJson(destinations));
 
     }
