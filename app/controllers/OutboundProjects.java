@@ -22,11 +22,8 @@ public class OutboundProjects extends AuditedController {
 	 */
 	@Security.Authenticated(AppAuthenticator.class)
 	public Result list() {
-
 		List<OutboundProject> projects = OutboundProject.FIND.all();
-
         return ok(views.html.projects.outbound.list.render(projects));
-
 	}
 
     /**
@@ -37,15 +34,11 @@ public class OutboundProjects extends AuditedController {
      */
 	@Security.Authenticated(AppAuthenticator.class)
     public Result view(Long id) {
-
     	OutboundProject project = OutboundProject.FIND.byId(id);
-
     	if(project == null) {
     		return notFound("Outbound project not found.");
     	}
-
     	return ok(views.html.projects.outbound.view.render(project));
-
     }
 
     /**
@@ -55,11 +48,8 @@ public class OutboundProjects extends AuditedController {
      */
 	@Security.Authenticated(AppAuthenticator.class)
     public Result add() {
-
     	Form<OutboundProject> projectForm = Form.form(OutboundProject.class);
-
     	return ok(views.html.projects.outbound.add.render(projectForm));
-
     }
 
     /**

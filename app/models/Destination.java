@@ -61,6 +61,13 @@ public class Destination extends Model {
 	@JsonManagedReference
 	public List<OutboundProject> projects = new ArrayList<OutboundProject>();
 
+	/**
+	 * Issue projects configured to be shared with destination
+	 */
+	@ManyToMany(cascade=CascadeType.ALL)
+	@JsonManagedReference
+	public List<OutboundIssueProject> issueProjects = new ArrayList<OutboundIssueProject>();
+
     /**
      * Generic query helper for entity Destination with id Long
      */

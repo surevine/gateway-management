@@ -81,6 +81,29 @@ POST	/inbound-projects/edit/:id		@controllers.InboundProjects.update(id: Long)
 # Delete project
 POST	/inbound-projects/delete/:id	@controllers.InboundProjects.delete(id: Long)
 
+
+#
+# Outbound IssueProjects
+#
+
+# Projects list
+GET		/issue-projects						@controllers.OutboundIssueProjects.list()
+
+# View project
+GET		/issue-projects/view/:id			@controllers.OutboundIssueProjects.view(id: Long)
+
+# Add a project
+GET		/issue-projects/add					@controllers.OutboundIssueProjects.add()
+POST	/issue-projects/add					@controllers.OutboundIssueProjects.create()
+
+# Edit existing project
+GET		/issue-projects/edit/:id			@controllers.OutboundIssueProjects.edit(id: Long)
+POST	/issue-projects/edit/:id			@controllers.OutboundIssueProjects.update(id: Long)
+
+# Delete project
+POST	/issue-projects/delete/:id			@controllers.OutboundIssueProjects.delete(id: Long)
+
+
 #
 # Sharing Partnerships
 #
