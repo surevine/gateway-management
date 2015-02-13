@@ -110,6 +110,26 @@ GET		/issue-projects/:id/shareproject		@controllers.OutboundIssueProjects.shareP
 
 
 #
+# Inbound (Whitelisted) issue projects
+#
+
+# Projects list
+GET		/inbound-issue-projects				@controllers.InboundIssueProjects.list()
+
+# Add a project
+GET		/inbound-issue-projects/add			@controllers.InboundIssueProjects.add()
+POST	/inbound-issue-projects/add			@controllers.InboundIssueProjects.create()
+
+# Edit existing project
+GET		/inbound-issue-projects/edit/:id	@controllers.InboundIssueProjects.edit(id: Long)
+POST	/inbound-issue-projects/edit/:id	@controllers.InboundIssueProjects.update(id: Long)
+
+# Delete project
+POST	/inbound-issue-projects/delete/:id	@controllers.InboundIssueProjects.delete(id: Long)
+
+
+
+#
 # Sharing Partnerships
 #
 

@@ -11,6 +11,13 @@ create table destination (
   constraint pk_destination primary key (id))
 ;
 
+create table inbound_issue_project (
+  id                        bigint not null,
+  source_organisation       varchar(255),
+  project_key               varchar(255),
+  constraint pk_inbound_issue_project primary key (id))
+;
+
 create table inbound_project (
   id                        bigint not null,
   source_organisation       varchar(255),
@@ -49,6 +56,8 @@ create table destination_outbound_issue_proje (
 ;
 create sequence destination_seq;
 
+create sequence inbound_issue_project_seq;
+
 create sequence inbound_project_seq;
 
 create sequence outbound_issue_project_seq;
@@ -74,6 +83,8 @@ drop table if exists destination_outbound_project cascade;
 
 drop table if exists destination_outbound_issue_proje cascade;
 
+drop table if exists inbound_issue_project cascade;
+
 drop table if exists inbound_project cascade;
 
 drop table if exists outbound_issue_project cascade;
@@ -81,6 +92,8 @@ drop table if exists outbound_issue_project cascade;
 drop table if exists outbound_project cascade;
 
 drop sequence if exists destination_seq;
+
+drop sequence if exists inbound_issue_project_seq;
 
 drop sequence if exists inbound_project_seq;
 
