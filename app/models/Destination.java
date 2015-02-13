@@ -14,6 +14,8 @@ import javax.persistence.ManyToMany;
 
 import com.avaje.ebean.Expr;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.surevine.gateway.federation.FederatorServiceException;
+import com.surevine.gateway.federation.issuetracking.IssueTrackingFederatorServiceFacade;
 import com.surevine.gateway.rules.RuleFileManager;
 import com.surevine.gateway.scm.service.SCMFederatorServiceFacade;
 import com.typesafe.config.ConfigFactory;
@@ -162,7 +164,13 @@ public class Destination extends Model {
         	this.issueProjects.add(project);
         	this.update();
 
-        	// TODO federate
+    		try {
+				IssueTrackingFederatorServiceFacade.getInstance().distribute(this.id.toString(), project.projectKey);
+			} catch (FederatorServiceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
     	}
     }
 

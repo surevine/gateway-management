@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.surevine.gateway.federation.FederatorServiceException;
+import com.surevine.gateway.federation.issuetracking.IssueTrackingFederatorServiceFacade;
 
 import play.data.validation.Constraints.MaxLength;
 import play.data.validation.Constraints.Required;
@@ -90,7 +92,13 @@ public class OutboundIssueProject extends Model {
     		this.destinations.add(destination);
     		this.update();
 
-    		// TODO distribute via federator
+    		try {
+				IssueTrackingFederatorServiceFacade.getInstance().distribute(destination.id.toString(), this.projectKey);
+			} catch (FederatorServiceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
     	}
     }
 

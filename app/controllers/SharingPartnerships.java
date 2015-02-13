@@ -8,6 +8,8 @@ import com.surevine.gateway.auditing.Audit;
 import com.surevine.gateway.auditing.action.ResendRepositoryAction;
 import com.surevine.gateway.auditing.action.ShareRepositoryAction;
 import com.surevine.gateway.auditing.action.UnshareRepositoryAction;
+import com.surevine.gateway.federation.FederatorServiceException;
+import com.surevine.gateway.federation.issuetracking.IssueTrackingFederatorServiceFacade;
 import com.surevine.gateway.scm.service.SCMFederatorServiceException;
 import com.surevine.gateway.scm.service.SCMFederatorServiceFacade;
 
@@ -29,6 +31,11 @@ public class SharingPartnerships extends AuditedController {
      * Service facade for interaction with SCM federator component
      */
     private static SCMFederatorServiceFacade scmFederator = SCMFederatorServiceFacade.getInstance();
+
+    /**
+     * Service facade for interation with Issue federator component
+     */
+    private static IssueTrackingFederatorServiceFacade issueFederator = IssueTrackingFederatorServiceFacade.getInstance();
 
 	/**
 	 * Share source code project with a destination (and vice-versa)
@@ -196,7 +203,13 @@ public class SharingPartnerships extends AuditedController {
     		return notFound("Project not shared with destination.");
     	}
 
-        // TODO send to issue federation service
+    	try {
+        	issueFederator.resend(destination.id.toString(), project.projectKey);
+    	} catch(FederatorServiceException e) {
+    		String errorMessage = "Failed to resend issue repository to destination.";
+    		Logger.error(errorMessage, e);
+    		return internalServerError(errorMessage);
+    	}
 
     	// TODO audit action
 
