@@ -103,6 +103,9 @@ POST	/issue-projects/edit/:id			@controllers.OutboundIssueProjects.update(id: Lo
 # Delete project
 POST	/issue-projects/delete/:id			@controllers.OutboundIssueProjects.delete(id: Long)
 
+# Share project with destinations
+GET		/issue-projects/:id/shareproject		@controllers.OutboundIssueProjects.shareProjectPage(id: Long)
+
 
 #
 # Sharing Partnerships
@@ -113,9 +116,11 @@ POST	/partnerships/create			@controllers.SharingPartnerships.create()
 
 # Remove existing sharing partnership
 POST	/partnerships/delete			@controllers.SharingPartnerships.delete()
+POST	/partnerships/delete-issue		@controllers.SharingPartnerships.deleteIssue()
 
 # Ad-hoc resend repo
 POST	/partnerships/resend			@controllers.SharingPartnerships.resend()
+POST	/partnerships/resend-issue		@controllers.SharingPartnerships.resendIssue()
 
 
 #

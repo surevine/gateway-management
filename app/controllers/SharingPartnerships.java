@@ -12,6 +12,7 @@ import com.surevine.gateway.scm.service.SCMFederatorServiceException;
 import com.surevine.gateway.scm.service.SCMFederatorServiceFacade;
 
 import models.Destination;
+import models.OutboundIssueProject;
 import models.OutboundProject;
 import play.Logger;
 import play.data.DynamicForm;
@@ -46,6 +47,8 @@ public class SharingPartnerships extends AuditedController {
 				return createFromDestination(requestData, requestBody);
 	    	case "project":
 	    		return createFromProject(requestData, requestBody);
+	    	case "issueProject":
+	    		return createFromIssueProject(requestData, requestBody);
 	    	default:
 	    		return badRequest("Request source not expected value. Should be either destination or project.");
 		}
@@ -93,6 +96,45 @@ public class SharingPartnerships extends AuditedController {
 	}
 
 	/**
+	 * Unshare a source code project with a destination (or vice-versa)
+	 *
+	 * @return
+	 */
+	@Security.Authenticated(AppAuthenticator.class)
+	public Result deleteIssue() {
+
+		DynamicForm requestData = Form.form().bindFromRequest();
+
+    	Destination destination = Destination.FIND.byId(Long.parseLong(requestData.get("destinationId")));
+    	if(destination == null) {
+    		return notFound(DESTINATION_NOT_FOUND);
+    	}
+
+    	OutboundIssueProject project = OutboundIssueProject.FIND.byId(Long.parseLong(requestData.get("projectId")));
+    	if(project == null) {
+    		return notFound(PROJECT_NOT_FOUND);
+    	}
+
+    	if(destination.issueProjects.contains(project)) {
+
+    		destination.removeIssueProject(project);
+
+    		// TODO audit
+
+	    	switch(requestData.get("source")) {
+		    	case "destination":
+		    		return redirect(routes.Destinations.view(destination.id));
+		    	case "issueProject":
+		    		return redirect(routes.OutboundIssueProjects.view(project.id));
+		    	default:
+		    		return badRequest("Request source not expected value. Should be either destination or issueProject.");
+	    	}
+    	}
+
+    	return notFound("Sharing partnership not found.");
+	}
+
+	/**
 	 * Triggers ad-hoc re-send of repository to destination across gateway
 	 * @return
 	 */
@@ -130,6 +172,36 @@ public class SharingPartnerships extends AuditedController {
 	}
 
 	/**
+	 * Triggers ad-hoc re-send of repository to destination across gateway
+	 * @return
+	 */
+	@Security.Authenticated(AppAuthenticator.class)
+	public Result resendIssue() {
+
+		DynamicForm requestData = Form.form().bindFromRequest();
+
+    	Destination destination = Destination.FIND.byId(Long.parseLong(requestData.get("destinationId")));
+    	if(destination == null) {
+    		return notFound(DESTINATION_NOT_FOUND);
+    	}
+
+    	OutboundIssueProject project = OutboundIssueProject.FIND.byId(Long.parseLong(requestData.get("projectId")));
+    	if(project == null) {
+    		return notFound(PROJECT_NOT_FOUND);
+    	}
+
+    	if(!destination.issueProjects.contains(project)) {
+    		return notFound("Project not shared with destination.");
+    	}
+
+        // TODO send to issue federation service
+
+    	// TODO audit action
+
+        return ok("Resent project to destination.");
+	}
+
+	/**
 	 * Shares projects with destination
 	 * @param destination Destination to share projects with
 	 * @param projectIds array of Project ids to share
@@ -161,6 +233,21 @@ public class SharingPartnerships extends AuditedController {
     	}
 	}
 
+	/**
+	 * Shares destinations with project
+	 * @param project Project to share
+	 * @param destinationIds array of Destination ids to share
+	 */
+	private void addDestinationsToIssueProject(OutboundIssueProject project, String[] destinationIds) {
+    	List<String> selectedDestinations = Arrays.asList(destinationIds);
+    	List<Destination> destinations = Destination.FIND.where().idIn(selectedDestinations).findList();
+
+    	for(Destination destination: destinations) {
+    		project.addDestination(destination);
+    		// TODO audit activity
+    	}
+	}
+
 	private Result createFromProject(DynamicForm requestData,
 			Map<String, String[]> requestBody) {
 
@@ -178,6 +265,25 @@ public class SharingPartnerships extends AuditedController {
 
 		flash("success", "Repository sent to the Gateway to be shared with the destinations.");
 		return redirect(routes.OutboundProjects.view(project.id));
+	}
+
+	private Result createFromIssueProject(DynamicForm requestData,
+			Map<String, String[]> requestBody) {
+
+		OutboundIssueProject project = OutboundIssueProject.FIND.byId(Long.parseLong(requestData.get("projectId")));
+		if(project == null) {
+			return notFound(PROJECT_NOT_FOUND);
+		}
+
+		String[] selectedDestinationsArr = requestBody.get("selectedDestinations");
+		if(selectedDestinationsArr == null) {
+			return redirect(routes.OutboundIssueProjects.view(project.id));
+		}
+
+		addDestinationsToIssueProject(project, selectedDestinationsArr);
+
+		flash("success", "Repository sent to the Gateway to be shared with the destinations.");
+		return redirect(routes.OutboundIssueProjects.view(project.id));
 	}
 
 	private Result createFromDestination(DynamicForm requestData,

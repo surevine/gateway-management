@@ -1,0 +1,80 @@
+@(project: OutboundIssueProject, projectForm: DynamicForm)
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(utils.twitterBootstrapInput.render) }
+
+@destinationCount = @{ Destination.FIND.all().size() }
+
+@destinations = @{ Destination.allDestinationIssueShareOptions(project) }
+
+@main("Share source code repository") {
+
+	<p>Please select the destinations you wish to share the repository '@project.displayName' with:</p>
+
+	@if(destinationCount == 0) {
+
+		<div class="panel panel-warning">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">No destinations</h3>
+		  </div>
+		  <div class="panel-body">
+		    <p>No destinations have been configured. Please <a href="@routes.Destinations.add()">add a destination</a>.</p>
+		  </div>
+		</div>
+
+	} else {
+
+		@if(destinations.isEmpty) {
+
+			<div class="panel panel-warning">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Shared with all destinations</h3>
+			  </div>
+			  <div class="panel-body">
+			    <p>This repository has been shared with all configured destinations. Please <a href="@routes.Destinations.add()">add another destination</a>.</p>
+			  </div>
+			</div>
+
+		} else {
+
+			@form(routes.SharingPartnerships.create(), 'role -> "form") {
+
+				<fieldset>
+
+					<input type="hidden" name="source" value="issueProject" />
+					<input type="hidden" name="projectId" value="@project.id" />
+
+					@for(destination <- destinations) {
+
+						<div class="input-group">
+					      <span class="input-group-addon">
+					        <input type="checkbox" name="selectedDestinations" id="selectedDestinations-@destination.id" value="@destination.id">
+					      </span>
+					      <label for="selectedDestinations-@destination.id" class="form-control">@destination.name <span class="text-muted">@destination.url</span></label>
+					    </div>
+
+					}
+
+				</fieldset>
+
+				<div class="actions">
+		            <input type="submit" value="Share project" data-loading-text="Submitting..." class="btn btn-primary submit">
+		            <a href="@routes.OutboundIssueProjects.view(project.id)" class="btn btn-default">Cancel</a>
+				</div>
+
+			}
+
+			<script type="text/javascript">
+				$( document ).ready(function() {
+					$('.submit').on('click', function () {
+					    $(this).button('loading');
+					});
+				});
+			</script>
+
+		}
+
+	}
+
+}

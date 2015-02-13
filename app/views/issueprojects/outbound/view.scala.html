@@ -24,7 +24,7 @@
 
 	<section>
 		<h4>Shared destinations</h4>
-				<a href="#" class="btn btn-primary btn-sm">Share repository</a>
+				<a href="@routes.OutboundIssueProjects.shareProjectPage(project.id)" class="btn btn-primary btn-sm">Share repository</a>
 
 		<ul class="list-group project-list">
 	    @if(project.destinations.isEmpty) {
@@ -33,8 +33,8 @@
 		    @for(destination <- project.destinations) {
 		    	<li class="list-group-item">
 					@destination.name <span class="text-muted">@destination.url</span>
-					@form(routes.SharingPartnerships.delete()) {
-						<input type="hidden" name="source" value="project" />
+					@form(routes.SharingPartnerships.deleteIssue()) {
+						<input type="hidden" name="source" value="issueProject" />
 						<input type="hidden" name="destinationId" value="@destination.id" />
 						<input type="hidden" name="projectId" value="@project.id" />
 				        <input type="submit" value="Unshare" class="btn btn-danger btn-xs pull-right" />
@@ -50,6 +50,7 @@
 	    </ul>
 	</section>
 
+
 	<script type="text/javascript">
 		$( document ).ready(function() {
 
@@ -59,7 +60,7 @@
 			    var $btn = $(this).button('loading');
 
 				$.ajax({
-					url: "#",
+					url: "@routes.SharingPartnerships.resendIssue()",
 					type: "POST",
 					data: {
 						projectId: $btn.data("project-id"),
@@ -77,5 +78,4 @@
 			});
 		});
 	</script>
-
 }

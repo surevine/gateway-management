@@ -9,6 +9,7 @@ import com.surevine.gateway.auditing.action.UpdateRepositoryAction;
 
 import models.OutboundIssueProject;
 import models.OutboundProject;
+import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -130,5 +131,25 @@ public class OutboundIssueProjects extends AuditedController {
     	flash("success", "Outbound issue project deleted successfully.");
     	return redirect(routes.OutboundIssueProjects.list());
 	}
+
+    /**
+     * Display form page to configure sharing issue project with destinations
+     * @param projectId Id of project
+     * @return
+     */
+	@Security.Authenticated(AppAuthenticator.class)
+    public Result shareProjectPage(Long projectId) {
+
+    	OutboundIssueProject project = OutboundIssueProject.FIND.byId(projectId);
+
+    	if(project == null) {
+    		return notFound("Outbound issue project not found.");
+    	}
+
+    	DynamicForm projectForm = Form.form();
+
+    	return ok(views.html.issueprojects.outbound.shareproject.render(project, projectForm));
+
+    }
 
 }

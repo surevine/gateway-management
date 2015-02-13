@@ -110,6 +110,20 @@ public class Destination extends Model {
     	return unsharedDestinations;
     }
 
+    public static List<Destination> allDestinationIssueShareOptions(OutboundIssueProject project) {
+    	List<Destination> unsharedDestinations = new ArrayList<Destination>();
+
+    	List<Destination> allDestinations = FIND.all();
+
+    	for(Destination destination : allDestinations) {
+    		if(!project.destinations.contains(destination)) {
+    			unsharedDestinations.add(destination);
+    		}
+    	}
+
+    	return unsharedDestinations;
+    }
+
     @Override
     public void save() {
     	super.save();
@@ -146,6 +160,18 @@ public class Destination extends Model {
 	public void removeProject(OutboundProject project) {
 		if(this.projects.contains(project)) {
 			this.projects.remove(project);
+			this.update();
+		}
+	}
+
+    /**
+     * Removes an issue project from the destination
+     *
+     * @param project project to remove
+     */
+	public void removeIssueProject(OutboundIssueProject project) {
+		if(this.issueProjects.contains(project)) {
+			this.issueProjects.remove(project);
 			this.update();
 		}
 	}

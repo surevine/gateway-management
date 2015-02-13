@@ -59,7 +59,7 @@ public class OutboundProject extends Model {
 	/**
 	 * Destinations the project is configured to be shared with
 	 */
-	@ManyToMany(mappedBy = "issueProjects", cascade=CascadeType.ALL)
+	@ManyToMany(mappedBy = "projects", cascade=CascadeType.ALL)
 	@JsonBackReference
 	public List<Destination> destinations = new ArrayList<Destination>();
 

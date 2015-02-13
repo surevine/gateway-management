@@ -48,7 +48,7 @@ public class OutboundIssueProject extends Model {
 	/**
 	 * Destinations the project is configured to be shared with
 	 */
-	@ManyToMany(mappedBy = "projects", cascade=CascadeType.ALL)
+	@ManyToMany(mappedBy = "issueProjects", cascade=CascadeType.ALL)
 	@JsonBackReference
 	public List<Destination> destinations = new ArrayList<Destination>();
 
@@ -60,6 +60,20 @@ public class OutboundIssueProject extends Model {
     public OutboundIssueProject(String displayName, String projectKey) {
     	this.displayName = displayName;
     	this.projectKey = projectKey;
+    }
+
+    /**
+     * Adds destination to share project to
+     *
+     * @param destination destination to share to
+     */
+    public void addDestination(Destination destination) {
+    	if(!this.destinations.contains(destination)) {
+    		this.destinations.add(destination);
+    		this.update();
+
+    		// TODO distribute via federator
+    	}
     }
 
 }
