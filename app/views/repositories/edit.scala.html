@@ -1,0 +1,77 @@
+@(id: Long, repoForm: Form[Repository])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(utils.twitterBootstrapInput.render) }
+
+@main("Edit repository") {
+
+	@form(routes.Repositories.update(id), 'role -> "form") {
+
+		@if(repoForm.hasGlobalErrors) {
+		    <p class="has-error">
+		    	<span class="help-block">@repoForm.globalError.message</span>
+		    </p>
+		}
+
+		<fieldset>
+
+			<input type="hidden" name="id" value="@id" />
+
+			@select(repoForm("repoType"),
+					options(RepositoryType.options()),
+         			'_label -> "Type",
+         			'_help -> "Type of repository",
+					'class -> "form-control",
+         			'_showConstraints -> false)
+
+			@inputText(repoForm("identifier"),
+						'_label -> "Identifier",
+						'_help -> "Unique identifier for repository (from host system)",
+						'class -> "form-control",
+						'placeholder -> "Identifier")
+
+		</fieldset>
+
+		<div class="actions">
+            <input type="submit" value="Update repository" data-loading-text="Submitting..." class="btn btn-primary submit">
+            <a href="@routes.Repositories.list()" class="btn btn-default">Cancel</a>
+		</div>
+
+	}
+
+	<script type="text/javascript">
+		$( document ).ready(function() {
+			$('.submit').on('click', function () {
+			    $(this).button('loading');
+			});
+		});
+	</script>
+
+	<h3>Delete repository</h3>
+
+	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-confirm-modal">
+	  Delete this repository
+	</button>
+
+	<div class="modal fade" id="delete-confirm-modal">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	        <h4 class="modal-title">Deletion confirmation</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p>Are you sure you want to delete this repository?</p>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	        @form(routes.Repositories.delete(id), 'class -> "modal-form") {
+		        <input type="submit" name="delete-destination" value="Delete repository" class="btn btn-danger" />
+		    }
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+}

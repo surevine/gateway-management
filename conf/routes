@@ -38,6 +38,21 @@ POST	/destinations/:id/editrules		@controllers.Destinations.updateRules(id: Long
 
 
 #
+# Repositories
+#
+
+GET		/repositories					@controllers.Repositories.list()
+
+GET		/repositories/add				@controllers.Repositories.add()
+POST	/repositories/add				@controllers.Repositories.create()
+
+GET		/repositories/:id/edit			@controllers.Repositories.edit(id: Long)
+POST	/repositories/:id/edit			@controllers.Repositories.update(id: Long)
+
+POST	/repositories/:id/delete		@controllers.Repositories.delete(id: Long)
+
+
+#
 # Outbound Projects
 #
 

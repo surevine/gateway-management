@@ -1,0 +1,37 @@
+@(repositories: List[Repository])
+
+@main("Repositories") {
+
+    <a href="@routes.Repositories.add()" class="btn btn-primary primary-action">Add Repository</a>
+
+    @if(repositories.isEmpty) {
+
+		<div class="panel panel-warning">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">No repositories</h3>
+		  </div>
+		  <div class="panel-body">
+		    <p>No repositories have been configured. Please <a href="@routes.Repositories.add()">add a repository</a>.</p>
+		  </div>
+		</div>
+
+    } else {
+
+    	<ul class="list-group">
+
+	    @for(repository <- repositories) {
+
+	    	<li class="list-group-item">
+	    		<span><strong>@repository.repoType</strong> @repository.identifier</span>
+				<span class="actions pull-right">
+					<a href="@routes.Repositories.edit(repository.id)" class="btn btn-default btn-xs">Edit</a>
+				</span>
+	    	</li>
+
+	    }
+
+	    </ul>
+
+    }
+
+}
