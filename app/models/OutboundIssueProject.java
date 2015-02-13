@@ -63,6 +63,24 @@ public class OutboundIssueProject extends Model {
     }
 
     /**
+     * List of all projects, used by scala helper in templates (to populate select options)
+     * @return Map<String, String> option key/values
+     */
+    public static List<OutboundIssueProject> allProjectShareOptions(Destination destination) {
+    	List<OutboundIssueProject> unsharedProjects = new ArrayList<OutboundIssueProject>();
+
+    	List<OutboundIssueProject> allProjects = FIND.all();
+
+    	for(OutboundIssueProject project : allProjects) {
+    		if(!destination.issueProjects.contains(project)) {
+    			unsharedProjects.add(project);
+    		}
+    	}
+
+    	return unsharedProjects;
+    }
+
+    /**
      * Adds destination to share project to
      *
      * @param destination destination to share to

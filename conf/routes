@@ -29,7 +29,8 @@ POST	/destinations/:id/edit			@controllers.Destinations.update(id: Long)
 POST	/destinations/:id/delete		@controllers.Destinations.delete(id: Long)
 
 # Add project to destination
-GET		/destinations/:id/shareprojects	@controllers.Destinations.shareProjectPage(id: Long)
+GET		/destinations/:id/shareprojects			@controllers.Destinations.shareProjectPage(id: Long)
+GET		/destinations/:id/shareissueprojects	@controllers.Destinations.shareIssueProjectPage(id: Long)
 
 # Edit destination rulefile
 GET		/destinations/:id/editrules		@controllers.Destinations.editRules(id: Long)
@@ -61,6 +62,7 @@ POST	/projects/delete/:id			@controllers.OutboundProjects.delete(id: Long)
 
 # Share project with destinations
 GET		/projects/:id/shareproject		@controllers.OutboundProjects.shareProjectPage(id: Long)
+
 
 #
 # Inbound (Whitelisted) projects

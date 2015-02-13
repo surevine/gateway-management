@@ -49,6 +49,8 @@ public class SharingPartnerships extends AuditedController {
 	    		return createFromProject(requestData, requestBody);
 	    	case "issueProject":
 	    		return createFromIssueProject(requestData, requestBody);
+	    	case "destinationIssues":
+				return createFromDestinationIssues(requestData, requestBody);
 	    	default:
 	    		return badRequest("Request source not expected value. Should be either destination or project.");
 		}
@@ -122,7 +124,7 @@ public class SharingPartnerships extends AuditedController {
     		// TODO audit
 
 	    	switch(requestData.get("source")) {
-		    	case "destination":
+		    	case "issueDestination":
 		    		return redirect(routes.Destinations.view(destination.id));
 		    	case "issueProject":
 		    		return redirect(routes.OutboundIssueProjects.view(project.id));
@@ -172,7 +174,7 @@ public class SharingPartnerships extends AuditedController {
 	}
 
 	/**
-	 * Triggers ad-hoc re-send of repository to destination across gateway
+	 * Triggers ad-hoc re-send of issue repository to destination across gateway
 	 * @return
 	 */
 	@Security.Authenticated(AppAuthenticator.class)
@@ -214,6 +216,21 @@ public class SharingPartnerships extends AuditedController {
 			destination.addProject(project);
 			ShareRepositoryAction action = Audit.getShareRepositoryAction(project, destination);
 	    	audit(action);
+	    }
+	}
+
+	/**
+	 * Shares issue projects with destination
+	 * @param destination Destination to share projects with
+	 * @param projectIds array of Issue Project ids to share
+	 */
+	private void addIssueProjectsToDestination(Destination destination, String[] projectIds) {
+		List<String> selectedProjects = Arrays.asList(projectIds);
+		List<OutboundIssueProject> projects = OutboundIssueProject.FIND.where().idIn(selectedProjects).findList();
+
+		for(OutboundIssueProject project: projects) {
+			destination.addIssueProject(project);
+			// TODO audit action
 	    }
 	}
 
@@ -300,6 +317,25 @@ public class SharingPartnerships extends AuditedController {
 		}
 
 		addProjectsToDestination(destination, selectedProjectsArr);
+
+		flash("success", "Repositories sent to the Gateway to be shared with destination.");
+		return redirect(routes.Destinations.view(destination.id));
+	}
+
+	private Result createFromDestinationIssues(DynamicForm requestData,
+			Map<String, String[]> requestBody) {
+
+		Destination destination = Destination.FIND.byId(Long.parseLong(requestData.get("destinationId")));
+		if(destination == null) {
+			return notFound(DESTINATION_NOT_FOUND);
+		}
+
+		String[] selectedProjectsArr = requestBody.get("selectedProjects");
+		if(selectedProjectsArr == null) {
+			return redirect(routes.Destinations.view(destination.id));
+		}
+
+		addIssueProjectsToDestination(destination, selectedProjectsArr);
 
 		flash("success", "Repositories sent to the Gateway to be shared with destination.");
 		return redirect(routes.Destinations.view(destination.id));

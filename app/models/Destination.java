@@ -153,6 +153,20 @@ public class Destination extends Model {
     }
 
     /**
+     * Adds an issue project to the destination
+     *
+     * @param project project to add
+     */
+    public void addIssueProject(OutboundIssueProject project) {
+    	if(!this.issueProjects.contains(project)) {
+        	this.issueProjects.add(project);
+        	this.update();
+
+        	// TODO federate
+    	}
+    }
+
+    /**
      * Removes a project from the destination
      *
      * @param project project to remove
