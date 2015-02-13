@@ -9,12 +9,12 @@ import play.libs.ws.WSResponse;
 
 import com.surevine.gateway.federation.FederatorServiceException;
 import com.surevine.gateway.federation.FederatorServiceFacade;
+import com.typesafe.config.ConfigFactory;
 
 public class IssueTrackingFederatorServiceFacade implements FederatorServiceFacade {
 
-	// TODO replace with config param
-	private static final String ISSUE_FEDERATOR_API_BASE_URL = "LOCALHOST";
-	private static final String ISSUE_FEDERATOR_API_DISTRIBUTE_PATH = "/api/etc";
+	private static final String ISSUE_FEDERATOR_API_BASE_URL = ConfigFactory.load().getString("issue.federator.api.base.url");
+	private static final String ISSUE_FEDERATOR_API_DISTRIBUTE_PATH = "/distribute";
 
 	/**
 	 * Default request timeout in milliseconds
