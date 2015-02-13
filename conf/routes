@@ -90,9 +90,11 @@ POST	/inbound-projects/delete/:id	@controllers.InboundProjects.delete(id: Long)
 
 # Projects list
 GET		/issue-projects						@controllers.OutboundIssueProjects.list()
+GET		/api/issue-projects					@controllers.OutboundIssueProjectsAPI.list()
 
 # View project
 GET		/issue-projects/view/:id			@controllers.OutboundIssueProjects.view(id: Long)
+GET		/api/issue-projects/view/:id		@controllers.OutboundIssueProjectsAPI.view(id: Long)
 
 # Add a project
 GET		/issue-projects/add					@controllers.OutboundIssueProjects.add()
@@ -115,6 +117,7 @@ GET		/issue-projects/:id/shareproject		@controllers.OutboundIssueProjects.shareP
 
 # Projects list
 GET		/inbound-issue-projects				@controllers.InboundIssueProjects.list()
+GET		/api/inbound-issue-projects			@controllers.InboundIssueProjectsAPI.list()
 
 # Add a project
 GET		/inbound-issue-projects/add			@controllers.InboundIssueProjects.add()
