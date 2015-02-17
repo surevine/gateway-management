@@ -42,6 +42,9 @@ POST	/destinations/:id/editrules		@controllers.Destinations.updateRules(id: Long
 #
 
 GET		/repositories					@controllers.Repositories.list()
+GET		/api/repositories				@controllers.RepositoriesAPI.list()
+
+GET		/api/repositories/:id			@controllers.RepositoriesAPI.view(id: Long)
 
 GET		/repositories/add				@controllers.Repositories.add()
 POST	/repositories/add				@controllers.Repositories.create()

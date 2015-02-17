@@ -21,11 +21,15 @@
 				<th>URL</th>
 				<td>@destination.url</td>
 			</tr>
+			<tr>
+				<th>Source key</th>
+				<td>@destination.sourceKey</td>
+			</tr>
 		</table>
 	</section>
 
 	<section>
-		<h4>Shared source code repositories</h4>
+		<h4>Shared repositories</h4>
 		<a href="@routes.Destinations.shareProjectPage(destination.id)" class="btn btn-primary btn-sm">Share repository</a>
 
 		<ul class="list-group project-list">
@@ -44,35 +48,6 @@
 				    }
 
 					<button type="button" id="resend-@project.id" data-loading-text="Sending..." data-project-id="@project.id" data-destination-id="@destination.id" class="btn btn-primary btn-xs pull-right resend" autocomplete="off">
-						Resend
-					</button>
-
-		    	</li>
-		    }
-	    }
-	    </ul>
-	</section>
-
-	<section>
-		<h4>Shared issue repositories</h4>
-		<a href="@routes.Destinations.shareIssueProjectPage(destination.id)" class="btn btn-primary btn-sm">Share repository</a>
-
-		<ul class="list-group project-list">
-	    @if(destination.issueProjects.isEmpty) {
-	    	<li class="list-group-item list-group-item-warning">No issue repositories shared to this destination</li>
-	    } else {
-		    @for(project <- destination.issueProjects) {
-		    	<li class="list-group-item">
-		    		@project.displayName <span class="text-muted">@project.projectKey</span>
-
-		    		@form(routes.SharingPartnerships.deleteIssue()) {
-		    			<input type="hidden" name="source" value="issueDestination" />
-						<input type="hidden" name="destinationId" value="@destination.id" />
-						<input type="hidden" name="projectId" value="@project.id" />
-				        <input type="submit" value="Unshare" class="btn btn-danger btn-xs pull-right" />
-				    }
-
-					<button type="button" id="resend-@project.id" data-loading-text="Sending..." data-project-id="@project.id" data-destination-id="@destination.id" class="btn btn-primary btn-xs pull-right resendIssue" autocomplete="off">
 						Resend
 					</button>
 

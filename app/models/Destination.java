@@ -57,6 +57,14 @@ public class Destination extends Model {
 	public String url;
 
 	/**
+	 * Key used by partner/destination when exporting items via gateway.
+	 * This is configured in community portal federator components.
+	 */
+	@Required
+	@MaxLength(255)
+	public String sourceKey;
+
+	/**
 	 * SCM projects configured to be shared with destination
 	 */
 	@ManyToMany(cascade=CascadeType.ALL)
