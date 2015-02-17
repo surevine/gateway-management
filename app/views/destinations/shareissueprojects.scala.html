@@ -8,6 +8,8 @@
 
 @projects = @{ OutboundIssueProject.allProjectShareOptions(destination) }
 
+@repositories =  @{ Repository.allShareOptions(destination) }
+
 @main("Share issue repositories") {
 
 	<p>Please select the issue repositories you wish to share with '@destination.name':</p>

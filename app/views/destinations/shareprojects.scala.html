@@ -4,62 +4,83 @@
 
 @implicitFieldConstructor = @{ FieldConstructor(utils.twitterBootstrapInput.render) }
 
-@projectCount = @{ OutboundProject.FIND.all().size() }
+@repoCount = @{ Repository.FIND.all().size() }
 
-@projects = @{ OutboundProject.allProjectShareOptions(destination) }
+@repositories =  @{ Repository.allShareOptions(destination) }
 
-@main("Share source code repositories") {
+@federationTypes = @{ FederationType.options() }
 
-	<p>Please select the source code repositories you wish to share with '@destination.name':</p>
+@main("Share repositories") {
 
-	@if(projectCount == 0) {
+	<p>Please select the repository you wish to share with '@destination.name':</p>
+
+	@if(repoCount == 0) {
 
 		<div class="panel panel-warning">
 		  <div class="panel-heading">
 		    <h3 class="panel-title">No repositories</h3>
 		  </div>
 		  <div class="panel-body">
-		    <p>No repositories have been configured. Please <a href="@routes.OutboundProjects.add()">add a repository</a>.</p>
+		    <p>No repositories have been configured. Please <a href="@routes.Repositories.add()">add a repository</a>.</p>
 		  </div>
 		</div>
 
 	} else {
 
-		@if(projects.isEmpty) {
+		@if(repositories.isEmpty) {
 
 			<div class="panel panel-warning">
 			  <div class="panel-heading">
 			    <h3 class="panel-title">All repositories shared</h3>
 			  </div>
 			  <div class="panel-body">
-			    <p>All configured repositories have been shared with this destination. Please <a href="@routes.OutboundProjects.add()">add another repository</a>.</p>
+			    <p>All configured repositories have been shared with this destination. Please <a href="@routes.Repositories.add()">add another repository</a>.</p>
 			  </div>
 			</div>
 
 		} else {
 
-			@form(routes.SharingPartnerships.create(), 'role -> "form") {
+			@form(routes.FederationConfigurations.create(), 'role -> "form") {
 
 				<fieldset>
 
 					<input type="hidden" name="source" value="destination" />
 					<input type="hidden" name="destinationId" value="@destination.id" />
 
-					@for(project <- projects) {
-
-						<div class="input-group">
-					      <span class="input-group-addon">
-					        <input type="checkbox" name="selectedProjects" id="selectedProjects-@project.id" value="@project.id">
-					      </span>
-					      <label for="selectedProjects-@project.id" class="form-control">@project.displayName <span class="text-muted">@project.projectKey/@project.repositorySlug</span></label>
-					    </div>
-
+					<h4>Repository</h4>
+					<select name="repositoryId" class="form-control">
+					@for(repo <- repositories) {
+						<option value="@repo.id">@repo.identifier</option>
 					}
+					</select>
+
+					<h4>Federation Type</h4>
+					<div class="radio">
+						<label>
+							<input type="radio" name="federationType" value="bidirectional" class="form-control" checked />
+							<h5>Bi-directional</h5>
+							<p>Allow in both directions</p>
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="federationType" value="outbound" class="form-control" />
+							<h5>Outbound only</h5>
+							<p>Only allow out</p>
+						</label>
+					</div>
+					<div class="radio">
+						<label>
+							<input type="radio" name="federationType" value="inbound" class="form-control" />
+							<h5>Inbound only</h5>
+							<p>Only allow in</p>
+						</label>
+					</div>
 
 				</fieldset>
 
 				<div class="actions">
-		            <input type="submit" value="Share repositories" data-loading-text="Submitting..." class="btn btn-primary submit">
+		            <input type="submit" value="Share repository" data-loading-text="Submitting..." class="btn btn-primary submit">
 		            <a href="@routes.Destinations.view(destination.id)" class="btn btn-default">Cancel</a>
 				</div>
 

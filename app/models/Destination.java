@@ -11,8 +11,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import com.avaje.ebean.Expr;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.surevine.gateway.federation.FederatorServiceException;
 import com.surevine.gateway.federation.issuetracking.IssueTrackingFederatorServiceFacade;
@@ -85,6 +87,12 @@ public class Destination extends Model {
 	@JsonManagedReference
 	public List<Repository> repositories = new ArrayList<Repository>();
 
+	/**
+	 * Configured repositories to federate to destination
+	 */
+	@OneToMany(cascade=CascadeType.ALL)
+	@JsonBackReference
+	public List<FederationConfiguration> federationConfigurations = new ArrayList<FederationConfiguration>();
 
     /**
      * Generic query helper for entity Destination with id Long

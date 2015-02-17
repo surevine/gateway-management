@@ -12,6 +12,24 @@ create table destination (
   constraint pk_destination primary key (id))
 ;
 
+create table federation (
+  id                        bigint not null,
+  destination_id            bigint,
+  repository_id             bigint,
+  type                      varchar(13),
+  constraint ck_federation_type check (type in ('BIDIRECTIONAL','OUTBOUND','INBOUND','NONE')),
+  constraint pk_federation primary key (id))
+;
+
+create table federation_configuration (
+  id                        bigint not null,
+  destination_id            bigint,
+  repository_id             bigint,
+  inbound_enabled           boolean,
+  outbound_enabled          boolean,
+  constraint pk_federation_configuration primary key (id))
+;
+
 create table inbound_issue_project (
   id                        bigint not null,
   source_organisation       varchar(255),
@@ -97,6 +115,10 @@ create table partner_repository (
 ;
 create sequence destination_seq;
 
+create sequence federation_seq;
+
+create sequence federation_configuration_seq;
+
 create sequence inbound_issue_project_seq;
 
 create sequence inbound_project_seq;
@@ -109,6 +131,14 @@ create sequence partner_seq;
 
 create sequence repository_seq;
 
+alter table federation add constraint fk_federation_destination_1 foreign key (destination_id) references destination (id);
+create index ix_federation_destination_1 on federation (destination_id);
+alter table federation add constraint fk_federation_repository_2 foreign key (repository_id) references repository (id);
+create index ix_federation_repository_2 on federation (repository_id);
+alter table federation_configuration add constraint fk_federation_configuration_de_3 foreign key (destination_id) references destination (id);
+create index ix_federation_configuration_de_3 on federation_configuration (destination_id);
+alter table federation_configuration add constraint fk_federation_configuration_re_4 foreign key (repository_id) references repository (id);
+create index ix_federation_configuration_re_4 on federation_configuration (repository_id);
 
 
 
@@ -146,6 +176,10 @@ drop table if exists destination_outbound_issue_proje cascade;
 
 drop table if exists destination_repository cascade;
 
+drop table if exists federation cascade;
+
+drop table if exists federation_configuration cascade;
+
 drop table if exists inbound_issue_project cascade;
 
 drop table if exists inbound_project cascade;
@@ -165,6 +199,10 @@ drop table if exists partner_repository cascade;
 drop table if exists repository cascade;
 
 drop sequence if exists destination_seq;
+
+drop sequence if exists federation_seq;
+
+drop sequence if exists federation_configuration_seq;
 
 drop sequence if exists inbound_issue_project_seq;
 

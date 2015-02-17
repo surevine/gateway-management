@@ -179,6 +179,19 @@ POST	/global-rules/edit/:slug		@controllers.GlobalRuleFiles.update(slug: String)
 
 
 #
+# Federation
+#
+
+GET		/api/federation					@controllers.FederationConfigurations.all()
+GET		/api/federation/inbound			@controllers.FederationConfigurations.inbound()
+GET		/api/federation/outbound		@controllers.FederationConfigurations.outbound()
+
+POST	/federation/create				@controllers.FederationConfigurations.create()
+POST	/federation/update				@controllers.FederationConfigurations.update(id: Long)
+POST	/federation/delete				@controllers.FederationConfigurations.delete(id: Long)
+
+
+#
 # Misc
 #
 
