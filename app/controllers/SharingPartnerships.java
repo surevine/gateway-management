@@ -204,7 +204,8 @@ public class SharingPartnerships extends AuditedController {
     	}
 
     	try {
-        	issueFederator.resend(destination.id.toString(), project.projectKey);
+    		// TODO fix below
+        	issueFederator.resend(destination, null);
     	} catch(FederatorServiceException e) {
     		String errorMessage = "Failed to resend issue repository to destination.";
     		Logger.error(errorMessage, e);

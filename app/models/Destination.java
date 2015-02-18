@@ -189,7 +189,8 @@ public class Destination extends Model {
         	this.update();
 
     		try {
-				IssueTrackingFederatorServiceFacade.getInstance().distribute(this.id.toString(), project.projectKey);
+    			// TODO fix / remove this
+				IssueTrackingFederatorServiceFacade.getInstance().distribute(this, null);
 			} catch (FederatorServiceException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

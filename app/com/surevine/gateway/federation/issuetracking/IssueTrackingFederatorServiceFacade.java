@@ -1,6 +1,8 @@
 package com.surevine.gateway.federation.issuetracking;
 
 import static play.mvc.Http.Status.OK;
+import models.Destination;
+import models.Repository;
 import play.Logger;
 import play.libs.F.Callback;
 import play.libs.F.Promise;
@@ -35,13 +37,13 @@ public class IssueTrackingFederatorServiceFacade implements FederatorServiceFaca
 	}
 
 	@Override
-	public void distribute(String destinationId, String identifier)
+	public void distribute(Destination destination, Repository repository)
 			throws FederatorServiceException {
 
 		Logger.info(String.format("Informing issue-federator of new sharing partnership %s [%s]",
-				identifier, ISSUE_FEDERATOR_API_BASE_URL + ISSUE_FEDERATOR_API_DISTRIBUTE_PATH));
+				repository.identifier, ISSUE_FEDERATOR_API_BASE_URL + ISSUE_FEDERATOR_API_DISTRIBUTE_PATH));
 
-		Promise<WSResponse> promise = postDistributionRequest(destinationId, identifier);
+		Promise<WSResponse> promise = postDistributionRequest(destination.id, repository.identifier);
 
     	promise.onFailure(new Callback<Throwable>(){
 			@Override
@@ -54,13 +56,13 @@ public class IssueTrackingFederatorServiceFacade implements FederatorServiceFaca
 	}
 
 	@Override
-	public void resend(String destinationId, String identifier)
+	public void resend(Destination destination, Repository repository)
 			throws FederatorServiceException {
 
 		Logger.info(String.format("Requesting redistribution of issue repository (%s) by issue federator [%s]",
-				identifier, ISSUE_FEDERATOR_API_BASE_URL + ISSUE_FEDERATOR_API_DISTRIBUTE_PATH));
+				repository.identifier, ISSUE_FEDERATOR_API_BASE_URL + ISSUE_FEDERATOR_API_DISTRIBUTE_PATH));
 
-    	Promise<WSResponse> promise = postDistributionRequest(destinationId, identifier);
+    	Promise<WSResponse> promise = postDistributionRequest(destination.id, repository.identifier);
 
     	WSResponse response;
     	try {
@@ -88,11 +90,11 @@ public class IssueTrackingFederatorServiceFacade implements FederatorServiceFaca
 	 * @param identifier
 	 * @return
 	 */
-	private Promise<WSResponse> postDistributionRequest(String destinationId,
+	private Promise<WSResponse> postDistributionRequest(Long destinationId,
 			String identifier) {
 		return WS.url(ISSUE_FEDERATOR_API_BASE_URL + ISSUE_FEDERATOR_API_DISTRIBUTE_PATH)
 				.setTimeout(REQUEST_TIMEOUT)
-				.setQueryParameter("destination", destinationId)
+				.setQueryParameter("destination", destinationId.toString())
     			.setQueryParameter("identifier", identifier)
     			.setContentType("application/json")
     			.post("");

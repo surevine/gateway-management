@@ -7,6 +7,8 @@ import com.avaje.ebean.Expr;
 import com.surevine.gateway.auditing.Audit;
 import com.surevine.gateway.auditing.action.ResendRepositoryAction;
 import com.surevine.gateway.auditing.action.ShareRepositoryAction;
+import com.surevine.gateway.federation.Federator;
+import com.surevine.gateway.federation.FederatorServiceException;
 import com.surevine.gateway.scm.service.SCMFederatorServiceException;
 
 import models.Destination;
@@ -105,11 +107,18 @@ public class FederationConfigurations extends AuditedController {
     			break;
     	}
 
-    	// TODO VALIDATE UNIQUE @ MODEL
     	FederationConfiguration config = new FederationConfiguration(destination, repo, inboundEnabled, outboundEnabled);
     	config.save();
 
-    	// TODO initiate federation (override config.save() ?)
+    	// TODO maybe no need for the abstract class if only ever used here?
+    	try {
+			Federator.distribute(destination, repo);
+		} catch (FederatorServiceException e) {
+			String errorMessage = String.format("Failed to distribute repository to destination.",
+									destination.name, repo.identifier);
+			Logger.error(errorMessage, e);
+			return internalServerError(errorMessage);
+		}
 
     	// TODO audit
 //    	ShareRepositoryAction action = Audit.getShareRepositoryAction(project, destination);

@@ -93,7 +93,8 @@ public class OutboundIssueProject extends Model {
     		this.update();
 
     		try {
-				IssueTrackingFederatorServiceFacade.getInstance().distribute(destination.id.toString(), this.projectKey);
+    			// TODO fix / remove
+				IssueTrackingFederatorServiceFacade.getInstance().distribute(destination, null);
 			} catch (FederatorServiceException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
