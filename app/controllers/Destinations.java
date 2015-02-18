@@ -120,7 +120,7 @@ public class Destinations extends AuditedController {
     	audit(action);
 
     	flash("success", "Created destination.");
-    	return redirect(routes.Destinations.view(destinationForm.get().id));
+    	return redirect(routes.Destinations.list());
 
     }
 
@@ -151,7 +151,7 @@ public class Destinations extends AuditedController {
     	audit(action);
 
     	flash("success", "Updated destination.");
-    	return redirect(routes.Destinations.view(id));
+    	return redirect(routes.Destinations.list());
 
     }
 
@@ -266,7 +266,7 @@ public class Destinations extends AuditedController {
     	audit(action);
 
     	flash("success", "Updated destination rules.");
-    	return redirect(routes.Destinations.view(destinationId));
+    	return redirect(routes.Destinations.list());
     }
 
 }
