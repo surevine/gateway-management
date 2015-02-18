@@ -4,11 +4,17 @@ import java.util.List;
 import java.util.Map;
 
 import com.avaje.ebean.Expr;
+import com.surevine.gateway.auditing.Audit;
+import com.surevine.gateway.auditing.action.ResendRepositoryAction;
+import com.surevine.gateway.auditing.action.ShareRepositoryAction;
+import com.surevine.gateway.scm.service.SCMFederatorServiceException;
 
 import models.Destination;
 import models.FederationConfiguration;
+import models.OutboundProject;
 import models.Repository;
 
+import play.Logger;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.libs.Json;
@@ -16,7 +22,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 
-public class FederationConfigurations extends Controller {
+public class FederationConfigurations extends AuditedController {
 
 	/**
 	 * Display list of all federations
@@ -94,7 +100,11 @@ public class FederationConfigurations extends Controller {
     	FederationConfiguration config = new FederationConfiguration(destination, repo, inboundEnabled, outboundEnabled);
     	config.save();
 
+    	// TODO initiate federation (override config.save() ?)
+
     	// TODO audit
+//    	ShareRepositoryAction action = Audit.getShareRepositoryAction(project, destination);
+//    	audit(action);
 
     	switch(requestData.get("source")) {
     		case "destination":
@@ -165,6 +175,40 @@ public class FederationConfigurations extends Controller {
 			default:
 				return redirect(routes.Destinations.list());
 		}
+
+	}
+
+	@Security.Authenticated(AppAuthenticator.class)
+	public Result resend() {
+
+		DynamicForm requestData = Form.form().bindFromRequest();
+		Long id = Long.parseLong(requestData.get("configurationId"));
+
+		FederationConfiguration config = FederationConfiguration.FIND.byId(id);
+    	if(config == null) {
+    		return notFound(String.format("FederationConfiguration with id %s not found.", id));
+    	}
+
+    	// TODO conditionally select federator based on repo type, and resend
+
+    	/*
+    	 * Federator.resend(repository, destination)
+    	 * Federator inspects repository type, selects federator implementation and sends
+    	 */
+
+//    	try {
+//        	scmFederator.resend(config.destination.id.toString(), config.repository.identifier);
+//    	} catch(SCMFederatorServiceException e) {
+//    		String errorMessage = "Failed to resend project to destination.";
+//    		Logger.error(errorMessage, e);
+//    		return internalServerError(errorMessage);
+//    	}
+
+    	// TODO audit
+//    	ResendRepositoryAction action = Audit.getResendRepositoryAction(project, destination);
+//    	audit(action);
+
+        return ok("Resent repository to gateway for export to destination.");
 
 	}
 

@@ -45,6 +45,10 @@
 				        <input type="submit" value="Unshare" class="btn btn-danger btn-xs pull-right" />
 				    }
 
+				    <button type="button" id="resend-@configuration.id" data-loading-text="Sending..." data-configuration-id="@configuration.id" class="btn btn-primary btn-xs pull-right resend" autocomplete="off">
+						Resend
+					</button>
+
 		    	</li>
 		    }
 	    }
@@ -71,34 +75,10 @@
 			    var $btn = $(this).button('loading');
 
 				$.ajax({
-					url: "@routes.SharingPartnerships.resend()",
+					url: "@routes.FederationConfigurations.resend()",
 					type: "POST",
 					data: {
-						projectId: $btn.data("project-id"),
-						destinationId: $btn.data("destination-id")
-					},
-					success: function(data){
-						notifications.success(data);
-					},
-					error: function(data){
-						notifications.error(data.responseText);
-					}
-				}).always(function(){
-					 $btn.button('reset');
-				});
-			});
-
-			// Initialise resend ajax requests
-			$('.resendIssue').on('click', function () {
-
-			    var $btn = $(this).button('loading');
-
-				$.ajax({
-					url: "@routes.SharingPartnerships.resendIssue()",
-					type: "POST",
-					data: {
-						projectId: $btn.data("project-id"),
-						destinationId: $btn.data("destination-id")
+						configurationId: $btn.data("configuration-id")
 					},
 					success: function(data){
 						notifications.success(data);

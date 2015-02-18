@@ -189,6 +189,7 @@ GET		/api/federation/outbound		@controllers.FederationConfigurations.outbound()
 POST	/federation/create				@controllers.FederationConfigurations.create()
 POST	/federation/update				@controllers.FederationConfigurations.update(id: Long)
 POST	/federation/delete				@controllers.FederationConfigurations.delete(id: Long)
+POST	/federation/resend				@controllers.FederationConfigurations.resend()
 
 
 #
