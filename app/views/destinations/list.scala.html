@@ -31,10 +31,19 @@
 				<div class="clearfix"></div>
 			  </div>
 			  <div class="panel-body">
-			    <p>@destination.url</p>
-			    <p class="text-muted">@destination.federationConfigurations.length repositories configured for federation.</p>
 
-				<h4>Shared repositories</h4>
+			  	<table class="destination-info">
+					<tr>
+						<th>URL</th>
+						<td>@destination.url</td>
+					</tr>
+					<tr>
+						<th>Source key</th>
+						<td>@destination.sourceKey</td>
+					</tr>
+				</table>
+
+				<h4>Shared repositories <span class="badge">@destination.federationConfigurations.length</span></h4>
 				<a href="@routes.Destinations.shareProjectPage(destination.id)" class="btn btn-primary btn-sm">Share repository</a>
 
 				<ul class="list-group project-list">
