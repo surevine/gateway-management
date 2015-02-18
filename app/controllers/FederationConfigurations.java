@@ -108,14 +108,13 @@ public class FederationConfigurations extends Controller {
 	}
 
 	@Security.Authenticated(AppAuthenticator.class)
-	public Result update() {
+	public Result update(Long id) {
 
 		DynamicForm requestData = Form.form().bindFromRequest();
 
-		String configurationId = requestData.get("configurationId");
-		FederationConfiguration config = FederationConfiguration.FIND.byId(Long.parseLong(configurationId));
+		FederationConfiguration config = FederationConfiguration.FIND.byId(id);
 		if(config == null) {
-			return notFound(String.format("FederationConfiguration with id %s not found.", configurationId));
+			return notFound(String.format("FederationConfiguration with id %s not found.", id));
 		}
 
 		// TODO ensure direction and enabled set and valid
@@ -147,7 +146,9 @@ public class FederationConfigurations extends Controller {
 	@Security.Authenticated(AppAuthenticator.class)
 	public Result delete(Long id) {
 
-		FederationConfiguration config = FederationConfiguration.FIND.byId(Long.parseLong(id));
+		DynamicForm requestData = Form.form().bindFromRequest();
+
+		FederationConfiguration config = FederationConfiguration.FIND.byId(id);
 		if(config == null) {
 			return notFound(String.format("FederationConfiguration with id %s not found.", id));
 		}
