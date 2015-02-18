@@ -1,11 +1,17 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.avaje.ebean.Expr;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import play.Logger;
+import play.data.validation.ValidationError;
 import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
 

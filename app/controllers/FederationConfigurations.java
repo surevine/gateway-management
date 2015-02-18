@@ -80,6 +80,15 @@ public class FederationConfigurations extends AuditedController {
     		return notFound(String.format("Repository with id %s not found.", requestData.get("repositoryId")));
     	}
 
+    	FederationConfiguration existingConfig = FederationConfiguration.FIND.where()
+														.eq("destination", destination)
+														.eq("repository", repo)
+														.findUnique();
+    	if(existingConfig != null) {
+    		return badRequest(String.format("Federation configuration between destination '%s' and repository '%s' already exists.",
+    											destination.name, repo.identifier));
+    	}
+
     	boolean inboundEnabled = false;
     	boolean outboundEnabled = false;
 
