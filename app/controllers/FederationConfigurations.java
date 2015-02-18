@@ -127,9 +127,10 @@ public class FederationConfigurations extends AuditedController {
 	}
 
 	@Security.Authenticated(AppAuthenticator.class)
-	public Result update(Long id) {
+	public Result update() {
 
 		DynamicForm requestData = Form.form().bindFromRequest();
+		Long id = Long.parseLong(requestData.get("configurationId"));
 
 		FederationConfiguration config = FederationConfiguration.FIND.byId(id);
 		if(config == null) {
@@ -138,12 +139,14 @@ public class FederationConfigurations extends AuditedController {
 
 		// TODO ensure direction and enabled set and valid
 
+		boolean setActive = Boolean.parseBoolean(requestData.get("enable"));
+
 		switch(requestData.get("direction")) {
 			case "outbound":
-				config.setOutboundEnabled(Boolean.parseBoolean(requestData.get("enabled")));
+				config.setOutboundEnabled(setActive);
 				break;
 			case "inbound":
-				config.setInboundEnabled(Boolean.parseBoolean(requestData.get("enabled")));
+				config.setInboundEnabled(setActive);
 				break;
 		}
 
@@ -151,15 +154,7 @@ public class FederationConfigurations extends AuditedController {
 
 		// TODO audit
 
-		switch(requestData.get("source")) {
-			case "destination":
-				return redirect(routes.Destinations.list());
-			case "repository":
-				return redirect(routes.Repositories.list());
-			default:
-				return redirect(routes.Destinations.list());
-		}
-
+		return ok();
 	}
 
 	@Security.Authenticated(AppAuthenticator.class)

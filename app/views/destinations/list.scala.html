@@ -53,14 +53,29 @@
 				    @for(configuration <- destination.federationConfigurations) {
 				    	<li class="list-group-item">
 				    		@configuration.repository.identifier
-				    		<span class="label">@configuration.repository.repoType</span> INBOUND[@configuration.inboundEnabled] OUTBOUND[@configuration.outboundEnabled]
+				    		<span class="label label-default">@configuration.repository.repoType</span>
+
+							<div class="btn-group btn-group-sm" role="group" aria-label="federation-controls" data-toggle="buttons">
+							  <button type="button"
+							  			class="btn btn-primary federation @if(configuration.inboundEnabled) { active }"
+							  			data-toggle="button"
+							  			data-loading-text="Loading..."
+							  			data-configuration-id="@configuration.id"
+							  			data-direction="inbound">Inbound</button>
+							  <button type="button"
+							  			class="btn btn-primary federation @if(configuration.outboundEnabled) { active }"
+							  			data-toggle="button"
+							  			data-loading-text="Loading..."
+							  			data-configuration-id="@configuration.id"
+							  			data-direction="outbound">Outbound</button>
+							</div>
 
 							@form(routes.FederationConfigurations.delete(configuration.id)) {
 								<input type="hidden" name="source" value="destination" />
-						        <input type="submit" value="Unshare" class="btn btn-danger btn-xs pull-right" />
+						        <input type="submit" value="Unshare" class="btn btn-danger btn-sm pull-right" />
 						    }
 
-						    <button type="button" id="resend-@configuration.id" data-loading-text="Sending..." data-configuration-id="@configuration.id" class="btn btn-default btn-xs pull-right resend" autocomplete="off">
+						    <button type="button" id="resend-@configuration.id" data-loading-text="Sending..." data-configuration-id="@configuration.id" class="btn btn-default btn-sm pull-right resend" autocomplete="off">
 								Resend
 							</button>
 
@@ -94,6 +109,37 @@
 						},
 						success: function(data){
 							notifications.success(data);
+						},
+						error: function(data){
+							notifications.error(data.responseText);
+						}
+					}).always(function(){
+						 $btn.button('reset');
+					});
+				});
+
+				// Initialise federation update ajax requests
+				$('.federation').on('click', function () {
+
+				    var $btn = $(this).button('loading');
+
+				    // Desired state is inverse of current state (as toggle control)
+				    var setActive = !$btn.hasClass("active");
+
+					$.ajax({
+						url: "@routes.FederationConfigurations.update()",
+						type: "POST",
+						data: {
+							configurationId: $btn.data("configuration-id"),
+							direction: $btn.data("direction"),
+							enable: setActive
+						},
+						success: function(data){
+							if(setActive) {
+								$btn.addClass("active");
+							} else {
+								$btn.removeClass("active");
+							}
 						},
 						error: function(data){
 							notifications.error(data.responseText);
