@@ -36,7 +36,7 @@ public class Sanitisation extends Controller {
 		if(repoType == null) {
 			return badRequest("repoType is missing from request");
 		}
-		// Sanitisation currently only supports SCM repositories
+
 		// TODO add support for issue tracking repositories
 		if(repoType != "SCM") {
 			return badRequest("Sanitisation only supports SCM repositories.");

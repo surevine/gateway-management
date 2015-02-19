@@ -43,38 +43,6 @@ public class Destinations extends AuditedController {
     }
 
     /**
-     * Display single destination view page
-     *
-     * @param id Id of destination to display
-     * @return
-     */
-	@Security.Authenticated(AppAuthenticator.class)
-    public Result view(Long id) {
-
-    	Destination destination = Destination.FIND.byId(id);
-
-    	if(destination == null) {
-    		return notFound();
-    	}
-
-    	String destinationRules = "";
-    	String errorMessage = "";
-    	Boolean error = false;
-
-    	try {
-    		destinationRules = destination.loadRules();
-    	} catch(IOException e) {
-    		// Display error to user, but continue render of destination page
-    		error = true;
-    		errorMessage = e.getMessage();
-    		Logger.error(errorMessage, e);
-    	}
-
-    	return ok(views.html.destinations.view.render(destination, destinationRules, error, errorMessage));
-
-    }
-
-    /**
      * Display the 'add destination' form page
      *
      * @return
@@ -247,7 +215,7 @@ public class Destinations extends AuditedController {
 			String errorMessage = "Could not update destination rules. " + e.getMessage();
 			Logger.error(errorMessage, e);
 			flash("error", errorMessage);
-			return redirect(routes.Destinations.view(destinationId));
+			return redirect(routes.Destinations.list());
 		}
 
     	ModifyDestinationRulesAction action = Audit.getModifyDestinationRulesAction(destination, newRuleFileContent);
