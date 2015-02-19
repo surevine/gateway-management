@@ -13,6 +13,7 @@ import models.Destination;
 import play.Logger;
 import play.data.DynamicForm;
 import play.data.Form;
+import play.libs.Json;
 import play.mvc.Result;
 import play.mvc.Security;
 
@@ -27,11 +28,18 @@ public class Destinations extends AuditedController {
 	 */
 	@Security.Authenticated(AppAuthenticator.class)
     public Result list() {
-
     	List<Destination> destinations = Destination.FIND.all();
-
         return ok(views.html.destinations.list.render(destinations));
+    }
 
+	/**
+	 * Display list of all destinations
+	 *
+	 * @return JSON encoded destination list
+	 */
+    public Result apiList() {
+    	List<Destination> destinations = Destination.FIND.all();
+    	return ok(Json.toJson(destinations));
     }
 
     /**

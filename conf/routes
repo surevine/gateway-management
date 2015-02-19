@@ -11,7 +11,7 @@ GET     /                           	@controllers.Application.index()
 #
 
 GET		/destinations					@controllers.Destinations.list()
-GET		/api/destinations				@controllers.DestinationsAPI.list()
+GET		/api/destinations				@controllers.Destinations.apiList()
 
 GET		/destinations/:id/view			@controllers.Destinations.view(id: Long)
 
