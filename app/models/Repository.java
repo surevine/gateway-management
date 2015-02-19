@@ -69,7 +69,10 @@ public class Repository extends Model {
      * Retrieve list of destinations the repository is shared with
      * @return
      */
-	public List<Destination> getSharedDestinations() {
+	public List<Destination> getDestinations() {
+
+		// TODO restrict to only outbound enabled fedConfigs
+
 		List<Destination> sharedDestinations = new ArrayList<Destination>();
 		for(FederationConfiguration config : federationConfigurations) {
 			sharedDestinations.add(config.destination);

@@ -2,9 +2,12 @@ package controllers;
 
 import java.util.List;
 
+import models.Destination;
+import models.FederationConfiguration;
 import models.Repository;
 import play.data.DynamicForm;
 import play.data.Form;
+import play.libs.Json;
 import play.mvc.Result;
 import play.mvc.Security;
 
@@ -16,7 +19,7 @@ import com.surevine.gateway.auditing.action.UpdateRepositoryAction;
 public class Repositories extends AuditedController {
 
 	/**
-	 * Display list of all outbound projects
+	 * Display list of all repositories
 	 *
 	 * @return
 	 */
@@ -25,6 +28,30 @@ public class Repositories extends AuditedController {
 		List<Repository> repos = Repository.FIND.all();
         return ok(views.html.repositories.list.render(repos));
 	}
+
+	/**
+	 * Returns a list of repositories that are configured to be shared to 1 or more destination
+	 *
+	 * @return JSON encoded list of repos
+	 */
+    public Result apiList() {
+    	List<FederationConfiguration> configs = FederationConfiguration.FIND.where().eq("outboundEnabled", true).findList();
+    	List<Repository> repos = Repository.FIND.where().in("federationConfigurations", configs).findList();
+    	return ok(Json.toJson(repos));
+    }
+
+    /**
+     *
+     * @param id Id of project to return
+     * @return JSON encoded representation of single repository
+     */
+    public Result apiView(Long id) {
+    	Repository repo = Repository.FIND.byId(id);
+    	if(repo == null) {
+    		return notFound("Repository not found.");
+    	}
+    	return ok(Json.toJson(repo));
+    }
 
     /**
      * Display the 'add repository' form page

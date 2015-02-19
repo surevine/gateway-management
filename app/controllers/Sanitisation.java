@@ -65,7 +65,7 @@ public class Sanitisation extends Controller {
 			sanitisationResult = GitManagedSanitisationServiceImpl.getInstance().sanitise(postedArchive.getFile(),
 																							repoIdentifier,
 																							identifier,
-																							repo.getSharedDestinations());
+																							repo.getDestinations());
 		} catch (SanitisationServiceException e) {
 			String errorMessage = "Error executing sanitisation script.";
 			Logger.error(errorMessage, e);
