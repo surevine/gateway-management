@@ -2,7 +2,6 @@ package controllers;
 
 import java.util.List;
 
-import models.OutboundProject;
 import models.Repository;
 import play.data.DynamicForm;
 import play.data.Form;

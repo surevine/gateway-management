@@ -1,24 +1,22 @@
 package com.surevine.gateway.auditing.action;
 
 import models.Destination;
-import models.OutboundProject;
+import models.Repository;
 
 public class ShareRepositoryAction implements AuditAction {
 
-	protected OutboundProject project;
+	protected Repository repository;
 	protected Destination destination;
 
-	public ShareRepositoryAction(OutboundProject project, Destination destination) {
-		this.project = project;
+	public ShareRepositoryAction(Repository repository, Destination destination) {
+		this.repository = repository;
 		this.destination = destination;
 	}
 
 	@Override
 	public String getDescription() {
-		return String.format("Shared repository %s(%s/%s) with destination %s(%s). Repository sent to gateway for export.",
-								project.displayName,
-								project.projectKey,
-								project.repositorySlug,
+		return String.format("Shared repository (%s) with destination %s(%s). Repository sent to gateway for export.",
+								repository.identifier,
 								destination.name,
 								destination.url);
 	}

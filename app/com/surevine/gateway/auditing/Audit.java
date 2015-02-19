@@ -1,7 +1,7 @@
 package com.surevine.gateway.auditing;
 
 import models.Destination;
-import models.OutboundProject;
+import models.Repository;
 
 import com.surevine.gateway.auditing.action.AuditActionFactory;
 import com.surevine.gateway.auditing.action.CreateDestinationAction;
@@ -106,33 +106,33 @@ public abstract class Audit {
 	}
 
 	public static CreateRepositoryAction getCreateRepositoryAction(
-			OutboundProject project) {
-		return getAuditActionFactory().getCreateRepositoryAction(project);
+			Repository repository) {
+		return getAuditActionFactory().getCreateRepositoryAction(repository);
 	}
 
 	public static UpdateRepositoryAction getUpdateRepositoryAction(
-			OutboundProject originalProject, OutboundProject updatedProject) {
-		return getAuditActionFactory().getUpdateRepositoryAction(originalProject, updatedProject);
+			Repository originalRepo, Repository updatedRepo) {
+		return getAuditActionFactory().getUpdateRepositoryAction(originalRepo, updatedRepo);
 	}
 
 	public static DeleteRepositoryAction getDeleteRepositoryAction(
-			OutboundProject project) {
-		return getAuditActionFactory().getDeleteRepositoryAction(project);
+			Repository repository) {
+		return getAuditActionFactory().getDeleteRepositoryAction(repository);
 	}
 
 	public static UnshareRepositoryAction getUnshareRepositoryAction(
-			OutboundProject project, Destination destination) {
-		return getAuditActionFactory().getUnshareRepositoryAction(project, destination);
+			Repository repository, Destination destination) {
+		return getAuditActionFactory().getUnshareRepositoryAction(repository, destination);
 	}
 
 	public static ResendRepositoryAction getResendRepositoryAction(
-			OutboundProject project, Destination destination) {
-		return getAuditActionFactory().getResendRepositoryAction(project, destination);
+			Repository repository, Destination destination) {
+		return getAuditActionFactory().getResendRepositoryAction(repository, destination);
 	}
 
 	public static ShareRepositoryAction getShareRepositoryAction(
-			OutboundProject project, Destination destination) {
-		return getAuditActionFactory().getShareRepositoryAction(project, destination);
+			Repository repository, Destination destination) {
+		return getAuditActionFactory().getShareRepositoryAction(repository, destination);
 	}
 
 	public static UserLoginAction getUserLoginAction(String authenticatedUser) {

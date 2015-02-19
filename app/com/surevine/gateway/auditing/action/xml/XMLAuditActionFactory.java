@@ -1,7 +1,7 @@
 package com.surevine.gateway.auditing.action.xml;
 
 import models.Destination;
-import models.OutboundProject;
+import models.Repository;
 
 import com.surevine.gateway.auditing.action.AuditActionFactory;
 import com.surevine.gateway.auditing.action.CreateDestinationAction;
@@ -49,19 +49,19 @@ public class XMLAuditActionFactory implements AuditActionFactory {
 	}
 
 	@Override
-	public CreateRepositoryAction getCreateRepositoryAction(OutboundProject project) {
-		return new XMLCreateRepositoryAction(project);
+	public CreateRepositoryAction getCreateRepositoryAction(Repository repository) {
+		return new XMLCreateRepositoryAction(repository);
 	}
 
 	@Override
 	public UpdateRepositoryAction getUpdateRepositoryAction(
-			OutboundProject originalProject, OutboundProject updatedProject) {
-		return new XMLUpdateRepositoryAction(originalProject, updatedProject);
+			Repository originalRepo, Repository updatedRepo) {
+		return new XMLUpdateRepositoryAction(originalRepo, updatedRepo);
 	}
 
 	@Override
-	public DeleteRepositoryAction getDeleteRepositoryAction(OutboundProject project) {
-		return new XMLDeleteRepositoryAction(project);
+	public DeleteRepositoryAction getDeleteRepositoryAction(Repository repository) {
+		return new XMLDeleteRepositoryAction(repository);
 	}
 
 	@Override
@@ -77,21 +77,21 @@ public class XMLAuditActionFactory implements AuditActionFactory {
 	}
 
 	@Override
-	public ShareRepositoryAction getShareRepositoryAction(OutboundProject project,
+	public ShareRepositoryAction getShareRepositoryAction(Repository repository,
 			Destination destination) {
-		return new XMLShareRepositoryAction(project, destination);
+		return new XMLShareRepositoryAction(repository, destination);
 	}
 
 	@Override
-	public UnshareRepositoryAction getUnshareRepositoryAction(OutboundProject project,
+	public UnshareRepositoryAction getUnshareRepositoryAction(Repository repository,
 			Destination destination) {
-		return new XMLUnshareRepositoryAction(project, destination);
+		return new XMLUnshareRepositoryAction(repository, destination);
 	}
 
 	@Override
-	public ResendRepositoryAction getResendRepositoryAction(OutboundProject project,
+	public ResendRepositoryAction getResendRepositoryAction(Repository repository,
 			Destination destination) {
-		return new XMLResendRepositoryAction(project, destination);
+		return new XMLResendRepositoryAction(repository, destination);
 	}
 
 }

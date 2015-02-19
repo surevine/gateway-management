@@ -3,24 +3,17 @@ package controllers;
 import java.util.List;
 import java.util.Map;
 
-import com.avaje.ebean.Expr;
-import com.surevine.gateway.auditing.Audit;
-import com.surevine.gateway.auditing.action.ResendRepositoryAction;
-import com.surevine.gateway.auditing.action.ShareRepositoryAction;
 import com.surevine.gateway.federation.Federator;
 import com.surevine.gateway.federation.FederatorServiceException;
-import com.surevine.gateway.scm.service.SCMFederatorServiceException;
 
 import models.Destination;
 import models.FederationConfiguration;
-import models.OutboundProject;
 import models.Repository;
 
 import play.Logger;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.libs.Json;
-import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 

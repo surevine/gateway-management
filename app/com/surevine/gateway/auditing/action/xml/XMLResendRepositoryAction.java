@@ -1,14 +1,14 @@
 package com.surevine.gateway.auditing.action.xml;
 
 import models.Destination;
-import models.OutboundProject;
+import models.Repository;
 
 import com.surevine.gateway.auditing.action.ResendRepositoryAction;
 
 public class XMLResendRepositoryAction extends ResendRepositoryAction {
 
-	public XMLResendRepositoryAction(OutboundProject project, Destination destination) {
-		super(project, destination);
+	public XMLResendRepositoryAction(Repository repository, Destination destination) {
+		super(repository, destination);
 	}
 
 	@Override
@@ -18,7 +18,7 @@ public class XMLResendRepositoryAction extends ResendRepositoryAction {
 		xml.append("<Export>");
 		xml.append("<Data name=\"action\" value=\"resend\" />");
 		xml.append(String.format("<Data name=\"destinationName\" value=\"%s\" />", destination.name));
-		xml.append(String.format("<Data name=\"repositoryName\" value=\"%s\" />", project.displayName));
+		xml.append(String.format("<Data name=\"repositoryIdentifier\" value=\"%s\" />", repository.identifier));
 		xml.append("</Export>");
 
 		return xml.toString();

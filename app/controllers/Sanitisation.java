@@ -2,7 +2,7 @@ package controllers;
 
 import java.util.Map;
 
-import models.OutboundProject;
+import models.Repository;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -27,14 +27,19 @@ public class Sanitisation extends Controller {
 		MultipartFormData body = request().body().asMultipartFormData();
 		Map<String,String[]> postedProperties = body.asFormUrlEncoded();
 
-		String projectKey = postedProperties.get("projectKey")[0];
-		if(projectKey == null) {
-			return badRequest("projectKey is missing from request");
+		String repoIdentifier = postedProperties.get("repoIdentifier")[0];
+		if(repoIdentifier == null) {
+			return badRequest("identifier is missing from request");
 		}
 
-		String repoSlug = postedProperties.get("repoSlug")[0];
-		if(repoSlug == null) {
-			return badRequest("repoSlug is missing from request");
+		String repoType = postedProperties.get("repoType")[0];
+		if(repoType == null) {
+			return badRequest("repoType is missing from request");
+		}
+		// Sanitisation currently only supports SCM repositories
+		// TODO add support for issue tracking repositories
+		if(repoType != "SCM") {
+			return badRequest("Sanitisation only supports SCM repositories.");
 		}
 
 		String identifier = postedProperties.get("identifier")[0];
@@ -47,21 +52,20 @@ public class Sanitisation extends Controller {
 			return badRequest("Archive is missing from request.");
 		}
 
-		String projectSlug = projectKey + "/" + repoSlug;
-		OutboundProject project = OutboundProject.FIND.where()
-										.ieq("projectKey", projectKey)
-										.ieq("repositorySlug", repoSlug)
-										.findUnique();
-		if(project == null) {
-			return notFound("No project configured with slug: " + projectSlug);
+		Repository repo = Repository.FIND.where()
+											.ieq("repoType", repoType)
+											.ieq("identifier", repoIdentifier)
+											.findUnique();
+		if(repo == null) {
+			return notFound("No repository configured with identifier: " + repoIdentifier);
 		}
 
 		SanitisationResult sanitisationResult;
 		try {
 			sanitisationResult = GitManagedSanitisationServiceImpl.getInstance().sanitise(postedArchive.getFile(),
-																							projectSlug,
+																							repoIdentifier,
 																							identifier,
-																							project.destinations);
+																							repo.destinations);
 		} catch (SanitisationServiceException e) {
 			String errorMessage = "Error executing sanitisation script.";
 			Logger.error(errorMessage, e);

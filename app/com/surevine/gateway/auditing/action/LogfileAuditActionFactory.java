@@ -1,7 +1,7 @@
 package com.surevine.gateway.auditing.action;
 
 import models.Destination;
-import models.OutboundProject;
+import models.Repository;
 
 /**
  * AuditActionFactory producing actions to be audited in logfile
@@ -35,19 +35,19 @@ public class LogfileAuditActionFactory implements AuditActionFactory {
 	}
 
 	@Override
-	public CreateRepositoryAction getCreateRepositoryAction(OutboundProject project) {
-		return new CreateRepositoryAction(project);
+	public CreateRepositoryAction getCreateRepositoryAction(Repository repository) {
+		return new CreateRepositoryAction(repository);
 	}
 
 	@Override
 	public UpdateRepositoryAction getUpdateRepositoryAction(
-			OutboundProject originalProject, OutboundProject updatedProject) {
-		return new UpdateRepositoryAction(originalProject, updatedProject);
+			Repository originalRepo, Repository updatedRepo) {
+		return new UpdateRepositoryAction(originalRepo, updatedRepo);
 	}
 
 	@Override
-	public DeleteRepositoryAction getDeleteRepositoryAction(OutboundProject project) {
-		return new DeleteRepositoryAction(project);
+	public DeleteRepositoryAction getDeleteRepositoryAction(Repository repository) {
+		return new DeleteRepositoryAction(repository);
 	}
 
 	@Override
@@ -63,21 +63,21 @@ public class LogfileAuditActionFactory implements AuditActionFactory {
 	}
 
 	@Override
-	public ShareRepositoryAction getShareRepositoryAction(OutboundProject project,
+	public ShareRepositoryAction getShareRepositoryAction(Repository repository,
 			Destination destination) {
-		return new ShareRepositoryAction(project, destination);
+		return new ShareRepositoryAction(repository, destination);
 	}
 
 	@Override
-	public UnshareRepositoryAction getUnshareRepositoryAction(OutboundProject project,
+	public UnshareRepositoryAction getUnshareRepositoryAction(Repository repository,
 			Destination destination) {
-		return new UnshareRepositoryAction(project, destination);
+		return new UnshareRepositoryAction(repository, destination);
 	}
 
 	@Override
-	public ResendRepositoryAction getResendRepositoryAction(OutboundProject project,
+	public ResendRepositoryAction getResendRepositoryAction(Repository repository,
 			Destination destination) {
-		return new ResendRepositoryAction(project, destination);
+		return new ResendRepositoryAction(repository, destination);
 	}
 
 }

@@ -198,26 +198,6 @@ public class Destinations extends AuditedController {
 
     }
 
-    /**
-     * Display form page to configure sharing issue project with destination
-     * @param destinationId Id of destination
-     * @return
-     */
-	@Security.Authenticated(AppAuthenticator.class)
-    public Result shareIssueProjectPage(Long destinationId) {
-
-    	Destination destination = Destination.FIND.byId(destinationId);
-
-    	if(destination == null) {
-    		return notFound(DESTINATION_NOT_FOUND);
-    	}
-
-    	DynamicForm projectForm = Form.form();
-
-    	return ok(views.html.destinations.shareissueprojects.render(destination, projectForm));
-
-    }
-
 	@Security.Authenticated(AppAuthenticator.class)
     public Result editRules(Long destinationId) {
 

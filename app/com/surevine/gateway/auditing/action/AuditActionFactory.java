@@ -1,7 +1,7 @@
 package com.surevine.gateway.auditing.action;
 
 import models.Destination;
-import models.OutboundProject;
+import models.Repository;
 
 /**
  * @author jonnyheavey
@@ -42,7 +42,7 @@ public interface AuditActionFactory {
 	 * @param project Created project
 	 * @return AuditService specific implementation of CreateRepositoryAction
 	 */
-	CreateRepositoryAction getCreateRepositoryAction(OutboundProject project);
+	CreateRepositoryAction getCreateRepositoryAction(Repository repository);
 
 	/**
 	 * Get an AuditService specific implementation of UpdateRepositoryAction
@@ -50,14 +50,14 @@ public interface AuditActionFactory {
 	 * @param updatedProject Project state before update
 	 * @return AuditService specific implementation of UpdateRepositoryAction
 	 */
-	UpdateRepositoryAction getUpdateRepositoryAction(OutboundProject originalProject, OutboundProject updatedProject);
+	UpdateRepositoryAction getUpdateRepositoryAction(Repository originalRepo, Repository updatedRepo);
 
 	/**
 	 * Get an AuditService specific implementation of DeleteRepositoryAction
 	 * @param project Deleted project
 	 * @return AuditService specific implementation of DeleteRepositoryAction
 	 */
-	DeleteRepositoryAction getDeleteRepositoryAction(OutboundProject project);
+	DeleteRepositoryAction getDeleteRepositoryAction(Repository repository);
 
 	/**
 	 * Get an AuditService specific implementation of ModifyGlobalRulesAction
@@ -81,7 +81,7 @@ public interface AuditActionFactory {
 	 * @param destination Destination the project was shared to
 	 * @return AuditService specific implementation of ShareRepositoryAction
 	 */
-	ShareRepositoryAction getShareRepositoryAction(OutboundProject project, Destination destination);
+	ShareRepositoryAction getShareRepositoryAction(Repository repository, Destination destination);
 
 	/**
 	 * Get an AuditService specific implementation of UnshareRepositoryAction
@@ -89,7 +89,7 @@ public interface AuditActionFactory {
 	 * @param destination Destination the project was unshared from
 	 * @return AuditService specific implementation of UnshareRepositoryAction
 	 */
-	UnshareRepositoryAction getUnshareRepositoryAction(OutboundProject project, Destination destination);
+	UnshareRepositoryAction getUnshareRepositoryAction(Repository repository, Destination destination);
 
 	/**
 	 * Get an AuditService specific implementation of ResendRepositoryAction
@@ -97,6 +97,6 @@ public interface AuditActionFactory {
 	 * @param destination Destination the project was resent to
 	 * @return AuditService specific implementation of ResendRepositoryAction
 	 */
-	ResendRepositoryAction getResendRepositoryAction(OutboundProject project, Destination destination);
+	ResendRepositoryAction getResendRepositoryAction(Repository repository, Destination destination);
 
 }

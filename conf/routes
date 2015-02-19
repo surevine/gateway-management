@@ -10,29 +10,21 @@ GET     /                           	@controllers.Application.index()
 # Destinations
 #
 
-# Destinations list
 GET		/destinations					@controllers.Destinations.list()
 GET		/api/destinations				@controllers.DestinationsAPI.list()
 
-# View destination
 GET		/destinations/:id/view			@controllers.Destinations.view(id: Long)
 
-# Add a destination
 GET		/destinations/add				@controllers.Destinations.add()
 POST	/destinations/add				@controllers.Destinations.create()
 
-# Edit existing destination
 GET		/destinations/:id/edit			@controllers.Destinations.edit(id: Long)
 POST	/destinations/:id/edit			@controllers.Destinations.update(id: Long)
 
-# Delete destination
 POST	/destinations/:id/delete		@controllers.Destinations.delete(id: Long)
 
-# Add project to destination
 GET		/destinations/:id/shareprojects			@controllers.Destinations.shareProjectPage(id: Long)
-GET		/destinations/:id/shareissueprojects	@controllers.Destinations.shareIssueProjectPage(id: Long)
 
-# Edit destination rulefile
 GET		/destinations/:id/editrules		@controllers.Destinations.editRules(id: Long)
 POST	/destinations/:id/editrules		@controllers.Destinations.updateRules(id: Long)
 
@@ -56,129 +48,6 @@ POST	/repositories/:id/delete		@controllers.Repositories.delete(id: Long)
 
 
 #
-# Outbound Projects
-#
-
-# Projects list
-GET		/projects						@controllers.OutboundProjects.list()
-GET		/api/projects					@controllers.OutboundProjectsAPI.list()
-
-# View project
-GET		/projects/view/:id				@controllers.OutboundProjects.view(id: Long)
-GET		/api/projects/view/:id			@controllers.OutboundProjectsAPI.view(id: Long)
-
-# Add a project
-GET		/projects/add					@controllers.OutboundProjects.add()
-POST	/projects/add					@controllers.OutboundProjects.create()
-
-# Edit existing project
-GET		/projects/edit/:id				@controllers.OutboundProjects.edit(id: Long)
-POST	/projects/edit/:id				@controllers.OutboundProjects.update(id: Long)
-
-# Delete project
-POST	/projects/delete/:id			@controllers.OutboundProjects.delete(id: Long)
-
-# Share project with destinations
-GET		/projects/:id/shareproject		@controllers.OutboundProjects.shareProjectPage(id: Long)
-
-
-#
-# Inbound (Whitelisted) projects
-#
-
-# Projects list
-GET		/inbound-projects				@controllers.InboundProjects.list()
-GET		/api/inbound-projects			@controllers.InboundProjectsAPI.list()
-
-# Add a project
-GET		/inbound-projects/add			@controllers.InboundProjects.add()
-POST	/inbound-projects/add			@controllers.InboundProjects.create()
-
-# Edit existing project
-GET		/inbound-projects/edit/:id		@controllers.InboundProjects.edit(id: Long)
-POST	/inbound-projects/edit/:id		@controllers.InboundProjects.update(id: Long)
-
-# Delete project
-POST	/inbound-projects/delete/:id	@controllers.InboundProjects.delete(id: Long)
-
-
-#
-# Outbound IssueProjects
-#
-
-# Projects list
-GET		/issue-projects						@controllers.OutboundIssueProjects.list()
-GET		/api/issue-projects					@controllers.OutboundIssueProjectsAPI.list()
-
-# View project
-GET		/issue-projects/view/:id			@controllers.OutboundIssueProjects.view(id: Long)
-GET		/api/issue-projects/view/:id		@controllers.OutboundIssueProjectsAPI.view(id: Long)
-
-# Add a project
-GET		/issue-projects/add					@controllers.OutboundIssueProjects.add()
-POST	/issue-projects/add					@controllers.OutboundIssueProjects.create()
-
-# Edit existing project
-GET		/issue-projects/edit/:id			@controllers.OutboundIssueProjects.edit(id: Long)
-POST	/issue-projects/edit/:id			@controllers.OutboundIssueProjects.update(id: Long)
-
-# Delete project
-POST	/issue-projects/delete/:id			@controllers.OutboundIssueProjects.delete(id: Long)
-
-# Share project with destinations
-GET		/issue-projects/:id/shareproject		@controllers.OutboundIssueProjects.shareProjectPage(id: Long)
-
-
-#
-# Inbound (Whitelisted) issue projects
-#
-
-# Projects list
-GET		/inbound-issue-projects				@controllers.InboundIssueProjects.list()
-GET		/api/inbound-issue-projects			@controllers.InboundIssueProjectsAPI.list()
-
-# Add a project
-GET		/inbound-issue-projects/add			@controllers.InboundIssueProjects.add()
-POST	/inbound-issue-projects/add			@controllers.InboundIssueProjects.create()
-
-# Edit existing project
-GET		/inbound-issue-projects/edit/:id	@controllers.InboundIssueProjects.edit(id: Long)
-POST	/inbound-issue-projects/edit/:id	@controllers.InboundIssueProjects.update(id: Long)
-
-# Delete project
-POST	/inbound-issue-projects/delete/:id	@controllers.InboundIssueProjects.delete(id: Long)
-
-
-
-#
-# Sharing Partnerships
-#
-
-# Share projects with destination
-POST	/partnerships/create			@controllers.SharingPartnerships.create()
-
-# Remove existing sharing partnership
-POST	/partnerships/delete			@controllers.SharingPartnerships.delete()
-POST	/partnerships/delete-issue		@controllers.SharingPartnerships.deleteIssue()
-
-# Ad-hoc resend repo
-POST	/partnerships/resend			@controllers.SharingPartnerships.resend()
-POST	/partnerships/resend-issue		@controllers.SharingPartnerships.resendIssue()
-
-
-#
-# Global rule files / filters
-#
-
-# View global files
-GET		/global-rules					@controllers.GlobalRuleFiles.view()
-
-# Edit gloal rule files
-GET		/global-rules/edit/:slug		@controllers.GlobalRuleFiles.edit(slug: String)
-POST	/global-rules/edit/:slug		@controllers.GlobalRuleFiles.update(slug: String)
-
-
-#
 # Federation
 #
 
@@ -193,10 +62,18 @@ POST	/federation/resend				@controllers.FederationConfigurations.resend()
 
 
 #
-# Misc
+# Global rule files / filters
 #
 
+GET		/global-rules					@controllers.GlobalRuleFiles.view()
+
+GET		/global-rules/edit/:slug		@controllers.GlobalRuleFiles.edit(slug: String)
+POST	/global-rules/edit/:slug		@controllers.GlobalRuleFiles.update(slug: String)
+
+#
 # Sanitisation
+#
+
 POST	/api/sanitise					@controllers.Sanitisation.sanitise()
 
 # Map static resources from the /public folder to the /assets URL path

@@ -67,20 +67,6 @@ public class Destination extends Model {
 	public String sourceKey;
 
 	/**
-	 * SCM projects configured to be shared with destination
-	 */
-	@ManyToMany(cascade=CascadeType.ALL)
-	@JsonManagedReference
-	public List<OutboundProject> projects = new ArrayList<OutboundProject>();
-
-	/**
-	 * Issue projects configured to be shared with destination
-	 */
-	@ManyToMany(cascade=CascadeType.ALL)
-	@JsonManagedReference
-	public List<OutboundIssueProject> issueProjects = new ArrayList<OutboundIssueProject>();
-
-	/**
 	 * Repositories configured to be shared to/from destination
 	 */
 	@ManyToMany(cascade=CascadeType.ALL)
@@ -110,44 +96,11 @@ public class Destination extends Model {
     	this.url = url;
     }
 
-    public Destination(long id, String name, String url, List<OutboundProject> projects) {
+    public Destination(long id, String name, String url, List<Repository> repositories) {
     	this.id = id;
     	this.name = name;
     	this.url = url;
-    	this.projects = projects;
-    }
-
-    /**
-     * List of all destinations, used by scala helper in templates (to populate select options)
-     * @param project Project that destinations are being added to
-     * @return Map<String, String> option key/values
-     */
-    public static List<Destination> allDestinationShareOptions(OutboundProject project) {
-    	List<Destination> unsharedDestinations = new ArrayList<Destination>();
-
-    	List<Destination> allDestinations = FIND.all();
-
-    	for(Destination destination : allDestinations) {
-    		if(!project.destinations.contains(destination)) {
-    			unsharedDestinations.add(destination);
-    		}
-    	}
-
-    	return unsharedDestinations;
-    }
-
-    public static List<Destination> allDestinationIssueShareOptions(OutboundIssueProject project) {
-    	List<Destination> unsharedDestinations = new ArrayList<Destination>();
-
-    	List<Destination> allDestinations = FIND.all();
-
-    	for(Destination destination : allDestinations) {
-    		if(!project.destinations.contains(destination)) {
-    			unsharedDestinations.add(destination);
-    		}
-    	}
-
-    	return unsharedDestinations;
+    	this.repositories = repositories;
     }
 
     @Override
@@ -163,65 +116,6 @@ public class Destination extends Model {
     	RuleFileManager.getInstance().deleteDestinationRuleFileDirectory(this);
     	super.delete();
     }
-
-    /**
-     * Adds a project to the destination
-     *
-     * @param project project to add
-     */
-    public void addProject(OutboundProject project) {
-    	if(!this.projects.contains(project)) {
-        	this.projects.add(project);
-        	this.update();
-
-        	SCMFederatorServiceFacade.getInstance().distribute(this.id.toString(), project.projectKey, project.repositorySlug);
-    	}
-    }
-
-    /**
-     * Adds an issue project to the destination
-     *
-     * @param project project to add
-     */
-    public void addIssueProject(OutboundIssueProject project) {
-    	if(!this.issueProjects.contains(project)) {
-        	this.issueProjects.add(project);
-        	this.update();
-
-    		try {
-    			// TODO fix / remove this
-				IssueTrackingFederatorServiceFacade.getInstance().distribute(this, null);
-			} catch (FederatorServiceException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-    	}
-    }
-
-    /**
-     * Removes a project from the destination
-     *
-     * @param project project to remove
-     */
-	public void removeProject(OutboundProject project) {
-		if(this.projects.contains(project)) {
-			this.projects.remove(project);
-			this.update();
-		}
-	}
-
-    /**
-     * Removes an issue project from the destination
-     *
-     * @param project project to remove
-     */
-	public void removeIssueProject(OutboundIssueProject project) {
-		if(this.issueProjects.contains(project)) {
-			this.issueProjects.remove(project);
-			this.update();
-		}
-	}
 
 	/**
      * Loads rules for the destination from expected rule-file locations
