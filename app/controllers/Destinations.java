@@ -184,7 +184,7 @@ public class Destinations extends AuditedController {
      * @return
      */
 	@Security.Authenticated(AppAuthenticator.class)
-    public Result shareProjectPage(Long destinationId) {
+    public Result federateRepoPage(Long destinationId) {
 
     	Destination destination = Destination.FIND.byId(destinationId);
 
@@ -192,9 +192,9 @@ public class Destinations extends AuditedController {
     		return notFound(DESTINATION_NOT_FOUND);
     	}
 
-    	DynamicForm projectForm = Form.form();
+    	DynamicForm repoForm = Form.form();
 
-    	return ok(views.html.destinations.shareprojects.render(destination, projectForm));
+    	return ok(views.html.destinations.federaterepo.render(destination, repoForm));
 
     }
 

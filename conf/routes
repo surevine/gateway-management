@@ -23,7 +23,7 @@ POST	/destinations/:id/edit			@controllers.Destinations.update(id: Long)
 
 POST	/destinations/:id/delete		@controllers.Destinations.delete(id: Long)
 
-GET		/destinations/:id/shareprojects			@controllers.Destinations.shareProjectPage(id: Long)
+GET		/destinations/:id/federate-repo			@controllers.Destinations.federateRepoPage(id: Long)
 
 GET		/destinations/:id/editrules		@controllers.Destinations.editRules(id: Long)
 POST	/destinations/:id/editrules		@controllers.Destinations.updateRules(id: Long)
