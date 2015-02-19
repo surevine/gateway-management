@@ -44,7 +44,7 @@
 				</table>
 
 				<h4>Shared repositories <span class="badge">@destination.federationConfigurations.length</span></h4>
-				<a href="@routes.Destinations.shareProjectPage(destination.id)" class="btn btn-primary btn-sm">Share repository</a>
+				<a href="@routes.Destinations.federateRepoPage(destination.id)" class="btn btn-primary btn-sm">Share repository</a>
 
 				<ul class="list-group project-list">
 			    @if(destination.federationConfigurations.isEmpty) {
