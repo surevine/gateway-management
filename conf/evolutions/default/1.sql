@@ -29,12 +29,6 @@ create table repository (
   constraint pk_repository primary key (id))
 ;
 
-
-create table destination_repository (
-  destination_id                 bigint not null,
-  repository_id                  bigint not null,
-  constraint pk_destination_repository primary key (destination_id, repository_id))
-;
 create sequence destination_seq;
 
 create sequence federation_configuration_seq;
@@ -48,15 +42,9 @@ create index ix_federation_configuration_re_2 on federation_configuration (repos
 
 
 
-alter table destination_repository add constraint fk_destination_repository_des_01 foreign key (destination_id) references destination (id);
-
-alter table destination_repository add constraint fk_destination_repository_rep_02 foreign key (repository_id) references repository (id);
-
 # --- !Downs
 
 drop table if exists destination cascade;
-
-drop table if exists destination_repository cascade;
 
 drop table if exists federation_configuration cascade;
 

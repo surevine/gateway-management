@@ -67,13 +67,6 @@ public class Destination extends Model {
 	public String sourceKey;
 
 	/**
-	 * Repositories configured to be shared to/from destination
-	 */
-	@ManyToMany(cascade=CascadeType.ALL)
-	@JsonManagedReference
-	public List<Repository> repositories = new ArrayList<Repository>();
-
-	/**
 	 * Configured repositories to federate to destination
 	 */
 	@OneToMany(cascade=CascadeType.ALL)
@@ -94,13 +87,6 @@ public class Destination extends Model {
     	this.id = id;
     	this.name = name;
     	this.url = url;
-    }
-
-    public Destination(long id, String name, String url, List<Repository> repositories) {
-    	this.id = id;
-    	this.name = name;
-    	this.url = url;
-    	this.repositories = repositories;
     }
 
     @Override

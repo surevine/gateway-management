@@ -8,11 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import play.data.validation.Constraints.MaxLength;
 import play.data.validation.Constraints.Required;
@@ -42,13 +40,6 @@ public class Repository extends Model {
 	public String identifier;
 
 	/**
-	 * Destinations the repository is shared with
-	 */
-	@ManyToMany(mappedBy = "repositories", cascade=CascadeType.ALL)
-	@JsonBackReference
-	public List<Destination> destinations = new ArrayList<Destination>();
-
-	/**
 	 * Configured destinations to federate repo with
 	 */
 	@OneToMany(cascade=CascadeType.ALL)
@@ -73,5 +64,17 @@ public class Repository extends Model {
     	// TODO improve to only include unshared repos
     	return FIND.all();
     }
+
+    /**
+     * Retrieve list of destinations the repository is shared with
+     * @return
+     */
+	public List<Destination> getSharedDestinations() {
+		List<Destination> sharedDestinations = new ArrayList<Destination>();
+		for(FederationConfiguration config : federationConfigurations) {
+			sharedDestinations.add(config.destination);
+		}
+		return sharedDestinations;
+	}
 
 }
