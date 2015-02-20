@@ -110,6 +110,8 @@
 				$('.federation').on('click', function () {
 
 				    var $btn = $(this).button('loading');
+					var configId = $btn.data("configuration-id");
+			  		var direction = $btn.data("direction");
 
 				    // Desired state is inverse of current state (as toggle control)
 				    var setActive = !$btn.hasClass("active");
@@ -123,10 +125,11 @@
 							enable: setActive
 						},
 						success: function(data){
+							var $toggleButtons = $('.federation[data-direction="' + direction + '"][data-configuration-id="'+configId+'"]');
 							if(setActive) {
-								$btn.addClass("active");
+								$toggleButtons.addClass("active");
 							} else {
-								$btn.removeClass("active");
+								$toggleButtons.removeClass("active");
 							}
 						},
 						error: function(data){
