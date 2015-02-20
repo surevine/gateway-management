@@ -6,11 +6,11 @@
 
 @repoCount = @{ Repository.FIND.all().size() }
 
-@repositories =  @{ Repository.allShareOptions(destination) }
+@scmRepos = @{ Repository.getFederationOptions(destination, "SCM") }
 
-@main("Share repositories") {
+@issueRepos = @{ Repository.getFederationOptions(destination, "ISSUE") }
 
-	<p>Please select the repository you wish to share with '@destination.name':</p>
+@main("Federate repository") {
 
 	@if(repoCount == 0) {
 
@@ -25,75 +25,35 @@
 
 	} else {
 
-		@if(repositories.isEmpty) {
+		<h4>Repository Type</h4>
+		<p>Select the type of repository you wish to federate:</p>
 
-			<div class="panel panel-warning">
-			  <div class="panel-heading">
-			    <h3 class="panel-title">All repositories shared</h3>
-			  </div>
-			  <div class="panel-body">
-			    <p>All configured repositories have been shared with this destination. Please <a href="@routes.Repositories.add()">add another repository</a>.</p>
-			  </div>
-			</div>
-
-		} else {
-
-			@form(routes.FederationConfigurations.create(), 'role -> "form") {
-
-				<fieldset>
-
-					<input type="hidden" name="source" value="destination" />
-					<input type="hidden" name="destinationId" value="@destination.id" />
-
-					<h4>Repository</h4>
-					<select name="repositoryId" class="form-control">
-					@for(repo <- repositories) {
-						<option value="@repo.id">@repo.identifier</option>
-					}
-					</select>
-
-					<h4>Federation Type</h4>
-					<div class="radio">
-						<label>
-							<input type="radio" name="federationType" value="bidirectional" checked />
-							<h5>Bi-directional</h5>
-							<p>Allow in both directions</p>
-						</label>
-					</div>
-					<div class="radio">
-						<label>
-							<input type="radio" name="federationType" value="outbound" />
-							<h5>Outbound only</h5>
-							<p>Only allow out</p>
-						</label>
-					</div>
-					<div class="radio">
-						<label>
-							<input type="radio" name="federationType" value="inbound" />
-							<h5>Inbound only</h5>
-							<p>Only allow in</p>
-						</label>
-					</div>
-
-				</fieldset>
-
-				<div class="actions">
-		            <input type="submit" value="Share repository" data-loading-text="Submitting..." class="btn btn-primary submit">
-		            <a href="@routes.Destinations.list()" class="btn btn-default">Cancel</a>
+		<div id="federate-repo-form-panel" role="tabpanel">
+			<ul class="nav nav-pills" role="tablist">
+			    <li role="presentation" class="active"><a href="#scm" aria-controls="scm" role="tab" data-toggle="tab">SCM</a></li>
+			    <li role="presentation"><a href="#issues" aria-controls="issues" role="tab" data-toggle="tab">Issue-tracking</a></li>
+		  	</ul>
+		 	<div class="tab-content">
+			    <div role="tabpanel" class="tab-pane active" id="scm">
+					@utils.renderFederateRepoForm(destination, scmRepos, "SCM")
+			    </div>
+			    <div role="tabpanel" class="tab-pane" id="issues">
+					@utils.renderFederateRepoForm(destination, issueRepos, "Issue-Tracking")
 				</div>
-
-			}
-
-			<script type="text/javascript">
-				$( document ).ready(function() {
-					$('.submit').on('click', function () {
-					    $(this).button('loading');
-					});
-				});
-			</script>
-
-		}
+		    </div>
+	    </div>
 
 	}
+
+	<script type="text/javascript">
+		$( document ).ready(function() {
+			$('.submit').on('click', function () {
+			    $(this).button('loading');
+
+			    // TODO disable pills?
+
+			});
+		});
+	</script>
 
 }

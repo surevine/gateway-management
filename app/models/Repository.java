@@ -10,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.avaje.ebean.Expr;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import play.data.validation.Constraints.MaxLength;
@@ -60,10 +61,25 @@ public class Repository extends Model {
      * List of all projects, used by scala helper in templates (to populate select options)
      * @return Map<String, String> option key/values
      */
-    public static List<Repository> allShareOptions(Destination destination) {
-    	// TODO improve to only include unshared repos
-    	return FIND.all();
+    public static List<Repository> getFederationOptions(Destination destination, String filterType) {
+
+		List<Long> federatedRepositoryIds = new ArrayList<Long>();
+		for(FederationConfiguration config : destination.federationConfigurations) {
+			federatedRepositoryIds.add(config.repository.id);
+		}
+
+    	if(filterType != null) {
+    		RepositoryType repoFilterType = RepositoryType.valueOf(filterType);
+    		return FIND.where()
+    				.not(Expr.in("id", federatedRepositoryIds))
+    				.eq("repoType", repoFilterType).findList();
+    	} else {
+    		return FIND.where().not(Expr.in("id", federatedRepositoryIds)).findList();
+    	}
+
     }
+
+
 
     /**
      * Retrieve list of destinations the repository is shared with
