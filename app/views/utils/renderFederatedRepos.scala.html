@@ -1,0 +1,52 @@
+@(destination: Destination, repoType: String)
+
+@import helper._
+
+@if(destination.federationConfigurations.filter(_.repository.repoType.toString() == repoType || (repoType == "ALL")).isEmpty) {
+  	<div class="alert alert-info no-federation" role="alert">No repositories configured for federation with this destination</div>
+} else {
+	<div class="table-responsive">
+	   	<table class="table">
+	   		<tr>
+	   			<th class="col-md-7">Repository</th>
+	   			<th class="col-md-3">Federation</th>
+	   			<th class="col-md-2">Actions</th>
+	   		</tr>
+
+	    @for(configuration <- destination.federationConfigurations.filter(_.repository.repoType.toString() == repoType || (repoType == "ALL"))) {
+	    	<tr>
+	    		<td>
+		    		@configuration.repository.identifier
+		    		<span class="label label-default">@configuration.repository.repoType</span>
+				</td>
+				<td>
+					<div class="btn-group btn-group-sm" role="group" aria-label="federation-controls" data-toggle="buttons">
+					  <button type="button"
+					  			class="btn btn-default federation @if(configuration.inboundEnabled) { active }"
+					  			data-toggle="button"
+					  			data-loading-text="Loading..."
+					  			data-configuration-id="@configuration.id"
+					  			data-direction="inbound">Inbound</button>
+					  <button type="button"
+					  			class="btn btn-default federation @if(configuration.outboundEnabled) { active }"
+					  			data-toggle="button"
+					  			data-loading-text="Loading..."
+					  			data-configuration-id="@configuration.id"
+					  			data-direction="outbound">Outbound</button>
+					</div>
+				</td>
+				<td>
+					<button type="button" id="resend-@configuration.id" data-loading-text="Sending..." data-configuration-id="@configuration.id" class="btn btn-default btn-sm pull-left resend" autocomplete="off">
+						Resend
+					</button>
+					@form(routes.FederationConfigurations.delete(configuration.id)) {
+						<input type="hidden" name="source" value="destination" />
+				        <input type="submit" value="Unshare" class="btn btn-danger btn-sm pull-left" />
+				    }
+				</td>
+	    	</tr>
+	    }
+
+		</table>
+	</div>
+}

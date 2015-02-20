@@ -27,7 +27,9 @@
 
 			<div class="panel panel-default">
 			  <div class="panel-heading">
-			    <h3 class="panel-title pull-left">@destination.name</h3>
+			    <h3 class="panel-title pull-left">@destination.name
+			    	<span class="badge" data-toggle="tooltip" data-placement="top" title="@destination.federationConfigurations.length repositories federated">@destination.federationConfigurations.length</span>
+			    </h3>
 				<div class="clearfix"></div>
 			  </div>
 			  <div class="panel-body">
@@ -43,49 +45,32 @@
 					</tr>
 				</table>
 
-				<h4>Shared repositories <span class="badge">@destination.federationConfigurations.length</span></h4>
-				<a href="@routes.Destinations.federateRepoPage(destination.id)" class="btn btn-primary btn-sm">Share repository</a>
+				<section class="shared-repos">
+					<h4>Shared repositories</h4>
 
-				<ul class="list-group project-list">
-			    @if(destination.federationConfigurations.isEmpty) {
-			    	<li class="list-group-item list-group-item-warning">No repository federation configured for this destination</li>
-			    } else {
-				    @for(configuration <- destination.federationConfigurations) {
-				    	<li class="list-group-item">
-				    		@configuration.repository.identifier
-				    		<span class="label label-default">@configuration.repository.repoType</span>
-
-							<div class="btn-group btn-group-sm" role="group" aria-label="federation-controls" data-toggle="buttons">
-							  <button type="button"
-							  			class="btn btn-primary federation @if(configuration.inboundEnabled) { active }"
-							  			data-toggle="button"
-							  			data-loading-text="Loading..."
-							  			data-configuration-id="@configuration.id"
-							  			data-direction="inbound">Inbound</button>
-							  <button type="button"
-							  			class="btn btn-primary federation @if(configuration.outboundEnabled) { active }"
-							  			data-toggle="button"
-							  			data-loading-text="Loading..."
-							  			data-configuration-id="@configuration.id"
-							  			data-direction="outbound">Outbound</button>
+					<div role="tabpanel">
+						<ul class="nav nav-tabs" role="tablist">
+						    <li role="presentation" class="active"><a href="#all-@destination.id" aria-controls="all-@destination.id" role="tab" data-toggle="tab">All</a></li>
+						    <li role="presentation"><a href="#scm-@destination.id" aria-controls="scm-@destination.id" role="tab" data-toggle="tab">SCM</a></li>
+						    <li role="presentation"><a href="#issues-@destination.id" aria-controls="issues-@destination.id" role="tab" data-toggle="tab">Issue-tracking</a></li>
+					  	</ul>
+					 	<div class="tab-content">
+						    <div role="tabpanel" class="tab-pane active" id="all-@destination.id">
+								@utils.renderFederatedRepos(destination, "ALL")
+						    </div>
+						    <div role="tabpanel" class="tab-pane" id="scm-@destination.id">
+						    	@utils.renderFederatedRepos(destination, "SCM")
+						    </div>
+						    <div role="tabpanel" class="tab-pane" id="issues-@destination.id">
+								@utils.renderFederatedRepos(destination, "ISSUE")
 							</div>
+					    </div>
+				    </div>
 
-							@form(routes.FederationConfigurations.delete(configuration.id)) {
-								<input type="hidden" name="source" value="destination" />
-						        <input type="submit" value="Unshare" class="btn btn-danger btn-sm pull-right" />
-						    }
-
-						    <button type="button" id="resend-@configuration.id" data-loading-text="Sending..." data-configuration-id="@configuration.id" class="btn btn-default btn-sm pull-right resend" autocomplete="off">
-								Resend
-							</button>
-
-				    	</li>
-				    }
-			    }
-			    </ul>
-
+			    </section>
 			  </div>
 			  <div class="panel-footer">
+			  	<a href="@routes.Destinations.federateRepoPage(destination.id)" class="btn btn-primary btn-sm">Share repository</a>
 			  	<a href="@routes.Destinations.edit(destination.id)" class="btn btn-default btn-sm">Edit destination</a>
 			  	<a href="@routes.Destinations.editRules(destination.id)" class="btn btn-default btn-sm">Configure destination rules</a>
 			  </div>
@@ -95,6 +80,9 @@
 
 	    <script type="text/javascript">
 			$( document ).ready(function() {
+
+				// Initialise tooltips
+				$('[data-toggle="tooltip"]').tooltip();
 
 				// Initialise resend ajax requests
 				$('.resend').on('click', function () {

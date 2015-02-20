@@ -30,6 +30,22 @@ h4 a.btn {
 	display: inline;
 }
 
+.shared-repos {
+	margin: 25px 0 0 0;
+}
+
+.shared-repos .table {
+	margin-bottom: 0;
+}
+
+.shared-repos .table th {
+     border-top: none;
+ }
+
+ .shared-repos .no-federation {
+ 	margin-top: 8px;
+ }
+
 /* Share project pages */
 
 .input-group {
