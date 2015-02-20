@@ -23,56 +23,61 @@
 
     } else {
 
-	    @for(destination <- destinations) {
+    	<div class="panel-group" id="destination-list" role="tablist" aria-multiselectable="true">
+
+	    @for((destination, index) <- destinations.zipWithIndex) {
 
 			<div class="panel panel-default">
-			  <div class="panel-heading">
-			    <h3 class="panel-title pull-left">@destination.name
+			  <div class="panel-heading" role="tab" id="destination-heading-@index">
+			    <h3 class="panel-title pull-left">
+			    	<a data-toggle="collapse" data-parent="#destination-list" href="#destination-@index" aria-expanded="true" aria-controls="destination-@index">@destination.name</a>
 			    	<span class="badge" data-toggle="tooltip" data-placement="top" title="@destination.federationConfigurations.length repositories federated">@destination.federationConfigurations.length</span>
 			    </h3>
 				<div class="clearfix"></div>
 			  </div>
-			  <div class="panel-body">
+			  <div id="destination-@index" class="panel-collapse collapse @if(index == 0) { in }" role="tabpanel" aria-labelledby="destination-heading-@index">
+				  <div class="panel-body">
 
-			  	<table class="destination-info">
-					<tr>
-						<th>URL</th>
-						<td>@destination.url</td>
-					</tr>
-					<tr>
-						<th>Source key</th>
-						<td>@destination.sourceKey</td>
-					</tr>
-				</table>
+				  	<table class="destination-info">
+						<tr>
+							<th>URL</th>
+							<td>@destination.url</td>
+						</tr>
+						<tr>
+							<th>Source key</th>
+							<td>@destination.sourceKey</td>
+						</tr>
+					</table>
 
-				<section class="shared-repos">
-					<h4>Shared repositories</h4>
+					<section class="shared-repos">
+						<h4>Shared repositories</h4>
 
-					<div role="tabpanel">
-						<ul class="nav nav-tabs" role="tablist">
-						    <li role="presentation" class="active"><a href="#all-@destination.id" aria-controls="all-@destination.id" role="tab" data-toggle="tab">All</a></li>
-						    <li role="presentation"><a href="#scm-@destination.id" aria-controls="scm-@destination.id" role="tab" data-toggle="tab">SCM</a></li>
-						    <li role="presentation"><a href="#issues-@destination.id" aria-controls="issues-@destination.id" role="tab" data-toggle="tab">Issue-tracking</a></li>
-					  	</ul>
-					 	<div class="tab-content">
-						    <div role="tabpanel" class="tab-pane active" id="all-@destination.id">
-								@utils.renderFederatedRepos(destination, "ALL")
+						<div role="tabpanel">
+							<ul class="nav nav-tabs" role="tablist">
+							    <li role="presentation" class="active"><a href="#all-@destination.id" aria-controls="all-@destination.id" role="tab" data-toggle="tab">All</a></li>
+							    <li role="presentation"><a href="#scm-@destination.id" aria-controls="scm-@destination.id" role="tab" data-toggle="tab">SCM</a></li>
+							    <li role="presentation"><a href="#issues-@destination.id" aria-controls="issues-@destination.id" role="tab" data-toggle="tab">Issue-tracking</a></li>
+						  	</ul>
+						 	<div class="tab-content">
+							    <div role="tabpanel" class="tab-pane active" id="all-@destination.id">
+									@utils.renderFederatedRepos(destination, "ALL")
+							    </div>
+							    <div role="tabpanel" class="tab-pane" id="scm-@destination.id">
+							    	@utils.renderFederatedRepos(destination, "SCM")
+							    </div>
+							    <div role="tabpanel" class="tab-pane" id="issues-@destination.id">
+									@utils.renderFederatedRepos(destination, "ISSUE")
+								</div>
 						    </div>
-						    <div role="tabpanel" class="tab-pane" id="scm-@destination.id">
-						    	@utils.renderFederatedRepos(destination, "SCM")
-						    </div>
-						    <div role="tabpanel" class="tab-pane" id="issues-@destination.id">
-								@utils.renderFederatedRepos(destination, "ISSUE")
-							</div>
 					    </div>
-				    </div>
 
-			    </section>
-			  </div>
-			  <div class="panel-footer">
-			  	<a href="@routes.Destinations.federateRepoPage(destination.id)" class="btn btn-primary btn-sm">Share repository</a>
-			  	<a href="@routes.Destinations.edit(destination.id)" class="btn btn-default btn-sm">Edit destination</a>
-			  	<a href="@routes.Destinations.editRules(destination.id)" class="btn btn-default btn-sm">Configure destination rules</a>
+				    </section>
+				  </div>
+				  <div class="panel-footer">
+				  	<a href="@routes.Destinations.federateRepoPage(destination.id)" class="btn btn-primary btn-sm">Share repository</a>
+				  	<a href="@routes.Destinations.edit(destination.id)" class="btn btn-default btn-sm">Edit destination</a>
+				  	<a href="@routes.Destinations.editRules(destination.id)" class="btn btn-default btn-sm">Configure destination rules</a>
+				  </div>
 			  </div>
 			</div>
 
