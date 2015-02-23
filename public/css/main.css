@@ -64,6 +64,10 @@ h4 a.btn {
 	margin-top: 3px;
 }
 
+#federate-repo-form-panel .all-configured {
+	margin-top: 28px;
+}
+
 #repo-type-filter {
 	margin-bottom: 0;
 }

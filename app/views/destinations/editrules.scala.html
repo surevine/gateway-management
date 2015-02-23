@@ -7,9 +7,16 @@
 	<script src="@routes.Assets.at("js/syntax-highlighting.js")" type="text/javascript"></script>
 }
 
-@main("Edit destination rules", scripts) {
+@main("Configure destination rules", scripts) {
 
-	<p>Destination: @destination.name</p>
+	<section>
+	<table class="destination-info">
+		<tr>
+			<th>Destination</th>
+			<td>@destination.name (@destination.url)</td>
+		</tr>
+	</table>
+	</section>
 
 	@form(routes.Destinations.updateRules(destination.id), 'role -> "form") {
 

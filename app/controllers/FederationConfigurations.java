@@ -70,6 +70,7 @@ public class FederationConfigurations extends AuditedController {
     	if(destination == null) {
     		return notFound(String.format("Destination with id %s not found.", requestData.get("destinationId")));
     	}
+
     	Repository repo = Repository.FIND.byId(Long.parseLong(requestData.get("repositoryId")));
     	if(repo == null) {
     		return notFound(String.format("Repository with id %s not found.", requestData.get("repositoryId")));
