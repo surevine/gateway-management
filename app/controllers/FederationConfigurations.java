@@ -3,6 +3,8 @@ package controllers;
 import java.util.List;
 import java.util.Map;
 
+import com.surevine.gateway.auditing.Audit;
+import com.surevine.gateway.auditing.action.ResendRepositoryAction;
 import com.surevine.gateway.federation.Federator;
 import com.surevine.gateway.federation.FederatorServiceException;
 
@@ -181,11 +183,15 @@ public class FederationConfigurations extends AuditedController {
 			case "repository":
 				return redirect(routes.Repositories.list());
 			default:
-				return redirect(routes.Destinations.list());
+				return badRequest("Unexpected source value.");
 		}
 
 	}
 
+	/**
+	 *
+	 * @return
+	 */
 	@Security.Authenticated(AppAuthenticator.class)
 	public Result resend() {
 
@@ -206,9 +212,8 @@ public class FederationConfigurations extends AuditedController {
 			return internalServerError(errorMessage);
 		}
 
-    	// TODO audit
-//    	ResendRepositoryAction action = Audit.getResendRepositoryAction(project, destination);
-//    	audit(action);
+    	ResendRepositoryAction action = Audit.getResendRepositoryAction(config.repository, config.destination);
+    	audit(action);
 
         return ok("Resent repository to gateway for export to destination.");
 	}

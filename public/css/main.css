@@ -77,3 +77,17 @@ h4 a.btn {
 .modal-form {
 	display: inline;
 }
+
+/* Global rules */
+
+#view-global-rules .nav-pills {
+	margin: 10px 0;
+}
+
+.rule-file-info {
+	margin: 10px 0;
+}
+
+.rule-file-info th {
+	padding-right: 10px;
+}

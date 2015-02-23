@@ -9,7 +9,12 @@
 
 @main("Edit global " + ruleFileSlug + " rules", scripts) {
 
-	<p>Rule file: global-@(ruleFileSlug).js</p>
+	<table class="rule-file-info">
+		<tr>
+			<th>Rule file</th>
+			<td>global-@(ruleFileSlug).js</td>
+		</tr>
+	</table>
 
 	@if(flash.contains("load-error")) {
 		<div class="alert alert-danger" role="alert"><strong>Error!</strong> @flash.get("load-error")</div>
