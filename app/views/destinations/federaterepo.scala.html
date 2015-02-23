@@ -25,23 +25,25 @@
 
 	} else {
 
-		<h4>Repository Type</h4>
-		<p>Select the type of repository you wish to federate:</p>
+		<section>
+			<h4>Repository Type</h4>
+			<p>Select the type of repository you wish to federate:</p>
 
-		<div id="federate-repo-form-panel" role="tabpanel">
-			<ul class="nav nav-pills" role="tablist">
-			    <li role="presentation" class="active"><a href="#scm" aria-controls="scm" role="tab" data-toggle="tab">SCM</a></li>
-			    <li role="presentation"><a href="#issues" aria-controls="issues" role="tab" data-toggle="tab">Issue-tracking</a></li>
-		  	</ul>
-		 	<div class="tab-content">
-			    <div role="tabpanel" class="tab-pane active" id="scm">
-					@utils.renderFederateRepoForm(destination, scmRepos, "SCM")
+			<div id="federate-repo-form-panel" role="tabpanel">
+				<ul class="nav nav-pills" role="tablist">
+				    <li role="presentation" class="active"><a href="#scm" aria-controls="scm" role="tab" data-toggle="tab">SCM</a></li>
+				    <li role="presentation"><a href="#issues" aria-controls="issues" role="tab" data-toggle="tab">Issue-tracking</a></li>
+			  	</ul>
+			 	<div class="tab-content">
+				    <div role="tabpanel" class="tab-pane active" id="scm">
+						@utils.renderFederateRepoForm(destination, scmRepos, "SCM")
+				    </div>
+				    <div role="tabpanel" class="tab-pane" id="issues">
+						@utils.renderFederateRepoForm(destination, issueRepos, "Issue-tracking")
+					</div>
 			    </div>
-			    <div role="tabpanel" class="tab-pane" id="issues">
-					@utils.renderFederateRepoForm(destination, issueRepos, "Issue-Tracking")
-				</div>
 		    </div>
-	    </div>
+	    </section>
 
 	}
 
@@ -49,9 +51,6 @@
 		$( document ).ready(function() {
 			$('.submit').on('click', function () {
 			    $(this).button('loading');
-
-			    // TODO disable pills?
-
 			});
 		});
 	</script>
