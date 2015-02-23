@@ -9,14 +9,12 @@
 
 @main("Configure destination rules", scripts) {
 
-	<section>
-	<table class="destination-info">
+	<table class="destination-info edit-info">
 		<tr>
 			<th>Destination</th>
 			<td>@destination.name (@destination.url)</td>
 		</tr>
 	</table>
-	</section>
 
 	@form(routes.Destinations.updateRules(destination.id), 'role -> "form") {
 
