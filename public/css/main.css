@@ -24,6 +24,14 @@ h4 a.btn {
 	margin-left: 5px;
 }
 
+/* Dashboard */
+
+.shortcut h2 {
+	text-align: center;
+	margin: 10px 0;
+	font-size: 40px;
+}
+
 /* Destination Pages */
 
 .destination-info th {
