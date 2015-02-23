@@ -171,6 +171,8 @@ public class FederationConfigurations extends AuditedController {
 
 		config.delete();
 
+		flash("success", "Repository unshared with destination.");
+
 		// TODO audit
 
 		switch(requestData.get("source")) {
