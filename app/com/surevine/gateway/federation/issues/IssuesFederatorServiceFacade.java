@@ -43,25 +43,6 @@ public class IssuesFederatorServiceFacade implements FederatorServiceFacade {
 		Logger.info(String.format("Informing issue-federator of new sharing partnership %s [%s]",
 				repository.identifier, ISSUE_FEDERATOR_API_BASE_URL + ISSUE_FEDERATOR_API_DISTRIBUTE_PATH));
 
-		Promise<WSResponse> promise = postDistributionRequest(destination.id, repository.identifier);
-
-    	promise.onFailure(new Callback<Throwable>(){
-			@Override
-			public void invoke(Throwable t) throws Throwable {
-				Logger.warn("Unable to inform issue-federator of new sharing partnership.", t);
-				throw new FederatorServiceException("Unable to inform issue-federator of new sharing partnership.", t);
-			}
-    	});
-
-	}
-
-	@Override
-	public void resend(Destination destination, Repository repository)
-			throws FederatorServiceException {
-
-		Logger.info(String.format("Requesting redistribution of issue repository (%s) by issue federator [%s]",
-				repository.identifier, ISSUE_FEDERATOR_API_BASE_URL + ISSUE_FEDERATOR_API_DISTRIBUTE_PATH));
-
     	Promise<WSResponse> promise = postDistributionRequest(destination.id, repository.identifier);
 
     	WSResponse response;
@@ -75,7 +56,7 @@ public class IssuesFederatorServiceFacade implements FederatorServiceFacade {
 
     	if(response.getStatus() != OK) {
     		Logger.warn(String.format("Issue Federator service returned non-ok response: %s, %s", response.getStatus(), response.getStatusText()));
-    		throw new FederatorServiceException(String.format("Error response %s from resend repository request. %s.",
+    		throw new FederatorServiceException(String.format("Error response %s from distribute repository request. %s.",
     															response.getStatus(),
     															response.getBody()));
     	}

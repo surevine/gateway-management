@@ -48,35 +48,9 @@ public class SCMFederatorServiceFacade implements FederatorServiceFacade {
 	}
 
 	@Override
-	public void distribute(Destination destination, Repository repository) {
+	public void distribute(Destination destination, Repository repository) throws FederatorServiceException {
 
-		Logger.info(String.format("Informing scm-federator of new sharing partnership %s [%s]", repository.identifier, SCM_FEDERATOR_API_BASE_URL + SCM_FEDERATOR_API_DISTRIBUTE_PATH));
-
-		Promise<WSResponse> promise = postDistributionRequest(destination.id, repository.identifier);
-
-    	promise.onFailure(new Callback<Throwable>(){
-			@Override
-			public void invoke(Throwable t) throws Throwable {
-				Logger.warn("Unable to inform scm-federator of new sharing partnership.", t);
-				throw new FederatorServiceException("Unable to inform scm-federator of new sharing partnership.", t);
-			}
-    	});
-
-	}
-
-	/**
-	 * Instruct federator to perform ad-hoc redistribution of project to destination.
-	 * This method performs synchronous request response is required.
-	 *
-	 * @param destinationId
-	 * @param projectKey
-	 * @param repoSlug
-	 * @throws FederatorServiceException
-	 * @throws Exception
-	 */
-	public void resend(Destination destination, Repository repository) throws FederatorServiceException {
-
-		Logger.info(String.format("Requesting redistribution of repo (%s) by scm federator [%s]",
+		Logger.info(String.format("Requesting distribution of repo (%s) by scm-federator [%s]",
 				repository.identifier, SCM_FEDERATOR_API_BASE_URL + SCM_FEDERATOR_API_DISTRIBUTE_PATH));
 
     	Promise<WSResponse> promise = postDistributionRequest(destination.id, repository.identifier);
@@ -85,14 +59,14 @@ public class SCMFederatorServiceFacade implements FederatorServiceFacade {
     	try {
         	response = promise.get(REQUEST_TIMEOUT);
     	} catch(Exception e) {
-    		String errorMessage = "Error connecting to SCM federator service.";
+    		String errorMessage = "Error connecting to scm-federator service.";
     		Logger.warn(errorMessage, e);
     		throw new FederatorServiceException(errorMessage, e);
     	}
 
     	if(response.getStatus() != OK) {
     		Logger.warn(String.format("SCM Federator service returned non-ok response: %s, %s", response.getStatus(), response.getStatusText()));
-    		throw new FederatorServiceException(String.format("Error response %s from resend repository request. %s.",
+    		throw new FederatorServiceException(String.format("Error response %s from distribute repository request. %s.",
     															response.getStatus(),
     															response.getBody()));
     	}

@@ -104,14 +104,13 @@ public class FederationConfigurations extends AuditedController {
     	FederationConfiguration config = new FederationConfiguration(destination, repo, inboundEnabled, outboundEnabled);
     	config.save();
 
-    	// TODO maybe no need for the abstract class if only ever used here?
     	try {
 			Federator.distribute(destination, repo);
 		} catch (FederatorServiceException e) {
-			String errorMessage = String.format("Failed to distribute repository to destination.",
+			String errorMessage = String.format("Failed to distribute repository to destination. Distribution will be reattempted at the next configured federation interval.",
 									destination.name, repo.identifier);
 			Logger.error(errorMessage, e);
-			return internalServerError(errorMessage);
+			flash("error", errorMessage);
 		}
 
     	// TODO audit
@@ -196,27 +195,20 @@ public class FederationConfigurations extends AuditedController {
     		return notFound(String.format("FederationConfiguration with id %s not found.", id));
     	}
 
-    	// TODO conditionally select federator based on repo type, and resend
-
-    	/*
-    	 * Federator.resend(repository, destination)
-    	 * Federator inspects repository type, selects federator implementation and sends
-    	 */
-
-//    	try {
-//        	scmFederator.resend(config.destination.id.toString(), config.repository.identifier);
-//    	} catch(SCMFederatorServiceException e) {
-//    		String errorMessage = "Failed to resend project to destination.";
-//    		Logger.error(errorMessage, e);
-//    		return internalServerError(errorMessage);
-//    	}
+    	try {
+			Federator.distribute(config.destination, config.repository);
+		} catch (FederatorServiceException e) {
+			String errorMessage = String.format("Failed to resend repository to destination.",
+					config.destination.name, config.repository.identifier);
+			Logger.error(errorMessage, e);
+			return internalServerError(errorMessage);
+		}
 
     	// TODO audit
 //    	ResendRepositoryAction action = Audit.getResendRepositoryAction(project, destination);
 //    	audit(action);
 
         return ok("Resent repository to gateway for export to destination.");
-
 	}
 
 }
