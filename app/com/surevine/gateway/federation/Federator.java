@@ -1,6 +1,7 @@
 package com.surevine.gateway.federation;
 
 import com.surevine.gateway.federation.issues.IssuesFederatorServiceFacade;
+import com.surevine.gateway.federation.scm.SCMFederatorServiceFacade;
 
 import models.Destination;
 import models.Repository;
@@ -11,7 +12,7 @@ public abstract class Federator {
 
 		switch(repository.repoType) {
 			case SCM:
-				// TODO refactor / move SCM federator and add support!
+				SCMFederatorServiceFacade.getInstance().distribute(destination, repository);
 				break;
 			case ISSUE:
 				IssuesFederatorServiceFacade.getInstance().distribute(destination, repository);

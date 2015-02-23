@@ -18,8 +18,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.surevine.gateway.federation.FederatorServiceException;
 import com.surevine.gateway.federation.issues.IssuesFederatorServiceFacade;
+import com.surevine.gateway.federation.scm.SCMFederatorServiceFacade;
 import com.surevine.gateway.rules.RuleFileManager;
-import com.surevine.gateway.scm.service.SCMFederatorServiceFacade;
 import com.typesafe.config.ConfigFactory;
 
 import play.data.validation.Constraints.MaxLength;

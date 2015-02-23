@@ -1,6 +1,8 @@
-package com.surevine.gateway.scm.service;
+package com.surevine.gateway.federation.scm;
 
 import static play.mvc.Http.Status.OK;
+import models.Destination;
+import models.Repository;
 
 import play.Logger;
 import play.libs.F.Callback;
@@ -8,6 +10,8 @@ import play.libs.F.Promise;
 import play.libs.ws.WS;
 import play.libs.ws.WSResponse;
 
+import com.surevine.gateway.federation.FederatorServiceException;
+import com.surevine.gateway.federation.FederatorServiceFacade;
 import com.typesafe.config.ConfigFactory;
 
 /**
@@ -16,7 +20,7 @@ import com.typesafe.config.ConfigFactory;
  * @author jonnyheavey
  *
  */
-public class SCMFederatorServiceFacade {
+public class SCMFederatorServiceFacade implements FederatorServiceFacade {
 
 	/**
 	 * Default request timeout in milliseconds
@@ -43,24 +47,18 @@ public class SCMFederatorServiceFacade {
 		return _instance;
 	}
 
-	/**
-	 * Instruct federator to perform distribution of project to destination.
-	 * Asynchronous 'fire and forget' request.
-	 *
-	 * @param destinationId Id of destination to transfer project to
-	 * @param projectKey project key slug of project's SCM URL
-	 * @param repoSlug repository slug of project's SCM URL
-	 */
-	public void distribute(String destinationId, String projectKey, String repoSlug) {
+	@Override
+	public void distribute(Destination destination, Repository repository) {
 
-		Logger.info(String.format("Informing SCM component of new sharing partnership %s/%s [%s]", projectKey, repoSlug, SCM_FEDERATOR_API_BASE_URL + SCM_FEDERATOR_API_DISTRIBUTE_PATH));
+		Logger.info(String.format("Informing scm-federator of new sharing partnership %s [%s]", repository.identifier, SCM_FEDERATOR_API_BASE_URL + SCM_FEDERATOR_API_DISTRIBUTE_PATH));
 
-		Promise<WSResponse> promise = postDistributionRequest(destinationId, projectKey, repoSlug);
+		Promise<WSResponse> promise = postDistributionRequest(destination.id, repository.identifier);
 
     	promise.onFailure(new Callback<Throwable>(){
 			@Override
 			public void invoke(Throwable t) throws Throwable {
-				Logger.warn("Unable to inform SCM federation component of new sharing partnership. " + t.getMessage());
+				Logger.warn("Unable to inform scm-federator of new sharing partnership.", t);
+				throw new FederatorServiceException("Unable to inform issue-federator of new sharing partnership.", t);
 			}
     	});
 
@@ -73,14 +71,15 @@ public class SCMFederatorServiceFacade {
 	 * @param destinationId
 	 * @param projectKey
 	 * @param repoSlug
+	 * @throws FederatorServiceException
 	 * @throws Exception
 	 */
-	public void resend(String destinationId, String projectKey, String repoSlug) throws SCMFederatorServiceException {
+	public void resend(Destination destination, Repository repository) throws FederatorServiceException {
 
-		Logger.info(String.format("Requesting redistribution of repo (%s/%s) by SCM component [%s]",
-				projectKey, repoSlug, SCM_FEDERATOR_API_BASE_URL + SCM_FEDERATOR_API_DISTRIBUTE_PATH));
+		Logger.info(String.format("Requesting redistribution of repo (%s) by scm federator [%s]",
+				repository.identifier, SCM_FEDERATOR_API_BASE_URL + SCM_FEDERATOR_API_DISTRIBUTE_PATH));
 
-    	Promise<WSResponse> promise = postDistributionRequest(destinationId, projectKey, repoSlug);
+    	Promise<WSResponse> promise = postDistributionRequest(destination.id, repository.identifier);
 
     	WSResponse response;
     	try {
@@ -88,12 +87,12 @@ public class SCMFederatorServiceFacade {
     	} catch(Exception e) {
     		String errorMessage = "Error connecting to SCM federator service.";
     		Logger.warn(errorMessage, e);
-    		throw new SCMFederatorServiceException(errorMessage, e);
+    		throw new FederatorServiceException(errorMessage, e);
     	}
 
     	if(response.getStatus() != OK) {
     		Logger.warn(String.format("SCM Federator service returned non-ok response: %s, %s", response.getStatus(), response.getStatusText()));
-    		throw new SCMFederatorServiceException(String.format("Error response %s from resend repository request. %s.",
+    		throw new FederatorServiceException(String.format("Error response %s from resend repository request. %s.",
     															response.getStatus(),
     															response.getBody()));
     	}
@@ -108,12 +107,11 @@ public class SCMFederatorServiceFacade {
 	 * @param repoSlug
 	 * @return
 	 */
-	private Promise<WSResponse> postDistributionRequest(String destinationId, String projectKey, String repoSlug) {
+	private Promise<WSResponse> postDistributionRequest(Long destinationId, String identifier) {
 		return WS.url(SCM_FEDERATOR_API_BASE_URL + SCM_FEDERATOR_API_DISTRIBUTE_PATH)
 				.setTimeout(REQUEST_TIMEOUT)
-				.setQueryParameter("destination", destinationId)
-    			.setQueryParameter("projectKey", projectKey)
-    			.setQueryParameter("repositorySlug", repoSlug)
+				.setQueryParameter("destination", destinationId.toString())
+    			.setQueryParameter("identifier", identifier)
     			.setContentType("application/json")
     			.post("");
 	}

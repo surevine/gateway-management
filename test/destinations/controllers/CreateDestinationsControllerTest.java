@@ -38,7 +38,7 @@ public class CreateDestinationsControllerTest extends DestinationTest {
 	public void testCreateDestination() {
 		Result result = postCreateDestination(TEST_NEW_DESTINATION_NAME, TEST_NEW_DESTINATION_URL);
 
-		// Expect 303 as implementation redirects to 'view' page
+		// Expect 303 as implementation redirects to 'list' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
 
 		Destination destination = Destination.FIND.where()
@@ -90,6 +90,9 @@ public class CreateDestinationsControllerTest extends DestinationTest {
 		Map<String,String> formData = new HashMap<String,String>();
 		formData.put("name", name);
 		formData.put("url", url);
+
+		// TODO incorporate this field in the tests
+		formData.put("sourceKey", "blank");
 
 		FakeRequest request = new FakeRequest(POST, "/destinations/add");
 		Result result = callAction(controllers.routes.ref.Destinations.create(), request.withFormUrlEncodedBody(formData));
