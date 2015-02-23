@@ -58,7 +58,7 @@ public class SCMFederatorServiceFacade implements FederatorServiceFacade {
 			@Override
 			public void invoke(Throwable t) throws Throwable {
 				Logger.warn("Unable to inform scm-federator of new sharing partnership.", t);
-				throw new FederatorServiceException("Unable to inform issue-federator of new sharing partnership.", t);
+				throw new FederatorServiceException("Unable to inform scm-federator of new sharing partnership.", t);
 			}
     	});
 

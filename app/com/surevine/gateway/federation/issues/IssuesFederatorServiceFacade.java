@@ -80,7 +80,6 @@ public class IssuesFederatorServiceFacade implements FederatorServiceFacade {
     															response.getBody()));
     	}
 
-
 	}
 
 	/**
