@@ -1,4 +1,4 @@
-package com.surevine.gateway.federation.issuetracking;
+package com.surevine.gateway.federation.issues;
 
 import static play.mvc.Http.Status.OK;
 import models.Destination;
@@ -13,25 +13,25 @@ import com.surevine.gateway.federation.FederatorServiceException;
 import com.surevine.gateway.federation.FederatorServiceFacade;
 import com.typesafe.config.ConfigFactory;
 
-public class IssueTrackingFederatorServiceFacade implements FederatorServiceFacade {
+public class IssuesFederatorServiceFacade implements FederatorServiceFacade {
 
 	private static final String ISSUE_FEDERATOR_API_BASE_URL = ConfigFactory.load().getString("issue.federator.api.base.url");
-	private static final String ISSUE_FEDERATOR_API_DISTRIBUTE_PATH = "/distribute";
+	private static final String ISSUE_FEDERATOR_API_DISTRIBUTE_PATH = "/api/distribute";
 
 	/**
 	 * Default request timeout in milliseconds
 	 */
 	private static final int REQUEST_TIMEOUT = 10000;
 
-	private static IssueTrackingFederatorServiceFacade _instance = null;
+	private static IssuesFederatorServiceFacade _instance = null;
 
-	private IssueTrackingFederatorServiceFacade() {
+	private IssuesFederatorServiceFacade() {
 
 	}
 
-	public static IssueTrackingFederatorServiceFacade getInstance() {
+	public static IssuesFederatorServiceFacade getInstance() {
 		if(_instance == null) {
-			_instance = new IssueTrackingFederatorServiceFacade();
+			_instance = new IssuesFederatorServiceFacade();
 		}
 		return _instance;
 	}
@@ -74,7 +74,7 @@ public class IssueTrackingFederatorServiceFacade implements FederatorServiceFaca
     	}
 
     	if(response.getStatus() != OK) {
-    		Logger.warn(String.format("ISsue Federator service returned non-ok response: %s, %s", response.getStatus(), response.getStatusText()));
+    		Logger.warn(String.format("Issue Federator service returned non-ok response: %s, %s", response.getStatus(), response.getStatusText()));
     		throw new FederatorServiceException(String.format("Error response %s from resend repository request. %s.",
     															response.getStatus(),
     															response.getBody()));

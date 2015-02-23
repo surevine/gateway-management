@@ -1,6 +1,6 @@
 package com.surevine.gateway.federation;
 
-import com.surevine.gateway.federation.issuetracking.IssueTrackingFederatorServiceFacade;
+import com.surevine.gateway.federation.issues.IssuesFederatorServiceFacade;
 
 import models.Destination;
 import models.Repository;
@@ -14,7 +14,7 @@ public abstract class Federator {
 				// TODO refactor / move SCM federator and add support!
 				break;
 			case ISSUE:
-				IssueTrackingFederatorServiceFacade.getInstance().distribute(destination, repository);
+				IssuesFederatorServiceFacade.getInstance().distribute(destination, repository);
 				break;
 			default:
 				throw new FederatorServiceException("Unexpected repository type. Cannot distribute.");
