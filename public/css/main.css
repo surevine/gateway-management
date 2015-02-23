@@ -60,6 +60,14 @@ h4 a.btn {
 	margin: 0px 0 10px 0;
 }
 
+#federate-repo-form-panel .radio h5 {
+	margin-top: 3px;
+}
+
+#repo-type-filter {
+	margin-bottom: 0;
+}
+
 /* Form controls */
 
 .modal-form {

@@ -26,24 +26,28 @@
 	} else {
 
 		<section>
-			<h4>Repository Type</h4>
-			<p>Select the type of repository you wish to federate:</p>
+			<h4>Destination</h4>
+			<p>@destination.name (@destination.url)</p>
+		</section>
 
-			<div id="federate-repo-form-panel" role="tabpanel">
+		<div id="federate-repo-form-panel" role="tabpanel">
+			<section id="repo-type-filter">
+				<h4>Repository Type</h4>
+				<p>Select the type of repository you wish to federate:</p>
 				<ul class="nav nav-pills" role="tablist">
 				    <li role="presentation" class="active"><a href="#scm" aria-controls="scm" role="tab" data-toggle="tab">SCM</a></li>
 				    <li role="presentation"><a href="#issues" aria-controls="issues" role="tab" data-toggle="tab">Issue-tracking</a></li>
 			  	</ul>
-			 	<div class="tab-content">
-				    <div role="tabpanel" class="tab-pane active" id="scm">
-						@utils.renderFederateRepoForm(destination, scmRepos, "SCM")
-				    </div>
-				    <div role="tabpanel" class="tab-pane" id="issues">
-						@utils.renderFederateRepoForm(destination, issueRepos, "Issue-tracking")
-					</div>
+		  	</section>
+		 	<div class="tab-content">
+			    <div role="tabpanel" class="tab-pane fade in active" id="scm">
+					@utils.renderFederateRepoForm(destination, scmRepos, "SCM")
 			    </div>
+			    <div role="tabpanel" class="tab-pane fade" id="issues">
+					@utils.renderFederateRepoForm(destination, issueRepos, "Issue-tracking")
+				</div>
 		    </div>
-	    </section>
+	    </div>
 
 	}
 
