@@ -57,13 +57,13 @@
 							    <li role="presentation"><a href="#issues-@destination.id" aria-controls="issues-@destination.id" role="tab" data-toggle="tab">Issue-tracking</a></li>
 						  	</ul>
 						 	<div class="tab-content">
-							    <div role="tabpanel" class="tab-pane active" id="all-@destination.id">
+							    <div role="tabpanel" class="tab-pane fade in active" id="all-@destination.id">
 									@utils.renderFederatedRepos(destination, "ALL")
 							    </div>
-							    <div role="tabpanel" class="tab-pane" id="scm-@destination.id">
+							    <div role="tabpanel" class="tab-pane fade" id="scm-@destination.id">
 							    	@utils.renderFederatedRepos(destination, "SCM")
 							    </div>
-							    <div role="tabpanel" class="tab-pane" id="issues-@destination.id">
+							    <div role="tabpanel" class="tab-pane fade" id="issues-@destination.id">
 									@utils.renderFederatedRepos(destination, "ISSUE")
 								</div>
 						    </div>
