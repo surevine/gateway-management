@@ -14,7 +14,7 @@ public class ModifyDestinationRulesAction implements AuditAction {
 
 	@Override
 	public String getDescription() {
-		return String.format("Updated destination %s(%s) rules.",
+		return String.format("Updated destination [%s][%s] export rules.",
 								destination.name,
 								destination.url);
 	}

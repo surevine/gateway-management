@@ -14,7 +14,8 @@ public class UpdateRepositoryAction implements AuditAction {
 
 	@Override
 	public String getDescription() {
-		return String.format("Updated repository (%s)",
+		return String.format("Updated repository [%s][%s]",
+								updatedRepository.repoType,
 								updatedRepository.identifier);
 	}
 

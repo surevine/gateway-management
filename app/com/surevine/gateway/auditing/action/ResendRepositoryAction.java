@@ -15,7 +15,8 @@ public class ResendRepositoryAction implements AuditAction {
 
 	@Override
 	public String getDescription() {
-		return String.format("Resent repository (%s) to gateway for export to destination %s(%s)",
+		return String.format("Resent repository [%s][%s] to gateway for export to destination [%s][%s]",
+								repository.repoType,
 								repository.identifier,
 								destination.name,
 								destination.url);

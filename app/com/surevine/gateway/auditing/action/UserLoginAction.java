@@ -10,7 +10,7 @@ public class UserLoginAction implements AuditAction {
 
 	@Override
 	public String getDescription() {
-		return String.format("%s logged in.", username);
+		return String.format("[%s] logged in.", username);
 	}
 
 	@Override

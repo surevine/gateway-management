@@ -12,7 +12,8 @@ public class DeleteRepositoryAction implements AuditAction {
 
 	@Override
 	public String getDescription() {
-		return String.format("Deleted repository (%s)",
+		return String.format("Deleted repository [%s][%s]",
+								repository.repoType,
 								repository.identifier);
 	}
 
