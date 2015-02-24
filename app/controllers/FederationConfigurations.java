@@ -5,6 +5,9 @@ import java.util.Map;
 
 import com.surevine.gateway.auditing.Audit;
 import com.surevine.gateway.auditing.action.ResendRepositoryAction;
+import com.surevine.gateway.auditing.action.ShareRepositoryAction;
+import com.surevine.gateway.auditing.action.UnshareRepositoryAction;
+import com.surevine.gateway.auditing.action.UpdateFederationAction;
 import com.surevine.gateway.federation.Federator;
 import com.surevine.gateway.federation.FederatorServiceException;
 
@@ -115,9 +118,8 @@ public class FederationConfigurations extends AuditedController {
 			flash("error", errorMessage);
 		}
 
-    	// TODO audit
-//    	ShareRepositoryAction action = Audit.getShareRepositoryAction(project, destination);
-//    	audit(action);
+    	ShareRepositoryAction action = Audit.getShareRepositoryAction(config);
+    	audit(action);
 
     	switch(requestData.get("source")) {
     		case "destination":
@@ -156,7 +158,8 @@ public class FederationConfigurations extends AuditedController {
 
 		config.update();
 
-		// TODO audit
+		UpdateFederationAction action = Audit.getUpdateFederationAction(config, requestData.get("direction"), setActive);
+		audit(action);
 
 		return ok();
 	}
@@ -175,7 +178,8 @@ public class FederationConfigurations extends AuditedController {
 
 		flash("success", "Repository unshared with destination.");
 
-		// TODO audit
+		UnshareRepositoryAction action = Audit.getUnshareRepositoryAction(config);
+		audit(action);
 
 		switch(requestData.get("source")) {
 			case "destination":
