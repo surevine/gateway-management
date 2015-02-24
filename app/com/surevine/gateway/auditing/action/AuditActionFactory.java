@@ -99,4 +99,14 @@ public interface AuditActionFactory {
 	 */
 	ResendRepositoryAction getResendRepositoryAction(Repository repository, Destination destination);
 
+	/**
+	 * Get an AuditService specific implementation of the ToggleFederationAction
+	 * @param repository repository being federated
+	 * @param destination the destination the repo is federated with
+	 * @param direction the direction of federation
+	 * @param enabled whether federation has been enabled or disabled
+	 * @return
+	 */
+	ToggleFederationAction getToggleFederationAction(Repository repository, Destination destination, String direction, boolean enabled);
+
 }

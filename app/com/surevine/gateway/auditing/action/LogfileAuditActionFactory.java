@@ -80,4 +80,11 @@ public class LogfileAuditActionFactory implements AuditActionFactory {
 		return new ResendRepositoryAction(repository, destination);
 	}
 
+	@Override
+	public ToggleFederationAction getToggleFederationAction(
+			Repository repository, Destination destination, String direction,
+			boolean enabled) {
+		return new ToggleFederationAction(repository, destination, direction, enabled);
+	}
+
 }
