@@ -81,7 +81,8 @@ public class Repositories extends AuditedController {
     	Repository repo = repoForm.get();
     	repo.save();
 
-    	// TODO audit action
+    	CreateRepositoryAction action = Audit.getCreateRepositoryAction(repo);
+    	audit(action);
 
     	flash("success", "Repository created successfully.");
     	return redirect(routes.Repositories.list());
@@ -132,7 +133,8 @@ public class Repositories extends AuditedController {
     	Repository updatedRepo = repoForm.get();
     	updatedRepo.update(id);
 
-    	// TODO audit
+    	UpdateRepositoryAction action = Audit.getUpdateRepositoryAction(originalRepo, updatedRepo);
+    	audit(action);
 
     	flash("success", "Repository updated successfully.");
     	return redirect(routes.Repositories.list());
@@ -154,7 +156,8 @@ public class Repositories extends AuditedController {
 
     	repo.delete();
 
-    	// TODO audit
+    	DeleteRepositoryAction action = Audit.getDeleteRepositoryAction(repo);
+    	audit(action);
 
     	flash("success", "Repository deleted successfully.");
     	return redirect(routes.Repositories.list());
