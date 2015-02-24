@@ -212,7 +212,7 @@ public class FederationConfigurations extends AuditedController {
 			return internalServerError(errorMessage);
 		}
 
-    	ResendRepositoryAction action = Audit.getResendRepositoryAction(config.repository, config.destination);
+    	ResendRepositoryAction action = Audit.getResendRepositoryAction(config);
     	audit(action);
 
         return ok("Resent repository to gateway for export to destination.");

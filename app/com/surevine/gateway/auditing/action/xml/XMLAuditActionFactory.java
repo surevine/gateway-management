@@ -1,6 +1,7 @@
 package com.surevine.gateway.auditing.action.xml;
 
 import models.Destination;
+import models.FederationConfiguration;
 import models.Repository;
 
 import com.surevine.gateway.auditing.action.AuditActionFactory;
@@ -78,21 +79,18 @@ public class XMLAuditActionFactory implements AuditActionFactory {
 	}
 
 	@Override
-	public ShareRepositoryAction getShareRepositoryAction(Repository repository,
-			Destination destination) {
-		return new XMLShareRepositoryAction(repository, destination);
+	public ShareRepositoryAction getShareRepositoryAction(FederationConfiguration config) {
+		return new XMLShareRepositoryAction(config);
 	}
 
 	@Override
-	public UnshareRepositoryAction getUnshareRepositoryAction(Repository repository,
-			Destination destination) {
-		return new XMLUnshareRepositoryAction(repository, destination);
+	public UnshareRepositoryAction getUnshareRepositoryAction(FederationConfiguration config) {
+		return new XMLUnshareRepositoryAction(config);
 	}
 
 	@Override
-	public ResendRepositoryAction getResendRepositoryAction(Repository repository,
-			Destination destination) {
-		return new XMLResendRepositoryAction(repository, destination);
+	public ResendRepositoryAction getResendRepositoryAction(FederationConfiguration config) {
+		return new XMLResendRepositoryAction(config);
 	}
 
 	@Override

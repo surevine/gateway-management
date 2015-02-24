@@ -1,25 +1,22 @@
 package com.surevine.gateway.auditing.action;
 
-import models.Destination;
-import models.Repository;
+import models.FederationConfiguration;
 
 public class UnshareRepositoryAction implements AuditAction {
 
-	protected Repository repository;
-	protected Destination destination;
+	protected FederationConfiguration config;
 
-	public UnshareRepositoryAction(Repository repository, Destination destination) {
-		this.repository = repository;
-		this.destination = destination;
+	public UnshareRepositoryAction(FederationConfiguration config) {
+		this.config = config;
 	}
 
 	@Override
 	public String getDescription() {
 		return String.format("Unshared repository [%s][%s] with destination [%s][%s]",
-								repository.repoType,
-								repository.identifier,
-								destination.name,
-								destination.url);
+								config.repository.repoType,
+								config.repository.identifier,
+								config.destination.name,
+								config.destination.url);
 	}
 
 	@Override

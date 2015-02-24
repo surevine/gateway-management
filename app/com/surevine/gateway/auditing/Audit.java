@@ -1,6 +1,7 @@
 package com.surevine.gateway.auditing;
 
 import models.Destination;
+import models.FederationConfiguration;
 import models.Repository;
 
 import com.surevine.gateway.auditing.action.AuditActionFactory;
@@ -120,19 +121,16 @@ public abstract class Audit {
 		return getAuditActionFactory().getDeleteRepositoryAction(repository);
 	}
 
-	public static UnshareRepositoryAction getUnshareRepositoryAction(
-			Repository repository, Destination destination) {
-		return getAuditActionFactory().getUnshareRepositoryAction(repository, destination);
+	public static UnshareRepositoryAction getUnshareRepositoryAction(FederationConfiguration config) {
+		return getAuditActionFactory().getUnshareRepositoryAction(config);
 	}
 
-	public static ResendRepositoryAction getResendRepositoryAction(
-			Repository repository, Destination destination) {
-		return getAuditActionFactory().getResendRepositoryAction(repository, destination);
+	public static ResendRepositoryAction getResendRepositoryAction(FederationConfiguration config) {
+		return getAuditActionFactory().getResendRepositoryAction(config);
 	}
 
-	public static ShareRepositoryAction getShareRepositoryAction(
-			Repository repository, Destination destination) {
-		return getAuditActionFactory().getShareRepositoryAction(repository, destination);
+	public static ShareRepositoryAction getShareRepositoryAction(FederationConfiguration config) {
+		return getAuditActionFactory().getShareRepositoryAction(config);
 	}
 
 	public static UserLoginAction getUserLoginAction(String authenticatedUser) {

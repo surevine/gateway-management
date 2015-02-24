@@ -1,6 +1,7 @@
 package com.surevine.gateway.auditing.action;
 
 import models.Destination;
+import models.FederationConfiguration;
 import models.Repository;
 
 /**
@@ -81,7 +82,7 @@ public interface AuditActionFactory {
 	 * @param destination Destination the project was shared to
 	 * @return AuditService specific implementation of ShareRepositoryAction
 	 */
-	ShareRepositoryAction getShareRepositoryAction(Repository repository, Destination destination);
+	ShareRepositoryAction getShareRepositoryAction(FederationConfiguration config);
 
 	/**
 	 * Get an AuditService specific implementation of UnshareRepositoryAction
@@ -89,7 +90,7 @@ public interface AuditActionFactory {
 	 * @param destination Destination the project was unshared from
 	 * @return AuditService specific implementation of UnshareRepositoryAction
 	 */
-	UnshareRepositoryAction getUnshareRepositoryAction(Repository repository, Destination destination);
+	UnshareRepositoryAction getUnshareRepositoryAction(FederationConfiguration config);
 
 	/**
 	 * Get an AuditService specific implementation of ResendRepositoryAction
@@ -97,7 +98,7 @@ public interface AuditActionFactory {
 	 * @param destination Destination the project was resent to
 	 * @return AuditService specific implementation of ResendRepositoryAction
 	 */
-	ResendRepositoryAction getResendRepositoryAction(Repository repository, Destination destination);
+	ResendRepositoryAction getResendRepositoryAction(FederationConfiguration config);
 
 	/**
 	 * Get an AuditService specific implementation of the ToggleFederationAction

@@ -1,6 +1,7 @@
 package com.surevine.gateway.auditing.action;
 
 import models.Destination;
+import models.FederationConfiguration;
 import models.Repository;
 
 /**
@@ -63,21 +64,18 @@ public class LogfileAuditActionFactory implements AuditActionFactory {
 	}
 
 	@Override
-	public ShareRepositoryAction getShareRepositoryAction(Repository repository,
-			Destination destination) {
-		return new ShareRepositoryAction(repository, destination);
+	public ShareRepositoryAction getShareRepositoryAction(FederationConfiguration config) {
+		return new ShareRepositoryAction(config);
 	}
 
 	@Override
-	public UnshareRepositoryAction getUnshareRepositoryAction(Repository repository,
-			Destination destination) {
-		return new UnshareRepositoryAction(repository, destination);
+	public UnshareRepositoryAction getUnshareRepositoryAction(FederationConfiguration config) {
+		return new UnshareRepositoryAction(config);
 	}
 
 	@Override
-	public ResendRepositoryAction getResendRepositoryAction(Repository repository,
-			Destination destination) {
-		return new ResendRepositoryAction(repository, destination);
+	public ResendRepositoryAction getResendRepositoryAction(FederationConfiguration config) {
+		return new ResendRepositoryAction(config);
 	}
 
 	@Override
