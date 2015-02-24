@@ -12,9 +12,10 @@ public class DeleteDestinationAction implements AuditAction {
 
 	@Override
 	public String getDescription() {
-		return String.format("Deleted destination %s(%s)",
+		return String.format("Deleted destination [%s][%s][%s]",
 								destination.name,
-								destination.url);
+								destination.url,
+								destination.sourceKey);
 	}
 
 	@Override

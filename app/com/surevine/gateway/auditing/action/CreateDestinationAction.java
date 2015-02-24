@@ -12,9 +12,10 @@ public class CreateDestinationAction implements AuditAction {
 
 	@Override
 	public String getDescription() {
-		return String.format("Created destination %s(%s)",
+		return String.format("Created destination [%s][%s][%s]",
 								destination.name,
-								destination.url);
+								destination.url,
+								destination.sourceKey);
 	}
 
 	@Override

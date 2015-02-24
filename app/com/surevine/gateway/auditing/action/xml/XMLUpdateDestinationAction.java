@@ -20,11 +20,13 @@ public class XMLUpdateDestinationAction extends UpdateDestinationAction {
 		xml.append("<Before>");
 		xml.append(String.format("<Data name=\"destinationName\" value=\"%s\" />", originalDestination.name));
 		xml.append(String.format("<Data name=\"destinationURL\" value=\"%s\" />", originalDestination.url));
+		xml.append(String.format("<Data name=\"destinationSourceKey\" value=\"%s\" />", originalDestination.sourceKey));
 		xml.append("</Before>");
 
 		xml.append("<After>");
 		xml.append(String.format("<Data name=\"destinationName\" value=\"%s\" />", updatedDestination.name));
 		xml.append(String.format("<Data name=\"destinationURL\" value=\"%s\" />", updatedDestination.url));
+		xml.append(String.format("<Data name=\"destinationSourceKey\" value=\"%s\" />", updatedDestination.sourceKey));
 		xml.append("</After>");
 
 		xml.append("</Update>");

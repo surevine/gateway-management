@@ -14,9 +14,10 @@ public class UpdateDestinationAction implements AuditAction {
 
 	@Override
 	public String getDescription() {
-		return String.format("Updated destination %s (%s)",
+		return String.format("Updated destination [%s][%s][%s]",
 								updatedDestination.name,
-								updatedDestination.url);
+								updatedDestination.url,
+								updatedDestination.sourceKey);
 	}
 
 	@Override
