@@ -108,6 +108,6 @@ public interface AuditActionFactory {
 	 * @param enabled whether federation has been enabled or disabled
 	 * @return
 	 */
-	ToggleFederationAction getToggleFederationAction(Repository repository, Destination destination, String direction, boolean enabled);
+	UpdateFederationAction getUpdateFederationAction(FederationConfiguration config, String updatedDirection, boolean federationEnabled);
 
 }

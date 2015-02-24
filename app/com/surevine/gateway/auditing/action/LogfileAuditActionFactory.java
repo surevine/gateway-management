@@ -79,10 +79,9 @@ public class LogfileAuditActionFactory implements AuditActionFactory {
 	}
 
 	@Override
-	public ToggleFederationAction getToggleFederationAction(
-			Repository repository, Destination destination, String direction,
-			boolean enabled) {
-		return new ToggleFederationAction(repository, destination, direction, enabled);
+	public UpdateFederationAction getUpdateFederationAction(
+			FederationConfiguration config, String updatedDirection, boolean federationEnabled) {
+		return new UpdateFederationAction(config, updatedDirection, federationEnabled);
 	}
 
 }

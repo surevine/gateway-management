@@ -13,7 +13,7 @@ import com.surevine.gateway.auditing.action.ModifyDestinationRulesAction;
 import com.surevine.gateway.auditing.action.ModifyGlobalRulesAction;
 import com.surevine.gateway.auditing.action.ResendRepositoryAction;
 import com.surevine.gateway.auditing.action.ShareRepositoryAction;
-import com.surevine.gateway.auditing.action.ToggleFederationAction;
+import com.surevine.gateway.auditing.action.UpdateFederationAction;
 import com.surevine.gateway.auditing.action.UnshareRepositoryAction;
 import com.surevine.gateway.auditing.action.UpdateDestinationAction;
 import com.surevine.gateway.auditing.action.UpdateRepositoryAction;
@@ -94,10 +94,9 @@ public class XMLAuditActionFactory implements AuditActionFactory {
 	}
 
 	@Override
-	public ToggleFederationAction getToggleFederationAction(
-			Repository repository, Destination destination, String direction,
-			boolean enabled) {
-		return new ToggleFederationAction(repository, destination, direction, enabled);
+	public UpdateFederationAction getUpdateFederationAction(
+			FederationConfiguration config, String updatedDirection, boolean federationEnabled) {
+		return new XMLUpdateFederationAction(config, updatedDirection, federationEnabled);
 	}
 
 }
