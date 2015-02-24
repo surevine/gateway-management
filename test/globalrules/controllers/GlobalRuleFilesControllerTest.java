@@ -74,8 +74,8 @@ public class GlobalRuleFilesControllerTest {
 		assertThat(contentType(result)).isEqualTo("text/html");
 
 		String content = contentAsString(result);
-		assertThat(content).contains("global-import.js");
-		assertThat(content).contains("global-export.js");
+		assertThat(content).contains("Import");
+		assertThat(content).contains("Export");
 	}
 
 	@Test
