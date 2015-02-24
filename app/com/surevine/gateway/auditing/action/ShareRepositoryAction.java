@@ -15,7 +15,8 @@ public class ShareRepositoryAction implements AuditAction {
 
 	@Override
 	public String getDescription() {
-		return String.format("Shared repository (%s) with destination %s(%s). Repository sent to gateway for export.",
+		return String.format("Shared repository [%s][%s] with destination [%s][%s]. Repository sent to gateway for export.",
+								repository.repoType,
 								repository.identifier,
 								destination.name,
 								destination.url);

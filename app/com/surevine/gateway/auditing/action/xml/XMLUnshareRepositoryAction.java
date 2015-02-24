@@ -18,6 +18,8 @@ public class XMLUnshareRepositoryAction extends UnshareRepositoryAction {
 		xml.append("<Unknown>");
 		xml.append("<Data name=\"action\" value=\"unshare\" />");
 		xml.append(String.format("<Data name=\"destinationName\" value=\"%s\" />", destination.name));
+		xml.append(String.format("<Data name=\"destinationURL\" value=\"%s\" />", destination.url));
+		xml.append(String.format("<Data name=\"repositoryType\" value=\"%s\" />", repository.repoType));
 		xml.append(String.format("<Data name=\"repositoryIdentifier\" value=\"%s\" />", repository.identifier));
 		xml.append("</Unknown>");
 
