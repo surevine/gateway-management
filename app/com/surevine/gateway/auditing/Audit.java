@@ -16,6 +16,7 @@ import com.surevine.gateway.auditing.action.ResendRepositoryAction;
 import com.surevine.gateway.auditing.action.ShareRepositoryAction;
 import com.surevine.gateway.auditing.action.UnshareRepositoryAction;
 import com.surevine.gateway.auditing.action.UpdateDestinationAction;
+import com.surevine.gateway.auditing.action.UpdateFederationAction;
 import com.surevine.gateway.auditing.action.UpdateRepositoryAction;
 import com.surevine.gateway.auditing.action.UserLoginAction;
 import com.surevine.gateway.auditing.action.xml.XMLAuditActionFactory;
@@ -127,6 +128,11 @@ public abstract class Audit {
 
 	public static ResendRepositoryAction getResendRepositoryAction(FederationConfiguration config) {
 		return getAuditActionFactory().getResendRepositoryAction(config);
+	}
+
+	public static UpdateFederationAction getUpdateFederationAction(
+			FederationConfiguration config, String updatedDirection, boolean federationEnabled) {
+		return getAuditActionFactory().getUpdateFederationAction(config, updatedDirection, federationEnabled);
 	}
 
 	public static ShareRepositoryAction getShareRepositoryAction(FederationConfiguration config) {
