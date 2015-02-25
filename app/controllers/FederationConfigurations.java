@@ -58,7 +58,7 @@ public class FederationConfigurations extends AuditedController {
      *
      * @return
      */
-    public Result singleInboundRepository() {
+    public Result singleInboundConfiguration() {
 
     	Map<String, String[]> queryString = request().queryString();
 
@@ -98,8 +98,8 @@ public class FederationConfigurations extends AuditedController {
     }
 
 	/**
-	 * Display list of federations configured
-	 * for outbound sharing to destinations
+	 * Get list of outbound enabled federations configurations
+	 * for a given destination
 	 *
 	 * @param destinationId Id of destination to retrieve federation configurations for
 	 * @return

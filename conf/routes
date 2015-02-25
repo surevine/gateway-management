@@ -50,7 +50,7 @@ POST	/repositories/:id/delete		@controllers.Repositories.delete(id: Long)
 
 GET		/api/federation					@controllers.FederationConfigurations.all()
 GET		/api/federation/inbound			@controllers.FederationConfigurations.inbound()
-GET		/api/federation/inbound-single	@controllers.FederationConfigurations.singleInboundRepository()
+GET		/api/federation/inbound-single	@controllers.FederationConfigurations.singleInboundConfiguration()
 GET		/api/federation/outbound		@controllers.FederationConfigurations.outbound()
 GET		/api/federation/:id/outbound	@controllers.FederationConfigurations.outboundForDestination(id: Long)
 
