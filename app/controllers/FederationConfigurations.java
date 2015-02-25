@@ -1,7 +1,9 @@
 package controllers;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.surevine.gateway.auditing.Audit;
 import com.surevine.gateway.auditing.action.ResendRepositoryAction;
@@ -42,10 +44,46 @@ public class FederationConfigurations extends AuditedController {
 	 * @return
 	 */
     public Result inbound() {
-    	List<FederationConfiguration> inboundConfigurations = FederationConfiguration.FIND.where()
+
+    	Map<String, String[]> queryString = request().queryString();
+
+    	Iterator<Entry<String, String[]>> it = queryString.entrySet().iterator();
+    	while(it.hasNext()) {
+    		Entry<String, String[]> queryParam = it.next();
+    		Logger.error(queryParam.getKey() + ": " + queryParam.getValue()[0]);
+    	}
+
+    	if(queryString.containsKey("sourceKey") &&
+    		queryString.containsKey("repoIdentifier") &&
+    		queryString.containsKey("repoType")) {
+
+    		Repository repository = Repository.FIND.where()
+    				.eq("repoType", RepositoryType.valueOf(queryString.get("repoType")[0]))
+    				.eq("identifier", queryString.get("repoIdentifier")[0])
+    				.findUnique();
+
+    		List<Destination> destinations = Destination.FIND.where().eq("sourceKey", queryString.get("sourceKey")[0]).findList();
+
+    		FederationConfiguration inboundConfiguration = FederationConfiguration.FIND.where()
     															.eq("inboundEnabled", true)
-    															.findList();
-    	return ok(Json.toJson(inboundConfigurations));
+    															.eq("repository", repository)
+    															.in("destination", destinations).findUnique();
+
+    		if(inboundConfiguration != null) {
+    			return ok(Json.toJson(inboundConfiguration));
+    		}
+
+    		return notFound("Inbound federated repository not found.");
+
+    	} else {
+
+        	List<FederationConfiguration> inboundConfigurations = FederationConfiguration.FIND.where()
+																	.eq("inboundEnabled", true)
+																	.findList();
+        	return ok(Json.toJson(inboundConfigurations));
+
+    	}
+
     }
 
 	/**
