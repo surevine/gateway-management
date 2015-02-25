@@ -45,44 +45,42 @@ public class FederationConfigurations extends AuditedController {
 	 */
     public Result inbound() {
 
+    	List<FederationConfiguration> inboundConfigurations = FederationConfiguration.FIND.where()
+																.eq("inboundEnabled", true)
+																.findList();
+    	return ok(Json.toJson(inboundConfigurations));
+
+    }
+
+    /**
+     * Retrieve single federation configuration for repository that has
+     * been whitelisted for inbound federation with destination.
+     *
+     * @return
+     */
+    public Result singleInboundRepository() {
+
     	Map<String, String[]> queryString = request().queryString();
 
-    	Iterator<Entry<String, String[]>> it = queryString.entrySet().iterator();
-    	while(it.hasNext()) {
-    		Entry<String, String[]> queryParam = it.next();
-    		Logger.error(queryParam.getKey() + ": " + queryParam.getValue()[0]);
-    	}
+    	// TODO error checking on querystring values
 
-    	if(queryString.containsKey("sourceKey") &&
-    		queryString.containsKey("repoIdentifier") &&
-    		queryString.containsKey("repoType")) {
+		Repository repository = Repository.FIND.where()
+				.eq("repoType", RepositoryType.valueOf(queryString.get("repoType")[0]))
+				.eq("identifier", queryString.get("repoIdentifier")[0])
+				.findUnique();
 
-    		Repository repository = Repository.FIND.where()
-    				.eq("repoType", RepositoryType.valueOf(queryString.get("repoType")[0]))
-    				.eq("identifier", queryString.get("repoIdentifier")[0])
-    				.findUnique();
+		List<Destination> destinations = Destination.FIND.where().eq("sourceKey", queryString.get("sourceKey")[0]).findList();
 
-    		List<Destination> destinations = Destination.FIND.where().eq("sourceKey", queryString.get("sourceKey")[0]).findList();
+		FederationConfiguration inboundConfiguration = FederationConfiguration.FIND.where()
+															.eq("inboundEnabled", true)
+															.eq("repository", repository)
+															.in("destination", destinations).findUnique();
 
-    		FederationConfiguration inboundConfiguration = FederationConfiguration.FIND.where()
-    															.eq("inboundEnabled", true)
-    															.eq("repository", repository)
-    															.in("destination", destinations).findUnique();
+		if(inboundConfiguration != null) {
+			return ok(Json.toJson(inboundConfiguration));
+		}
 
-    		if(inboundConfiguration != null) {
-    			return ok(Json.toJson(inboundConfiguration));
-    		}
-
-    		return notFound("Inbound federated repository not found.");
-
-    	} else {
-
-        	List<FederationConfiguration> inboundConfigurations = FederationConfiguration.FIND.where()
-																	.eq("inboundEnabled", true)
-																	.findList();
-        	return ok(Json.toJson(inboundConfigurations));
-
-    	}
+		return notFound("Inbound federated repository not found.");
 
     }
 
