@@ -51,6 +51,7 @@ POST	/repositories/:id/delete		@controllers.Repositories.delete(id: Long)
 GET		/api/federation					@controllers.FederationConfigurations.all()
 GET		/api/federation/inbound			@controllers.FederationConfigurations.inbound()
 GET		/api/federation/outbound		@controllers.FederationConfigurations.outbound()
+GET		/api/federation/:id/outbound	@controllers.FederationConfigurations.outboundForDestination(id: Long)
 
 POST	/federation/create				@controllers.FederationConfigurations.create()
 POST	/federation/update				@controllers.FederationConfigurations.update()

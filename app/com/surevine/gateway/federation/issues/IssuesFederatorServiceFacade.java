@@ -16,7 +16,7 @@ import com.typesafe.config.ConfigFactory;
 public class IssuesFederatorServiceFacade implements FederatorServiceFacade {
 
 	private static final String ISSUE_FEDERATOR_API_BASE_URL = ConfigFactory.load().getString("issue.federator.api.base.url");
-	private static final String ISSUE_FEDERATOR_API_DISTRIBUTE_PATH = "/api/distribute";
+	private static final String ISSUE_FEDERATOR_API_DISTRIBUTE_PATH = "/distribute";
 
 	/**
 	 * Default request timeout in milliseconds

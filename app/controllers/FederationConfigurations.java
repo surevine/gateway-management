@@ -14,6 +14,7 @@ import com.surevine.gateway.federation.FederatorServiceException;
 import models.Destination;
 import models.FederationConfiguration;
 import models.Repository;
+import models.RepositoryType;
 
 import play.Logger;
 import play.data.DynamicForm;
@@ -57,6 +58,28 @@ public class FederationConfigurations extends AuditedController {
     	List<FederationConfiguration> outboundConfigurations = FederationConfiguration.FIND.where()
 																.eq("outboundEnabled", true)
 																.findList();
+    	return ok(Json.toJson(outboundConfigurations));
+    }
+
+	/**
+	 * Display list of federations configured
+	 * for outbound sharing to destinations
+	 *
+	 * @param destinationId Id of destination to retrieve federation configurations for
+	 * @return
+	 */
+    public Result outboundForDestination(Long destinationId) {
+
+    	Destination destination = Destination.FIND.byId(destinationId);
+    	if(destination == null) {
+    		return notFound("Destination not found.");
+    	}
+
+    	List<FederationConfiguration> outboundConfigurations = FederationConfiguration.FIND.where()
+																.eq("outboundEnabled", true)
+																.eq("destination", destination)
+																.findList();
+
     	return ok(Json.toJson(outboundConfigurations));
     }
 
