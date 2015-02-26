@@ -60,14 +60,31 @@ public class FederationConfigurations extends AuditedController {
 
     	Map<String, String[]> queryString = request().queryString();
 
-    	// TODO error checking on querystring values
+    	if(queryString.get("repoType") == null) {
+    		return badRequest("Missing repoType parameter.");
+    	}
 
+    	if(queryString.get("repoIdentifier") == null) {
+    		return badRequest("Missing repoIdentifier parameter.");
+    	}
+
+    	if(queryString.get("sourceKey") == null) {
+    		return badRequest("Missing sourceKey parameter.");
+    	}
+
+    	RepositoryType repoType = RepositoryType.valueOf(queryString.get("repoType")[0]);
 		Repository repository = Repository.FIND.where()
-				.eq("repoType", RepositoryType.valueOf(queryString.get("repoType")[0]))
+				.eq("repoType", repoType)
 				.eq("identifier", queryString.get("repoIdentifier")[0])
 				.findUnique();
+		if(repository == null) {
+			return notFound("Repository not found.");
+		}
 
 		List<Destination> destinations = Destination.FIND.where().eq("sourceKey", queryString.get("sourceKey")[0]).findList();
+		if(destinations.isEmpty()) {
+			return notFound("No destinations found.");
+		}
 
 		FederationConfiguration inboundConfiguration = FederationConfiguration.FIND.where()
 															.eq("inboundEnabled", true)
@@ -78,7 +95,7 @@ public class FederationConfigurations extends AuditedController {
 			return ok(Json.toJson(inboundConfiguration));
 		}
 
-		return notFound("Inbound federated repository not found.");
+		return notFound("Inbound federation configuration for repository/destination not found.");
     }
 
 	/**
@@ -105,14 +122,32 @@ public class FederationConfigurations extends AuditedController {
 
     	Map<String, String[]> queryString = request().queryString();
 
-    	// TODO error checking on querystring values
+    	if(queryString.get("repoType") == null) {
+    		return badRequest("Missing repoType parameter.");
+    	}
 
+    	if(queryString.get("repoIdentifier") == null) {
+    		return badRequest("Missing repoIdentifier parameter.");
+    	}
+
+    	if(queryString.get("destinationId") == null) {
+    		return badRequest("Missing destinationId parameter.");
+    	}
+
+    	RepositoryType repoType = RepositoryType.valueOf(queryString.get("repoType")[0]);
 		Repository repository = Repository.FIND.where()
-				.eq("repoType", RepositoryType.valueOf(queryString.get("repoType")[0]))
+				.eq("repoType", repoType)
 				.eq("identifier", queryString.get("repoIdentifier")[0])
 				.findUnique();
+		if(repository == null) {
+			return notFound("Repository not found.");
+		}
 
-		Destination destination = Destination.FIND.byId(Long.parseLong(queryString.get("destinationId")[0]));
+		Long destinationId = Long.parseLong(queryString.get("destinationId")[0]);
+		Destination destination = Destination.FIND.byId(destinationId);
+		if(destination == null) {
+			return notFound("Destination not found.");
+		}
 
     	FederationConfiguration outboundConfiguration = FederationConfiguration.FIND.where()
 																.eq("outboundEnabled", true)
@@ -123,7 +158,7 @@ public class FederationConfigurations extends AuditedController {
     		return ok(Json.toJson(outboundConfiguration));
     	}
 
-		return notFound("Outbound federated repository not found.");
+		return notFound("Outbound federation configuration for repository/destination not found.");
     }
 
 	/**
