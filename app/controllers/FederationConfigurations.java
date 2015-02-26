@@ -1,9 +1,7 @@
 package controllers;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import com.surevine.gateway.auditing.Audit;
 import com.surevine.gateway.auditing.action.ResendRepositoryAction;
