@@ -79,7 +79,6 @@ public class FederationConfigurations extends AuditedController {
 		}
 
 		return notFound("Inbound federated repository not found.");
-
     }
 
 	/**
@@ -102,19 +101,29 @@ public class FederationConfigurations extends AuditedController {
 	 * @param destinationId Id of destination to retrieve federation configurations for
 	 * @return
 	 */
-    public Result outboundForDestination(Long destinationId) {
+    public Result singleOutboundConfiguration() {
 
-    	Destination destination = Destination.FIND.byId(destinationId);
-    	if(destination == null) {
-    		return notFound("Destination not found.");
-    	}
+    	Map<String, String[]> queryString = request().queryString();
 
-    	List<FederationConfiguration> outboundConfigurations = FederationConfiguration.FIND.where()
+    	// TODO error checking on querystring values
+
+		Repository repository = Repository.FIND.where()
+				.eq("repoType", RepositoryType.valueOf(queryString.get("repoType")[0]))
+				.eq("identifier", queryString.get("repoIdentifier")[0])
+				.findUnique();
+
+		Destination destination = Destination.FIND.byId(Long.parseLong(queryString.get("destinationId")[0]));
+
+    	FederationConfiguration outboundConfiguration = FederationConfiguration.FIND.where()
 																.eq("outboundEnabled", true)
 																.eq("destination", destination)
-																.findList();
+																.eq("repository", repository)
+																.findUnique();
+    	if(outboundConfiguration != null) {
+    		return ok(Json.toJson(outboundConfiguration));
+    	}
 
-    	return ok(Json.toJson(outboundConfigurations));
+		return notFound("Outbound federated repository not found.");
     }
 
 	/**
@@ -126,7 +135,6 @@ public class FederationConfigurations extends AuditedController {
 	public Result create() {
 
 		DynamicForm requestData = Form.form().bindFromRequest();
-    	Map<String, String[]> requestBody = request().body().asFormUrlEncoded();
 
     	Destination destination = Destination.FIND.byId(Long.parseLong(requestData.get("destinationId")));
     	if(destination == null) {
