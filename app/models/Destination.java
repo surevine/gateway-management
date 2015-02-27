@@ -10,15 +10,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Pattern;
 
 import com.avaje.ebean.Expr;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.surevine.gateway.federation.FederatorServiceException;
-import com.surevine.gateway.federation.issues.IssuesFederatorServiceFacade;
-import com.surevine.gateway.federation.scm.SCMFederatorServiceFacade;
 import com.surevine.gateway.rules.RuleFileManager;
 import com.typesafe.config.ConfigFactory;
 
@@ -64,6 +60,9 @@ public class Destination extends Model {
 	 */
 	@Required
 	@MaxLength(255)
+	@Column(unique=true)
+	@Pattern(regexp="^[-_a-zA-Z0-9]+$",
+				message="Invalid source key: only letters, numbers, hyphens and underscores supported.")
 	public String sourceKey;
 
 	/**
@@ -138,12 +137,21 @@ public class Destination extends Model {
     	}
 
     	// Ensure URL unique
-    	Destination existingDestination = FIND.where()
+    	Destination existingURLDestination = FIND.where()
     											.eq("url", url)
     											.not(Expr.eq("id", id))
     											.findUnique();
-    	if(existingDestination != null) {
+    	if(existingURLDestination != null) {
     		errors.add(new ValidationError("url", "Destination URL already exists."));
+    	}
+
+    	// Ensure source key unique
+    	Destination existingKeyDestination = FIND.where()
+    											.eq("sourceKey", sourceKey)
+    											.not(Expr.eq("id", id))
+    											.findUnique();
+    	if(existingKeyDestination != null) {
+    		errors.add(new ValidationError("sourceKey", "Destination source key already exists."));
     	}
 
     	return errors.isEmpty() ? null : errors;

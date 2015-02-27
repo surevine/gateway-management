@@ -9,10 +9,12 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Pattern;
 
 import com.avaje.ebean.Expr;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import play.data.validation.ValidationError;
 import play.data.validation.Constraints.MaxLength;
 import play.data.validation.Constraints.Required;
 import play.db.ebean.Model;
@@ -38,6 +40,8 @@ public class Repository extends Model {
 	 */
 	@Required
 	@MaxLength(255)
+	@Pattern(regexp="^[-_a-zA-Z0-9]+$",
+				message="Invalid identifier: only letters, numbers, hyphens and underscores supported.")
 	public String identifier;
 
 	/**
@@ -79,8 +83,6 @@ public class Repository extends Model {
 
     }
 
-
-
     /**
      * Retrieve list of destinations the repository is shared with
      * @return
@@ -95,5 +97,26 @@ public class Repository extends Model {
 		}
 		return sharedDestinations;
 	}
+
+    /**
+     * Perform additional validation (beyond annotations) on model properties.
+     *
+     * @return List of validation error messages associated with relevant properties
+     */
+    public List<ValidationError> validate() {
+    	List<ValidationError> errors = new ArrayList<ValidationError>();
+
+    	// Ensure Repository unique
+    	Repository existingRepository = FIND.where()
+    											.eq("repoType", repoType)
+    											.eq("identifier", identifier)
+    											.not(Expr.eq("id", id))
+    											.findUnique();
+    	if(existingRepository != null) {
+    		errors.add(new ValidationError("", "Repository with type/identifier combination already exists."));
+    	}
+
+    	return errors.isEmpty() ? null : errors;
+    }
 
 }

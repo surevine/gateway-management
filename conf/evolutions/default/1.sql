@@ -9,6 +9,7 @@ create table destination (
   url                       varchar(255),
   source_key                varchar(255),
   constraint uq_destination_url unique (url),
+  constraint uq_destination_source_key unique (source_key),
   constraint pk_destination primary key (id))
 ;
 
