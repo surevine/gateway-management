@@ -43,7 +43,7 @@ public class IssuesFederatorServiceFacade implements FederatorServiceFacade {
 		Logger.info(String.format("Informing issue-federator of new sharing partnership %s [%s]",
 				repository.identifier, ISSUE_FEDERATOR_API_BASE_URL + ISSUE_FEDERATOR_API_DISTRIBUTE_PATH));
 
-    	Promise<WSResponse> promise = postDistributionRequest(partner.id, repository.identifier);
+    	Promise<WSResponse> promise = postDistributionRequest(partner.sourceKey, repository.identifier);
 
     	WSResponse response;
     	try {
@@ -70,11 +70,11 @@ public class IssuesFederatorServiceFacade implements FederatorServiceFacade {
 	 * @param identifier
 	 * @return
 	 */
-	private Promise<WSResponse> postDistributionRequest(Long destinationId,
+	private Promise<WSResponse> postDistributionRequest(String partnerSourceKey,
 			String identifier) {
 		return WS.url(ISSUE_FEDERATOR_API_BASE_URL + ISSUE_FEDERATOR_API_DISTRIBUTE_PATH)
 				.setTimeout(REQUEST_TIMEOUT)
-				.setQueryParameter("destination", destinationId.toString())
+				.setQueryParameter("partner", partnerSourceKey)
     			.setQueryParameter("identifier", identifier)
     			.setContentType("application/json")
     			.post("");
