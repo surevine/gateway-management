@@ -129,8 +129,8 @@ public class FederationConfigurations extends AuditedController {
     		return badRequest("Missing repoIdentifier parameter.");
     	}
 
-    	if(queryString.get("partnerId") == null) {
-    		return badRequest("Missing partnerId parameter.");
+    	if(queryString.get("destinationId") == null) {
+    		return badRequest("Missing destinationId parameter.");
     	}
 
     	RepositoryType repoType = RepositoryType.valueOf(queryString.get("repoType")[0]);
@@ -142,7 +142,7 @@ public class FederationConfigurations extends AuditedController {
 			return notFound("Repository not found.");
 		}
 
-		Long partnerId = Long.parseLong(queryString.get("partnerId")[0]);
+		Long partnerId = Long.parseLong(queryString.get("destinationId")[0]);
 		Partner partner = Partner.FIND.byId(partnerId);
 		if(partner == null) {
 			return notFound("Partner not found.");
