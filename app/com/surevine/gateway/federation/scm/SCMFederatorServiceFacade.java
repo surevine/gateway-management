@@ -56,7 +56,7 @@ public class SCMFederatorServiceFacade implements FederatorServiceFacade {
 		Logger.info(String.format("Requesting distribution of repo (%s) by scm-federator [%s]",
 				repository.identifier, SCM_FEDERATOR_API_BASE_URL + SCM_FEDERATOR_API_DISTRIBUTE_PATH));
 
-    	Promise<WSResponse> promise = postDistributionRequest(partner.id, repository.identifier);
+    	Promise<WSResponse> promise = postDistributionRequest(partner.sourceKey, repository.identifier);
 
     	WSResponse response;
     	try {
@@ -84,12 +84,13 @@ public class SCMFederatorServiceFacade implements FederatorServiceFacade {
 	 * @return
 	 * @throws FederatorServiceException
 	 */
-	private Promise<WSResponse> postDistributionRequest(Long partnerId, String identifier) throws FederatorServiceException {
+	private Promise<WSResponse> postDistributionRequest(String partnerSourceKey,
+			String identifier) throws FederatorServiceException {
 
 		try {
 			return WS.url(SCM_FEDERATOR_API_BASE_URL + SCM_FEDERATOR_API_DISTRIBUTE_PATH)
 					.setTimeout(REQUEST_TIMEOUT)
-					.setQueryParameter("destination", partnerId.toString())
+					.setQueryParameter("partner", partnerSourceKey)
 					.setQueryParameter("identifier", URLEncoder.encode(identifier, "UTF-8"))
 					.setContentType("application/json")
 					.post("");
