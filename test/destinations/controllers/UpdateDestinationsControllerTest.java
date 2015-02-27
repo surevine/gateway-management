@@ -8,7 +8,7 @@ import static play.test.Helpers.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import models.Destination;
+import models.Partner;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class UpdateDestinationsControllerTest extends DestinationTest {
 	 */
 	@BeforeClass
 	public static void createExistingTestDestination() {
-		Destination destination = new Destination(TEST_EXISTING_DESTINATION_ID, TEST_EXISTING_DESTINATION_NAME, TEST_EXISTING_DESTINATION_URL);
+		Partner destination = new Partner(TEST_EXISTING_DESTINATION_ID, TEST_EXISTING_DESTINATION_NAME, TEST_EXISTING_DESTINATION_URL);
 		destination.save();
 	}
 
@@ -63,7 +63,7 @@ public class UpdateDestinationsControllerTest extends DestinationTest {
 		// Expect 303 as implementation redirects to 'list' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
 
-		Destination destination = Destination.FIND.byId(TEST_EXISTING_DESTINATION_ID);
+		Partner destination = Partner.FIND.byId(TEST_EXISTING_DESTINATION_ID);
 		assertThat(destination.name).isEqualTo(TEST_NEW_DESITNATION_NAME);
 		assertThat(destination.url).isEqualTo(TEST_NEW_DESTINATION_URL);
 	}

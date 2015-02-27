@@ -40,12 +40,12 @@ public class Repository extends Model {
 	 */
 	@Required
 	@MaxLength(255)
-	@Pattern(regexp="^[-_a-zA-Z0-9]+$",
-				message="Invalid identifier: only letters, numbers, hyphens and underscores supported.")
+	@Pattern(regexp="^[-_a-zA-Z0-9/]+$",
+				message="Invalid identifier: only letters, numbers, forward-slashes, hyphens and underscores supported.")
 	public String identifier;
 
 	/**
-	 * Configured destinations to federate repo with
+	 * Configured partners to federate repo with
 	 */
 	@OneToMany(cascade=CascadeType.ALL)
 	@JsonBackReference
@@ -65,10 +65,10 @@ public class Repository extends Model {
      * List of all projects, used by scala helper in templates (to populate select options)
      * @return Map<String, String> option key/values
      */
-    public static List<Repository> getFederationOptions(Destination destination, String filterType) {
+    public static List<Repository> getFederationOptions(Partner partner, String filterType) {
 
 		List<Long> federatedRepositoryIds = new ArrayList<Long>();
-		for(FederationConfiguration config : destination.federationConfigurations) {
+		for(FederationConfiguration config : partner.federationConfigurations) {
 			federatedRepositoryIds.add(config.repository.id);
 		}
 
@@ -84,18 +84,15 @@ public class Repository extends Model {
     }
 
     /**
-     * Retrieve list of destinations the repository is shared with
+     * Retrieve list of partners the repository is shared with
      * @return
      */
-	public List<Destination> getDestinations() {
-
-		// TODO restrict to only outbound enabled fedConfigs
-
-		List<Destination> sharedDestinations = new ArrayList<Destination>();
+	public List<Partner> getPartners() {
+		List<Partner> sharedPartners = new ArrayList<Partner>();
 		for(FederationConfiguration config : federationConfigurations) {
-			sharedDestinations.add(config.destination);
+			sharedPartners.add(config.partner);
 		}
-		return sharedDestinations;
+		return sharedPartners;
 	}
 
     /**

@@ -11,7 +11,7 @@ import com.surevine.gateway.auditing.action.UpdateFederationAction;
 import com.surevine.gateway.federation.Federator;
 import com.surevine.gateway.federation.FederatorServiceException;
 
-import models.Destination;
+import models.Partner;
 import models.FederationConfiguration;
 import models.Repository;
 import models.RepositoryType;
@@ -52,7 +52,7 @@ public class FederationConfigurations extends AuditedController {
 
     /**
      * Retrieve single federation configuration for repository that has
-     * been whitelisted for inbound federation with destination.
+     * been whitelisted for inbound federation with partner.
      *
      * @return
      */
@@ -81,21 +81,21 @@ public class FederationConfigurations extends AuditedController {
 			return notFound("Repository not found.");
 		}
 
-		List<Destination> destinations = Destination.FIND.where().eq("sourceKey", queryString.get("sourceKey")[0]).findList();
-		if(destinations.isEmpty()) {
-			return notFound("No destinations found.");
+		List<Partner> partners = Partner.FIND.where().eq("sourceKey", queryString.get("sourceKey")[0]).findList();
+		if(partners.isEmpty()) {
+			return notFound("No partners found.");
 		}
 
 		FederationConfiguration inboundConfiguration = FederationConfiguration.FIND.where()
 															.eq("inboundEnabled", true)
 															.eq("repository", repository)
-															.in("destination", destinations).findUnique();
+															.in("partner", partners).findUnique();
 
 		if(inboundConfiguration != null) {
 			return ok(Json.toJson(inboundConfiguration));
 		}
 
-		return notFound("Inbound federation configuration for repository/destination not found.");
+		return notFound("Inbound federation configuration for repository/partner not found.");
     }
 
 	/**
@@ -113,9 +113,8 @@ public class FederationConfigurations extends AuditedController {
 
 	/**
 	 * Get list of outbound enabled federations configurations
-	 * for a given destination
+	 * for a given partner
 	 *
-	 * @param destinationId Id of destination to retrieve federation configurations for
 	 * @return
 	 */
     public Result singleOutboundConfiguration() {
@@ -130,8 +129,8 @@ public class FederationConfigurations extends AuditedController {
     		return badRequest("Missing repoIdentifier parameter.");
     	}
 
-    	if(queryString.get("destinationId") == null) {
-    		return badRequest("Missing destinationId parameter.");
+    	if(queryString.get("partnerId") == null) {
+    		return badRequest("Missing partnerId parameter.");
     	}
 
     	RepositoryType repoType = RepositoryType.valueOf(queryString.get("repoType")[0]);
@@ -143,26 +142,26 @@ public class FederationConfigurations extends AuditedController {
 			return notFound("Repository not found.");
 		}
 
-		Long destinationId = Long.parseLong(queryString.get("destinationId")[0]);
-		Destination destination = Destination.FIND.byId(destinationId);
-		if(destination == null) {
-			return notFound("Destination not found.");
+		Long partnerId = Long.parseLong(queryString.get("partnerId")[0]);
+		Partner partner = Partner.FIND.byId(partnerId);
+		if(partner == null) {
+			return notFound("Partner not found.");
 		}
 
     	FederationConfiguration outboundConfiguration = FederationConfiguration.FIND.where()
 																.eq("outboundEnabled", true)
-																.eq("destination", destination)
+																.eq("partner", partner)
 																.eq("repository", repository)
 																.findUnique();
     	if(outboundConfiguration != null) {
     		return ok(Json.toJson(outboundConfiguration));
     	}
 
-		return notFound("Outbound federation configuration for repository/destination not found.");
+		return notFound("Outbound federation configuration for repository/partner not found.");
     }
 
 	/**
-	 * Share source code project with a destination (and vice-versa)
+	 * Share source code project with a partner (and vice-versa)
 	 *
 	 * @return
 	 */
@@ -171,9 +170,9 @@ public class FederationConfigurations extends AuditedController {
 
 		DynamicForm requestData = Form.form().bindFromRequest();
 
-    	Destination destination = Destination.FIND.byId(Long.parseLong(requestData.get("destinationId")));
-    	if(destination == null) {
-    		return notFound(String.format("Destination with id %s not found.", requestData.get("destinationId")));
+    	Partner partner = Partner.FIND.byId(Long.parseLong(requestData.get("partnerId")));
+    	if(partner == null) {
+    		return notFound(String.format("Partner with id %s not found.", requestData.get("partnerId")));
     	}
 
     	Repository repo = Repository.FIND.byId(Long.parseLong(requestData.get("repositoryId")));
@@ -182,12 +181,12 @@ public class FederationConfigurations extends AuditedController {
     	}
 
     	FederationConfiguration existingConfig = FederationConfiguration.FIND.where()
-														.eq("destination", destination)
+														.eq("partner", partner)
 														.eq("repository", repo)
 														.findUnique();
     	if(existingConfig != null) {
-    		return badRequest(String.format("Federation configuration between destination '%s' and repository '%s' already exists.",
-    											destination.name, repo.identifier));
+    		return badRequest(String.format("Federation configuration between partner '%s' and repository '%s' already exists.",
+    											partner.name, repo.identifier));
     	}
 
     	boolean inboundEnabled = false;
@@ -206,14 +205,16 @@ public class FederationConfigurations extends AuditedController {
     			break;
     	}
 
-    	FederationConfiguration config = new FederationConfiguration(destination, repo, inboundEnabled, outboundEnabled);
+    	FederationConfiguration config = new FederationConfiguration(partner, repo, inboundEnabled, outboundEnabled);
     	config.save();
 
+    	// TODO only try to distribute if outBoundEnalbed = true
+
     	try {
-			Federator.distribute(destination, repo);
+			Federator.distribute(partner, repo);
 		} catch (FederatorServiceException e) {
-			String errorMessage = String.format("Failed to distribute repository to destination. Distribution will be reattempted at the next configured federation interval.",
-									destination.name, repo.identifier);
+			String errorMessage = String.format("Failed to distribute repository to partner. Distribution will be reattempted at the next configured federation interval.",
+									partner.name, repo.identifier);
 			Logger.error(errorMessage, e);
 			flash("error", errorMessage);
 		}
@@ -222,12 +223,12 @@ public class FederationConfigurations extends AuditedController {
     	audit(action);
 
     	switch(requestData.get("source")) {
-    		case "destination":
-    			return redirect(routes.Destinations.list());
+    		case "partner":
+    			return redirect(routes.Partners.list());
     		case "repository":
     			return redirect(routes.Repositories.list());
     		default:
-    			return redirect(routes.Destinations.list());
+    			return redirect(routes.Partners.list());
     	}
 
 	}
@@ -276,14 +277,14 @@ public class FederationConfigurations extends AuditedController {
 
 		config.delete();
 
-		flash("success", "Repository unshared with destination.");
+		flash("success", "Repository unshared with partner.");
 
 		UnshareRepositoryAction action = Audit.getUnshareRepositoryAction(config);
 		audit(action);
 
 		switch(requestData.get("source")) {
-			case "destination":
-				return redirect(routes.Destinations.list());
+			case "partner":
+				return redirect(routes.Partners.list());
 			case "repository":
 				return redirect(routes.Repositories.list());
 			default:
@@ -308,10 +309,10 @@ public class FederationConfigurations extends AuditedController {
     	}
 
     	try {
-			Federator.distribute(config.destination, config.repository);
+			Federator.distribute(config.partner, config.repository);
 		} catch (FederatorServiceException e) {
-			String errorMessage = String.format("Failed to resend repository to destination.",
-					config.destination.name, config.repository.identifier);
+			String errorMessage = String.format("Failed to resend repository to partner.",
+					config.partner.name, config.repository.identifier);
 			Logger.error(errorMessage, e);
 			return internalServerError(errorMessage);
 		}
@@ -319,7 +320,7 @@ public class FederationConfigurations extends AuditedController {
     	ResendRepositoryAction action = Audit.getResendRepositoryAction(config);
     	audit(action);
 
-        return ok("Resent repository to gateway for export to destination.");
+        return ok("Resent repository to gateway for export to partner.");
 	}
 
 }

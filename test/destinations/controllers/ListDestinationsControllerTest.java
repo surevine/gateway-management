@@ -4,7 +4,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import static play.mvc.Http.Status.OK;
 import static play.test.Helpers.*;
 
-import models.Destination;
+import models.Partner;
 
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -22,7 +22,7 @@ public class ListDestinationsControllerTest extends DestinationTest {
 	 */
 	@BeforeClass
 	public static void createExistingTestDestination() {
-		Destination destination = new Destination(TEST_EXISTING_DESTINATION_ID, TEST_EXISTING_DESTINATION_NAME, TEST_EXISTING_DESTINATION_URL);
+		Partner destination = new Partner(TEST_EXISTING_DESTINATION_ID, TEST_EXISTING_DESTINATION_NAME, TEST_EXISTING_DESTINATION_URL);
 		destination.save();
 	}
 

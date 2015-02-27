@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import models.Destination;
+import models.Partner;
 
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jgit.api.Git;
@@ -49,7 +49,7 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 	public SanitisationResult sanitise(File archive,
 										String projectSlug,
 										String identifier,
-										List<Destination> destinations)
+										List<Partner> destinations)
 										throws SanitisationServiceException {
 
 		try {
@@ -205,13 +205,13 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 	 * @param destinations the destination to compose the list from
 	 * @return
 	 */
-	private String buildDestinationNames(List<Destination> destinations) {
+	private String buildDestinationNames(List<Partner> destinations) {
 
 		StringBuilder destinationNames = new StringBuilder();
 
-		Iterator<Destination> it = destinations.iterator();
+		Iterator<Partner> it = destinations.iterator();
 		while(it.hasNext()) {
-			Destination destination = it.next();
+			Partner destination = it.next();
 			destinationNames.append(destination.name);
 			if(it.hasNext()) {
 				destinationNames.append("|");
@@ -226,12 +226,12 @@ public class GitManagedSanitisationServiceImpl implements SanitisationService {
 	 * @param destinations the destination to compose the list from
 	 * @return
 	 */
-	private String buildDestinationURLs(List<Destination> destinations) {
+	private String buildDestinationURLs(List<Partner> destinations) {
 		StringBuilder destinationURLs = new StringBuilder();
 
-		Iterator<Destination> it = destinations.iterator();
+		Iterator<Partner> it = destinations.iterator();
 		while(it.hasNext()) {
-			Destination destination = it.next();
+			Partner destination = it.next();
 			destinationURLs.append(destination.url);
 			if(it.hasNext()) {
 				destinationURLs.append("|");

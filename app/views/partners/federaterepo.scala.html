@@ -1,4 +1,4 @@
-@(destination: Destination, repoForm: DynamicForm)
+@(partner: Partner, repoForm: DynamicForm)
 
 @import helper._
 
@@ -6,9 +6,9 @@
 
 @repoCount = @{ Repository.FIND.all().size() }
 
-@scmRepos = @{ Repository.getFederationOptions(destination, "SCM") }
+@scmRepos = @{ Repository.getFederationOptions(partner, "SCM") }
 
-@issueRepos = @{ Repository.getFederationOptions(destination, "ISSUE") }
+@issueRepos = @{ Repository.getFederationOptions(partner, "ISSUE") }
 
 @main("Federate repository") {
 
@@ -26,8 +26,8 @@
 	} else {
 
 		<section>
-			<h4>Destination</h4>
-			<p>@destination.name (@destination.url)</p>
+			<h4>Partner</h4>
+			<p>@partner.name (@partner.url)</p>
 		</section>
 
 		<div id="federate-repo-form-panel" role="tabpanel">
@@ -41,10 +41,10 @@
 		  	</section>
 		 	<div class="tab-content">
 			    <div role="tabpanel" class="tab-pane fade in active" id="scm">
-					@utils.renderFederateRepoForm(destination, scmRepos, "SCM")
+					@utils.renderFederateRepoForm(partner, scmRepos, "SCM")
 			    </div>
 			    <div role="tabpanel" class="tab-pane fade" id="issues">
-					@utils.renderFederateRepoForm(destination, issueRepos, "Issue-tracking")
+					@utils.renderFederateRepoForm(partner, issueRepos, "Issue-tracking")
 				</div>
 		    </div>
 	    </div>

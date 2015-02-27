@@ -1,13 +1,13 @@
 package com.surevine.gateway.auditing.action;
 
-import models.Destination;
+import models.Partner;
 
-public class UpdateDestinationAction implements AuditAction {
+public class UpdatePartnerAction implements AuditAction {
 
-	protected Destination originalDestination;
-	protected Destination updatedDestination;
+	protected Partner originalDestination;
+	protected Partner updatedDestination;
 
-	public UpdateDestinationAction(Destination originalDestination, Destination updatedDestination) {
+	public UpdatePartnerAction(Partner originalDestination, Partner updatedDestination) {
 		this.originalDestination = originalDestination;
 		this.updatedDestination = updatedDestination;
 	}

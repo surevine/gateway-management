@@ -1,12 +1,12 @@
 package com.surevine.gateway.auditing.action.xml;
 
-import models.Destination;
+import models.Partner;
 
-import com.surevine.gateway.auditing.action.DeleteDestinationAction;
+import com.surevine.gateway.auditing.action.DeletePartnerAction;
 
-public class XMLDeleteDestinationAction extends DeleteDestinationAction {
+public class XMLDeletePartnerAction extends DeletePartnerAction {
 
-	public XMLDeleteDestinationAction(Destination destination) {
+	public XMLDeletePartnerAction(Partner destination) {
 		super(destination);
 	}
 

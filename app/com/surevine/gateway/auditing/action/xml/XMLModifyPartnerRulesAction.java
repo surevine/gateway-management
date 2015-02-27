@@ -2,14 +2,14 @@ package com.surevine.gateway.auditing.action.xml;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
-import models.Destination;
+import models.Partner;
 
-import com.surevine.gateway.auditing.action.ModifyDestinationRulesAction;
+import com.surevine.gateway.auditing.action.ModifyPartnerRulesAction;
 
-public class XMLModifyDestinationRulesAction extends
-		ModifyDestinationRulesAction {
+public class XMLModifyPartnerRulesAction extends
+		ModifyPartnerRulesAction {
 
-	public XMLModifyDestinationRulesAction(Destination destination,
+	public XMLModifyPartnerRulesAction(Partner destination,
 			String ruleFileContents) {
 		super(destination, ruleFileContents);
 	}

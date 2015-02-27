@@ -1,6 +1,6 @@
 package com.surevine.gateway.auditing.action;
 
-import models.Destination;
+import models.Partner;
 import models.FederationConfiguration;
 import models.Repository;
 
@@ -14,8 +14,8 @@ import models.Repository;
 public class LogfileAuditActionFactory implements AuditActionFactory {
 
 	@Override
-	public CreateDestinationAction getCreateDestinationAction(Destination destination) {
-		return new CreateDestinationAction(destination);
+	public CreatePartnerAction getCreatePartnerAction(Partner partner) {
+		return new CreatePartnerAction(partner);
 	}
 
 	@Override
@@ -24,15 +24,15 @@ public class LogfileAuditActionFactory implements AuditActionFactory {
 	}
 
 	@Override
-	public UpdateDestinationAction getUpdateDestinationAction(
-			Destination originalDestination, Destination updatedDestination) {
-		return new UpdateDestinationAction(originalDestination, originalDestination);
+	public UpdatePartnerAction getUpdatePartnerAction(
+			Partner originalPartner, Partner updatedPartner) {
+		return new UpdatePartnerAction(originalPartner, originalPartner);
 	}
 
 	@Override
-	public DeleteDestinationAction getDeleteDestinationAction(
-			Destination destination) {
-		return new DeleteDestinationAction(destination);
+	public DeletePartnerAction getDeletePartnerAction(
+			Partner partner) {
+		return new DeletePartnerAction(partner);
 	}
 
 	@Override
@@ -58,9 +58,9 @@ public class LogfileAuditActionFactory implements AuditActionFactory {
 	}
 
 	@Override
-	public ModifyDestinationRulesAction getModifyDestinationRulesAction(
-			Destination destination, String ruleFileContents) {
-		return new ModifyDestinationRulesAction(destination, ruleFileContents);
+	public ModifyPartnerRulesAction getModifyPartnerRulesAction(
+			Partner partner, String ruleFileContents) {
+		return new ModifyPartnerRulesAction(partner, ruleFileContents);
 	}
 
 	@Override

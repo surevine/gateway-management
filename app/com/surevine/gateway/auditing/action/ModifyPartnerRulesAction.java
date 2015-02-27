@@ -1,13 +1,13 @@
 package com.surevine.gateway.auditing.action;
 
-import models.Destination;
+import models.Partner;
 
-public class ModifyDestinationRulesAction implements AuditAction {
+public class ModifyPartnerRulesAction implements AuditAction {
 
-	protected Destination destination;
+	protected Partner destination;
 	protected String ruleFileContents;
 
-	public ModifyDestinationRulesAction(Destination destination, String ruleFileContents) {
+	public ModifyPartnerRulesAction(Partner destination, String ruleFileContents) {
 		this.destination = destination;
 		this.ruleFileContents = ruleFileContents;
 	}

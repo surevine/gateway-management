@@ -11,7 +11,7 @@ import play.db.ebean.Model;
 
 /**
  * Represents a configured federation (share)
- * of repository to destination/partner
+ * of repository to partner
  * @author jonnyheavey
  */
 @Entity
@@ -25,7 +25,7 @@ public class FederationConfiguration extends Model {
 	@Required
 	@ManyToOne
 	@JsonManagedReference
-	public Destination destination;
+	public Partner partner;
 
 	@Required
 	@ManyToOne
@@ -43,12 +43,12 @@ public class FederationConfiguration extends Model {
      */
     public static final Model.Finder<Long,FederationConfiguration> FIND = new Model.Finder<Long,FederationConfiguration>(Long.class, FederationConfiguration.class);
 
-	public FederationConfiguration(Destination destination,
+	public FederationConfiguration(Partner partner,
 									Repository repository,
 									boolean inboundEnabled,
 									boolean outboundEnabled) {
 
-		this.destination = destination;
+		this.partner = partner;
 		this.repository = repository;
 		this.inboundEnabled = inboundEnabled;
 		this.outboundEnabled = outboundEnabled;

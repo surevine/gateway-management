@@ -1,21 +1,21 @@
 package com.surevine.gateway.auditing.action.xml;
 
-import models.Destination;
+import models.Partner;
 import models.FederationConfiguration;
 import models.Repository;
 
 import com.surevine.gateway.auditing.action.AuditActionFactory;
-import com.surevine.gateway.auditing.action.CreateDestinationAction;
+import com.surevine.gateway.auditing.action.CreatePartnerAction;
 import com.surevine.gateway.auditing.action.CreateRepositoryAction;
-import com.surevine.gateway.auditing.action.DeleteDestinationAction;
+import com.surevine.gateway.auditing.action.DeletePartnerAction;
 import com.surevine.gateway.auditing.action.DeleteRepositoryAction;
-import com.surevine.gateway.auditing.action.ModifyDestinationRulesAction;
+import com.surevine.gateway.auditing.action.ModifyPartnerRulesAction;
 import com.surevine.gateway.auditing.action.ModifyGlobalRulesAction;
 import com.surevine.gateway.auditing.action.ResendRepositoryAction;
 import com.surevine.gateway.auditing.action.ShareRepositoryAction;
 import com.surevine.gateway.auditing.action.UpdateFederationAction;
 import com.surevine.gateway.auditing.action.UnshareRepositoryAction;
-import com.surevine.gateway.auditing.action.UpdateDestinationAction;
+import com.surevine.gateway.auditing.action.UpdatePartnerAction;
 import com.surevine.gateway.auditing.action.UpdateRepositoryAction;
 import com.surevine.gateway.auditing.action.UserLoginAction;
 
@@ -29,8 +29,8 @@ import com.surevine.gateway.auditing.action.UserLoginAction;
 public class XMLAuditActionFactory implements AuditActionFactory {
 
 	@Override
-	public CreateDestinationAction getCreateDestinationAction(Destination destination) {
-		return new XMLCreateDestinationAction(destination);
+	public CreatePartnerAction getCreatePartnerAction(Partner partner) {
+		return new XMLCreatePartnerAction(partner);
 	}
 
 	@Override
@@ -39,15 +39,15 @@ public class XMLAuditActionFactory implements AuditActionFactory {
 	}
 
 	@Override
-	public UpdateDestinationAction getUpdateDestinationAction(
-			Destination originalDestination, Destination updatedDestination) {
-		return new XMLUpdateDestinationAction(originalDestination, updatedDestination);
+	public UpdatePartnerAction getUpdatePartnerAction(
+			Partner originalPartner, Partner updatedPartner) {
+		return new XMLUpdatePartnerAction(originalPartner, updatedPartner);
 	}
 
 	@Override
-	public DeleteDestinationAction getDeleteDestinationAction(
-			Destination destination) {
-		return new XMLDeleteDestinationAction(destination);
+	public DeletePartnerAction getDeletePartnerAction(
+			Partner partner) {
+		return new XMLDeletePartnerAction(partner);
 	}
 
 	@Override
@@ -73,9 +73,9 @@ public class XMLAuditActionFactory implements AuditActionFactory {
 	}
 
 	@Override
-	public ModifyDestinationRulesAction getModifyDestinationRulesAction(
-			Destination destination, String ruleFileContents) {
-		return new XMLModifyDestinationRulesAction(destination, ruleFileContents);
+	public ModifyPartnerRulesAction getModifyPartnerRulesAction(
+			Partner partner, String ruleFileContents) {
+		return new XMLModifyPartnerRulesAction(partner, ruleFileContents);
 	}
 
 	@Override

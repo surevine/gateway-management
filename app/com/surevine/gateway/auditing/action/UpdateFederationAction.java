@@ -25,8 +25,8 @@ public class UpdateFederationAction implements AuditAction {
 				updatedDirection,
 				config.repository.repoType,
 				config.repository.identifier,
-				config.destination.name,
-				config.destination.url);
+				config.partner.name,
+				config.partner.url);
 	}
 
 	@Override

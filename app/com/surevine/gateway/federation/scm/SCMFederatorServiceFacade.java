@@ -5,7 +5,7 @@ import static play.mvc.Http.Status.OK;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import models.Destination;
+import models.Partner;
 import models.Repository;
 
 import play.Logger;
@@ -51,12 +51,12 @@ public class SCMFederatorServiceFacade implements FederatorServiceFacade {
 	}
 
 	@Override
-	public void distribute(Destination destination, Repository repository) throws FederatorServiceException {
+	public void distribute(Partner partner, Repository repository) throws FederatorServiceException {
 
 		Logger.info(String.format("Requesting distribution of repo (%s) by scm-federator [%s]",
 				repository.identifier, SCM_FEDERATOR_API_BASE_URL + SCM_FEDERATOR_API_DISTRIBUTE_PATH));
 
-    	Promise<WSResponse> promise = postDistributionRequest(destination.id, repository.identifier);
+    	Promise<WSResponse> promise = postDistributionRequest(partner.id, repository.identifier);
 
     	WSResponse response;
     	try {
@@ -79,17 +79,17 @@ public class SCMFederatorServiceFacade implements FederatorServiceFacade {
 	/**
 	 * Post request to SCM federator distribution service
 	 *
-	 * @param destinationId
+	 * @param partnerId
 	 * @param identifier
 	 * @return
 	 * @throws FederatorServiceException
 	 */
-	private Promise<WSResponse> postDistributionRequest(Long destinationId, String identifier) throws FederatorServiceException {
+	private Promise<WSResponse> postDistributionRequest(Long partnerId, String identifier) throws FederatorServiceException {
 
 		try {
 			return WS.url(SCM_FEDERATOR_API_BASE_URL + SCM_FEDERATOR_API_DISTRIBUTE_PATH)
 					.setTimeout(REQUEST_TIMEOUT)
-					.setQueryParameter("destination", destinationId.toString())
+					.setQueryParameter("destination", partnerId.toString())
 					.setQueryParameter("identifier", URLEncoder.encode(identifier, "UTF-8"))
 					.setContentType("application/json")
 					.post("");

@@ -3,7 +3,7 @@ package com.surevine.sanitisation;
 import java.io.File;
 import java.util.List;
 
-import models.Destination;
+import models.Partner;
 
 public interface SanitisationService {
 
@@ -19,7 +19,7 @@ public interface SanitisationService {
 	SanitisationResult sanitise(File archive,
 								String projectSlug,
 								String identifier,
-								List<Destination> destinations)
+								List<Partner> destinations)
 								throws SanitisationServiceException;
 
 }

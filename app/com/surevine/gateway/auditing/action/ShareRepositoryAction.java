@@ -15,8 +15,8 @@ public class ShareRepositoryAction implements AuditAction {
 		return String.format("Shared repository [%s][%s] with destination [%s][%s]. Inbound federation enabled [%s]. Outbound federation enabled [%s].",
 								config.repository.repoType,
 								config.repository.identifier,
-								config.destination.name,
-								config.destination.url,
+								config.partner.name,
+								config.partner.url,
 								config.inboundEnabled,
 								config.outboundEnabled);
 	}

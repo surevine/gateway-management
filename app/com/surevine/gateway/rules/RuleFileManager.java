@@ -11,7 +11,7 @@ import org.apache.commons.io.FileUtils;
 
 import play.Logger;
 
-import models.Destination;
+import models.Partner;
 
 import com.typesafe.config.ConfigFactory;
 
@@ -24,8 +24,8 @@ import com.typesafe.config.ConfigFactory;
 public class RuleFileManager {
 
 	public static final String RULES_DIRECTORY = ConfigFactory.load().getString("gateway.rules.dir");
-	public static final String DESTINATIONS_RULES_DIRECTORY = ConfigFactory.load().getString("gateway.destinations.rules.dir");
-	public static final String DESTINATION_TEMPLATE_RULE_FILE = ConfigFactory.load().getString("gateway.template.rule.file");
+	public static final String PARTNERS_RULES_DIRECTORY = ConfigFactory.load().getString("gateway.partners.rules.dir");
+	public static final String PARTNER_TEMPLATE_RULE_FILE = ConfigFactory.load().getString("gateway.template.rule.file");
 
 	public static final String DEFAULT_EXPORT_RULEFILE_NAME = "export.js";
 	public static final String DEFAULT_GLOBAL_EXPORT_RULEFILE_NAME = "global-export.js";
@@ -50,69 +50,69 @@ public class RuleFileManager {
 
 	/**
 	 * Creates a new rule file based on configured template
-	 * @param destination
+	 * @param partner
 	 * @param fileName
 	 */
-	public void createDestinationRuleFile(Destination destination, String fileName) {
+	public void createPartnerRuleFile(Partner partner, String fileName) {
 
-    	Path templateRuleFilePath = Paths.get(DESTINATION_TEMPLATE_RULE_FILE);
-    	Path destinationRuleFilePath = Paths.get(DESTINATIONS_RULES_DIRECTORY + "/" + destination.id + "/" + fileName);
+    	Path templateRuleFilePath = Paths.get(PARTNER_TEMPLATE_RULE_FILE);
+    	Path partnerRuleFilePath = Paths.get(PARTNERS_RULES_DIRECTORY + "/" + partner.id + "/" + fileName);
 
     	try {
-			Files.copy(templateRuleFilePath, destinationRuleFilePath);
+			Files.copy(templateRuleFilePath, partnerRuleFilePath);
 		} catch (IOException e) {
-			Logger.error("Failed to create rule file for destination: "+ destination.name, e);
+			Logger.error("Failed to create rule file for partner: "+ partner.name, e);
 		}
 	}
 
 	/**
-	 * Update a destinations rule file
-	 * @param destination
+	 * Update a partners rule file
+	 * @param partner
 	 * @param ruleFileContent
 	 * @throws IOException
 	 */
-	public void updateDestinationRuleFile(Destination destination, String ruleFileContent) throws IOException {
-		Path destinationRuleFilePath = Paths.get(DESTINATIONS_RULES_DIRECTORY + "/" + destination.id + "/" + DEFAULT_EXPORT_RULEFILE_NAME);
-		Files.write(destinationRuleFilePath, ruleFileContent.getBytes());
+	public void updatePartnerRuleFile(Partner partner, String ruleFileContent) throws IOException {
+		Path partnerRuleFilePath = Paths.get(PARTNERS_RULES_DIRECTORY + "/" + partner.id + "/" + DEFAULT_EXPORT_RULEFILE_NAME);
+		Files.write(partnerRuleFilePath, ruleFileContent.getBytes());
 	}
 
 	/**
-	 * Creates directory on disk for destination rules
-	 * @param destination
+	 * Creates directory on disk for partner rules
+	 * @param partner
 	 */
-	public void createDestinationRuleFileDirectory(Destination destination) {
-		Path destinationsDirectoryPath = Paths.get(DESTINATIONS_RULES_DIRECTORY + "/" + destination.id);
+	public void createPartnerRuleFileDirectory(Partner partner) {
+		Path partnersDirectoryPath = Paths.get(PARTNERS_RULES_DIRECTORY + "/" + partner.id);
 
-    	if(!Files.exists(destinationsDirectoryPath)) {
+    	if(!Files.exists(partnersDirectoryPath)) {
     		try {
-    			Files.createDirectory(destinationsDirectoryPath);
+    			Files.createDirectory(partnersDirectoryPath);
     		} catch (IOException e) {
-    			Logger.error("Failed to create rule file directory for destination: " + destination.name, e);
+    			Logger.error("Failed to create rule file directory for partner: " + partner.name, e);
     		}
     	}
 	}
 
 	/**
-	 * Delete a destinations rule file directory
-	 * @param destination destinations directory to delete
+	 * Delete a partners rule file directory
+	 * @param partner partner's directory to delete
 	 */
-	public void deleteDestinationRuleFileDirectory(Destination destination) {
+	public void deletePartnerRuleFileDirectory(Partner partner) {
     	try {
-    		Path destinationsDirectoryPath = Paths.get(DESTINATIONS_RULES_DIRECTORY + "/" + destination.id).toAbsolutePath();
-			FileUtils.deleteDirectory(destinationsDirectoryPath.toFile());
+    		Path partnersDirectoryPath = Paths.get(PARTNERS_RULES_DIRECTORY + "/" + partner.id).toAbsolutePath();
+			FileUtils.deleteDirectory(partnersDirectoryPath.toFile());
 		} catch (IOException e) {
-			Logger.warn("Failed to delete rule file directory for destination: " + destination.id, e);
+			Logger.warn("Failed to delete rule file directory for partner: " + partner.id, e);
 		}
 	}
 
 	/**
-	 * Loads export rule file for destination
+	 * Loads export rule file for partner
 	 * @return contents of rule file
 	 * @throws IOException
 	 */
-	public String loadDestinationExportRules(Destination destination) throws IOException {
-		Path destinationExportRuleFilePath = Paths.get(DESTINATIONS_RULES_DIRECTORY + "/" + destination.id, DEFAULT_EXPORT_RULEFILE_NAME);
-		return readRuleFile(destinationExportRuleFilePath);
+	public String loadPartnerExportRules(Partner partner) throws IOException {
+		Path partnerExportRuleFilePath = Paths.get(PARTNERS_RULES_DIRECTORY + "/" + partner.id, DEFAULT_EXPORT_RULEFILE_NAME);
+		return readRuleFile(partnerExportRuleFilePath);
 	}
 
 	/**

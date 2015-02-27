@@ -1,4 +1,4 @@
-@(message: String, destinationCount: Int, repositoryCount: Int)
+@(message: String, partnerCount: Int, repositoryCount: Int)
 
 @main("Dashboard") {
 
@@ -11,13 +11,13 @@
 			<div class="col-md-4">
 			    <div class="panel panel-default shortcut">
 					<div class="panel-heading">
-					  <h3 class="panel-title">Destinations</h3>
+					  <h3 class="panel-title">Partners</h3>
 					</div>
 					<div class="panel-body">
-					   <h2><a href="@routes.Destinations.list()">@destinationCount</a></h2>
+					   <h2><a href="@routes.Partners.list()">@partnerCount</a></h2>
 					</div>
 					<div class="panel-footer">
-						<a href="@routes.Destinations.add()" class="btn btn-primary btn-sm">Add Destination</a>
+						<a href="@routes.Partners.add()" class="btn btn-primary btn-sm">Add Partner</a>
 					</div>
 				</div>
 			</div>

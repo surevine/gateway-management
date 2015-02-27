@@ -1,9 +1,9 @@
-@(destination: Destination, repoType: String)
+@(partner: Partner, repoType: String)
 
 @import helper._
 
-@if(destination.federationConfigurations.filter(_.repository.repoType.toString() == repoType || (repoType == "ALL")).isEmpty) {
-  	<div class="alert alert-info no-federation" role="alert">No repositories configured for federation with this destination</div>
+@if(partner.federationConfigurations.filter(_.repository.repoType.toString() == repoType || (repoType == "ALL")).isEmpty) {
+  	<div class="alert alert-info no-federation" role="alert">No repositories configured for federation with this partner</div>
 } else {
 	<div class="table-responsive">
 	   	<table class="table">
@@ -13,7 +13,7 @@
 	   			<th class="col-md-2">Actions</th>
 	   		</tr>
 
-	    @for(configuration <- destination.federationConfigurations.filter(_.repository.repoType.toString() == repoType || (repoType == "ALL"))) {
+	    @for(configuration <- partner.federationConfigurations.filter(_.repository.repoType.toString() == repoType || (repoType == "ALL"))) {
 	    	<tr>
 	    		<td>
 		    		@configuration.repository.identifier
@@ -40,7 +40,7 @@
 						Resend
 					</button>
 					@form(routes.FederationConfigurations.delete(configuration.id)) {
-						<input type="hidden" name="source" value="destination" />
+						<input type="hidden" name="source" value="partner" />
 				        <input type="submit" value="Unshare" class="btn btn-danger btn-sm pull-left" />
 				    }
 				</td>

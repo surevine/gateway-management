@@ -24,30 +24,30 @@ import play.data.validation.ValidationError;
 import play.db.ebean.Model;
 
 /**
- * Gateway destination end-point to share resources with.
+ * Gateway partner representing to share (and receive) resources with.
  *
  * @author jonnyheavey (jonny.heavey@surevine.com)
  *
  */
 @Entity
-public class Destination extends Model {
+public class Partner extends Model {
 
     private static final long serialVersionUID = 1L;
-	public static final String DESTINATIONS_RULES_DIRECTORY = ConfigFactory.load().getString("gateway.destinations.rules.dir");
+	public static final String PARTNERS_RULES_DIRECTORY = ConfigFactory.load().getString("gateway.partners.rules.dir");
 	public static final String DEFAULT_EXPORT_RULEFILE_NAME = "export.js";
 
 	@Id
 	public Long id;
 
 	/**
-	 * Human-readable display name for destination
+	 * Human-readable display name for partner
 	 */
 	@Required
 	@MaxLength(255)
 	public String name;
 
 	/**
-	 * Location of destination the gateway will send to
+	 * Location of partner the gateway will send to
 	 */
 	@Required
 	@MaxLength(255)
@@ -55,7 +55,7 @@ public class Destination extends Model {
 	public String url;
 
 	/**
-	 * Key used by partner/destination when exporting items via gateway.
+	 * Key used by partner when exporting items via gateway.
 	 * This is configured in community portal federator components.
 	 */
 	@Required
@@ -66,23 +66,23 @@ public class Destination extends Model {
 	public String sourceKey;
 
 	/**
-	 * Configured repositories to federate to destination
+	 * Configured repositories to federate to partner
 	 */
 	@OneToMany(cascade=CascadeType.ALL)
 	@JsonBackReference
 	public List<FederationConfiguration> federationConfigurations = new ArrayList<FederationConfiguration>();
 
     /**
-     * Generic query helper for entity Destination with id Long
+     * Generic query helper for entity Partner with id Long
      */
-    public static final Model.Finder<Long,Destination> FIND = new Model.Finder<Long,Destination>(Long.class, Destination.class);
+    public static final Model.Finder<Long,Partner> FIND = new Model.Finder<Long,Partner>(Long.class, Partner.class);
 
-    public Destination(String name, String url) {
+    public Partner(String name, String url, String sourceKey) {
     	this.name = name;
     	this.url = url;
     }
 
-    public Destination(long id, String name, String url) {
+    public Partner(long id, String name, String url, String sourceKey) {
     	this.id = id;
     	this.name = name;
     	this.url = url;
@@ -92,33 +92,33 @@ public class Destination extends Model {
     public void save() {
     	super.save();
     	RuleFileManager ruleFileManager = RuleFileManager.getInstance();
-    	ruleFileManager.createDestinationRuleFileDirectory(this);
-    	ruleFileManager.createDestinationRuleFile(this, DEFAULT_EXPORT_RULEFILE_NAME);
+    	ruleFileManager.createPartnerRuleFileDirectory(this);
+    	ruleFileManager.createPartnerRuleFile(this, DEFAULT_EXPORT_RULEFILE_NAME);
     }
 
     @Override
     public void delete() {
-    	RuleFileManager.getInstance().deleteDestinationRuleFileDirectory(this);
+    	RuleFileManager.getInstance().deletePartnerRuleFileDirectory(this);
     	super.delete();
     }
 
 	/**
-     * Loads rules for the destination from expected rule-file locations
+     * Loads rules for the partner from expected rule-file locations
      *
      * @return String contents of rule file
      * @throws IOException
      */
     public String loadRules() throws IOException {
-    	return RuleFileManager.getInstance().loadDestinationExportRules(this);
+    	return RuleFileManager.getInstance().loadPartnerExportRules(this);
     }
 
     /**
-     * Updates destination rule file contents
+     * Updates partner rule file contents
      * @param ruleFileContent String contents for file
      * @throws IOException
      */
 	public void updateRules(String ruleFileContent) throws IOException {
-		RuleFileManager.getInstance().updateDestinationRuleFile(this, ruleFileContent);
+		RuleFileManager.getInstance().updatePartnerRuleFile(this, ruleFileContent);
 	}
 
     /**
@@ -137,21 +137,21 @@ public class Destination extends Model {
     	}
 
     	// Ensure URL unique
-    	Destination existingURLDestination = FIND.where()
+    	Partner existingURLPartner = FIND.where()
     											.eq("url", url)
     											.not(Expr.eq("id", id))
     											.findUnique();
-    	if(existingURLDestination != null) {
-    		errors.add(new ValidationError("url", "Destination URL already exists."));
+    	if(existingURLPartner != null) {
+    		errors.add(new ValidationError("url", "URL already exists."));
     	}
 
     	// Ensure source key unique
-    	Destination existingKeyDestination = FIND.where()
+    	Partner existingKeyPartner = FIND.where()
     											.eq("sourceKey", sourceKey)
     											.not(Expr.eq("id", id))
     											.findUnique();
-    	if(existingKeyDestination != null) {
-    		errors.add(new ValidationError("sourceKey", "Destination source key already exists."));
+    	if(existingKeyPartner != null) {
+    		errors.add(new ValidationError("sourceKey", "Source key already exists."));
     	}
 
     	return errors.isEmpty() ? null : errors;

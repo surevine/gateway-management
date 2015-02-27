@@ -3,12 +3,12 @@ package com.surevine.gateway.federation;
 import com.surevine.gateway.federation.issues.IssuesFederatorServiceFacade;
 import com.surevine.gateway.federation.scm.SCMFederatorServiceFacade;
 
-import models.Destination;
+import models.Partner;
 import models.Repository;
 
 public abstract class Federator {
 
-	public static void distribute(Destination destination, Repository repository) throws FederatorServiceException {
+	public static void distribute(Partner destination, Repository repository) throws FederatorServiceException {
 
 		switch(repository.repoType) {
 			case SCM:
@@ -23,7 +23,7 @@ public abstract class Federator {
 
 	}
 
-	public static void resend(Destination destination, Repository repository) {
+	public static void resend(Partner destination, Repository repository) {
 		// TODO as above
 	}
 

@@ -15,8 +15,8 @@ public class UnshareRepositoryAction implements AuditAction {
 		return String.format("Unshared repository [%s][%s] with destination [%s][%s]",
 								config.repository.repoType,
 								config.repository.identifier,
-								config.destination.name,
-								config.destination.url);
+								config.partner.name,
+								config.partner.url);
 	}
 
 	@Override

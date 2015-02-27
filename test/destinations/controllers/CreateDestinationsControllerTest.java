@@ -8,7 +8,7 @@ import static play.test.Helpers.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import models.Destination;
+import models.Partner;
 
 import org.junit.Test;
 
@@ -41,7 +41,7 @@ public class CreateDestinationsControllerTest extends DestinationTest {
 		// Expect 303 as implementation redirects to 'list' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
 
-		Destination destination = Destination.FIND.where()
+		Partner destination = Partner.FIND.where()
 													.eq("name", TEST_NEW_DESTINATION_NAME)
 													.eq("url", TEST_NEW_DESTINATION_URL)
 													.findUnique();

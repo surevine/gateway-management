@@ -15,7 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import models.Destination;
+import models.Partner;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -56,11 +56,11 @@ public class RuleFileManagerTest {
 
 	@Test
 	public void testCreateDestinationRuleFileDirectory() {
-		Destination destination = new Destination(DestinationTest.TEST_EXISTING_DESTINATION_ID,
+		Partner destination = new Partner(DestinationTest.TEST_EXISTING_DESTINATION_ID,
 													DestinationTest.TEST_EXISTING_DESTINATION_NAME,
 													DestinationTest.TEST_EXISTING_DESTINATION_URL);
 
-		fixture.createDestinationRuleFileDirectory(destination);
+		fixture.createPartnerRuleFileDirectory(destination);
 
 		Path destinationDirPath = Paths.get(DestinationTest.TEST_DESTINATIONS_DIR + "/" +
 												DestinationTest.TEST_EXISTING_DESTINATION_ID);
@@ -69,14 +69,14 @@ public class RuleFileManagerTest {
 
 	@Test
 	public void testCreateDestinationRuleFile() {
-		Destination destination = new Destination(DestinationTest.TEST_EXISTING_DESTINATION_ID,
+		Partner destination = new Partner(DestinationTest.TEST_EXISTING_DESTINATION_ID,
 													DestinationTest.TEST_EXISTING_DESTINATION_NAME,
 													DestinationTest.TEST_EXISTING_DESTINATION_URL);
 
-		fixture.createDestinationRuleFile(destination, Destination.DEFAULT_EXPORT_RULEFILE_NAME);
+		fixture.createPartnerRuleFile(destination, Partner.DEFAULT_EXPORT_RULEFILE_NAME);
 
 		Path destinationRuleFilePath = Paths.get(DestinationTest.TEST_DESTINATIONS_DIR + "/" + DestinationTest.TEST_EXISTING_DESTINATION_ID,
-													Destination.DEFAULT_EXPORT_RULEFILE_NAME);
+													Partner.DEFAULT_EXPORT_RULEFILE_NAME);
 
 		assertThat(Files.exists(destinationRuleFilePath)).isEqualTo(true);
 
@@ -93,11 +93,11 @@ public class RuleFileManagerTest {
 
 	@Test
 	public void testDeleteDestinationRuleFileDirectory() {
-		Destination destination = new Destination(DestinationTest.TEST_EXISTING_DESTINATION_ID,
+		Partner destination = new Partner(DestinationTest.TEST_EXISTING_DESTINATION_ID,
 													DestinationTest.TEST_EXISTING_DESTINATION_NAME,
 													DestinationTest.TEST_EXISTING_DESTINATION_URL);
 
-		fixture.deleteDestinationRuleFileDirectory(destination);
+		fixture.deletePartnerRuleFileDirectory(destination);
 
 		Path destinationDirPath = Paths.get(DestinationTest.TEST_DESTINATIONS_DIR + "/" + DestinationTest.TEST_EXISTING_DESTINATION_ID);
 		assertThat(Files.exists(destinationDirPath)).isEqualTo(false);
@@ -138,9 +138,9 @@ public class RuleFileManagerTest {
 	@Test
 	public void testLoadDestinationExportRules() {
 
-		Destination destination = Destination.FIND.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
+		Partner destination = Partner.FIND.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
 
-		Path destinationRuleFileTemplatePath = Paths.get(RuleFileManager.DESTINATION_TEMPLATE_RULE_FILE);
+		Path destinationRuleFileTemplatePath = Paths.get(RuleFileManager.PARTNER_TEMPLATE_RULE_FILE);
 
 		String expectedRuleFileContent = "";
 		try {
@@ -152,7 +152,7 @@ public class RuleFileManagerTest {
 
 		String destinationRuleFileContent = "";
 		try {
-			destinationRuleFileContent = fixture.loadDestinationExportRules(destination);
+			destinationRuleFileContent = fixture.loadPartnerExportRules(destination);
 		} catch (IOException e) {
 			fail("Failed to load destination rule file contents");
 		}
@@ -163,15 +163,15 @@ public class RuleFileManagerTest {
 	@Test
 	public void testUpdateDestinationExportRules() {
 
-		Destination destination = Destination.FIND.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
+		Partner destination = Partner.FIND.byId(DestinationTest.TEST_EXISTING_DESTINATION_ID);
 
 		try {
-			fixture.updateDestinationRuleFile(destination, TEST_UPDATED_RULE_FILE_CONTENT);
+			fixture.updatePartnerRuleFile(destination, TEST_UPDATED_RULE_FILE_CONTENT);
 		} catch (IOException e) {
 			fail("Failed to update destination rule file");
 		}
 
-		Path ruleFilePath = Paths.get(RuleFileManager.DESTINATIONS_RULES_DIRECTORY + "/" + destination.id,
+		Path ruleFilePath = Paths.get(RuleFileManager.PARTNERS_RULES_DIRECTORY + "/" + destination.id,
 										RuleFileManager.DEFAULT_EXPORT_RULEFILE_NAME);
 
 		String ruleFileContent = "";
@@ -247,7 +247,7 @@ public class RuleFileManagerTest {
 	private void createTestDirectories() {
 		try {
 			Files.createDirectory(Paths.get(RuleFileManager.RULES_DIRECTORY));
-			Files.createDirectory(Paths.get(RuleFileManager.DESTINATIONS_RULES_DIRECTORY));
+			Files.createDirectory(Paths.get(RuleFileManager.PARTNERS_RULES_DIRECTORY));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -265,7 +265,7 @@ public class RuleFileManagerTest {
 			e.printStackTrace();
 		}
 
-		Destination destination = new Destination(DestinationTest.TEST_EXISTING_DESTINATION_ID,
+		Partner destination = new Partner(DestinationTest.TEST_EXISTING_DESTINATION_ID,
 				DestinationTest.TEST_EXISTING_DESTINATION_NAME,
 				DestinationTest.TEST_EXISTING_DESTINATION_URL);
 		destination.save();
@@ -274,7 +274,7 @@ public class RuleFileManagerTest {
 	private void destroyTestDirectories() {
 		try {
 			FileUtils.deleteDirectory(new File(RuleFileManager.RULES_DIRECTORY));
-			FileUtils.deleteDirectory(new File(RuleFileManager.DESTINATIONS_RULES_DIRECTORY));
+			FileUtils.deleteDirectory(new File(RuleFileManager.PARTNERS_RULES_DIRECTORY));
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}

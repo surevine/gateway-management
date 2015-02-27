@@ -2,10 +2,8 @@ package controllers;
 
 import java.util.List;
 
-import models.Destination;
 import models.FederationConfiguration;
 import models.Repository;
-import play.data.DynamicForm;
 import play.data.Form;
 import play.libs.Json;
 import play.mvc.Result;
@@ -30,7 +28,7 @@ public class Repositories extends AuditedController {
 	}
 
 	/**
-	 * Returns a list of repositories that are configured to be shared to 1 or more destination
+	 * Returns a list of repositories that are configured to be shared to 1 or more partner
 	 *
 	 * @return JSON encoded list of repos
 	 */

@@ -4,7 +4,7 @@ import static org.fest.assertions.Assertions.assertThat;
 import static play.mvc.Http.Status.SEE_OTHER;
 import static play.test.Helpers.*;
 
-import models.Destination;
+import models.Partner;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -27,7 +27,7 @@ public class DeleteDestinationsControllerTest extends DestinationTest {
 	 */
 	@BeforeClass
 	public static void createExistingTestDestination() {
-		Destination destination = new Destination(TEST_EXISTING_DESTINATION_ID, TEST_EXISTING_DESTINATION_NAME, TEST_EXISTING_DESTINATION_URL);
+		Partner destination = new Partner(TEST_EXISTING_DESTINATION_ID, TEST_EXISTING_DESTINATION_NAME, TEST_EXISTING_DESTINATION_URL);
 		destination.save();
 	}
 
@@ -38,7 +38,7 @@ public class DeleteDestinationsControllerTest extends DestinationTest {
 		// Expect 303 as implementation redirects to 'list' page
 		assertThat(status(result)).isEqualTo(SEE_OTHER);
 
-		Destination destination = Destination.FIND.byId(TEST_EXISTING_DESTINATION_ID);
+		Partner destination = Partner.FIND.byId(TEST_EXISTING_DESTINATION_ID);
 		assertThat(destination).isNull();
 	}
 

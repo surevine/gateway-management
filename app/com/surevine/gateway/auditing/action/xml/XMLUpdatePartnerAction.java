@@ -1,13 +1,13 @@
 package com.surevine.gateway.auditing.action.xml;
 
-import models.Destination;
+import models.Partner;
 
-import com.surevine.gateway.auditing.action.UpdateDestinationAction;
+import com.surevine.gateway.auditing.action.UpdatePartnerAction;
 
-public class XMLUpdateDestinationAction extends UpdateDestinationAction {
+public class XMLUpdatePartnerAction extends UpdatePartnerAction {
 
-	public XMLUpdateDestinationAction(Destination originalDestination,
-			Destination updatedDestination) {
+	public XMLUpdatePartnerAction(Partner originalDestination,
+			Partner updatedDestination) {
 		super(originalDestination, updatedDestination);
 	}
 

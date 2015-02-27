@@ -1,18 +1,18 @@
 package com.surevine.gateway.auditing.action;
 
-import models.Destination;
+import models.Partner;
 
-public class DeleteDestinationAction implements AuditAction {
+public class CreatePartnerAction implements AuditAction {
 
-	protected Destination destination;
+	protected Partner destination;
 
-	public DeleteDestinationAction(Destination destination) {
+	public CreatePartnerAction(Partner destination) {
 		this.destination = destination;
 	}
 
 	@Override
 	public String getDescription() {
-		return String.format("Deleted destination [%s][%s][%s]",
+		return String.format("Created destination [%s][%s][%s]",
 								destination.name,
 								destination.url,
 								destination.sourceKey);

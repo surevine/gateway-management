@@ -1,0 +1,43 @@
+@(partner: Partner, partnerRules: String, rulesForm: DynamicForm)
+
+@import helper._
+
+@scripts = {
+	<script src="@routes.Assets.at("vendor/ace/ace.js")" type="text/javascript"></script>
+	<script src="@routes.Assets.at("js/syntax-highlighting.js")" type="text/javascript"></script>
+}
+
+@main("Configure partner rules", scripts) {
+
+	<table class="partner-info edit-info">
+		<tr>
+			<th>Partner</th>
+			<td>@partner.name (@partner.url)</td>
+		</tr>
+	</table>
+
+	@form(routes.Partners.updateRules(partner.id), 'role -> "form") {
+
+		<fieldset>
+			<textarea name="ruleFileContent" id="ruleFileContent">@partnerRules</textarea>
+			<pre id="partner-rules"></pre>
+		</fieldset>
+
+		<div class="actions">
+            <input type="submit" value="Update Rules" data-loading-text="Submitting..." class="btn btn-primary submit">
+            <a href="@routes.Partners.list()" class="btn btn-default">Cancel</a>
+		</div>
+
+	}
+
+	<script type="text/javascript">
+		$( document ).ready(function() {
+			syntaxHighlighter.initEditCodePane(document.getElementById('partner-rules'), document.getElementById('ruleFileContent'));
+
+			$('.submit').on('click', function() {
+			    $(this).button('loading');
+			});
+		});
+	</script>
+
+}

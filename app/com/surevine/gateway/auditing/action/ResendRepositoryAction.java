@@ -15,8 +15,8 @@ public class ResendRepositoryAction implements AuditAction {
 		return String.format("Resent repository [%s][%s] to gateway for export to destination [%s][%s]",
 								config.repository.repoType,
 								config.repository.identifier,
-								config.destination.name,
-								config.destination.url);
+								config.partner.name,
+								config.partner.url);
 	}
 
 	@Override
