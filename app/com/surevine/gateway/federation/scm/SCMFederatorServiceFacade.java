@@ -1,11 +1,14 @@
 package com.surevine.gateway.federation.scm;
 
 import static play.mvc.Http.Status.OK;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import models.Destination;
 import models.Repository;
 
 import play.Logger;
-import play.libs.F.Callback;
 import play.libs.F.Promise;
 import play.libs.ws.WS;
 import play.libs.ws.WSResponse;
@@ -32,7 +35,7 @@ public class SCMFederatorServiceFacade implements FederatorServiceFacade {
 	 */
 	private static final String SCM_FEDERATOR_API_BASE_URL = ConfigFactory.load().getString("scm.federator.api.base.url");
 
-	private static final String SCM_FEDERATOR_API_DISTRIBUTE_PATH = "/rest/federator/distribute";
+	private static final String SCM_FEDERATOR_API_DISTRIBUTE_PATH = "/distribute";
 
 	private static SCMFederatorServiceFacade _instance = null;
 
@@ -59,7 +62,7 @@ public class SCMFederatorServiceFacade implements FederatorServiceFacade {
     	try {
         	response = promise.get(REQUEST_TIMEOUT);
     	} catch(Exception e) {
-    		String errorMessage = "Error connecting to scm-federator service.";
+    		String errorMessage = "Error interacting with scm-federator service.";
     		Logger.warn(errorMessage, e);
     		throw new FederatorServiceException(errorMessage, e);
     	}
@@ -77,17 +80,22 @@ public class SCMFederatorServiceFacade implements FederatorServiceFacade {
 	 * Post request to SCM federator distribution service
 	 *
 	 * @param destinationId
-	 * @param projectKey
-	 * @param repoSlug
+	 * @param identifier
 	 * @return
+	 * @throws FederatorServiceException
 	 */
-	private Promise<WSResponse> postDistributionRequest(Long destinationId, String identifier) {
-		return WS.url(SCM_FEDERATOR_API_BASE_URL + SCM_FEDERATOR_API_DISTRIBUTE_PATH)
-				.setTimeout(REQUEST_TIMEOUT)
-				.setQueryParameter("destination", destinationId.toString())
-    			.setQueryParameter("identifier", identifier)
-    			.setContentType("application/json")
-    			.post("");
+	private Promise<WSResponse> postDistributionRequest(Long destinationId, String identifier) throws FederatorServiceException {
+
+		try {
+			return WS.url(SCM_FEDERATOR_API_BASE_URL + SCM_FEDERATOR_API_DISTRIBUTE_PATH)
+					.setTimeout(REQUEST_TIMEOUT)
+					.setQueryParameter("destination", destinationId.toString())
+					.setQueryParameter("identifier", URLEncoder.encode(identifier, "UTF-8"))
+					.setContentType("application/json")
+					.post("");
+		} catch (UnsupportedEncodingException e) {
+			throw new FederatorServiceException("Failed to URL encode identifier query parameter.", e);
+		}
 	}
 
 }
