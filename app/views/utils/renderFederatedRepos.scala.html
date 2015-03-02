@@ -36,7 +36,7 @@
 					</div>
 				</td>
 				<td>
-					<button type="button" id="resend-@configuration.id" data-loading-text="Sending..." data-configuration-id="@configuration.id" class="btn btn-default btn-sm pull-left resend" autocomplete="off">
+					<button type="button" id="resend-@configuration.id" data-loading-text="Sending..." data-configuration-id="@configuration.id" class="btn btn-default btn-sm pull-left resend  @if(!configuration.outboundEnabled) { disabled }" autocomplete="off">
 						Resend
 					</button>
 					@form(routes.FederationConfigurations.delete(configuration.id)) {

@@ -128,10 +128,13 @@
 						},
 						success: function(data){
 							var $toggleButtons = $('.federation[data-direction="' + direction + '"][data-configuration-id="'+configId+'"]');
+							var $resendButtons = $('.resend[data-configuration-id="'+configId+'"]');
 							if(setActive) {
 								$toggleButtons.addClass("active");
+								$resendButtons.removeClass("disabled");
 							} else {
 								$toggleButtons.removeClass("active");
+								$resendButtons.addClass("disabled");
 							}
 						},
 						error: function(data){
