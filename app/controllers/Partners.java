@@ -28,7 +28,7 @@ public class Partners extends AuditedController {
 	 */
 	@Security.Authenticated(AppAuthenticator.class)
     public Result list() {
-    	List<Partner> partners = Partner.FIND.all();
+    	List<Partner> partners = Partner.FIND.orderBy().asc("id").findList();
         return ok(views.html.partners.list.render(partners));
     }
 
@@ -38,7 +38,7 @@ public class Partners extends AuditedController {
 	 * @return JSON encoded partner list
 	 */
     public Result apiList() {
-    	List<Partner> partners = Partner.FIND.all();
+    	List<Partner> partners = Partner.FIND.orderBy().asc("id").findList();
     	return ok(Json.toJson(partners));
     }
 

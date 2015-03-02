@@ -23,7 +23,7 @@ public class Repositories extends AuditedController {
 	 */
 	@Security.Authenticated(AppAuthenticator.class)
 	public Result list() {
-		List<Repository> repos = Repository.FIND.all();
+		List<Repository> repos = Repository.FIND.orderBy().asc("id").findList();
         return ok(views.html.repositories.list.render(repos));
 	}
 
@@ -34,7 +34,7 @@ public class Repositories extends AuditedController {
 	 */
     public Result apiList() {
     	List<FederationConfiguration> configs = FederationConfiguration.FIND.where().eq("outboundEnabled", true).findList();
-    	List<Repository> repos = Repository.FIND.where().in("federationConfigurations", configs).findList();
+    	List<Repository> repos = Repository.FIND.where().in("federationConfigurations", configs).orderBy().asc("id").findList();
     	return ok(Json.toJson(repos));
     }
 
