@@ -208,16 +208,19 @@ public class FederationConfigurations extends AuditedController {
     	FederationConfiguration config = new FederationConfiguration(partner, repo, inboundEnabled, outboundEnabled);
     	config.save();
 
-    	// TODO only try to distribute if outBoundEnalbed = true
-
-    	try {
-			Federator.distribute(partner, repo);
-		} catch (FederatorServiceException e) {
-			String errorMessage = String.format("Failed to distribute repository to partner. Distribution will be reattempted at the next configured federation interval.",
-									partner.name, repo.identifier);
-			Logger.error(errorMessage, e);
-			flash("error", errorMessage);
-		}
+    	if(outboundEnabled) {
+    		Logger.info("Attempting initial distribution of repository to destination.");
+        	try {
+    			Federator.distribute(partner, repo);
+    		} catch (FederatorServiceException e) {
+    			String errorMessage = String.format("Failed to distribute repository to partner. Distribution will be reattempted at the next configured federation interval.",
+    									partner.name, repo.identifier);
+    			Logger.error(errorMessage, e);
+    			flash("error", errorMessage);
+    		}
+    	} else {
+    		Logger.info("Skipping initial distribution as outbound federation disabled.");
+    	}
 
     	ShareRepositoryAction action = Audit.getShareRepositoryAction(config);
     	audit(action);
