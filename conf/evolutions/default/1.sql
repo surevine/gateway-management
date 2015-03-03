@@ -36,20 +36,24 @@ create sequence partner_seq;
 
 create sequence repository_seq;
 
-alter table federation_configuration add constraint fk_federation_configuration_pa_1 foreign key (partner_id) references partner (id);
+alter table federation_configuration add constraint fk_federation_configuration_pa_1 foreign key (partner_id) references partner (id) on delete restrict on update restrict;
 create index ix_federation_configuration_pa_1 on federation_configuration (partner_id);
-alter table federation_configuration add constraint fk_federation_configuration_re_2 foreign key (repository_id) references repository (id);
+alter table federation_configuration add constraint fk_federation_configuration_re_2 foreign key (repository_id) references repository (id) on delete restrict on update restrict;
 create index ix_federation_configuration_re_2 on federation_configuration (repository_id);
 
 
 
 # --- !Downs
 
-drop table if exists federation_configuration cascade;
+SET REFERENTIAL_INTEGRITY FALSE;
 
-drop table if exists partner cascade;
+drop table if exists federation_configuration;
 
-drop table if exists repository cascade;
+drop table if exists partner;
+
+drop table if exists repository;
+
+SET REFERENTIAL_INTEGRITY TRUE;
 
 drop sequence if exists federation_configuration_seq;
 

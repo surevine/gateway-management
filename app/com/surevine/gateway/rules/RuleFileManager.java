@@ -1,6 +1,7 @@
 package com.surevine.gateway.rules;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,6 +11,7 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 
 import play.Logger;
+import play.Play;
 
 import models.Partner;
 
@@ -23,13 +25,12 @@ import com.typesafe.config.ConfigFactory;
  */
 public class RuleFileManager {
 
+	public static final String PARTNER_RULE_FILE_TEMPLATE = "/conf/rules/templates/deny-all.js";
 	public static final String RULES_DIRECTORY = ConfigFactory.load().getString("gateway.rules.dir");
 	public static final String PARTNERS_RULES_DIRECTORY = ConfigFactory.load().getString("gateway.partners.rules.dir");
-	public static final String PARTNER_TEMPLATE_RULE_FILE = ConfigFactory.load().getString("gateway.template.rule.file");
-
-	public static final String DEFAULT_EXPORT_RULEFILE_NAME = "export.js";
-	public static final String DEFAULT_GLOBAL_EXPORT_RULEFILE_NAME = "global-export.js";
-	public static final String DEFAULT_GLOBAL_IMPORT_RULEFILE_NAME = "global-import.js";
+	public static final String PARTNERS_EXPORT_RULEFILE_NAME = ConfigFactory.load().getString("gateway.partners.export.rule.file.name");
+	public static final String GLOBAL_EXPORT_RULEFILE_NAME = ConfigFactory.load().getString("gateway.global.export.rule.file.name");
+	public static final String GLOBAL_IMPORT_RULEFILE_NAME = ConfigFactory.load().getString("gateway.global.import.rule.file.name");
 
 	private static RuleFileManager _instance = null;
 
@@ -55,11 +56,11 @@ public class RuleFileManager {
 	 */
 	public void createPartnerRuleFile(Partner partner, String fileName) {
 
-    	Path templateRuleFilePath = Paths.get(PARTNER_TEMPLATE_RULE_FILE);
+		InputStream ruleTemplate = Play.application().resourceAsStream(PARTNER_RULE_FILE_TEMPLATE);
     	Path partnerRuleFilePath = Paths.get(PARTNERS_RULES_DIRECTORY + "/" + partner.id + "/" + fileName);
 
     	try {
-			Files.copy(templateRuleFilePath, partnerRuleFilePath);
+    		Files.copy(ruleTemplate, partnerRuleFilePath);
 		} catch (IOException e) {
 			Logger.error("Failed to create rule file for partner: "+ partner.name, e);
 		}
@@ -72,7 +73,7 @@ public class RuleFileManager {
 	 * @throws IOException
 	 */
 	public void updatePartnerRuleFile(Partner partner, String ruleFileContent) throws IOException {
-		Path partnerRuleFilePath = Paths.get(PARTNERS_RULES_DIRECTORY + "/" + partner.id + "/" + DEFAULT_EXPORT_RULEFILE_NAME);
+		Path partnerRuleFilePath = Paths.get(PARTNERS_RULES_DIRECTORY + "/" + partner.id + "/" + PARTNERS_EXPORT_RULEFILE_NAME);
 		Files.write(partnerRuleFilePath, ruleFileContent.getBytes());
 	}
 
@@ -111,7 +112,7 @@ public class RuleFileManager {
 	 * @throws IOException
 	 */
 	public String loadPartnerExportRules(Partner partner) throws IOException {
-		Path partnerExportRuleFilePath = Paths.get(PARTNERS_RULES_DIRECTORY + "/" + partner.id, DEFAULT_EXPORT_RULEFILE_NAME);
+		Path partnerExportRuleFilePath = Paths.get(PARTNERS_RULES_DIRECTORY + "/" + partner.id, PARTNERS_EXPORT_RULEFILE_NAME);
 		return readRuleFile(partnerExportRuleFilePath);
 	}
 
@@ -121,7 +122,7 @@ public class RuleFileManager {
 	 * @throws IOException
 	 */
 	public String loadGlobalExportRules() throws IOException {
-		Path exportRuleFilePath = Paths.get(RULES_DIRECTORY, DEFAULT_GLOBAL_EXPORT_RULEFILE_NAME);
+		Path exportRuleFilePath = Paths.get(RULES_DIRECTORY, GLOBAL_EXPORT_RULEFILE_NAME);
 		return readRuleFile(exportRuleFilePath);
 	}
 
@@ -131,7 +132,7 @@ public class RuleFileManager {
 	 * @throws IOException
 	 */
 	public String loadGlobalImportRules() throws IOException {
-		Path importRuleFilePath = Paths.get(RULES_DIRECTORY, DEFAULT_GLOBAL_IMPORT_RULEFILE_NAME);
+		Path importRuleFilePath = Paths.get(RULES_DIRECTORY, GLOBAL_IMPORT_RULEFILE_NAME);
 		return readRuleFile(importRuleFilePath);
 	}
 
@@ -141,7 +142,7 @@ public class RuleFileManager {
 	 * @throws IOException
 	 */
 	public void updateGlobalExportRules(String ruleFileContent) throws IOException {
-		Path globalExportRuleFilePath = Paths.get(RULES_DIRECTORY + "/"+ DEFAULT_GLOBAL_EXPORT_RULEFILE_NAME);
+		Path globalExportRuleFilePath = Paths.get(RULES_DIRECTORY + "/"+ GLOBAL_EXPORT_RULEFILE_NAME);
 		Files.write(globalExportRuleFilePath, ruleFileContent.getBytes());
 	}
 
@@ -151,7 +152,7 @@ public class RuleFileManager {
 	 * @throws IOException
 	 */
 	public void updateGlobalImportRules(String ruleFileContent) throws IOException {
-		Path globalExportRuleFilePath = Paths.get(RULES_DIRECTORY + "/"+ DEFAULT_GLOBAL_IMPORT_RULEFILE_NAME);
+		Path globalExportRuleFilePath = Paths.get(RULES_DIRECTORY + "/"+ GLOBAL_IMPORT_RULEFILE_NAME);
 		Files.write(globalExportRuleFilePath, ruleFileContent.getBytes());
 	}
 

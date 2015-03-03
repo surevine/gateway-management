@@ -88,6 +88,10 @@ public class Partner extends Model {
     	this.url = url;
     }
 
+    public Partner(long id, String name, String url) {
+    	this(id, name, url, "");
+    }
+
     @Override
     public void save() {
     	super.save();
