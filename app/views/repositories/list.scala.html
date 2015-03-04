@@ -84,8 +84,8 @@
 						url: "@routes.FederationConfigurations.update()",
 						type: "POST",
 						data: {
-							configurationId: $btn.data("configuration-id"),
-							direction: $btn.data("direction"),
+							configurationId: configId,
+							direction: direction,
 							enable: setActive
 						},
 						success: function(data){
@@ -93,10 +93,14 @@
 							var $resendButtons = $('.resend[data-configuration-id="'+configId+'"]');
 							if(setActive) {
 								$toggleButtons.addClass("active");
-								$resendButtons.removeClass("disabled");
+								if(direction == "outbound") {
+									$resendButtons.removeClass("disabled");
+								}
 							} else {
 								$toggleButtons.removeClass("active");
-								$resendButtons.addClass("disabled");
+								if(direction == "outbound") {
+									$resendButtons.addClass("disabled");
+								}
 							}
 						},
 						error: function(data){

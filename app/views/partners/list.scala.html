@@ -131,10 +131,14 @@
 							var $resendButtons = $('.resend[data-configuration-id="'+configId+'"]');
 							if(setActive) {
 								$toggleButtons.addClass("active");
-								$resendButtons.removeClass("disabled");
+								if(direction == "outbound") {
+									$resendButtons.removeClass("disabled");
+								}
 							} else {
 								$toggleButtons.removeClass("active");
-								$resendButtons.addClass("disabled");
+								if(direction == "outbound") {
+									$resendButtons.addClass("disabled");
+								}
 							}
 						},
 						error: function(data){
