@@ -12,11 +12,11 @@ public class ShareRepositoryAction implements AuditAction {
 
 	@Override
 	public String getDescription() {
-		return String.format("Shared repository [%s][%s] with destination [%s][%s]. Inbound federation enabled [%s]. Outbound federation enabled [%s].",
-								config.repository.repoType,
-								config.repository.identifier,
-								config.partner.name,
-								config.partner.url,
+		return String.format("Shared repository [%s][%s] with partner [%s][%s]. Inbound federation enabled: [%s]. Outbound federation enabled: [%s].",
+								config.getRepository().getRepoType(),
+								config.getRepository().getIdentifier(),
+								config.getPartner().getName(),
+								config.getPartner().getURL(),
 								config.inboundEnabled,
 								config.outboundEnabled);
 	}

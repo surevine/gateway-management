@@ -1,0 +1,94 @@
+@(repositories: List[Repository], repoType: String)
+
+@import helper._
+
+@if(repositories.filter(_.repoType.toString() == repoType || (repoType == "ALL")).isEmpty) {
+  	<div class="alert alert-info no-federation" role="alert">No repositories of this type have been configured.</div>
+} else {
+
+	<div class="panel-group repo-list" id="@repoType-repo-list" role="tablist" aria-multiselectable="true">
+
+	@for((repository, index) <- repositories.filter(_.repoType.toString() == repoType || (repoType == "ALL")).zipWithIndex) {
+
+		<div class="panel panel-default">
+		  <div class="panel-heading" role="tab" id="repo-heading-@index">
+		    <h3 class="panel-title pull-left">
+		    	<a data-toggle="collapse" data-parent="#@repoType-repo-list" href="#@repoType-repo-@index" aria-expanded="true" aria-controls="@repoType-repo-@index">@repository.identifier</a>
+		    	<span class="badge" data-toggle="tooltip" data-placement="top" title="Federated with @repository.federationConfigurations.length partners">@repository.federationConfigurations.length</span>
+		    </h3>
+			<div class="clearfix"></div>
+		  </div>
+		  <div id="@repoType-repo-@index" class="panel-collapse collapse @if(index == 0) { in }" role="tabpanel" aria-labelledby="repo-heading-@index">
+			<div class="panel-body">
+
+				<table class="repo-info">
+					<tr>
+						<th>Type</th>
+						<td>@repository.repoType</td>
+					</tr>
+				</table>
+
+				@if(repository.federationConfigurations.isEmpty) {
+
+					<div class="alert alert-info no-federation" role="alert">This repository has not been configured for federation with any partners.</div>
+
+				} else {
+
+					<div class="table-responsive partner-list">
+					   	<table class="table">
+					   		<tr>
+					   			<th class="col-md-7">Partner</th>
+					   			<th class="col-md-3">Federation</th>
+					   			<th class="col-md-2">Actions</th>
+					   		</tr>
+
+					    @for(configuration <- repository.federationConfigurations) {
+					    	<tr>
+					    		<td>@configuration.partner.name (@configuration.partner.url)</td>
+								<td>
+									<div class="btn-group btn-group-sm" role="group" aria-label="federation-controls" data-toggle="buttons">
+									  <button type="button"
+									  			class="btn btn-default federation @if(configuration.inboundEnabled) { active }"
+									  			data-toggle="button"
+									  			data-loading-text="Loading..."
+									  			data-configuration-id="@configuration.id"
+									  			data-direction="inbound">Inbound</button>
+									  <button type="button"
+									  			class="btn btn-default federation @if(configuration.outboundEnabled) { active }"
+									  			data-toggle="button"
+									  			data-loading-text="Loading..."
+									  			data-configuration-id="@configuration.id"
+									  			data-direction="outbound">Outbound</button>
+									</div>
+								</td>
+								<td>
+									<button type="button" id="resend-@configuration.id" data-loading-text="Sending..." data-configuration-id="@configuration.id" class="btn btn-default btn-sm pull-left resend  @if(!configuration.outboundEnabled) { disabled }" autocomplete="off">
+										Resend
+									</button>
+									@form(routes.FederationConfigurations.delete(configuration.id)) {
+										<input type="hidden" name="source" value="repository" />
+								        <input type="submit" value="Unshare" class="btn btn-danger btn-sm pull-left" />
+								    }
+								</td>
+					    	</tr>
+					    }
+
+						</table>
+					</div>
+
+				}
+
+
+			</div>
+			<div class="panel-footer">
+			  	<a href="#" class="btn btn-primary btn-sm">Federate repository</a>
+			  	<a href="@routes.Repositories.edit(repository.id)" class="btn btn-default btn-sm">Edit repository</a>
+			</div>
+		  </div>
+		</div>
+
+	}
+
+	</div>
+
+}

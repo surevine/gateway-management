@@ -1,6 +1,12 @@
 @(repositories: List[Repository])
 
-@main("Repositories") {
+@import helper._
+
+@scripts = {
+	<script src="@routes.Assets.at("js/notifications.js")" type="text/javascript"></script>
+}
+
+@main("Repositories", scripts) {
 
     <a href="@routes.Repositories.add()" class="btn btn-primary primary-action">Add Repository</a>
 
@@ -17,20 +23,92 @@
 
     } else {
 
-    	<ul class="list-group">
+		<div role="tabpanel">
+			<ul class="nav nav-tabs repo-type-filter" role="tablist">
+			    <li role="presentation" class="active"><a href="#all" aria-controls="all" role="tab" data-toggle="tab">All</a></li>
+			    <li role="presentation"><a href="#scm" aria-controls="scm" role="tab" data-toggle="tab">SCM</a></li>
+			    <li role="presentation"><a href="#issues" aria-controls="issues" role="tab" data-toggle="tab">Issue-tracking</a></li>
+		  	</ul>
+		 	<div class="tab-content">
+			    <div role="tabpanel" class="tab-pane fade in active" id="all">
+					@utils.renderTypeFilteredRepoList(repositories, "ALL")
+			    </div>
+			    <div role="tabpanel" class="tab-pane fade" id="scm">
+			    	@utils.renderTypeFilteredRepoList(repositories, "SCM")
+			    </div>
+			    <div role="tabpanel" class="tab-pane fade" id="issues">
+					@utils.renderTypeFilteredRepoList(repositories, "ISSUE")
+				</div>
+		    </div>
+	    </div>
 
-	    @for(repository <- repositories) {
+	   	<script type="text/javascript">
+			$( document ).ready(function() {
 
-	    	<li class="list-group-item">
-	    		<span><strong>@repository.repoType</strong> @repository.identifier</span>
-				<span class="actions pull-right">
-					<a href="@routes.Repositories.edit(repository.id)" class="btn btn-default btn-xs">Edit</a>
-				</span>
-	    	</li>
+				// Initialise tooltips
+				$('[data-toggle="tooltip"]').tooltip();
 
-	    }
+				// Initialise resend ajax requests
+				$('.resend').on('click', function () {
 
-	    </ul>
+				    var $btn = $(this).button('loading');
+
+					$.ajax({
+						url: "@routes.FederationConfigurations.resend()",
+						type: "POST",
+						data: {
+							configurationId: $btn.data("configuration-id")
+						},
+						success: function(data){
+							notifications.success(data);
+						},
+						error: function(data){
+							notifications.error(data.responseText);
+						}
+					}).always(function(){
+						 $btn.button('reset');
+					});
+				});
+
+				// Initialise federation update ajax requests
+				$('.federation').on('click', function () {
+
+				    var $btn = $(this).button('loading');
+					var configId = $btn.data("configuration-id");
+			  		var direction = $btn.data("direction");
+
+				    // Desired state is inverse of current state (as toggle control)
+				    var setActive = !$btn.hasClass("active");
+
+					$.ajax({
+						url: "@routes.FederationConfigurations.update()",
+						type: "POST",
+						data: {
+							configurationId: $btn.data("configuration-id"),
+							direction: $btn.data("direction"),
+							enable: setActive
+						},
+						success: function(data){
+							var $toggleButtons = $('.federation[data-direction="' + direction + '"][data-configuration-id="'+configId+'"]');
+							var $resendButtons = $('.resend[data-configuration-id="'+configId+'"]');
+							if(setActive) {
+								$toggleButtons.addClass("active");
+								$resendButtons.removeClass("disabled");
+							} else {
+								$toggleButtons.removeClass("active");
+								$resendButtons.addClass("disabled");
+							}
+						},
+						error: function(data){
+							notifications.error(data.responseText);
+						}
+					}).always(function(){
+						 $btn.button('reset');
+					});
+				});
+
+			});
+		</script>
 
     }
 

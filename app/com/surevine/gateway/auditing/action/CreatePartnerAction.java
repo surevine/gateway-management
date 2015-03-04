@@ -4,18 +4,18 @@ import models.Partner;
 
 public class CreatePartnerAction implements AuditAction {
 
-	protected Partner destination;
+	protected Partner partner;
 
-	public CreatePartnerAction(Partner destination) {
-		this.destination = destination;
+	public CreatePartnerAction(Partner partner) {
+		this.partner = partner;
 	}
 
 	@Override
 	public String getDescription() {
-		return String.format("Created destination [%s][%s][%s]",
-								destination.name,
-								destination.url,
-								destination.sourceKey);
+		return String.format("Created partner [%s][%s][%s]",
+								partner.getName(),
+								partner.getURL(),
+								partner.getSourceKey());
 	}
 
 	@Override

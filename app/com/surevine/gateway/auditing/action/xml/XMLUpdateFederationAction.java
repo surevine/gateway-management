@@ -19,10 +19,10 @@ public class XMLUpdateFederationAction extends UpdateFederationAction {
 		xml.append("<Unknown>");
 		xml.append(String.format("<Data name=\"action\" value=\"%s federation\" />", action));
 		xml.append(String.format("<Data name=\"direction\" value=\"%s\" />", updatedDirection));
-		xml.append(String.format("<Data name=\"destinationName\" value=\"%s\" />", config.partner.name));
-		xml.append(String.format("<Data name=\"destinationURL\" value=\"%s\" />", config.partner.url));
-		xml.append(String.format("<Data name=\"repositoryType\" value=\"%s\" />", config.repository.repoType));
-		xml.append(String.format("<Data name=\"repositoryIdentifier\" value=\"%s\" />", config.repository.identifier));
+		xml.append(String.format("<Data name=\"partnerName\" value=\"%s\" />", config.getPartner().getName()));
+		xml.append(String.format("<Data name=\"partnerURL\" value=\"%s\" />", config.getPartner().getURL()));
+		xml.append(String.format("<Data name=\"repositoryType\" value=\"%s\" />", config.getRepository().getRepoType()));
+		xml.append(String.format("<Data name=\"repositoryIdentifier\" value=\"%s\" />", config.getRepository().getIdentifier()));
 		xml.append("</Unknown>");
 
 		return xml.toString();

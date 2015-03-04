@@ -2,7 +2,7 @@
 
 @import helper._
 
-@if(partner.federationConfigurations.filter(_.repository.repoType.toString() == repoType || (repoType == "ALL")).isEmpty) {
+@if(partner.federationConfigurations.filter(_.getRepository().getRepoType().toString() == repoType || (repoType == "ALL")).isEmpty) {
   	<div class="alert alert-info no-federation" role="alert">No repositories configured for federation with this partner</div>
 } else {
 	<div class="table-responsive">
@@ -13,7 +13,7 @@
 	   			<th class="col-md-2">Actions</th>
 	   		</tr>
 
-	    @for(configuration <- partner.federationConfigurations.filter(_.repository.repoType.toString() == repoType || (repoType == "ALL"))) {
+	    @for(configuration <- partner.federationConfigurations.filter(_.getRepository().getRepoType().toString() == repoType || (repoType == "ALL"))) {
 	    	<tr>
 	    		<td>
 		    		@configuration.repository.identifier

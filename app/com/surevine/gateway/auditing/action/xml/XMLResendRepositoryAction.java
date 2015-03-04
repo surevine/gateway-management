@@ -16,10 +16,10 @@ public class XMLResendRepositoryAction extends ResendRepositoryAction {
 		xml.append(String.format("<Description>%s</Description>", getDescription()) + System.getProperty("line.separator"));
 		xml.append("<Export>");
 		xml.append("<Data name=\"action\" value=\"resend\" />");
-		xml.append(String.format("<Data name=\"destinationName\" value=\"%s\" />", config.partner.name));
-		xml.append(String.format("<Data name=\"destinationURL\" value=\"%s\" />", config.partner.url));
-		xml.append(String.format("<Data name=\"repositoryType\" value=\"%s\" />", config.repository.repoType));
-		xml.append(String.format("<Data name=\"repositoryIdentifier\" value=\"%s\" />", config.repository.identifier));
+		xml.append(String.format("<Data name=\"destinationName\" value=\"%s\" />", config.getPartner().getName()));
+		xml.append(String.format("<Data name=\"destinationURL\" value=\"%s\" />", config.getPartner().getURL()));
+		xml.append(String.format("<Data name=\"repositoryType\" value=\"%s\" />", config.getRepository().getRepoType()));
+		xml.append(String.format("<Data name=\"repositoryIdentifier\" value=\"%s\" />", config.getRepository().getIdentifier()));
 		xml.append("</Export>");
 
 		return xml.toString();

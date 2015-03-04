@@ -10,7 +10,7 @@ public abstract class Federator {
 
 	public static void distribute(Partner destination, Repository repository) throws FederatorServiceException {
 
-		switch(repository.repoType) {
+		switch(repository.getRepoType()) {
 			case SCM:
 				SCMFederatorServiceFacade.getInstance().distribute(destination, repository);
 				break;

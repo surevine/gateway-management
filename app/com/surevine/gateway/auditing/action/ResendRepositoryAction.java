@@ -12,11 +12,11 @@ public class ResendRepositoryAction implements AuditAction {
 
 	@Override
 	public String getDescription() {
-		return String.format("Resent repository [%s][%s] to gateway for export to destination [%s][%s]",
-								config.repository.repoType,
-								config.repository.identifier,
-								config.partner.name,
-								config.partner.url);
+		return String.format("Resent repository [%s][%s] to gateway for export to partner [%s][%s]",
+								config.getRepository().getRepoType(),
+								config.getRepository().getIdentifier(),
+								config.getPartner().getName(),
+								config.getPartner().getURL());
 	}
 
 	@Override

@@ -6,9 +6,9 @@ import com.surevine.gateway.auditing.action.UpdatePartnerAction;
 
 public class XMLUpdatePartnerAction extends UpdatePartnerAction {
 
-	public XMLUpdatePartnerAction(Partner originalDestination,
-			Partner updatedDestination) {
-		super(originalDestination, updatedDestination);
+	public XMLUpdatePartnerAction(Partner originalPartner,
+			Partner updatedPartner) {
+		super(originalPartner, updatedPartner);
 	}
 
 	@Override
@@ -18,15 +18,15 @@ public class XMLUpdatePartnerAction extends UpdatePartnerAction {
 		xml.append("<Update>");
 
 		xml.append("<Before>");
-		xml.append(String.format("<Data name=\"destinationName\" value=\"%s\" />", originalDestination.name));
-		xml.append(String.format("<Data name=\"destinationURL\" value=\"%s\" />", originalDestination.url));
-		xml.append(String.format("<Data name=\"destinationSourceKey\" value=\"%s\" />", originalDestination.sourceKey));
+		xml.append(String.format("<Data name=\"partnerName\" value=\"%s\" />", originalPartner.getName()));
+		xml.append(String.format("<Data name=\"partnerURL\" value=\"%s\" />", originalPartner.getURL()));
+		xml.append(String.format("<Data name=\"partnerSourceKey\" value=\"%s\" />", originalPartner.getSourceKey()));
 		xml.append("</Before>");
 
 		xml.append("<After>");
-		xml.append(String.format("<Data name=\"destinationName\" value=\"%s\" />", updatedDestination.name));
-		xml.append(String.format("<Data name=\"destinationURL\" value=\"%s\" />", updatedDestination.url));
-		xml.append(String.format("<Data name=\"destinationSourceKey\" value=\"%s\" />", updatedDestination.sourceKey));
+		xml.append(String.format("<Data name=\"partnerName\" value=\"%s\" />", updatedPartner.getName()));
+		xml.append(String.format("<Data name=\"partnerURL\" value=\"%s\" />", updatedPartner.getURL()));
+		xml.append(String.format("<Data name=\"partnerSourceKey\" value=\"%s\" />", updatedPartner.getSourceKey()));
 		xml.append("</After>");
 
 		xml.append("</Update>");

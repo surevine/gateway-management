@@ -6,8 +6,8 @@ import com.surevine.gateway.auditing.action.CreatePartnerAction;
 
 public class XMLCreatePartnerAction extends CreatePartnerAction {
 
-	public XMLCreatePartnerAction(Partner destination) {
-		super(destination);
+	public XMLCreatePartnerAction(Partner partner) {
+		super(partner);
 	}
 
 	@Override
@@ -17,9 +17,9 @@ public class XMLCreatePartnerAction extends CreatePartnerAction {
 		xml.append(String.format("<Description>%s</Description>", getDescription()) + System.getProperty("line.separator"));
 		xml.append("<Create>");
 		xml.append("<Outcome>");
-		xml.append(String.format("<Data name=\"destinationName\" value=\"%s\" />", destination.name));
-		xml.append(String.format("<Data name=\"destinationURL\" value=\"%s\" />", destination.url));
-		xml.append(String.format("<Data name=\"destinationSourceKey\" value=\"%s\" />", destination.sourceKey));
+		xml.append(String.format("<Data name=\"partnerName\" value=\"%s\" />", partner.getName()));
+		xml.append(String.format("<Data name=\"partnerURL\" value=\"%s\" />", partner.getURL()));
+		xml.append(String.format("<Data name=\"partnerSourceKey\" value=\"%s\" />", partner.getSourceKey()));
 		xml.append("</Outcome>");
 		xml.append("</Create>");
 

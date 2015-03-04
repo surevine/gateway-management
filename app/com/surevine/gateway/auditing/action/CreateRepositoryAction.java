@@ -13,8 +13,8 @@ public class CreateRepositoryAction implements AuditAction {
 	@Override
 	public String getDescription() {
 		return String.format("Created repository [%s][%s]",
-								repository.repoType,
-								repository.identifier);
+								repository.getRepoType(),
+								repository.getIdentifier());
 	}
 
 	@Override

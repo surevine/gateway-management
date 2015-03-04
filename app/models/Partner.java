@@ -161,4 +161,20 @@ public class Partner extends Model {
     	return errors.isEmpty() ? null : errors;
     }
 
+    public String getName() {
+    	return name;
+    }
+
+    public String getURL() {
+    	return url;
+    }
+
+    public String getSourceKey() {
+    	return sourceKey;
+    }
+
+    public List<FederationConfiguration> getFederationConfigurations() {
+    	return federationConfigurations;
+    }
+
 }

@@ -116,4 +116,16 @@ public class Repository extends Model {
     	return errors.isEmpty() ? null : errors;
     }
 
+    public RepositoryType getRepoType() {
+    	return repoType;
+    }
+
+    public String getIdentifier() {
+    	return identifier;
+    }
+
+    public List<FederationConfiguration> getFederationConfigurations() {
+    	return federationConfigurations;
+    }
+
 }

@@ -18,13 +18,13 @@ public class XMLUpdateRepositoryAction extends UpdateRepositoryAction {
 		xml.append("<Update>");
 
 		xml.append("<Before>");
-		xml.append(String.format("<Data name=\"repositoryIdentifier\" value=\"%s\" />", originalRepository.identifier));
-		xml.append(String.format("<Data name=\"repositoryType\" value=\"%s\" />", originalRepository.repoType));
+		xml.append(String.format("<Data name=\"repositoryIdentifier\" value=\"%s\" />", originalRepository.getIdentifier()));
+		xml.append(String.format("<Data name=\"repositoryType\" value=\"%s\" />", originalRepository.getRepoType()));
 		xml.append("</Before>");
 
 		xml.append("<After>");
-		xml.append(String.format("<Data name=\"repositoryIdentifier\" value=\"%s\" />", updatedRepository.identifier));
-		xml.append(String.format("<Data name=\"repositoryType\" value=\"%s\" />", updatedRepository.repoType));
+		xml.append(String.format("<Data name=\"repositoryIdentifier\" value=\"%s\" />", updatedRepository.getIdentifier()));
+		xml.append(String.format("<Data name=\"repositoryType\" value=\"%s\" />", updatedRepository.getRepoType()));
 		xml.append("</After>");
 
 		xml.append("</Update>");

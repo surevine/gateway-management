@@ -4,19 +4,19 @@ import models.Partner;
 
 public class ModifyPartnerRulesAction implements AuditAction {
 
-	protected Partner destination;
+	protected Partner partner;
 	protected String ruleFileContents;
 
-	public ModifyPartnerRulesAction(Partner destination, String ruleFileContents) {
-		this.destination = destination;
+	public ModifyPartnerRulesAction(Partner partner, String ruleFileContents) {
+		this.partner = partner;
 		this.ruleFileContents = ruleFileContents;
 	}
 
 	@Override
 	public String getDescription() {
-		return String.format("Updated destination [%s][%s] export rules.",
-								destination.name,
-								destination.url);
+		return String.format("Updated partner [%s][%s] export rules.",
+				partner.getName(),
+				partner.getURL());
 	}
 
 	@Override

@@ -54,12 +54,28 @@ public class FederationConfiguration extends Model {
 		this.outboundEnabled = outboundEnabled;
 	}
 
+	public boolean isInboundEnabled() {
+		return inboundEnabled;
+	}
+
 	public void setInboundEnabled(boolean enabled) {
 		this.inboundEnabled = enabled;
 	}
 
+	public boolean isOutboundEnabled() {
+		return outboundEnabled;
+	}
+
 	public void setOutboundEnabled(boolean enabled) {
 		this.outboundEnabled = enabled;
+	}
+
+	public Partner getPartner() {
+		return partner;
+	}
+
+	public Repository getRepository() {
+		return repository;
 	}
 
 }

@@ -9,9 +9,9 @@ import com.surevine.gateway.auditing.action.ModifyPartnerRulesAction;
 public class XMLModifyPartnerRulesAction extends
 		ModifyPartnerRulesAction {
 
-	public XMLModifyPartnerRulesAction(Partner destination,
+	public XMLModifyPartnerRulesAction(Partner partner,
 			String ruleFileContents) {
-		super(destination, ruleFileContents);
+		super(partner, ruleFileContents);
 	}
 
 	@Override
@@ -21,8 +21,8 @@ public class XMLModifyPartnerRulesAction extends
 		xml.append("<Update>");
 
 		xml.append("<After>");
-		xml.append(String.format("<Data name=\"destinationName\" value=\"%s\" />", destination.name));
-		xml.append(String.format("<Data name=\"destinationExportRules\" value=\"%s\" />", StringEscapeUtils.escapeXml(ruleFileContents)));
+		xml.append(String.format("<Data name=\"partnerName\" value=\"%s\" />", partner.getName()));
+		xml.append(String.format("<Data name=\"partnerExportRules\" value=\"%s\" />", StringEscapeUtils.escapeXml(ruleFileContents)));
 		xml.append("</After>");
 
 		xml.append("</Update>");

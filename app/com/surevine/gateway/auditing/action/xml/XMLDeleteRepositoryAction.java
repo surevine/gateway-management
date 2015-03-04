@@ -16,8 +16,8 @@ public class XMLDeleteRepositoryAction extends DeleteRepositoryAction {
 		xml.append(String.format("<Description>%s</Description>", getDescription()) + System.getProperty("line.separator"));
 		xml.append("<Delete>");
 		xml.append("<Outcome>");
-		xml.append(String.format("<Data name=\"repositoryType\" value=\"%s\" />", repository.repoType));
-		xml.append(String.format("<Data name=\"repositoryIdentifier\" value=\"%s/%s\" />", repository.identifier));
+		xml.append(String.format("<Data name=\"repositoryType\" value=\"%s\" />", repository.getRepoType()));
+		xml.append(String.format("<Data name=\"repositoryIdentifier\" value=\"%s/%s\" />", repository.getIdentifier()));
 		xml.append("</Outcome>");
 		xml.append("</Delete>");
 

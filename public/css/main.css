@@ -32,9 +32,9 @@ h4 a.btn {
 	font-size: 40px;
 }
 
-/* Destination Pages */
+/* Destination & Repo Pages */
 
-.partner-info th {
+.partner-info th, .repo-info th {
 	padding-right: 10px;
 }
 
@@ -50,16 +50,25 @@ h4 a.btn {
 	margin: 25px 0 0 0;
 }
 
-.shared-repos .table {
+.repo-list {
+	margin-top: 10px;
+}
+
+.shared-repos .table, .repo-list .table {
 	margin-bottom: 0;
 }
 
-.shared-repos .table th {
+.shared-repos .table th, .repo-list .table th {
      border-top: none;
  }
 
- .shared-repos .no-federation {
+ .partner-list .table tr th, .partner-list .table tr td {
+ 	padding-left: 0;
+ }
+
+ .shared-repos .no-federation, .repo-list .no-federation {
  	margin-top: 8px;
+ 	margin-bottom: 0;
  }
 
 /* Share project pages */

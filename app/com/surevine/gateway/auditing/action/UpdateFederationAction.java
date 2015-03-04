@@ -23,10 +23,10 @@ public class UpdateFederationAction implements AuditAction {
 		return String.format("%s %s federation between repository [%s][%s] and destination [%s][%s].",
 				action,
 				updatedDirection,
-				config.repository.repoType,
-				config.repository.identifier,
-				config.partner.name,
-				config.partner.url);
+				config.getRepository().getRepoType(),
+				config.getRepository().getIdentifier(),
+				config.getPartner().getName(),
+				config.getPartner().getURL());
 	}
 
 	@Override
