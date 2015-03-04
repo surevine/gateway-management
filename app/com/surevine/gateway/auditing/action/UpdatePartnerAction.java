@@ -16,7 +16,7 @@ public class UpdatePartnerAction implements AuditAction {
 	public String getDescription() {
 		return String.format("Updated partner [%s][%s][%s]",
 				updatedPartner.getName(),
-				updatedPartner.getURL(),
+				updatedPartner.getUrl(),
 				updatedPartner.getSourceKey());
 	}
 

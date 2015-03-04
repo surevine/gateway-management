@@ -161,11 +161,25 @@ public class Partner extends Model {
     	return errors.isEmpty() ? null : errors;
     }
 
+    /**
+     * List of all partners, used by scala helper in templates (to populate select options)
+     * @return Map<String, String> option key/values
+     */
+    public static List<Partner> getFederationOptions(Repository repository) {
+
+		List<Long> federatedRepositoryIds = new ArrayList<Long>();
+		for(FederationConfiguration config : repository.federationConfigurations) {
+			federatedRepositoryIds.add(config.partner.id);
+		}
+
+    	return FIND.where().not(Expr.in("id", federatedRepositoryIds)).findList();
+    }
+
     public String getName() {
     	return name;
     }
 
-    public String getURL() {
+    public String getUrl() {
     	return url;
     }
 

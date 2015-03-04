@@ -16,7 +16,7 @@ public class ModifyPartnerRulesAction implements AuditAction {
 	public String getDescription() {
 		return String.format("Updated partner [%s][%s] export rules.",
 				partner.getName(),
-				partner.getURL());
+				partner.getUrl());
 	}
 
 	@Override

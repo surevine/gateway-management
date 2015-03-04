@@ -44,7 +44,7 @@
 
 					    @for(configuration <- repository.federationConfigurations) {
 					    	<tr>
-					    		<td>@configuration.partner.name (@configuration.partner.url)</td>
+					    		<td>@configuration.getPartner().getName() (@configuration.partner.url)</td>
 								<td>
 									<div class="btn-group btn-group-sm" role="group" aria-label="federation-controls" data-toggle="buttons">
 									  <button type="button"
@@ -81,7 +81,7 @@
 
 			</div>
 			<div class="panel-footer">
-			  	<a href="#" class="btn btn-primary btn-sm">Federate repository</a>
+			  	<a href="@routes.Repositories.federateRepoPage(repository.id)" class="btn btn-primary btn-sm">Federate repository</a>
 			  	<a href="@routes.Repositories.edit(repository.id)" class="btn btn-default btn-sm">Edit repository</a>
 			</div>
 		  </div>

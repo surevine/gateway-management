@@ -14,7 +14,7 @@ public class DeletePartnerAction implements AuditAction {
 	public String getDescription() {
 		return String.format("Deleted partner [%s][%s][%s]",
 				partner.getName(),
-				partner.getURL(),
+				partner.getUrl(),
 				partner.getSourceKey());
 	}
 

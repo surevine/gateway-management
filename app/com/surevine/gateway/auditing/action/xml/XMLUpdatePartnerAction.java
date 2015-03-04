@@ -19,13 +19,13 @@ public class XMLUpdatePartnerAction extends UpdatePartnerAction {
 
 		xml.append("<Before>");
 		xml.append(String.format("<Data name=\"partnerName\" value=\"%s\" />", originalPartner.getName()));
-		xml.append(String.format("<Data name=\"partnerURL\" value=\"%s\" />", originalPartner.getURL()));
+		xml.append(String.format("<Data name=\"partnerURL\" value=\"%s\" />", originalPartner.getUrl()));
 		xml.append(String.format("<Data name=\"partnerSourceKey\" value=\"%s\" />", originalPartner.getSourceKey()));
 		xml.append("</Before>");
 
 		xml.append("<After>");
 		xml.append(String.format("<Data name=\"partnerName\" value=\"%s\" />", updatedPartner.getName()));
-		xml.append(String.format("<Data name=\"partnerURL\" value=\"%s\" />", updatedPartner.getURL()));
+		xml.append(String.format("<Data name=\"partnerURL\" value=\"%s\" />", updatedPartner.getUrl()));
 		xml.append(String.format("<Data name=\"partnerSourceKey\" value=\"%s\" />", updatedPartner.getSourceKey()));
 		xml.append("</After>");
 

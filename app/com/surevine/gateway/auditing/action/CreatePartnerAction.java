@@ -14,7 +14,7 @@ public class CreatePartnerAction implements AuditAction {
 	public String getDescription() {
 		return String.format("Created partner [%s][%s][%s]",
 								partner.getName(),
-								partner.getURL(),
+								partner.getUrl(),
 								partner.getSourceKey());
 	}
 

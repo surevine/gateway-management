@@ -17,7 +17,7 @@ public class XMLDeletePartnerAction extends DeletePartnerAction {
 		xml.append("<Delete>");
 		xml.append("<Outcome>");
 		xml.append(String.format("<Data name=\"partnerName\" value=\"%s\" />", partner.getName()));
-		xml.append(String.format("<Data name=\"partnerURL\" value=\"%s\" />", partner.getURL()));
+		xml.append(String.format("<Data name=\"partnerURL\" value=\"%s\" />", partner.getUrl()));
 		xml.append(String.format("<Data name=\"partnerSourceKey\" value=\"%s\" />", partner.getSourceKey()));
 		xml.append("</Outcome>");
 		xml.append("</Delete>");

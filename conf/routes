@@ -10,38 +10,40 @@ GET     /                           	@controllers.Application.index()
 # Partners
 #
 
-GET		/partners					@controllers.Partners.list()
-GET		/api/partners				@controllers.Partners.apiList()
+GET		/partners						@controllers.Partners.list()
+GET		/api/partners					@controllers.Partners.apiList()
 
-GET		/partners/add				@controllers.Partners.add()
-POST	/partners/add				@controllers.Partners.create()
+GET		/partners/add					@controllers.Partners.add()
+POST	/partners/add					@controllers.Partners.create()
 
-GET		/partners/:id/edit			@controllers.Partners.edit(id: Long)
-POST	/partners/:id/edit			@controllers.Partners.update(id: Long)
+GET		/partners/:id/edit				@controllers.Partners.edit(id: Long)
+POST	/partners/:id/edit				@controllers.Partners.update(id: Long)
 
-POST	/partners/:id/delete		@controllers.Partners.delete(id: Long)
+POST	/partners/:id/delete			@controllers.Partners.delete(id: Long)
 
-GET		/partners/:id/federate-repo			@controllers.Partners.federateRepoPage(id: Long)
+GET		/partners/:id/federate-repo		@controllers.Partners.federateRepoPage(id: Long)
 
-GET		/partners/:id/editrules		@controllers.Partners.editRules(id: Long)
-POST	/partners/:id/editrules		@controllers.Partners.updateRules(id: Long)
+GET		/partners/:id/editrules			@controllers.Partners.editRules(id: Long)
+POST	/partners/:id/editrules			@controllers.Partners.updateRules(id: Long)
 
 
 #
 # Repositories
 #
 
-GET		/repositories					@controllers.Repositories.list()
-GET		/api/repositories				@controllers.Repositories.apiList()
-GET		/api/repositories/:id			@controllers.Repositories.apiView(id: Long)
+GET		/repositories						@controllers.Repositories.list()
+GET		/api/repositories					@controllers.Repositories.apiList()
+GET		/api/repositories/:id				@controllers.Repositories.apiView(id: Long)
 
-GET		/repositories/add				@controllers.Repositories.add()
-POST	/repositories/add				@controllers.Repositories.create()
+GET		/repositories/add					@controllers.Repositories.add()
+POST	/repositories/add					@controllers.Repositories.create()
 
-GET		/repositories/:id/edit			@controllers.Repositories.edit(id: Long)
-POST	/repositories/:id/edit			@controllers.Repositories.update(id: Long)
+GET		/repositories/:id/edit				@controllers.Repositories.edit(id: Long)
+POST	/repositories/:id/edit				@controllers.Repositories.update(id: Long)
 
-POST	/repositories/:id/delete		@controllers.Repositories.delete(id: Long)
+POST	/repositories/:id/delete			@controllers.Repositories.delete(id: Long)
+
+GET		/repositories/:id/federate-repo		@controllers.Repositories.federateRepoPage(id: Long)
 
 
 #

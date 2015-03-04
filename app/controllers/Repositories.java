@@ -3,11 +3,14 @@ package controllers;
 import java.util.List;
 
 import models.FederationConfiguration;
+import models.Partner;
 import models.Repository;
+import play.data.DynamicForm;
 import play.data.Form;
 import play.libs.Json;
 import play.mvc.Result;
 import play.mvc.Security;
+import play.twirl.api.Content;
 
 import com.surevine.gateway.auditing.Audit;
 import com.surevine.gateway.auditing.action.CreateRepositoryAction;
@@ -15,6 +18,8 @@ import com.surevine.gateway.auditing.action.DeleteRepositoryAction;
 import com.surevine.gateway.auditing.action.UpdateRepositoryAction;
 
 public class Repositories extends AuditedController {
+
+	private static final String REPO_NOT_FOUND = "Repository not found.";
 
 	/**
 	 * Display list of all repositories
@@ -46,7 +51,7 @@ public class Repositories extends AuditedController {
     public Result apiView(Long id) {
     	Repository repo = Repository.FIND.byId(id);
     	if(repo == null) {
-    		return notFound("Repository not found.");
+    		return notFound(REPO_NOT_FOUND);
     	}
     	return ok(Json.toJson(repo));
     }
@@ -99,7 +104,7 @@ public class Repositories extends AuditedController {
 		Repository repo = Repository.FIND.byId(id);
 
     	if(repo == null) {
-    		return notFound("Repository not found.");
+    		return notFound(REPO_NOT_FOUND);
     	}
 
     	Form<Repository> repoForm = Form.form(Repository.class).fill(repo);
@@ -119,7 +124,7 @@ public class Repositories extends AuditedController {
 
 		Repository originalRepo = Repository.FIND.byId(id);
     	if(originalRepo == null) {
-    		return notFound("Repository not found.");
+    		return notFound(REPO_NOT_FOUND);
     	}
 
     	Form<Repository> repoForm = Form.form(Repository.class).bindFromRequest();
@@ -149,7 +154,7 @@ public class Repositories extends AuditedController {
 
 		Repository repo = Repository.FIND.byId(id);
     	if(repo == null) {
-    		return notFound("Repository not found.");
+    		return notFound(REPO_NOT_FOUND);
     	}
 
     	repo.delete();
@@ -159,6 +164,26 @@ public class Repositories extends AuditedController {
 
     	flash("success", "Repository deleted successfully.");
     	return redirect(routes.Repositories.list());
+
+    }
+
+    /**
+     * Display form page to configure sharing repo with partner
+     * @param repositoryId Id of repo
+     * @return
+     */
+	@Security.Authenticated(AppAuthenticator.class)
+    public Result federateRepoPage(Long repositoryId) {
+
+		Repository repo = Repository.FIND.byId(repositoryId);
+
+    	if(repo == null) {
+    		return notFound(REPO_NOT_FOUND);
+    	}
+
+    	DynamicForm repoForm = Form.form();
+
+    	return ok(views.html.repositories.federaterepo.render(repo, repoForm));
 
     }
 

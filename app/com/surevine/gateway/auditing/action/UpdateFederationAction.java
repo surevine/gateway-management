@@ -26,7 +26,7 @@ public class UpdateFederationAction implements AuditAction {
 				config.getRepository().getRepoType(),
 				config.getRepository().getIdentifier(),
 				config.getPartner().getName(),
-				config.getPartner().getURL());
+				config.getPartner().getUrl());
 	}
 
 	@Override

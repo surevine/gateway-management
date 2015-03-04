@@ -105,6 +105,9 @@ public class FederationConfigurations extends AuditedController {
 	 * @return
 	 */
     public Result outbound() {
+
+    	// TODO add repoType filter (query string)
+
     	List<FederationConfiguration> outboundConfigurations = FederationConfiguration.FIND.where()
 																.eq("outboundEnabled", true)
 																.findList();
