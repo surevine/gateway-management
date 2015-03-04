@@ -43,8 +43,19 @@ public class FederationConfigurations extends AuditedController {
 	 */
     public Result inbound() {
 
+    	Map<String, String[]> queryString = request().queryString();
+    	if(queryString.get("repoType") == null) {
+    		return badRequest("Missing repoType parameter.");
+    	}
+
+    	RepositoryType repoType = RepositoryType.valueOf(queryString.get("repoType")[0]);
+		List<Repository> repositories = Repository.FIND.where()
+										.eq("repoType", repoType)
+										.findList();
+
     	List<FederationConfiguration> inboundConfigurations = FederationConfiguration.FIND.where()
 																.eq("inboundEnabled", true)
+																.in("repository", repositories)
 																.findList();
     	return ok(Json.toJson(inboundConfigurations));
 
@@ -106,10 +117,19 @@ public class FederationConfigurations extends AuditedController {
 	 */
     public Result outbound() {
 
-    	// TODO add repoType filter (query string)
+    	Map<String, String[]> queryString = request().queryString();
+    	if(queryString.get("repoType") == null) {
+    		return badRequest("Missing repoType parameter.");
+    	}
+
+    	RepositoryType repoType = RepositoryType.valueOf(queryString.get("repoType")[0]);
+		List<Repository> repositories = Repository.FIND.where()
+										.eq("repoType", repoType)
+										.findList();
 
     	List<FederationConfiguration> outboundConfigurations = FederationConfiguration.FIND.where()
 																.eq("outboundEnabled", true)
+																.in("repository", repositories)
 																.findList();
     	return ok(Json.toJson(outboundConfigurations));
     }
