@@ -13,12 +13,12 @@
 		<div class="panel panel-default">
 		  <div class="panel-heading" role="tab" id="repo-heading-@index">
 		    <h3 class="panel-title pull-left">
-		    	<a data-toggle="collapse" data-parent="#@repoType-repo-list" href="#@repoType-repo-@index" aria-expanded="true" aria-controls="@repoType-repo-@index">@repository.identifier</a>
+		    	<a data-toggle="collapse" href="#@repoType-repo-@index" aria-expanded="true" aria-controls="@repoType-repo-@index">@repository.identifier</a>
 		    	<span class="badge" data-toggle="tooltip" data-placement="top" title="Federated with @repository.federationConfigurations.length partners">@repository.federationConfigurations.length</span>
 		    </h3>
 			<div class="clearfix"></div>
 		  </div>
-		  <div id="@repoType-repo-@index" class="panel-collapse collapse @if(index == 0) { in }" role="tabpanel" aria-labelledby="repo-heading-@index">
+		  <div id="@repoType-repo-@index" class="panel-collapse collapse" role="tabpanel" aria-labelledby="repo-heading-@index">
 			<div class="panel-body">
 
 				<table class="repo-info">
