@@ -38,8 +38,7 @@ public class Repositories extends AuditedController {
 	 * @return JSON encoded list of repos
 	 */
     public Result apiList() {
-    	List<FederationConfiguration> configs = FederationConfiguration.FIND.where().eq("outboundEnabled", true).findList();
-    	List<Repository> repos = Repository.FIND.where().in("federationConfigurations", configs).orderBy().asc("id").findList();
+    	List<Repository> repos =  Repository.FIND.orderBy().asc("id").findList();
     	return ok(Json.toJson(repos));
     }
 
