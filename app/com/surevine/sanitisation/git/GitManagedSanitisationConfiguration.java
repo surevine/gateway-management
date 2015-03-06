@@ -65,13 +65,13 @@ public class GitManagedSanitisationConfiguration {
 
 		StringBuilder args = new StringBuilder();
 
-		args.append(archive.getAbsolutePath() + " ");
+		args.append(getArchive().getAbsolutePath() + " ");
 		args.append(getRepository().getIdentifier() + " ");
 		args.append(getSanitisationIdentifier() + " ");
 
 		StringBuilder partnerNames = new StringBuilder();
 		StringBuilder partnerURLs = new StringBuilder();
-		Iterator<Partner> it = partners.iterator();
+		Iterator<Partner> it = getPartners().iterator();
 		while(it.hasNext()) {
 			Partner partner = it.next();
 			partnerNames.append(partner.name);

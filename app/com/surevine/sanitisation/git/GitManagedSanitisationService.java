@@ -104,11 +104,13 @@ public abstract class GitManagedSanitisationService {
 
 			String sanitisationCommand = buildSanitisationCommand(script.getAbsolutePath(), config.buildScriptArgsString());
 
+			Logger.info("Executing: " + sanitisationCommand);
+
 			Process p = Runtime.getRuntime().exec(sanitisationCommand);
 			String scriptOutput = IOUtils.toString(p.getInputStream(), Charset.defaultCharset());
 			int exitValue = p.waitFor();
 
-			if((scriptOutput != null) && (scriptOutput != "")) {
+			if((scriptOutput != null) && (scriptOutput.trim() != "")) {
 				Logger.info(String.format("%s (%s)", scriptOutput, script.getAbsolutePath()));
 			}
 
@@ -132,10 +134,7 @@ public abstract class GitManagedSanitisationService {
 	 * @return
 	 * @throws SanitisationServiceException
 	 */
-	protected SanitisationResult sanitise(File archive,
-			Map<String, String[]> properties, Repository repository) throws SanitisationServiceException {
-
-		GitManagedSanitisationConfiguration config = buildSanitisationConfig(archive, properties, repository);
+	protected SanitisationResult sanitise(GitManagedSanitisationConfiguration config) throws SanitisationServiceException {
 
 		try {
 
@@ -170,9 +169,9 @@ public abstract class GitManagedSanitisationService {
 	}
 
 	/**
-	 *
-	 * @param absolutePath
-	 * @param scriptArgs
+	 * Assemble sanitisation script command to execute
+	 * @param sanitisationScriptPath path to script
+	 * @param scriptArgs arguments to provide to script
 	 * @return
 	 */
 	private String buildSanitisationCommand(String sanitisationScriptPath, String scriptArgs) {

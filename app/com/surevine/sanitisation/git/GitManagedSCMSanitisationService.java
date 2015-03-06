@@ -34,12 +34,30 @@ public class GitManagedSCMSanitisationService extends GitManagedSanitisationServ
 	@Override
 	public SanitisationResult sanitise(File archive,
 			Map<String, String[]> properties, Repository repository) throws SanitisationServiceException {
-		return super.sanitise(archive, properties, repository);
+
+		GitManagedSanitisationConfiguration config = buildSanitisationConfig(archive, properties, repository);
+		return super.sanitise(config);
 	}
 
 	@Override
 	public List<String> getValidationErrors(Map<String, String[]> postedProperties) {
 		return super.getValidationErrors(postedProperties);
+	}
+
+	@Override
+	protected GitManagedSanitisationConfiguration buildSanitisationConfig(File archive,
+			Map<String, String[]> properties, Repository repository) {
+
+		if(properties.containsKey("commitMessage")) {
+			return new GitManagedCommitSanitisationConfiguration(archive,
+						repository,
+						properties.get("sanitisationIdentifier")[0],
+						properties.get("commitMessage")[0]);
+		}
+
+		return new GitManagedSanitisationConfiguration(archive,
+				repository,
+				properties.get("sanitisationIdentifier")[0]);
 	}
 
 }
