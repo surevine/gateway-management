@@ -34,7 +34,8 @@ public class GitManagedIssueSanitisationService extends GitManagedSanitisationSe
 	@Override
 	public SanitisationResult sanitise(File archive,
 			Map<String, String[]> properties, Repository repository) throws SanitisationServiceException {
-		return super.sanitise(archive, properties, repository);
+		GitManagedSanitisationConfiguration config = buildSanitisationConfig(archive, properties, repository);
+		return super.sanitise(config);
 	}
 
 	@Override
