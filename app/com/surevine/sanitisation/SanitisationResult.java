@@ -15,6 +15,8 @@ public class SanitisationResult {
 	private boolean sane;
 	private List<String> errors;
 
+	// TODO extend to include sanitisationIdentifier and repositoryIdentifier
+
 	public SanitisationResult(File archive, boolean sane) {
 		this.archive = archive;
 		this.sane = sane;
