@@ -3,6 +3,9 @@ package com.surevine.sanitisation.git;
 import java.io.File;
 import java.util.Iterator;
 
+import org.apache.commons.lang3.StringUtils;
+
+import models.FederationConfiguration;
 import models.Partner;
 import models.Repository;
 
@@ -40,18 +43,23 @@ public class GitManagedCommitSanitisationConfiguration extends GitManagedSanitis
 
 		StringBuilder partnerNames = new StringBuilder();
 		StringBuilder partnerURLs = new StringBuilder();
-		Iterator<Partner> it = getRepository().getPartners().iterator();
+
+		Iterator<FederationConfiguration> it = getRepository().getFederationConfigurations().iterator();
 		while(it.hasNext()) {
-			Partner partner = it.next();
-			partnerNames.append(partner.name);
-			partnerURLs.append(partner.url);
-			if(it.hasNext()) {
-				partnerNames.append("|");
-				partnerURLs.append("|");
+			FederationConfiguration fedConfig = it.next();
+			if(fedConfig.outboundEnabled) {
+				Partner partner = fedConfig.getPartner();
+				partnerNames.append(partner.getName());
+				partnerURLs.append(partner.getUrl());
+				if(it.hasNext()) {
+					partnerNames.append("|");
+					partnerURLs.append("|");
+				}
 			}
 		}
-		args.append(partnerURLs.toString() + " ");
-		args.append(partnerNames.toString());
+
+		args.append("\"" + StringUtils.strip(partnerURLs.toString(), "|") + "\" ");
+		args.append("\"" + StringUtils.strip(partnerNames.toString(), "|") + "\"");
 
 		return args.toString();
 	}

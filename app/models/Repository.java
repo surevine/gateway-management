@@ -90,7 +90,7 @@ public class Repository extends Model {
 	public List<Partner> getPartners() {
 		List<Partner> sharedPartners = new ArrayList<Partner>();
 		for(FederationConfiguration config : federationConfigurations) {
-			sharedPartners.add(config.partner);
+			sharedPartners.add(config.getPartner());
 		}
 		return sharedPartners;
 	}
