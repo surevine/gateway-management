@@ -6,6 +6,7 @@ import java.util.Map;
 
 import models.Repository;
 
+import com.surevine.sanitisation.SanitisationConfiguration;
 import com.surevine.sanitisation.SanitisationResult;
 import com.surevine.sanitisation.SanitisationService;
 import com.surevine.sanitisation.SanitisationServiceException;
@@ -32,21 +33,9 @@ public class GitManagedSCMSanitisationService extends GitManagedSanitisationServ
 	}
 
 	@Override
-	public SanitisationResult sanitise(File archive,
-			Map<String, String[]> properties, Repository repository) throws SanitisationServiceException {
-
-		GitManagedSanitisationConfiguration config = buildSanitisationConfig(archive, properties, repository);
-		return super.sanitise(config);
-	}
-
-	@Override
-	public List<String> getValidationErrors(Map<String, String[]> postedProperties) {
-		return super.getValidationErrors(postedProperties);
-	}
-
-	@Override
-	protected GitManagedSanitisationConfiguration buildSanitisationConfig(File archive,
-			Map<String, String[]> properties, Repository repository) {
+	public SanitisationConfiguration buildSanitisationConfiguration(
+			File archive, Map<String, String[]> properties,
+			Repository repository) {
 
 		if(properties.containsKey("commitMessage")) {
 			return new GitManagedCommitSanitisationConfiguration(archive,
@@ -58,6 +47,16 @@ public class GitManagedSCMSanitisationService extends GitManagedSanitisationServ
 		return new GitManagedSanitisationConfiguration(archive,
 				repository,
 				properties.get("sanitisationIdentifier")[0]);
+	}
+
+	@Override
+	public SanitisationResult sanitise(SanitisationConfiguration config) throws SanitisationServiceException {
+		return super.sanitise(config);
+	}
+
+	@Override
+	public List<String> getValidationErrors(Map<String, String[]> postedProperties) {
+		return super.getValidationErrors(postedProperties);
 	}
 
 }

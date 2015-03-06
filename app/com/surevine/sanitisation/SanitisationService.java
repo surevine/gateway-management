@@ -9,6 +9,16 @@ import models.Repository;
 public interface SanitisationService {
 
 	/**
+	 *
+	 * @param archive
+	 * @param properties
+	 * @param repository
+	 * @return
+	 */
+	SanitisationConfiguration buildSanitisationConfiguration(File archive,
+			Map<String, String[]> properties, Repository repository);
+
+	/**
 	 * Determine's whether an archive passes the sanitisation rules.
 	 * @param archive File containing repository contents to sanitised
 	 * @param properties Metadata posted with archive
@@ -16,7 +26,7 @@ public interface SanitisationService {
 	 * @return SanitisationResult result of sanitisation execution
 	 * @throws SanitisationServiceException
 	 */
-	SanitisationResult sanitise(File archive, Map<String, String[]> properties, Repository repository)
+	SanitisationResult sanitise(SanitisationConfiguration config)
 			throws SanitisationServiceException;
 
 	/**

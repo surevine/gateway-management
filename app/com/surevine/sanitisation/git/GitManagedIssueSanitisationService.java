@@ -6,6 +6,7 @@ import java.util.Map;
 
 import models.Repository;
 
+import com.surevine.sanitisation.SanitisationConfiguration;
 import com.surevine.sanitisation.SanitisationResult;
 import com.surevine.sanitisation.SanitisationService;
 import com.surevine.sanitisation.SanitisationServiceException;
@@ -32,9 +33,17 @@ public class GitManagedIssueSanitisationService extends GitManagedSanitisationSe
 	}
 
 	@Override
-	public SanitisationResult sanitise(File archive,
-			Map<String, String[]> properties, Repository repository) throws SanitisationServiceException {
-		GitManagedSanitisationConfiguration config = buildSanitisationConfig(archive, properties, repository);
+	public SanitisationConfiguration buildSanitisationConfiguration(
+			File archive, Map<String, String[]> properties,
+			Repository repository) {
+
+		return new GitManagedSanitisationConfiguration(archive,
+				repository,
+				properties.get("sanitisationIdentifier")[0]);
+	}
+
+	@Override
+	public SanitisationResult sanitise(SanitisationConfiguration config) throws SanitisationServiceException {
 		return super.sanitise(config);
 	}
 

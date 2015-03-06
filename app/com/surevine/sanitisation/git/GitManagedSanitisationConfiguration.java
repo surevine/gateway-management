@@ -4,14 +4,17 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 
+import com.surevine.sanitisation.SanitisationConfiguration;
+
 import models.Partner;
 import models.Repository;
 
-public class GitManagedSanitisationConfiguration {
+/**
+ * Sanitisation configuration for git managed sanitisation service.
+ * @author jonnyheavey
+ */
+public class GitManagedSanitisationConfiguration extends SanitisationConfiguration {
 
-	private File archive;
-	private Repository repository;
-	private String sanitisationIdentifier;
 	private List<Partner> partners;
 
 	public GitManagedSanitisationConfiguration(File archive,
@@ -20,54 +23,18 @@ public class GitManagedSanitisationConfiguration {
 
 		this.setArchive(archive);
 		this.setRepository(repository);
-		this.setSanitisationIdentifier(sanitisationIdentifier);
+		this.setIdentifier(sanitisationIdentifier);
 		this.setPartners(repository.getPartners());
 	}
 
-	public File getArchive() {
-		return archive;
-	}
-
-
-	public void setArchive(File archive) {
-		this.archive = archive;
-	}
-
-	public Repository getRepository() {
-		return repository;
-	}
-
-	public void setRepository(Repository repository) {
-		this.repository = repository;
-	}
-
-	public String getSanitisationIdentifier() {
-		return sanitisationIdentifier;
-	}
-
-	public void setSanitisationIdentifier(String sanitisationIdentifier) {
-		this.sanitisationIdentifier = sanitisationIdentifier;
-	}
-
-	public List<Partner> getPartners() {
-		return partners;
-	}
-
-	public void setPartners(List<Partner> partners) {
-		this.partners = partners;
-	}
-
-	/**
-	 * Build argument string for use in sanitisation script execution.
-	 * @return String argument string
-	 */
-	public String buildScriptArgsString() {
+	@Override
+	public String toSanitisationString() {
 
 		StringBuilder args = new StringBuilder();
 
 		args.append(getArchive().getAbsolutePath() + " ");
 		args.append(getRepository().getIdentifier() + " ");
-		args.append(getSanitisationIdentifier() + " ");
+		args.append(getIdentifier() + " ");
 
 		StringBuilder partnerNames = new StringBuilder();
 		StringBuilder partnerURLs = new StringBuilder();
@@ -85,6 +52,14 @@ public class GitManagedSanitisationConfiguration {
 		args.append(partnerNames.toString());
 
 		return args.toString();
+	}
+
+	public List<Partner> getPartners() {
+		return partners;
+	}
+
+	public void setPartners(List<Partner> partners) {
+		this.partners = partners;
 	}
 
 }

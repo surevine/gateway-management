@@ -18,6 +18,7 @@ import org.h2.store.fs.FileUtils;
 
 import play.Logger;
 
+import com.surevine.sanitisation.SanitisationConfiguration;
 import com.surevine.sanitisation.SanitisationResult;
 import com.surevine.sanitisation.SanitisationServiceException;
 
@@ -39,21 +40,6 @@ public abstract class GitManagedSanitisationService {
 		} catch (IllegalStateException | GitAPIException e) {
 			throw new SanitisationServiceException("Error initialising sanitisation service.", e);
 		}
-	}
-
-	/**
-	 *
-	 * @param archive
-	 * @param properties
-	 * @param repository
-	 * @return
-	 */
-	protected GitManagedSanitisationConfiguration buildSanitisationConfig(File archive,
-			Map<String, String[]> properties, Repository repository) {
-
-		return new GitManagedSanitisationConfiguration(archive,
-				repository,
-				properties.get("sanitisationIdentifier")[0]);
 	}
 
 	/**
@@ -94,7 +80,7 @@ public abstract class GitManagedSanitisationService {
 	 * @throws IOException
 	 * @throws InterruptedException
 	 */
-	protected SanitisationResult executeSanitisationScripts(GitManagedSanitisationConfiguration config) throws IOException, InterruptedException {
+	protected SanitisationResult executeSanitisationScripts(SanitisationConfiguration config) throws IOException, InterruptedException {
 
 		SanitisationResult result = new SanitisationResult(config.getArchive(), true);
 
@@ -102,7 +88,7 @@ public abstract class GitManagedSanitisationService {
 
 		for(File script : sanitisationScripts) {
 
-			String sanitisationCommand = buildSanitisationCommand(script.getAbsolutePath(), config.buildScriptArgsString());
+			String sanitisationCommand = buildSanitisationCommand(script.getAbsolutePath(), config.toSanitisationString());
 
 			Logger.info("Executing: " + sanitisationCommand);
 
@@ -134,14 +120,14 @@ public abstract class GitManagedSanitisationService {
 	 * @return
 	 * @throws SanitisationServiceException
 	 */
-	protected SanitisationResult sanitise(GitManagedSanitisationConfiguration config) throws SanitisationServiceException {
+	protected SanitisationResult sanitise(SanitisationConfiguration config) throws SanitisationServiceException {
 
 		try {
 
 			updateSanitisationScript();
 
 			Logger.info(String.format("Sanitising archive of files with identifier '%s' for %s repository '%s'.",
-					config.getSanitisationIdentifier(),
+					config.getIdentifier(),
 					config.getRepository().getRepoType(),
 					config.getRepository().getIdentifier()));
 
@@ -149,13 +135,13 @@ public abstract class GitManagedSanitisationService {
 
 			if(result.isSane()) {
 				Logger.info(String.format("Archive with identifier '%s' for %s repository '%s' passed sanitisation.",
-						config.getSanitisationIdentifier(),
+						config.getIdentifier(),
 						config.getRepository().getRepoType(),
 						config.getRepository().getIdentifier()));
 			} else {
 				// TODO audit script failure
 				Logger.info(String.format("Archive with identifier '%s' for %s repository '%s' failed sanitisation.",
-						config.getSanitisationIdentifier(),
+						config.getIdentifier(),
 						config.getRepository().getRepoType(),
 						config.getRepository().getIdentifier()));
 			}

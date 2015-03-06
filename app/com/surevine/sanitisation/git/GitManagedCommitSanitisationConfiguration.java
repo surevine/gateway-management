@@ -7,9 +7,8 @@ import models.Partner;
 import models.Repository;
 
 /**
- * Specialised configuration for git 'commit' sanitisations
+ * Special configuration for git 'commit' sanitisations
  * @author jonnyheavey
- *
  */
 public class GitManagedCommitSanitisationConfiguration extends GitManagedSanitisationConfiguration {
 
@@ -30,14 +29,14 @@ public class GitManagedCommitSanitisationConfiguration extends GitManagedSanitis
 	}
 
 	@Override
-	public String buildScriptArgsString() {
+	public String toSanitisationString() {
 
 		StringBuilder args = new StringBuilder();
 
 		args.append(getArchive().getAbsolutePath() + " ");
 		args.append(getCommitMessage() + " ");
 		args.append(getRepository().getIdentifier() + " ");
-		args.append(getSanitisationIdentifier() + " ");
+		args.append(getIdentifier() + " ");
 
 		StringBuilder partnerNames = new StringBuilder();
 		StringBuilder partnerURLs = new StringBuilder();
