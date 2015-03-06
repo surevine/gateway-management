@@ -2,7 +2,6 @@ package com.surevine.sanitisation.git;
 
 import java.io.File;
 import java.util.Iterator;
-import java.util.List;
 
 import com.surevine.sanitisation.SanitisationConfiguration;
 
@@ -15,8 +14,6 @@ import models.Repository;
  */
 public class GitManagedSanitisationConfiguration extends SanitisationConfiguration {
 
-	private List<Partner> partners;
-
 	public GitManagedSanitisationConfiguration(File archive,
 			Repository repository,
 			String sanitisationIdentifier) {
@@ -24,7 +21,6 @@ public class GitManagedSanitisationConfiguration extends SanitisationConfigurati
 		this.setArchive(archive);
 		this.setRepository(repository);
 		this.setIdentifier(sanitisationIdentifier);
-		this.setPartners(repository.getPartners());
 	}
 
 	@Override
@@ -38,7 +34,7 @@ public class GitManagedSanitisationConfiguration extends SanitisationConfigurati
 
 		StringBuilder partnerNames = new StringBuilder();
 		StringBuilder partnerURLs = new StringBuilder();
-		Iterator<Partner> it = getPartners().iterator();
+		Iterator<Partner> it = getRepository().getPartners().iterator();
 		while(it.hasNext()) {
 			Partner partner = it.next();
 			partnerNames.append(partner.name);
@@ -52,14 +48,6 @@ public class GitManagedSanitisationConfiguration extends SanitisationConfigurati
 		args.append(partnerNames.toString());
 
 		return args.toString();
-	}
-
-	public List<Partner> getPartners() {
-		return partners;
-	}
-
-	public void setPartners(List<Partner> partners) {
-		this.partners = partners;
 	}
 
 }

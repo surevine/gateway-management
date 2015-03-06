@@ -40,7 +40,7 @@ public class GitManagedCommitSanitisationConfiguration extends GitManagedSanitis
 
 		StringBuilder partnerNames = new StringBuilder();
 		StringBuilder partnerURLs = new StringBuilder();
-		Iterator<Partner> it = getPartners().iterator();
+		Iterator<Partner> it = getRepository().getPartners().iterator();
 		while(it.hasNext()) {
 			Partner partner = it.next();
 			partnerNames.append(partner.name);
