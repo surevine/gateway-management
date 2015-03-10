@@ -32,6 +32,7 @@
 
     <dependencies>
 
+    	<!-- internal dependencies -->
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
@@ -74,6 +75,9 @@
             <scope>test</scope>
         </dependency>
 
+    	<!-- community dependencies -->
+
+		<!-- third party dependencies -->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
