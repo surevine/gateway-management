@@ -1,5 +1,7 @@
 package com.surevine.sanitisation;
 
+import com.surevine.community.sanitisation.SanitisationResult;
+
 import java.io.File;
 import java.util.List;
 import java.util.Map;

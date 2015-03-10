@@ -17,6 +17,7 @@
         <scala.dependencies.version>2.11</scala.dependencies.version>
         <play2.plugin.version>1.0.0-beta1</play2.plugin.version>
         <sbt-compiler.plugin.version>1.0.0-beta5</sbt-compiler.plugin.version>
+        <community.dependencies.version>0.0.8-SNAPSHOT</community.dependencies.version>
     </properties>
 
     <repositories>
@@ -76,6 +77,11 @@
         </dependency>
 
     	<!-- community dependencies -->
+		<dependency>
+			<groupId>com.surevine.community</groupId>
+			<artifactId>sanitisation</artifactId>
+			<version>${community.dependencies.version}</version>
+		</dependency>
 
 		<!-- third party dependencies -->
         <dependency>
@@ -89,11 +95,6 @@
             <version>9.1-901-1.jdbc4</version>
         </dependency>
         <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.4</version>
-        </dependency>
-        <dependency>
             <groupId>org.eclipse.jgit</groupId>
             <artifactId>org.eclipse.jgit</artifactId>
             <version>3.6.0.201412230720-r</version>
@@ -102,6 +103,26 @@
             <groupId>com.unboundid</groupId>
             <artifactId>unboundid-ldapsdk</artifactId>
             <version>2.3.8</version>
+        </dependency>
+       <dependency>
+           <groupId>org.jboss.resteasy</groupId>
+           <artifactId>resteasy-jaxrs</artifactId>
+           <version>3.0.6.Final</version>
+       </dependency>
+       <dependency>
+           <groupId>org.jboss.resteasy</groupId>
+           <artifactId>resteasy-jackson-provider</artifactId>
+           <version>3.0.6.Final</version>
+       </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-client</artifactId>
+            <version>3.0.6.Final</version>
+        </dependency>
+		<dependency>
+              <groupId>org.jboss.resteasy</groupId>
+              <artifactId>resteasy-multipart-provider</artifactId>
+              <version>3.0.6.Final</version>
         </dependency>
 
     </dependencies>

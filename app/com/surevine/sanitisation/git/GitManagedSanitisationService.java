@@ -16,8 +16,8 @@ import org.h2.store.fs.FileUtils;
 
 import play.Logger;
 
+import com.surevine.community.sanitisation.SanitisationResult;
 import com.surevine.sanitisation.SanitisationConfiguration;
-import com.surevine.sanitisation.SanitisationResult;
 import com.surevine.sanitisation.SanitisationServiceException;
 
 public abstract class GitManagedSanitisationService {

@@ -6,8 +6,8 @@ import java.util.Map;
 
 import models.Repository;
 
+import com.surevine.community.sanitisation.SanitisationResult;
 import com.surevine.sanitisation.SanitisationConfiguration;
-import com.surevine.sanitisation.SanitisationResult;
 import com.surevine.sanitisation.SanitisationService;
 import com.surevine.sanitisation.SanitisationServiceException;
 import com.typesafe.config.ConfigFactory;
