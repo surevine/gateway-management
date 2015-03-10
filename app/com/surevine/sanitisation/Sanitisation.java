@@ -1,5 +1,6 @@
 package com.surevine.sanitisation;
 
+import com.surevine.community.sanitisation.SanitisationException;
 import com.surevine.sanitisation.git.GitManagedSanitisationServiceFactory;
 import com.typesafe.config.ConfigFactory;
 
@@ -28,12 +29,12 @@ public abstract class Sanitisation {
 	 * @return
 	 * @throws SanitisationServiceException
 	 */
-	public static SanitisationServiceFactory getSanitisationServiceFactory() throws SanitisationServiceException {
+	public static SanitisationServiceFactory getSanitisationServiceFactory() throws SanitisationException {
 		switch(getSanitisationModeSetting()) {
 			case GIT_MANAGED:
 				return new GitManagedSanitisationServiceFactory();
 			default:
-				throw new SanitisationServiceException("Unsupported sanitisation mode: " + getSanitisationModeSetting());
+				throw new SanitisationException("Unsupported sanitisation mode: " + getSanitisationModeSetting());
 		}
 	}
 

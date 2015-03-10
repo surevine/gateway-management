@@ -6,10 +6,10 @@ import java.util.Map;
 
 import models.Repository;
 
+import com.surevine.community.sanitisation.SanitisationException;
 import com.surevine.community.sanitisation.SanitisationResult;
 import com.surevine.sanitisation.SanitisationConfiguration;
 import com.surevine.sanitisation.SanitisationService;
-import com.surevine.sanitisation.SanitisationServiceException;
 import com.typesafe.config.ConfigFactory;
 
 public class GitManagedIssueSanitisationService extends GitManagedSanitisationService implements SanitisationService {
@@ -19,11 +19,11 @@ public class GitManagedIssueSanitisationService extends GitManagedSanitisationSe
 	private GitManagedIssueSanitisationService(String workingDir,
 												String sanitisationRepo,
 												String sanitisationScriptName)
-														throws SanitisationServiceException {
+														throws SanitisationException {
 		super(workingDir, sanitisationRepo, sanitisationScriptName);
 	}
 
-	public static GitManagedIssueSanitisationService getInstance() throws SanitisationServiceException {
+	public static GitManagedIssueSanitisationService getInstance() throws SanitisationException {
 		if(_instance == null) {
 			_instance = new GitManagedIssueSanitisationService(ConfigFactory.load().getString("sanitisation.git.issue.working.dir"),
 					ConfigFactory.load().getString("sanitisation.git.issue.script.repo"),
@@ -43,7 +43,7 @@ public class GitManagedIssueSanitisationService extends GitManagedSanitisationSe
 	}
 
 	@Override
-	public SanitisationResult sanitise(SanitisationConfiguration config) throws SanitisationServiceException {
+	public SanitisationResult sanitise(SanitisationConfiguration config) throws SanitisationException {
 		return super.sanitise(config);
 	}
 

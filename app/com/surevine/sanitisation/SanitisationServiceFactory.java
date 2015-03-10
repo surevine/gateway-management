@@ -1,5 +1,7 @@
 package com.surevine.sanitisation;
 
+import com.surevine.community.sanitisation.SanitisationException;
+
 import models.RepositoryType;
 
 public interface SanitisationServiceFactory {
@@ -11,6 +13,6 @@ public interface SanitisationServiceFactory {
 	 * @return
 	 * @throws SanitisationServiceException
 	 */
-	public SanitisationService getSanitisationService(RepositoryType repoType) throws SanitisationServiceException;
+	public SanitisationService getSanitisationService(RepositoryType repoType) throws SanitisationException;
 
 }

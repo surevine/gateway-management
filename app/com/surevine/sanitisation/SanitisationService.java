@@ -1,5 +1,6 @@
 package com.surevine.sanitisation;
 
+import com.surevine.community.sanitisation.SanitisationException;
 import com.surevine.community.sanitisation.SanitisationResult;
 
 import java.io.File;
@@ -29,7 +30,7 @@ public interface SanitisationService {
 	 * @throws SanitisationServiceException
 	 */
 	SanitisationResult sanitise(SanitisationConfiguration config)
-			throws SanitisationServiceException;
+			throws SanitisationException;
 
 	/**
 	 * Validate data posted to sanitisation service.

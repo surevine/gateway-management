@@ -16,9 +16,9 @@ import org.h2.store.fs.FileUtils;
 
 import play.Logger;
 
+import com.surevine.community.sanitisation.SanitisationException;
 import com.surevine.community.sanitisation.SanitisationResult;
 import com.surevine.sanitisation.SanitisationConfiguration;
-import com.surevine.sanitisation.SanitisationServiceException;
 
 public abstract class GitManagedSanitisationService {
 
@@ -28,7 +28,7 @@ public abstract class GitManagedSanitisationService {
 	protected final String sanitisationRepo;
 	protected final String sanitisationScriptName;
 
-	protected GitManagedSanitisationService(String workingDir, String sanitisationRepo, String sanitisationScriptName) throws SanitisationServiceException {
+	protected GitManagedSanitisationService(String workingDir, String sanitisationRepo, String sanitisationScriptName) throws SanitisationException {
 		this.workingDir = new File(workingDir);
 		this.sanitisationRepo = sanitisationRepo;
 		this.sanitisationScriptName = sanitisationScriptName;
@@ -36,7 +36,7 @@ public abstract class GitManagedSanitisationService {
 		try {
 			initSanitisationScript();
 		} catch (IllegalStateException | GitAPIException e) {
-			throw new SanitisationServiceException("Error initialising sanitisation service.", e);
+			throw new SanitisationException("Error initialising sanitisation service.", e);
 		}
 	}
 
@@ -118,7 +118,7 @@ public abstract class GitManagedSanitisationService {
 	 * @return
 	 * @throws SanitisationServiceException
 	 */
-	protected SanitisationResult sanitise(SanitisationConfiguration config) throws SanitisationServiceException {
+	protected SanitisationResult sanitise(SanitisationConfiguration config) throws SanitisationException {
 
 		try {
 
@@ -147,7 +147,7 @@ public abstract class GitManagedSanitisationService {
 			return result;
 
 		} catch (IOException | GitAPIException | InterruptedException e) {
-			throw new SanitisationServiceException("Error with sanitisation service.", e);
+			throw new SanitisationException("Error with sanitisation service.", e);
 		}
 
 	}

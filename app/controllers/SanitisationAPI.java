@@ -8,11 +8,11 @@ import models.RepositoryType;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.surevine.community.sanitisation.SanitisationException;
+import com.surevine.community.sanitisation.SanitisationResult;
 import com.surevine.sanitisation.SanitisationConfiguration;
 import com.surevine.sanitisation.SanitisationService;
-import com.surevine.sanitisation.SanitisationServiceException;
 import com.surevine.sanitisation.Sanitisation;
-import com.surevine.community.sanitisation.SanitisationResult;
 
 import play.Logger;
 import play.libs.Json;
@@ -72,7 +72,7 @@ public class SanitisationAPI extends Controller {
             SanitisationConfiguration sanitisationConfiguration = sanitisationService.buildSanitisationConfiguration(postedArchive.getFile(), postedProperties, repository);
             sanitisationResult = sanitisationService.sanitise(sanitisationConfiguration);
 
-        } catch (SanitisationServiceException e) {
+        } catch (SanitisationException e) {
             String errorMessage = "Error executing sanitisation service. " + e.getMessage();
             Logger.error(errorMessage, e);
             return internalServerError(errorMessage);
