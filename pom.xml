@@ -81,6 +81,7 @@
 			<groupId>com.surevine.community</groupId>
 			<artifactId>sanitisation</artifactId>
 			<version>${community.dependencies.version}</version>
+			<scope>compile</scope>
 		</dependency>
 
 		<!-- third party dependencies -->
@@ -148,7 +149,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <mainLang>java</mainLang>
-                    <serverJvmArgs>-DapplyEvolutions.default=true -DapplyDownEvolutions.default=true -Dconfig.resource=/conf/application.db.conf</serverJvmArgs>
+                    <serverJvmArgs>-DapplyEvolutions.default=true -DapplyDownEvolutions.default=true -Dconfig.resource=/conf/application.db.conf -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=4000,suspend=n</serverJvmArgs>
                 </configuration>
                 <executions>
                     <execution>

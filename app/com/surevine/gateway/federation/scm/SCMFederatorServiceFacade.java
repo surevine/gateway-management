@@ -56,7 +56,7 @@ public class SCMFederatorServiceFacade implements FederatorServiceFacade {
 		Logger.info(String.format("Requesting distribution of repo (%s) by scm-federator [%s]",
 				repository.identifier, SCM_FEDERATOR_API_BASE_URL + SCM_FEDERATOR_API_DISTRIBUTE_PATH));
 
-    	Promise<WSResponse> promise = postDistributionRequest(partner.sourceKey, repository.identifier);
+    	Promise<WSResponse> promise = postDistributionRequest(partner.getSourceKey(), repository.getIdentifier());
 
     	WSResponse response;
     	try {
