@@ -134,6 +134,12 @@
                             <goal>ebean-enhance</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>generate-dist</id>
+                        <goals>
+                            <goal>dist</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
@@ -215,6 +221,12 @@
                                 <id>default-play2-ebean-enhance</id>
                                 <goals>
                                     <goal>ebean-enhance</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>generate-dist</id>
+                                <goals>
+                                    <goal>dist</goal>
                                 </goals>
                             </execution>
                         </executions>
