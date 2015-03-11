@@ -201,6 +201,38 @@
 
     <profiles>
         <profile>
+            <id>release</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-deploy-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>deploy-dist</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>deploy-file</goal>
+                                </goals>
+                                <configuration>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>${project.artifactId}</artifactId>
+                                    <version>${project.version}</version>
+                                    <packaging>zip</packaging>
+                                    <file>${project.build.directory}/${project.artifactId}-${project.version}-dist.zip</file>
+                                    <repositoryId>${project.distributionManagement.repository.id}</repositoryId>
+                                    <url>${project.distributionManagement.repository.url}</url>
+                                 </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
             <id>debug</id>
             <activation>
                 <activeByDefault>false</activeByDefault>
