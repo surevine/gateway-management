@@ -80,7 +80,10 @@ public abstract class GitManagedSanitisationService {
 	 */
 	protected SanitisationResult executeSanitisationScripts(SanitisationConfiguration config) throws IOException, InterruptedException {
 
-		SanitisationResult result = new SanitisationResult(config.getArchive(), true);
+		SanitisationResult result = new SanitisationResult(config.getArchive(),
+															config.getRepository().getIdentifier(),
+															config.getIdentifier(),
+															true);
 
 		List<File> sanitisationScripts = findSanitisationScripts(workingDir, new ArrayList<File>());
 

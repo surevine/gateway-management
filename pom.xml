@@ -9,7 +9,6 @@
     <version>2.0.0-SNAPSHOT</version>
     <packaging>play2</packaging>
 
-    
     <properties>
         <debug.port>4000</debug.port>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -151,7 +150,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <mainLang>java</mainLang>
-                    <serverJvmArgs>-DapplyEvolutions.default=true -DapplyDownEvolutions.default=true -Dconfig.resource=/conf/application.db.conf -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=4000,suspend=n</serverJvmArgs>
+                    <serverJvmArgs>-DapplyEvolutions.default=true -DapplyDownEvolutions.default=true -Dconfig.resource=/conf/application.db.conf</serverJvmArgs>
                 </configuration>
                 <executions>
                     <execution>
@@ -207,7 +206,7 @@
                 </executions>
             </plugin>
         </plugins>
-        
+
         <pluginManagement>
             <plugins>
                 <plugin>

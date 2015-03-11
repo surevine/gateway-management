@@ -78,26 +78,7 @@ public class SanitisationAPI extends Controller {
             return internalServerError(errorMessage);
         }
 
-        return ok(buildJsonResult(sanitisationResult));
-
-    }
-
-    /**
-     * Creates a JSON representation of a sanitisation result
-     * @param result result to convert to JSON
-     * @return JSON representation of result
-     */
-    private ObjectNode buildJsonResult(SanitisationResult result) {
-
-    	// TODO include identifiers etc
-    	// TODO auto json
-
-        ObjectNode jsonResult = Json.newObject();
-        jsonResult.put("sane", result.isSane());
-        JsonNode errors = Json.toJson(result.getErrors());
-        jsonResult.put("errors", errors);
-
-        return jsonResult;
+        return ok(Json.toJson(sanitisationResult));
     }
 
 }
