@@ -175,6 +175,22 @@
                 </executions>
             </plugin>
         </plugins>
+        
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-release-plugin</artifactId>
+                    <version>2.3.2</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>org.apache.maven.scm</groupId>
+                            <artifactId>maven-scm-provider-gitexe</artifactId>
+                            <version>1.9</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <profiles>
@@ -238,4 +254,25 @@
         </profile>
     </profiles>
 
+
+    <scm>
+        <developerConnection>scm:git:ssh://git@github.com/surevine/gateway-management.git</developerConnection>
+        <tag>${project.artifactId}-${project.version}</tag>
+    </scm>
+    <distributionManagement>
+        <repository>
+            <id>surevine-releases</id>
+            <name>Surevine Internal Release Repository</name>
+            <url>https://nexus.surevine.net/content/repositories/releases</url>
+            <layout>default</layout>
+            <uniqueVersion>true</uniqueVersion>
+        </repository>
+        <snapshotRepository>
+            <id>surevine-snapshots</id>
+            <name>Surevine Internal Snapshot Repository</name>
+            <url>https://nexus.surevine.net/content/repositories/snapshots</url>
+            <layout>default</layout>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
