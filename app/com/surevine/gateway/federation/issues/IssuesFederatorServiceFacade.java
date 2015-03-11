@@ -4,7 +4,6 @@ import static play.mvc.Http.Status.OK;
 import models.Partner;
 import models.Repository;
 import play.Logger;
-import play.libs.F.Callback;
 import play.libs.F.Promise;
 import play.libs.ws.WS;
 import play.libs.ws.WSResponse;
@@ -43,7 +42,7 @@ public class IssuesFederatorServiceFacade implements FederatorServiceFacade {
 		Logger.info(String.format("Informing issue-federator of new sharing partnership %s [%s]",
 				repository.identifier, ISSUE_FEDERATOR_API_BASE_URL + ISSUE_FEDERATOR_API_DISTRIBUTE_PATH));
 
-    	Promise<WSResponse> promise = postDistributionRequest(partner.sourceKey, repository.identifier);
+    	Promise<WSResponse> promise = postDistributionRequest(partner.getSourceKey(), repository.getIdentifier());
 
     	WSResponse response;
     	try {
