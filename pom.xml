@@ -149,7 +149,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <mainLang>java</mainLang>
-                    <serverJvmArgs>-DapplyEvolutions.default=true -DapplyDownEvolutions.default=true -Dconfig.resource=/conf/application.db.conf</serverJvmArgs>
+                    <serverJvmArgs>-DapplyEvolutions.default=true -DapplyDownEvolutions.default=true -Dconfig.resource=/application.db.conf</serverJvmArgs>
                 </configuration>
                 <executions>
                     <execution>
@@ -222,7 +222,7 @@
                         <extensions>true</extensions>
                         <configuration>
                             <mainLang>java</mainLang>
-                            <serverJvmArgs>-DapplyEvolutions.default=true -DapplyDownEvolutions.default=true -Dconfig.resource=/conf/application.db.conf -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=${debug.port},suspend=n</serverJvmArgs>
+                            <serverJvmArgs>-DapplyEvolutions.default=true -DapplyDownEvolutions.default=true -Dconfig.resource=/application.db.conf -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=${debug.port},suspend=n</serverJvmArgs>
                         </configuration>
                         <executions>
                             <execution>

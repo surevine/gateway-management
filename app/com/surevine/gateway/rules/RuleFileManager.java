@@ -25,8 +25,8 @@ import com.typesafe.config.ConfigFactory;
  */
 public class RuleFileManager {
 
-	public static final String PARTNER_RULE_FILE_TEMPLATE = "/conf/rules/templates/deny-all.js";
 	public static final String RULES_DIRECTORY = ConfigFactory.load().getString("gateway.rules.dir");
+	public static final String PARTNER_RULE_FILE_TEMPLATE = ConfigFactory.load().getString("gateway.partners.rules.template");
 	public static final String PARTNERS_RULES_DIRECTORY = ConfigFactory.load().getString("gateway.partners.rules.dir");
 	public static final String PARTNERS_EXPORT_RULEFILE_NAME = ConfigFactory.load().getString("gateway.partners.export.rule.file.name");
 	public static final String GLOBAL_EXPORT_RULEFILE_NAME = ConfigFactory.load().getString("gateway.global.export.rule.file.name");
@@ -56,7 +56,7 @@ public class RuleFileManager {
 	 */
 	public void createPartnerRuleFile(Partner partner, String fileName) {
 
-		InputStream ruleTemplate = Play.application().resourceAsStream(PARTNER_RULE_FILE_TEMPLATE);
+		Path ruleTemplate = Paths.get(RULES_DIRECTORY, PARTNER_RULE_FILE_TEMPLATE);
     	Path partnerRuleFilePath = Paths.get(PARTNERS_RULES_DIRECTORY + "/" + partner.id + "/" + fileName);
 
     	try {
