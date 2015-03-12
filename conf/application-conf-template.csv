@@ -1,0 +1,47 @@
+# This is the main configuration template file for the application.
+# It is parsed by the generateConfig.sh script to produce a usable conf properties file.
+# ~~~~~
+
+# Secret key
+# ~~~~~
+# The secret key is used to secure cryptographics functions.
+#
+# This must be changed for production, but we recommend not changing it in this file.
+#
+# See http://www.playframework.com/documentation/latest/ApplicationSecret for more details.
+application.secret="Tlf@1anBZX]Q]W3jGKeWj0dCTY7F29C1I>haC4lbKGPw2/BrUF;OXkUkRlK8^8AI"
+
+logger.root,ERROR,,Root logging level
+logger.play,INFO,,Play log level
+logger.application,DEBUG,,Application log level
+
+gateway.rules.dir,/tmp/gateway/rules,,Gateway rules directory
+gateway.partners.rules.dir,/tmp/gateway/rules/partners,,Directory in which to store partner rules
+gateway.partners.export.rule.file.name,export.js,,The default partner export file
+
+gateway.global.export.rule.file.name=global-export.js,,The name of the export global rules file - must be present in the gateway rules directory
+gateway.global.import.rule.file.name,global-import.js,,The name of the import global rules file - must be present in the gateway rules directory
+
+gateway.auth.mode,public,public | ldap,The authentication mode to use
+
+gateway.audit.mode,log,log | xml,The audit mode to use
+xml.audit.log.file.directory,/tmp/gateway/audit/logs,,The directory to output XML audit logs to (only used in XML audit mode)
+xml.audit.log.file.template,./conf/audit/logfile-template.xml,,The template for XML audit files (only used in XML audit mode)
+xml.audit.event.template,./conf/audit/event-template.xml,,The template for recorded XML audit events (only used in XML audit mode)
+xml.audit.system.environment,DEVELOPMENT,,Determines the environment metadata recorded against logs in the XML output format (only used in XML audit mode)
+
+scm.federator.api.base.url,http://localhost:9080/scm-federation/api,,The base URL for the SCM Federator API services 
+issue.federator.api.base.url,http://localhost:9080/issue-federation/api,,The base URL for the Issue Federator API services
+
+sanitisation.mode,git,,The sanitisation mode (only 'git' supported currently)
+
+sanitisation.git.scm.working.dir,/tmp/sanitisation/scm,,The working directory that the SCM sanitisation repository should be cloned to
+sanitisation.git.scm.script.repo,https://github.com/JonnyHeavey/fed-scm-sanitisation-test.git,,The repository containing the SCM sanitisation scripts to run
+sanitisation.git.scm.script.name,sanitisation.sh,,The name of the SCM sanitisation script to run
+
+sanitisation.git.issue.working.dir,/tmp/sanitisation/issue,,The working directory that the Issue sanitisation repository should be cloned to
+sanitisation.git.issue.script.repo,https://github.com/JonnyHeavey/fed-issue-sanitisation-test.git,,The repository containing the Issue sanitisation scripts to run
+sanitisation.git.issue.script.name,sanitisation.sh,,The name of the Issue sanitisation script to run
+
+db.default.driver,org.postgresql.Driver,,The database driver to use
+db.default.url,postgres://user:password@host/database,,The database connection url

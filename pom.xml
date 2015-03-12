@@ -135,7 +135,6 @@
         <resources>
             <resource>
                 <directory>${basedir}/conf</directory>
-                <targetPath>conf</targetPath>
             </resource>
             <resource>
                 <directory>${basedir}/public</directory>
@@ -165,6 +164,7 @@
                             <goal>dist</goal>
                         </goals>
                         <configuration>
+                            <configFile>conf/application.conf</configFile>
                             <distAttach>true</distAttach>
                         </configuration>
                     </execution>
@@ -229,12 +229,6 @@
                                 <id>default-play2-ebean-enhance</id>
                                 <goals>
                                     <goal>ebean-enhance</goal>
-                                </goals>
-                            </execution>
-                            <execution>
-                                <id>generate-dist</id>
-                                <goals>
-                                    <goal>dist</goal>
                                 </goals>
                             </execution>
                         </executions>
