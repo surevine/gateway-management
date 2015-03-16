@@ -1,19 +1,21 @@
 package com.surevine.gateway.auditing.action.xml;
 
-import models.Destination;
-import models.OutboundProject;
+import models.Partner;
+import models.FederationConfiguration;
+import models.Repository;
 
 import com.surevine.gateway.auditing.action.AuditActionFactory;
-import com.surevine.gateway.auditing.action.CreateDestinationAction;
+import com.surevine.gateway.auditing.action.CreatePartnerAction;
 import com.surevine.gateway.auditing.action.CreateRepositoryAction;
-import com.surevine.gateway.auditing.action.DeleteDestinationAction;
+import com.surevine.gateway.auditing.action.DeletePartnerAction;
 import com.surevine.gateway.auditing.action.DeleteRepositoryAction;
-import com.surevine.gateway.auditing.action.ModifyDestinationRulesAction;
+import com.surevine.gateway.auditing.action.ModifyPartnerRulesAction;
 import com.surevine.gateway.auditing.action.ModifyGlobalRulesAction;
 import com.surevine.gateway.auditing.action.ResendRepositoryAction;
 import com.surevine.gateway.auditing.action.ShareRepositoryAction;
+import com.surevine.gateway.auditing.action.UpdateFederationAction;
 import com.surevine.gateway.auditing.action.UnshareRepositoryAction;
-import com.surevine.gateway.auditing.action.UpdateDestinationAction;
+import com.surevine.gateway.auditing.action.UpdatePartnerAction;
 import com.surevine.gateway.auditing.action.UpdateRepositoryAction;
 import com.surevine.gateway.auditing.action.UserLoginAction;
 
@@ -27,8 +29,8 @@ import com.surevine.gateway.auditing.action.UserLoginAction;
 public class XMLAuditActionFactory implements AuditActionFactory {
 
 	@Override
-	public CreateDestinationAction getCreateDestinationAction(Destination destination) {
-		return new XMLCreateDestinationAction(destination);
+	public CreatePartnerAction getCreatePartnerAction(Partner partner) {
+		return new XMLCreatePartnerAction(partner);
 	}
 
 	@Override
@@ -37,31 +39,31 @@ public class XMLAuditActionFactory implements AuditActionFactory {
 	}
 
 	@Override
-	public UpdateDestinationAction getUpdateDestinationAction(
-			Destination originalDestination, Destination updatedDestination) {
-		return new XMLUpdateDestinationAction(originalDestination, updatedDestination);
+	public UpdatePartnerAction getUpdatePartnerAction(
+			Partner originalPartner, Partner updatedPartner) {
+		return new XMLUpdatePartnerAction(originalPartner, updatedPartner);
 	}
 
 	@Override
-	public DeleteDestinationAction getDeleteDestinationAction(
-			Destination destination) {
-		return new XMLDeleteDestinationAction(destination);
+	public DeletePartnerAction getDeletePartnerAction(
+			Partner partner) {
+		return new XMLDeletePartnerAction(partner);
 	}
 
 	@Override
-	public CreateRepositoryAction getCreateRepositoryAction(OutboundProject project) {
-		return new XMLCreateRepositoryAction(project);
+	public CreateRepositoryAction getCreateRepositoryAction(Repository repository) {
+		return new XMLCreateRepositoryAction(repository);
 	}
 
 	@Override
 	public UpdateRepositoryAction getUpdateRepositoryAction(
-			OutboundProject originalProject, OutboundProject updatedProject) {
-		return new XMLUpdateRepositoryAction(originalProject, updatedProject);
+			Repository originalRepo, Repository updatedRepo) {
+		return new XMLUpdateRepositoryAction(originalRepo, updatedRepo);
 	}
 
 	@Override
-	public DeleteRepositoryAction getDeleteRepositoryAction(OutboundProject project) {
-		return new XMLDeleteRepositoryAction(project);
+	public DeleteRepositoryAction getDeleteRepositoryAction(Repository repository) {
+		return new XMLDeleteRepositoryAction(repository);
 	}
 
 	@Override
@@ -71,27 +73,30 @@ public class XMLAuditActionFactory implements AuditActionFactory {
 	}
 
 	@Override
-	public ModifyDestinationRulesAction getModifyDestinationRulesAction(
-			Destination destination, String ruleFileContents) {
-		return new XMLModifyDestinationRulesAction(destination, ruleFileContents);
+	public ModifyPartnerRulesAction getModifyPartnerRulesAction(
+			Partner partner, String ruleFileContents) {
+		return new XMLModifyPartnerRulesAction(partner, ruleFileContents);
 	}
 
 	@Override
-	public ShareRepositoryAction getShareRepositoryAction(OutboundProject project,
-			Destination destination) {
-		return new XMLShareRepositoryAction(project, destination);
+	public ShareRepositoryAction getShareRepositoryAction(FederationConfiguration config) {
+		return new XMLShareRepositoryAction(config);
 	}
 
 	@Override
-	public UnshareRepositoryAction getUnshareRepositoryAction(OutboundProject project,
-			Destination destination) {
-		return new XMLUnshareRepositoryAction(project, destination);
+	public UnshareRepositoryAction getUnshareRepositoryAction(FederationConfiguration config) {
+		return new XMLUnshareRepositoryAction(config);
 	}
 
 	@Override
-	public ResendRepositoryAction getResendRepositoryAction(OutboundProject project,
-			Destination destination) {
-		return new XMLResendRepositoryAction(project, destination);
+	public ResendRepositoryAction getResendRepositoryAction(FederationConfiguration config) {
+		return new XMLResendRepositoryAction(config);
+	}
+
+	@Override
+	public UpdateFederationAction getUpdateFederationAction(
+			FederationConfiguration config, String updatedDirection, boolean federationEnabled) {
+		return new XMLUpdateFederationAction(config, updatedDirection, federationEnabled);
 	}
 
 }

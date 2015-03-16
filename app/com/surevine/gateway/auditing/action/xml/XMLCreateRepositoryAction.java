@@ -1,13 +1,13 @@
 package com.surevine.gateway.auditing.action.xml;
 
-import models.OutboundProject;
+import models.Repository;
 
 import com.surevine.gateway.auditing.action.CreateRepositoryAction;
 
 public class XMLCreateRepositoryAction extends CreateRepositoryAction {
 
-	public XMLCreateRepositoryAction(OutboundProject project) {
-		super(project);
+	public XMLCreateRepositoryAction(Repository repository) {
+		super(repository);
 	}
 
 	@Override
@@ -16,8 +16,8 @@ public class XMLCreateRepositoryAction extends CreateRepositoryAction {
 		xml.append(String.format("<Description>%s</Description>", getDescription()) + System.getProperty("line.separator"));
 		xml.append("<Create>");
 		xml.append("<Outcome>");
-		xml.append(String.format("<Data name=\"repositoryName\" value=\"%s\" />", project.displayName));
-		xml.append(String.format("<Data name=\"repositorySlug\" value=\"%s/%s\" />", project.projectKey, project.repositorySlug ));
+		xml.append(String.format("<Data name=\"repositoryType\" value=\"%s\" />", repository.getRepoType()));
+		xml.append(String.format("<Data name=\"repositoryIdentifier\" value=\"%s\" />", repository.getIdentifier()));
 		xml.append("</Outcome>");
 		xml.append("</Create>");
 

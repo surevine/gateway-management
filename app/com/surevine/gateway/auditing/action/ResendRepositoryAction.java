@@ -1,26 +1,22 @@
 package com.surevine.gateway.auditing.action;
 
-import models.Destination;
-import models.OutboundProject;
+import models.FederationConfiguration;
 
 public class ResendRepositoryAction implements AuditAction {
 
-	protected OutboundProject project;
-	protected Destination destination;
+	protected FederationConfiguration config;
 
-	public ResendRepositoryAction(OutboundProject project, Destination destination) {
-		this.project = project;
-		this.destination = destination;
+	public ResendRepositoryAction(FederationConfiguration config) {
+		this.config = config;
 	}
 
 	@Override
 	public String getDescription() {
-		return String.format("Resent repository %s(%s/%s) to gateway for export to destination %s(%s)",
-								project.displayName,
-								project.projectKey,
-								project.repositorySlug,
-								destination.name,
-								destination.url);
+		return String.format("Resent repository [%s][%s] to gateway for export to partner [%s][%s]",
+								config.getRepository().getRepoType(),
+								config.getRepository().getIdentifier(),
+								config.getPartner().getName(),
+								config.getPartner().getUrl());
 	}
 
 	@Override

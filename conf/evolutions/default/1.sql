@@ -3,66 +3,61 @@
 
 # --- !Ups
 
-create table destination (
+create table federation_configuration (
+  id                        bigint not null,
+  partner_id                bigint,
+  repository_id             bigint,
+  inbound_enabled           boolean,
+  outbound_enabled          boolean,
+  constraint pk_federation_configuration primary key (id))
+;
+
+create table partner (
   id                        bigint not null,
   name                      varchar(255),
   url                       varchar(255),
-  constraint uq_destination_url unique (url),
-  constraint pk_destination primary key (id))
+  source_key                varchar(255),
+  constraint uq_partner_url unique (url),
+  constraint uq_partner_source_key unique (source_key),
+  constraint pk_partner primary key (id))
 ;
 
-create table inbound_project (
+create table repository (
   id                        bigint not null,
-  source_organisation       varchar(255),
-  project_key               varchar(255),
-  repository_slug           varchar(255),
-  constraint pk_inbound_project primary key (id))
+  repo_type                 varchar(5),
+  identifier                varchar(255),
+  constraint ck_repository_repo_type check (repo_type in ('SCM','ISSUE')),
+  constraint pk_repository primary key (id))
 ;
 
-create table outbound_project (
-  id                        bigint not null,
-  display_name              varchar(255),
-  project_key               varchar(255),
-  repository_slug           varchar(255),
-  constraint pk_outbound_project primary key (id))
-;
+create sequence federation_configuration_seq;
+
+create sequence partner_seq;
+
+create sequence repository_seq;
+
+alter table federation_configuration add constraint fk_federation_configuration_pa_1 foreign key (partner_id) references partner (id) on delete restrict on update restrict;
+create index ix_federation_configuration_pa_1 on federation_configuration (partner_id);
+alter table federation_configuration add constraint fk_federation_configuration_re_2 foreign key (repository_id) references repository (id) on delete restrict on update restrict;
+create index ix_federation_configuration_re_2 on federation_configuration (repository_id);
 
 
-create table destination_outbound_project (
-  destination_id                 bigint not null,
-  outbound_project_id            bigint not null,
-  constraint pk_destination_outbound_project primary key (destination_id, outbound_project_id))
-;
-create sequence destination_seq;
-
-create sequence inbound_project_seq;
-
-create sequence outbound_project_seq;
-
-
-
-
-alter table destination_outbound_project add constraint fk_destination_outbound_proje_01 foreign key (destination_id) references destination (id) on delete restrict on update restrict;
-
-alter table destination_outbound_project add constraint fk_destination_outbound_proje_02 foreign key (outbound_project_id) references outbound_project (id) on delete restrict on update restrict;
 
 # --- !Downs
 
 SET REFERENTIAL_INTEGRITY FALSE;
 
-drop table if exists destination;
+drop table if exists federation_configuration;
 
-drop table if exists destination_outbound_project;
+drop table if exists partner;
 
-drop table if exists inbound_project;
-
-drop table if exists outbound_project;
+drop table if exists repository;
 
 SET REFERENTIAL_INTEGRITY TRUE;
 
-drop sequence if exists destination_seq;
+drop sequence if exists federation_configuration_seq;
 
-drop sequence if exists inbound_project_seq;
+drop sequence if exists partner_seq;
 
-drop sequence if exists outbound_project_seq;
+drop sequence if exists repository_seq;
 

@@ -1,5 +1,13 @@
+#content {
+	padding-bottom: 40px;
+}
+
 section {
 	margin: 20px 0 30px 0 ;
+}
+
+input[type="text"], select {
+	max-width: 400px;
 }
 
 .primary-action {
@@ -16,9 +24,17 @@ h4 a.btn {
 	margin-left: 5px;
 }
 
-/* Destination Pages */
+/* Dashboard */
 
-.destination-info th {
+.shortcut h2 {
+	text-align: center;
+	margin: 10px 0;
+	font-size: 40px;
+}
+
+/* Destination & Repo Pages */
+
+.partner-info th, .repo-info th {
 	padding-right: 10px;
 }
 
@@ -30,6 +46,31 @@ h4 a.btn {
 	display: inline;
 }
 
+.shared-repos {
+	margin: 25px 0 0 0;
+}
+
+.repo-list {
+	margin-top: 10px;
+}
+
+.shared-repos .table, .repo-list .table {
+	margin-bottom: 0;
+}
+
+.shared-repos .table th, .repo-list .table th {
+     border-top: none;
+ }
+
+ .partner-list .table tr th, .partner-list .table tr td {
+ 	padding-left: 0;
+ }
+
+ .shared-repos .no-federation, .repo-list .no-federation {
+ 	margin-top: 8px;
+ 	margin-bottom: 0;
+ }
+
 /* Share project pages */
 
 .input-group {
@@ -40,8 +81,38 @@ h4 a.btn {
 	margin-right: 5px;
 }
 
+#federate-repo-form-panel .nav-pills {
+	margin: 0px 0 10px 0;
+}
+
+#federate-repo-form-panel .radio h5 {
+	margin-top: 3px;
+}
+
+#federate-repo-form-panel .all-configured {
+	margin-top: 28px;
+}
+
+#repo-type-filter {
+	margin-bottom: 0;
+}
+
 /* Form controls */
 
 .modal-form {
 	display: inline;
+}
+
+/* Global rules */
+
+#view-global-rules .nav-pills {
+	margin: 10px 0;
+}
+
+.edit-info {
+	margin: 10px 0;
+}
+
+.edit-info th {
+	padding-right: 10px;
 }

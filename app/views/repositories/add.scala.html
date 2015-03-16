@@ -1,0 +1,50 @@
+@(repoForm: Form[Repository])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(utils.twitterBootstrapInput.render) }
+
+@main("Add repository") {
+
+	@form(routes.Repositories.create(), 'role -> "form") {
+
+		@if(repoForm.hasGlobalErrors) {
+		    <p class="has-error">
+		    	<span class="help-block">@repoForm.globalError.message</span>
+		    </p>
+		}
+
+		<fieldset>
+
+			@select(repoForm("repoType"),
+					options(RepositoryType.options()),
+					'_default -> "--- Repository type ---",
+         			'_label -> "Type",
+         			'_help -> "Type of repository",
+					'class -> "form-control",
+         			'_showConstraints -> false)
+
+			@inputText(repoForm("identifier"),
+						'_label -> "Identifier",
+						'_help -> "Unique identifier for repository (from host system)",
+						'class -> "form-control",
+						'placeholder -> "Identifier")
+
+		</fieldset>
+
+		<div class="actions">
+            <input type="submit" value="Add repository" data-loading-text="Submitting..." class="btn btn-primary submit">
+            <a href="@routes.Repositories.list()" class="btn btn-default">Cancel</a>
+		</div>
+
+	}
+
+	<script type="text/javascript">
+		$( document ).ready(function() {
+			$('.submit').on('click', function () {
+			    $(this).button('loading');
+			});
+		});
+	</script>
+
+}

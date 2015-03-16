@@ -32,7 +32,7 @@ var syntaxHighlighter = {
 			editor.getSession().setValue(textarea.val());
 			editor.getSession().setMode("ace/mode/javascript");
 			editor.setOptions({
-		        maxLines: 40
+		        maxLines: 32
 		    });
 
 			editor.getSession().on('change', function(){

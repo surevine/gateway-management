@@ -1,14 +1,14 @@
 package com.surevine.gateway.auditing.action.xml;
 
-import models.OutboundProject;
+import models.Repository;
 
 import com.surevine.gateway.auditing.action.UpdateRepositoryAction;
 
 public class XMLUpdateRepositoryAction extends UpdateRepositoryAction {
 
-	public XMLUpdateRepositoryAction(OutboundProject originalProject,
-			OutboundProject updatedProject) {
-		super(originalProject, updatedProject);
+	public XMLUpdateRepositoryAction(Repository originalRepository,
+			Repository updatedRepository) {
+		super(originalRepository, updatedRepository);
 	}
 
 	@Override
@@ -18,15 +18,13 @@ public class XMLUpdateRepositoryAction extends UpdateRepositoryAction {
 		xml.append("<Update>");
 
 		xml.append("<Before>");
-		xml.append(String.format("<Data name=\"respoitoryName\" value=\"%s\" />", originalProject.displayName));
-		xml.append(String.format("<Data name=\"repositoryProjectKey\" value=\"%s\" />", originalProject.projectKey));
-		xml.append(String.format("<Data name=\"repositoryRepoSlug\" value=\"%s\" />", originalProject.repositorySlug));
+		xml.append(String.format("<Data name=\"repositoryIdentifier\" value=\"%s\" />", originalRepository.getIdentifier()));
+		xml.append(String.format("<Data name=\"repositoryType\" value=\"%s\" />", originalRepository.getRepoType()));
 		xml.append("</Before>");
 
 		xml.append("<After>");
-		xml.append(String.format("<Data name=\"destinationName\" value=\"%s\" />", updatedProject.displayName));
-		xml.append(String.format("<Data name=\"repositoryProjectKey\" value=\"%s\" />", updatedProject.projectKey));
-		xml.append(String.format("<Data name=\"repositoryRepoSlug\" value=\"%s\" />", updatedProject.repositorySlug));
+		xml.append(String.format("<Data name=\"repositoryIdentifier\" value=\"%s\" />", updatedRepository.getIdentifier()));
+		xml.append(String.format("<Data name=\"repositoryType\" value=\"%s\" />", updatedRepository.getRepoType()));
 		xml.append("</After>");
 
 		xml.append("</Update>");

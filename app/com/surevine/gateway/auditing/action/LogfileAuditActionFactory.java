@@ -1,7 +1,8 @@
 package com.surevine.gateway.auditing.action;
 
-import models.Destination;
-import models.OutboundProject;
+import models.Partner;
+import models.FederationConfiguration;
+import models.Repository;
 
 /**
  * AuditActionFactory producing actions to be audited in logfile
@@ -13,8 +14,8 @@ import models.OutboundProject;
 public class LogfileAuditActionFactory implements AuditActionFactory {
 
 	@Override
-	public CreateDestinationAction getCreateDestinationAction(Destination destination) {
-		return new CreateDestinationAction(destination);
+	public CreatePartnerAction getCreatePartnerAction(Partner partner) {
+		return new CreatePartnerAction(partner);
 	}
 
 	@Override
@@ -23,31 +24,31 @@ public class LogfileAuditActionFactory implements AuditActionFactory {
 	}
 
 	@Override
-	public UpdateDestinationAction getUpdateDestinationAction(
-			Destination originalDestination, Destination updatedDestination) {
-		return new UpdateDestinationAction(originalDestination, originalDestination);
+	public UpdatePartnerAction getUpdatePartnerAction(
+			Partner originalPartner, Partner updatedPartner) {
+		return new UpdatePartnerAction(originalPartner, originalPartner);
 	}
 
 	@Override
-	public DeleteDestinationAction getDeleteDestinationAction(
-			Destination destination) {
-		return new DeleteDestinationAction(destination);
+	public DeletePartnerAction getDeletePartnerAction(
+			Partner partner) {
+		return new DeletePartnerAction(partner);
 	}
 
 	@Override
-	public CreateRepositoryAction getCreateRepositoryAction(OutboundProject project) {
-		return new CreateRepositoryAction(project);
+	public CreateRepositoryAction getCreateRepositoryAction(Repository repository) {
+		return new CreateRepositoryAction(repository);
 	}
 
 	@Override
 	public UpdateRepositoryAction getUpdateRepositoryAction(
-			OutboundProject originalProject, OutboundProject updatedProject) {
-		return new UpdateRepositoryAction(originalProject, updatedProject);
+			Repository originalRepo, Repository updatedRepo) {
+		return new UpdateRepositoryAction(originalRepo, updatedRepo);
 	}
 
 	@Override
-	public DeleteRepositoryAction getDeleteRepositoryAction(OutboundProject project) {
-		return new DeleteRepositoryAction(project);
+	public DeleteRepositoryAction getDeleteRepositoryAction(Repository repository) {
+		return new DeleteRepositoryAction(repository);
 	}
 
 	@Override
@@ -57,27 +58,30 @@ public class LogfileAuditActionFactory implements AuditActionFactory {
 	}
 
 	@Override
-	public ModifyDestinationRulesAction getModifyDestinationRulesAction(
-			Destination destination, String ruleFileContents) {
-		return new ModifyDestinationRulesAction(destination, ruleFileContents);
+	public ModifyPartnerRulesAction getModifyPartnerRulesAction(
+			Partner partner, String ruleFileContents) {
+		return new ModifyPartnerRulesAction(partner, ruleFileContents);
 	}
 
 	@Override
-	public ShareRepositoryAction getShareRepositoryAction(OutboundProject project,
-			Destination destination) {
-		return new ShareRepositoryAction(project, destination);
+	public ShareRepositoryAction getShareRepositoryAction(FederationConfiguration config) {
+		return new ShareRepositoryAction(config);
 	}
 
 	@Override
-	public UnshareRepositoryAction getUnshareRepositoryAction(OutboundProject project,
-			Destination destination) {
-		return new UnshareRepositoryAction(project, destination);
+	public UnshareRepositoryAction getUnshareRepositoryAction(FederationConfiguration config) {
+		return new UnshareRepositoryAction(config);
 	}
 
 	@Override
-	public ResendRepositoryAction getResendRepositoryAction(OutboundProject project,
-			Destination destination) {
-		return new ResendRepositoryAction(project, destination);
+	public ResendRepositoryAction getResendRepositoryAction(FederationConfiguration config) {
+		return new ResendRepositoryAction(config);
+	}
+
+	@Override
+	public UpdateFederationAction getUpdateFederationAction(
+			FederationConfiguration config, String updatedDirection, boolean federationEnabled) {
+		return new UpdateFederationAction(config, updatedDirection, federationEnabled);
 	}
 
 }

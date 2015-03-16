@@ -1,0 +1,68 @@
+@(partner: Partner, repositories: List[Repository], repoType: String)
+
+@import helper._
+
+@if(repositories.isEmpty) {
+
+	<div class="panel panel-warning all-configured">
+		<div class="panel-heading">
+			<h3 class="panel-title">All @repoType repositories federated</h3>
+		</div>
+		<div class="panel-body">
+			<p>All configured @repoType repositories have been federated with this partner. Please <a href="@routes.Repositories.add()">add another repository</a>.</p>
+		</div>
+	</div>
+
+} else {
+
+	@form(routes.FederationConfigurations.create(), 'role -> "form") {
+
+		<fieldset>
+			<input type="hidden" name="source" value="partner" />
+			<input type="hidden" name="partnerId" value="@partner.id" />
+
+			<section>
+				<h4>Repository</h4>
+				<p>Select the repository you wish to federate:</p>
+				<select name="repositoryId" class="form-control">
+				@for(repo <- repositories) {
+					<option value="@repo.id">@repo.identifier</option>
+				}
+				</select>
+			</section>
+			<section>
+				<h4>Federation Type</h4>
+				<p>Select the inital federation configuration (this can be modified):</p>
+
+				<div class="radio">
+					<label>
+						<input type="radio" name="federationType" value="bidirectional" checked />
+						<h5>Bi-directional</h5>
+						<p>Enable both inbound and outbound federation. Send and receive updates made to the repository to/from the partner partner. </p>
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type="radio" name="federationType" value="outbound" />
+						<h5>Outbound-only</h5>
+						<p>Only enable outbound federation. Send updates made to the repository to the partner partner, but ignore any updates received from partners.</p>
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type="radio" name="federationType" value="inbound" />
+						<h5>Inbound-only</h5>
+						<p>Only enable inbound federation. Receive updates to repository made by partners, but don't send any local updates.</p>
+					</label>
+				</div>
+			</section>
+		</fieldset>
+
+		<div class="actions">
+			<input type="submit" value="Federate repository" data-loading-text="Submitting..." class="btn btn-primary submit">
+			<a href="@routes.Partners.list()" class="btn btn-default">Cancel</a>
+		</div>
+
+	}
+
+}

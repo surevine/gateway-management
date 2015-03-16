@@ -14,7 +14,7 @@ public class PublicAuthService implements AuthService {
 	@Override
 	public String getAuthenticatedUsername(Context ctx) throws AuthServiceException {
 		// Always return string (actions accessible to all users)
-		return "Unautheticated";
+		return "Unauthenticated";
 	}
 
 }

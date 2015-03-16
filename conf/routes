@@ -7,112 +7,75 @@ GET     /                           	@controllers.Application.index()
 
 
 #
-# Destinations
+# Partners
 #
 
-# Destinations list
-GET		/destinations					@controllers.Destinations.list()
-GET		/api/destinations				@controllers.DestinationsAPI.list()
+GET		/partners						@controllers.Partners.list()
+GET		/api/partners					@controllers.Partners.apiList()
 
-# View destination
-GET		/destinations/:id/view			@controllers.Destinations.view(id: Long)
+GET		/partners/add					@controllers.Partners.add()
+POST	/partners/add					@controllers.Partners.create()
 
-# Add a destination
-GET		/destinations/add				@controllers.Destinations.add()
-POST	/destinations/add				@controllers.Destinations.create()
+GET		/partners/:id/edit				@controllers.Partners.edit(id: Long)
+POST	/partners/:id/edit				@controllers.Partners.update(id: Long)
 
-# Edit existing destination
-GET		/destinations/:id/edit			@controllers.Destinations.edit(id: Long)
-POST	/destinations/:id/edit			@controllers.Destinations.update(id: Long)
+POST	/partners/:id/delete			@controllers.Partners.delete(id: Long)
 
-# Delete destination
-POST	/destinations/:id/delete		@controllers.Destinations.delete(id: Long)
+GET		/partners/:id/federate-repo		@controllers.Partners.federateRepoPage(id: Long)
 
-# Add project to destination
-GET		/destinations/:id/shareprojects	@controllers.Destinations.shareProjectPage(id: Long)
-
-# Edit destination rulefile
-GET		/destinations/:id/editrules		@controllers.Destinations.editRules(id: Long)
-POST	/destinations/:id/editrules		@controllers.Destinations.updateRules(id: Long)
+GET		/partners/:id/editrules			@controllers.Partners.editRules(id: Long)
+POST	/partners/:id/editrules			@controllers.Partners.updateRules(id: Long)
 
 
 #
-# Outbound Projects
+# Repositories
 #
 
-# Projects list
-GET		/projects						@controllers.OutboundProjects.list()
-GET		/api/projects					@controllers.OutboundProjectsAPI.list()
+GET		/repositories						@controllers.Repositories.list()
+GET		/api/repositories					@controllers.Repositories.apiList()
+GET		/api/repositories/:id				@controllers.Repositories.apiView(id: Long)
 
-# View project
-GET		/projects/view/:id				@controllers.OutboundProjects.view(id: Long)
-GET		/api/projects/view/:id			@controllers.OutboundProjectsAPI.view(id: Long)
+GET		/repositories/add					@controllers.Repositories.add()
+POST	/repositories/add					@controllers.Repositories.create()
 
-# Add a project
-GET		/projects/add					@controllers.OutboundProjects.add()
-POST	/projects/add					@controllers.OutboundProjects.create()
+GET		/repositories/:id/edit				@controllers.Repositories.edit(id: Long)
+POST	/repositories/:id/edit				@controllers.Repositories.update(id: Long)
 
-# Edit existing project
-GET		/projects/edit/:id				@controllers.OutboundProjects.edit(id: Long)
-POST	/projects/edit/:id				@controllers.OutboundProjects.update(id: Long)
+POST	/repositories/:id/delete			@controllers.Repositories.delete(id: Long)
 
-# Delete project
-POST	/projects/delete/:id			@controllers.OutboundProjects.delete(id: Long)
+GET		/repositories/:id/federate-repo		@controllers.Repositories.federateRepoPage(id: Long)
 
-# Share project with destinations
-GET		/projects/:id/shareproject		@controllers.OutboundProjects.shareProjectPage(id: Long)
 
 #
-# Inbound (Whitelisted) projects
+# Federation
 #
 
-# Projects list
-GET		/inbound-projects				@controllers.InboundProjects.list()
-GET		/api/inbound-projects			@controllers.InboundProjectsAPI.list()
+GET		/api/federation					@controllers.FederationConfigurations.all()
+GET		/api/federation/inbound			@controllers.FederationConfigurations.inbound()
+GET		/api/federation/inbound-single	@controllers.FederationConfigurations.singleInboundConfiguration()
+GET		/api/federation/outbound		@controllers.FederationConfigurations.outbound()
+GET		/api/federation/outbound-single	@controllers.FederationConfigurations.singleOutboundConfiguration()
 
-# Add a project
-GET		/inbound-projects/add			@controllers.InboundProjects.add()
-POST	/inbound-projects/add			@controllers.InboundProjects.create()
-
-# Edit existing project
-GET		/inbound-projects/edit/:id		@controllers.InboundProjects.edit(id: Long)
-POST	/inbound-projects/edit/:id		@controllers.InboundProjects.update(id: Long)
-
-# Delete project
-POST	/inbound-projects/delete/:id	@controllers.InboundProjects.delete(id: Long)
-
-#
-# Sharing Partnerships
-#
-
-# Share projects with destination
-POST	/partnerships/create			@controllers.SharingPartnerships.create()
-
-# Remove existing sharing partnership
-POST	/partnerships/delete			@controllers.SharingPartnerships.delete()
-
-# Ad-hoc resend repo
-POST	/partnerships/resend			@controllers.SharingPartnerships.resend()
+POST	/federation/create				@controllers.FederationConfigurations.create()
+POST	/federation/update				@controllers.FederationConfigurations.update()
+POST	/federation/delete				@controllers.FederationConfigurations.delete(id: Long)
+POST	/federation/resend				@controllers.FederationConfigurations.resend()
 
 
 #
 # Global rule files / filters
 #
 
-# View global files
 GET		/global-rules					@controllers.GlobalRuleFiles.view()
 
-# Edit gloal rule files
 GET		/global-rules/edit/:slug		@controllers.GlobalRuleFiles.edit(slug: String)
 POST	/global-rules/edit/:slug		@controllers.GlobalRuleFiles.update(slug: String)
 
-
 #
-# Misc
-#
-
 # Sanitisation
-POST	/api/sanitise					@controllers.Sanitisation.sanitise()
+#
+
+POST	/api/sanitise					@controllers.SanitisationAPI.sanitise()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               	controllers.Assets.at(path="/public", file)

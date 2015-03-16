@@ -1,20 +1,22 @@
 package com.surevine.gateway.auditing;
 
-import models.Destination;
-import models.OutboundProject;
+import models.Partner;
+import models.FederationConfiguration;
+import models.Repository;
 
 import com.surevine.gateway.auditing.action.AuditActionFactory;
-import com.surevine.gateway.auditing.action.CreateDestinationAction;
+import com.surevine.gateway.auditing.action.CreatePartnerAction;
 import com.surevine.gateway.auditing.action.CreateRepositoryAction;
-import com.surevine.gateway.auditing.action.DeleteDestinationAction;
+import com.surevine.gateway.auditing.action.DeletePartnerAction;
 import com.surevine.gateway.auditing.action.DeleteRepositoryAction;
 import com.surevine.gateway.auditing.action.LogfileAuditActionFactory;
-import com.surevine.gateway.auditing.action.ModifyDestinationRulesAction;
+import com.surevine.gateway.auditing.action.ModifyPartnerRulesAction;
 import com.surevine.gateway.auditing.action.ModifyGlobalRulesAction;
 import com.surevine.gateway.auditing.action.ResendRepositoryAction;
 import com.surevine.gateway.auditing.action.ShareRepositoryAction;
 import com.surevine.gateway.auditing.action.UnshareRepositoryAction;
-import com.surevine.gateway.auditing.action.UpdateDestinationAction;
+import com.surevine.gateway.auditing.action.UpdatePartnerAction;
+import com.surevine.gateway.auditing.action.UpdateFederationAction;
 import com.surevine.gateway.auditing.action.UpdateRepositoryAction;
 import com.surevine.gateway.auditing.action.UserLoginAction;
 import com.surevine.gateway.auditing.action.xml.XMLAuditActionFactory;
@@ -81,23 +83,23 @@ public abstract class Audit {
 		getAuditService().audit(event);
 	}
 
-	public static CreateDestinationAction getCreateDestinationAction(Destination destination) {
-		return getAuditActionFactory().getCreateDestinationAction(destination);
+	public static CreatePartnerAction getCreatePartnerAction(Partner partner) {
+		return getAuditActionFactory().getCreatePartnerAction(partner);
 	}
 
-	public static UpdateDestinationAction getUpdateDestinationAction(
-			Destination originalDestination, Destination updatedDestination) {
-		return getAuditActionFactory().getUpdateDestinationAction(originalDestination, updatedDestination);
+	public static UpdatePartnerAction getUpdatePartnerAction(
+			Partner originalPartner, Partner updatedPartner) {
+		return getAuditActionFactory().getUpdatePartnerAction(originalPartner, updatedPartner);
 	}
 
-	public static DeleteDestinationAction getDeleteDestinationAction(
-			Destination destination) {
-		return getAuditActionFactory().getDeleteDestinationAction(destination);
+	public static DeletePartnerAction getDeletePartnerAction(
+			Partner partner) {
+		return getAuditActionFactory().getDeletePartnerAction(partner);
 	}
 
-	public static ModifyDestinationRulesAction getModifyDestinationRulesAction(
-			Destination destination, String newRuleFileContent) {
-		return getAuditActionFactory().getModifyDestinationRulesAction(destination, newRuleFileContent);
+	public static ModifyPartnerRulesAction getModifyPartnerRulesAction(
+			Partner partner, String newRuleFileContent) {
+		return getAuditActionFactory().getModifyPartnerRulesAction(partner, newRuleFileContent);
 	}
 
 	public static ModifyGlobalRulesAction getModifyGlobalRulesAction(
@@ -106,33 +108,35 @@ public abstract class Audit {
 	}
 
 	public static CreateRepositoryAction getCreateRepositoryAction(
-			OutboundProject project) {
-		return getAuditActionFactory().getCreateRepositoryAction(project);
+			Repository repository) {
+		return getAuditActionFactory().getCreateRepositoryAction(repository);
 	}
 
 	public static UpdateRepositoryAction getUpdateRepositoryAction(
-			OutboundProject originalProject, OutboundProject updatedProject) {
-		return getAuditActionFactory().getUpdateRepositoryAction(originalProject, updatedProject);
+			Repository originalRepo, Repository updatedRepo) {
+		return getAuditActionFactory().getUpdateRepositoryAction(originalRepo, updatedRepo);
 	}
 
 	public static DeleteRepositoryAction getDeleteRepositoryAction(
-			OutboundProject project) {
-		return getAuditActionFactory().getDeleteRepositoryAction(project);
+			Repository repository) {
+		return getAuditActionFactory().getDeleteRepositoryAction(repository);
 	}
 
-	public static UnshareRepositoryAction getUnshareRepositoryAction(
-			OutboundProject project, Destination destination) {
-		return getAuditActionFactory().getUnshareRepositoryAction(project, destination);
+	public static UnshareRepositoryAction getUnshareRepositoryAction(FederationConfiguration config) {
+		return getAuditActionFactory().getUnshareRepositoryAction(config);
 	}
 
-	public static ResendRepositoryAction getResendRepositoryAction(
-			OutboundProject project, Destination destination) {
-		return getAuditActionFactory().getResendRepositoryAction(project, destination);
+	public static ResendRepositoryAction getResendRepositoryAction(FederationConfiguration config) {
+		return getAuditActionFactory().getResendRepositoryAction(config);
 	}
 
-	public static ShareRepositoryAction getShareRepositoryAction(
-			OutboundProject project, Destination destination) {
-		return getAuditActionFactory().getShareRepositoryAction(project, destination);
+	public static UpdateFederationAction getUpdateFederationAction(
+			FederationConfiguration config, String updatedDirection, boolean federationEnabled) {
+		return getAuditActionFactory().getUpdateFederationAction(config, updatedDirection, federationEnabled);
+	}
+
+	public static ShareRepositoryAction getShareRepositoryAction(FederationConfiguration config) {
+		return getAuditActionFactory().getShareRepositoryAction(config);
 	}
 
 	public static UserLoginAction getUserLoginAction(String authenticatedUser) {

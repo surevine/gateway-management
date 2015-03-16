@@ -1,21 +1,20 @@
 package com.surevine.gateway.auditing.action;
 
-import models.OutboundProject;
+import models.Repository;
 
 public class CreateRepositoryAction implements AuditAction {
 
-	protected OutboundProject project;
+	protected Repository repository;
 
-	public CreateRepositoryAction(OutboundProject project) {
-		this.project = project;
+	public CreateRepositoryAction(Repository repository) {
+		this.repository = repository;
 	}
 
 	@Override
 	public String getDescription() {
-		return String.format("Created repository %s(%s/%s)",
-								project.displayName,
-								project.projectKey,
-								project.repositorySlug);
+		return String.format("Created repository [%s][%s]",
+								repository.getRepoType(),
+								repository.getIdentifier());
 	}
 
 	@Override

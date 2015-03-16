@@ -1,13 +1,13 @@
 package com.surevine.gateway.auditing.action.xml;
 
-import models.OutboundProject;
+import models.Repository;
 
 import com.surevine.gateway.auditing.action.DeleteRepositoryAction;
 
 public class XMLDeleteRepositoryAction extends DeleteRepositoryAction {
 
-	public XMLDeleteRepositoryAction(OutboundProject project) {
-		super(project);
+	public XMLDeleteRepositoryAction(Repository repository) {
+		super(repository);
 	}
 
 	@Override
@@ -16,8 +16,8 @@ public class XMLDeleteRepositoryAction extends DeleteRepositoryAction {
 		xml.append(String.format("<Description>%s</Description>", getDescription()) + System.getProperty("line.separator"));
 		xml.append("<Delete>");
 		xml.append("<Outcome>");
-		xml.append(String.format("<Data name=\"destinationName\" value=\"%s\" />", project.displayName));
-		xml.append(String.format("<Data name=\"destinationURL\" value=\"%s/%s\" />", project.projectKey, project.repositorySlug));
+		xml.append(String.format("<Data name=\"repositoryType\" value=\"%s\" />", repository.getRepoType()));
+		xml.append(String.format("<Data name=\"repositoryIdentifier\" value=\"%s/%s\" />", repository.getIdentifier()));
 		xml.append("</Outcome>");
 		xml.append("</Delete>");
 

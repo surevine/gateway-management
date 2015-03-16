@@ -1,0 +1,62 @@
+@(partner: Partner, repoForm: DynamicForm)
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(utils.twitterBootstrapInput.render) }
+
+@repoCount = @{ Repository.FIND.all().size() }
+
+@scmRepos = @{ Repository.getFederationOptions(partner, "SCM") }
+
+@issueRepos = @{ Repository.getFederationOptions(partner, "ISSUE") }
+
+@main("Federate repository") {
+
+	@if(repoCount == 0) {
+
+		<div class="panel panel-warning">
+		  <div class="panel-heading">
+		    <h3 class="panel-title">No repositories</h3>
+		  </div>
+		  <div class="panel-body">
+		    <p>No repositories have been configured. Please <a href="@routes.Repositories.add()">add a repository</a>.</p>
+		  </div>
+		</div>
+
+	} else {
+
+		<section>
+			<h4>Partner</h4>
+			<p>@partner.name (@partner.url)</p>
+		</section>
+
+		<div id="federate-repo-form-panel" role="tabpanel">
+			<section id="repo-type-filter">
+				<h4>Repository Type</h4>
+				<p>Select the type of repository you wish to federate:</p>
+				<ul class="nav nav-pills" role="tablist">
+				    <li role="presentation" class="active"><a href="#scm" aria-controls="scm" role="tab" data-toggle="tab">SCM</a></li>
+				    <li role="presentation"><a href="#issues" aria-controls="issues" role="tab" data-toggle="tab">Issue-tracking</a></li>
+			  	</ul>
+		  	</section>
+		 	<div class="tab-content">
+			    <div role="tabpanel" class="tab-pane fade in active" id="scm">
+					@utils.renderFederateRepoForm(partner, scmRepos, "SCM")
+			    </div>
+			    <div role="tabpanel" class="tab-pane fade" id="issues">
+					@utils.renderFederateRepoForm(partner, issueRepos, "Issue-tracking")
+				</div>
+		    </div>
+	    </div>
+
+	}
+
+	<script type="text/javascript">
+		$( document ).ready(function() {
+			$('.submit').on('click', function () {
+			    $(this).button('loading');
+			});
+		});
+	</script>
+
+}

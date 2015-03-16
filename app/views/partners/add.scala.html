@@ -1,0 +1,47 @@
+@(partnerForm: Form[Partner])
+
+@import helper._
+
+@implicitFieldConstructor = @{ FieldConstructor(utils.twitterBootstrapInput.render) }
+
+@main("Add partner") {
+
+	@form(routes.Partners.create(), 'role -> "form") {
+
+		<fieldset>
+
+			@inputText(partnerForm("name"),
+						'_label -> "Name",
+						'_help -> "Name of partner",
+						'class -> "form-control",
+						'placeholder -> "Name",
+						'autofocus -> "autofocus")
+			@inputText(partnerForm("url"),
+						'_label -> "URL",
+						'_help -> "URL of partner",
+						'class -> "form-control",
+						'placeholder -> "URL")
+			@inputText(partnerForm("sourceKey"),
+						'_label -> "Source Key",
+						'_help -> "Configured key used by partner when exporting items via gateway.",
+						'class -> "form-control",
+						'placeholder -> "Source key")
+
+		</fieldset>
+
+		<div class="actions">
+            <input type="submit" value="Create partner" data-loading-text="Submitting..." class="btn btn-primary submit">
+            <a href="@routes.Partners.list()" class="btn btn-default">Cancel</a>
+		</div>
+
+	}
+
+	<script type="text/javascript">
+		$( document ).ready(function() {
+			$('.submit').on('click', function () {
+			    $(this).button('loading');
+			});
+		});
+	</script>
+
+}

@@ -1,26 +1,24 @@
 package com.surevine.gateway.auditing.action;
 
-import models.Destination;
-import models.OutboundProject;
+import models.FederationConfiguration;
 
 public class ShareRepositoryAction implements AuditAction {
 
-	protected OutboundProject project;
-	protected Destination destination;
+	protected FederationConfiguration config;
 
-	public ShareRepositoryAction(OutboundProject project, Destination destination) {
-		this.project = project;
-		this.destination = destination;
+	public ShareRepositoryAction(FederationConfiguration config) {
+		this.config = config;
 	}
 
 	@Override
 	public String getDescription() {
-		return String.format("Shared repository %s(%s/%s) with destination %s(%s). Repository sent to gateway for export.",
-								project.displayName,
-								project.projectKey,
-								project.repositorySlug,
-								destination.name,
-								destination.url);
+		return String.format("Shared repository [%s][%s] with partner [%s][%s]. Inbound federation enabled: [%s]. Outbound federation enabled: [%s].",
+								config.getRepository().getRepoType(),
+								config.getRepository().getIdentifier(),
+								config.getPartner().getName(),
+								config.getPartner().getUrl(),
+								config.inboundEnabled,
+								config.outboundEnabled);
 	}
 
 	@Override

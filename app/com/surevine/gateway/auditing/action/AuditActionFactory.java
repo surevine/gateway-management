@@ -1,7 +1,8 @@
 package com.surevine.gateway.auditing.action;
 
-import models.Destination;
-import models.OutboundProject;
+import models.Partner;
+import models.FederationConfiguration;
+import models.Repository;
 
 /**
  * @author jonnyheavey
@@ -16,33 +17,33 @@ public interface AuditActionFactory {
 	UserLoginAction getUserLoginAction(String username);
 
 	/**
-	 * Get an AuditService specific implementation of CreateDestinationAction
-	 * @param destination Created destination
-	 * @return AuditService specific implementation of CreateDestinationAction
+	 * Get an AuditService specific implementation of CreatePartnerAction
+	 * @param partner Created partner
+	 * @return AuditService specific implementation of CreatePartnerAction
 	 */
-	CreateDestinationAction getCreateDestinationAction(Destination destination);
+	CreatePartnerAction getCreatePartnerAction(Partner partner);
 
 	/**
-	 * Get an AuditService specific implementation of UpdateDestinationAction
-	 * @param originalDestination Destination state before update
-	 * @param updatedDestination Destination state after update
-	 * @return AuditService specific implementation of UpdateDestinationAction
+	 * Get an AuditService specific implementation of UpdatePartnerAction
+	 * @param originalPartner Partner state before update
+	 * @param updatedPartner Partner state after update
+	 * @return AuditService specific implementation of UpdatePartnerAction
 	 */
-	UpdateDestinationAction getUpdateDestinationAction(Destination originalDestination, Destination updatedDestination);
+	UpdatePartnerAction getUpdatePartnerAction(Partner originalPartner, Partner updatedPartner);
 
 	/**
-	 * Get an AuditService specific implementation of DeleteDestinationAction
-	 * @param destination Deleted destination
-	 * @return AuditService specific implementation of DeleteDestinationAction
+	 * Get an AuditService specific implementation of DeletePartnerAction
+	 * @param partner Deleted partner
+	 * @return AuditService specific implementation of DeletePartnerAction
 	 */
-	DeleteDestinationAction getDeleteDestinationAction(Destination destination);
+	DeletePartnerAction getDeletePartnerAction(Partner partner);
 
 	/**
 	 * Get an AuditService specific implementation of CreateRepositoryAction
 	 * @param project Created project
 	 * @return AuditService specific implementation of CreateRepositoryAction
 	 */
-	CreateRepositoryAction getCreateRepositoryAction(OutboundProject project);
+	CreateRepositoryAction getCreateRepositoryAction(Repository repository);
 
 	/**
 	 * Get an AuditService specific implementation of UpdateRepositoryAction
@@ -50,14 +51,14 @@ public interface AuditActionFactory {
 	 * @param updatedProject Project state before update
 	 * @return AuditService specific implementation of UpdateRepositoryAction
 	 */
-	UpdateRepositoryAction getUpdateRepositoryAction(OutboundProject originalProject, OutboundProject updatedProject);
+	UpdateRepositoryAction getUpdateRepositoryAction(Repository originalRepo, Repository updatedRepo);
 
 	/**
 	 * Get an AuditService specific implementation of DeleteRepositoryAction
 	 * @param project Deleted project
 	 * @return AuditService specific implementation of DeleteRepositoryAction
 	 */
-	DeleteRepositoryAction getDeleteRepositoryAction(OutboundProject project);
+	DeleteRepositoryAction getDeleteRepositoryAction(Repository repository);
 
 	/**
 	 * Get an AuditService specific implementation of ModifyGlobalRulesAction
@@ -68,35 +69,45 @@ public interface AuditActionFactory {
 	ModifyGlobalRulesAction getModifyGlobalRulesAction(String ruleFile, String ruleFileContents);
 
 	/**
-	 * Get an AuditService specific implementation of ModifyDestinationRulesAction
-	 * @param destination Destination who's rulefile was updated
+	 * Get an AuditService specific implementation of ModifyPartnerRulesAction
+	 * @param partner Partner who's rulefile was updated
 	 * @param ruleFileContents New contents of rulefile
-	 * @return AuditService specific implementation of ModifyDestinationRulesAction
+	 * @return AuditService specific implementation of ModifyPartnerRulesAction
 	 */
-	ModifyDestinationRulesAction getModifyDestinationRulesAction(Destination destination, String ruleFileContents);
+	ModifyPartnerRulesAction getModifyPartnerRulesAction(Partner partner, String ruleFileContents);
 
 	/**
 	 * Get an AuditService specific implementation of ShareRepositoryAction
 	 * @param project Shared project
-	 * @param destination Destination the project was shared to
+	 * @param partner Partner the project was shared to
 	 * @return AuditService specific implementation of ShareRepositoryAction
 	 */
-	ShareRepositoryAction getShareRepositoryAction(OutboundProject project, Destination destination);
+	ShareRepositoryAction getShareRepositoryAction(FederationConfiguration config);
 
 	/**
 	 * Get an AuditService specific implementation of UnshareRepositoryAction
 	 * @param project Unshared project
-	 * @param destination Destination the project was unshared from
+	 * @param partner Partner the project was unshared from
 	 * @return AuditService specific implementation of UnshareRepositoryAction
 	 */
-	UnshareRepositoryAction getUnshareRepositoryAction(OutboundProject project, Destination destination);
+	UnshareRepositoryAction getUnshareRepositoryAction(FederationConfiguration config);
 
 	/**
 	 * Get an AuditService specific implementation of ResendRepositoryAction
 	 * @param project Shared project
-	 * @param destination Destination the project was resent to
+	 * @param partner Partner the project was resent to
 	 * @return AuditService specific implementation of ResendRepositoryAction
 	 */
-	ResendRepositoryAction getResendRepositoryAction(OutboundProject project, Destination destination);
+	ResendRepositoryAction getResendRepositoryAction(FederationConfiguration config);
+
+	/**
+	 * Get an AuditService specific implementation of the ToggleFederationAction
+	 * @param repository repository being federated
+	 * @param partner the partner the repo is federated with
+	 * @param direction the direction of federation
+	 * @param enabled whether federation has been enabled or disabled
+	 * @return
+	 */
+	UpdateFederationAction getUpdateFederationAction(FederationConfiguration config, String updatedDirection, boolean federationEnabled);
 
 }
