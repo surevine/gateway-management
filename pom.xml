@@ -18,7 +18,7 @@
         <scala.dependencies.version>2.11</scala.dependencies.version>
         <play2.plugin.version>1.0.0-beta1</play2.plugin.version>
         <sbt-compiler.plugin.version>1.0.0-beta5</sbt-compiler.plugin.version>
-        <community.dependencies.version>0.0.8-SNAPSHOT</community.dependencies.version>
+        <community.dependencies.version>0.0.9</community.dependencies.version>
     </properties>
 
     <repositories>
