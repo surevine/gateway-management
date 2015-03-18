@@ -4,10 +4,10 @@
 	</EventTime>
 	<EventSource>
 		<System>
-			<Name>Community portal</Name>
+			<Name>Community Portal Console</Name>
 			<Environment>%EVENT_SYSTEM_ENVIRONMENT%</Environment>
 		</System>
-		<Generator>Gateway management console</Generator>
+		<Generator>Community portal management console</Generator>
 		<Device>
 			<Name>Hosted web application</Name>
 		</Device>
