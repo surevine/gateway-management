@@ -5,7 +5,7 @@
     <groupId>com.surevine.community.management</groupId>
     <artifactId>management-console-parent</artifactId>
     <name>management-console-parent</name>
-    <version>2.0.2</version>
+    <version>2.0.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -239,7 +239,7 @@
 
     <scm>
         <developerConnection>scm:git:ssh://git@github.com/surevine/gateway-management.git</developerConnection>
-        <tag>management-console-parent-2.0.2</tag>
+        <tag>${project.artifactId}-${project.version}</tag>
     </scm>
     <distributionManagement>
         <repository>
