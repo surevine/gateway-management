@@ -337,7 +337,7 @@ public class FederationConfigurations extends AuditedController {
     	try {
 			Federator.distribute(config.partner, config.repository);
 		} catch (FederatorServiceException e) {
-			String errorMessage = String.format("Failed to resend repository to partner.",
+			String errorMessage = String.format("Failed to redistribute repository.",
 					config.partner.name, config.repository.identifier);
 			Logger.error(errorMessage, e);
 			return internalServerError(errorMessage);
@@ -346,7 +346,7 @@ public class FederationConfigurations extends AuditedController {
     	ResendRepositoryAction action = Audit.getResendRepositoryAction(config);
     	audit(action);
 
-        return ok("Resent repository to gateway for export to partner.");
+        return ok("Requested repository redistribution.");
 	}
 
 }
