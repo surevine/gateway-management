@@ -6,8 +6,6 @@ import java.util.Map;
 import models.Repository;
 import models.RepositoryType;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.surevine.community.sanitisation.SanitisationException;
 import com.surevine.community.sanitisation.SanitisationResult;
 import com.surevine.sanitisation.SanitisationConfiguration;

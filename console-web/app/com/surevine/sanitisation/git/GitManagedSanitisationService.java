@@ -2,6 +2,7 @@ package com.surevine.sanitisation.git;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,8 +78,9 @@ public abstract class GitManagedSanitisationService {
 	 * @return
 	 * @throws IOException
 	 * @throws InterruptedException
+	 * @throws SanitisationException
 	 */
-	protected SanitisationResult executeSanitisationScripts(SanitisationConfiguration config) throws IOException, InterruptedException {
+	protected SanitisationResult executeSanitisationScripts(SanitisationConfiguration config) throws SanitisationException {
 
 		SanitisationResult result = new SanitisationResult(config.getArchive(),
 															config.getRepository().getIdentifier(),
@@ -93,9 +95,20 @@ public abstract class GitManagedSanitisationService {
 
 			Logger.info("Executing: " + sanitisationCommand);
 
-			Process p = Runtime.getRuntime().exec(sanitisationCommand);
-			String scriptOutput = IOUtils.toString(p.getInputStream(), Charset.defaultCharset());
-			int exitValue = p.waitFor();
+			InputStream processOutput = null;
+			String scriptOutput = null;
+			int exitValue = 0;
+
+			try {
+				Process p = Runtime.getRuntime().exec(sanitisationCommand);
+				processOutput = p.getInputStream();
+				scriptOutput = IOUtils.toString(processOutput, Charset.defaultCharset());
+				exitValue = p.waitFor();
+			} catch(IOException | InterruptedException e) {
+				throw new SanitisationException("Error during sanitisation script execution.", e);
+			} finally {
+				IOUtils.closeQuietly(processOutput);
+			}
 
 			if((scriptOutput != null) && (scriptOutput.trim() != "")) {
 				Logger.info(String.format("%s (%s)", scriptOutput, script.getAbsolutePath()));
@@ -149,7 +162,7 @@ public abstract class GitManagedSanitisationService {
 
 			return result;
 
-		} catch (IOException | GitAPIException | InterruptedException e) {
+		} catch (IOException | GitAPIException e) {
 			throw new SanitisationException("Error with sanitisation service.", e);
 		}
 

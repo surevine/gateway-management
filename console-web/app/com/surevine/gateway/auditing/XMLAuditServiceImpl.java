@@ -20,6 +20,7 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -135,11 +136,22 @@ public class XMLAuditServiceImpl implements AuditService {
 	 * @throws SAXException
 	 * @throws IOException
 	 */
-	private Node createEventXML(AuditEvent event) throws SAXException, IOException {
+	private Node createEventXML(AuditEvent event) throws AuditServiceException {
 		String eventTemplate = loadEventTemplate();
 		String populatedEvent = populateEventTemplate(eventTemplate, event);
-		InputStream eventInputStream = new ByteArrayInputStream(populatedEvent.getBytes("UTF-8"));
-		return documentBuilder.parse(eventInputStream).getFirstChild();
+		Node xmlEvent = null;
+		InputStream eventInputStream = null;
+
+		try {
+			eventInputStream = new ByteArrayInputStream(populatedEvent.getBytes("UTF-8"));
+			xmlEvent = documentBuilder.parse(eventInputStream).getFirstChild();
+		} catch ( SAXException | IOException e) {
+			throw new AuditServiceException("Error creating event XML.", e);
+		} finally {
+			IOUtils.closeQuietly(eventInputStream);
+		}
+
+		return xmlEvent;
 	}
 
 	/**
