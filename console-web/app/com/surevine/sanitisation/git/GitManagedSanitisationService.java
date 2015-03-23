@@ -76,8 +76,6 @@ public abstract class GitManagedSanitisationService {
 	 * Executes sanitisation shell scripts in cloned repository.
 	 * @param GitManagedSanitisationConfiguration config sanitisation configuration
 	 * @return
-	 * @throws IOException
-	 * @throws InterruptedException
 	 * @throws SanitisationException
 	 */
 	protected SanitisationResult executeSanitisationScripts(SanitisationConfiguration config) throws SanitisationException {
@@ -132,7 +130,7 @@ public abstract class GitManagedSanitisationService {
 	 * @param properties
 	 * @param repository
 	 * @return
-	 * @throws SanitisationServiceException
+	 * @throws SanitisationException
 	 */
 	protected SanitisationResult sanitise(SanitisationConfiguration config) throws SanitisationException {
 

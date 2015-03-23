@@ -133,8 +133,7 @@ public class XMLAuditServiceImpl implements AuditService {
 	 *
 	 * @param event Audited action
 	 * @return XML Node representing audit event
-	 * @throws SAXException
-	 * @throws IOException
+	 * @throws AuditServiceException
 	 */
 	private Node createEventXML(AuditEvent event) throws AuditServiceException {
 		String eventTemplate = loadEventTemplate();
