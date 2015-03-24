@@ -86,7 +86,7 @@ public class FederationConfigurations extends AuditedController {
     	RepositoryType repoType = RepositoryType.valueOf(queryString.get("repoType")[0]);
 		Repository repository = Repository.FIND.where()
 				.eq("repoType", repoType)
-				.eq("identifier", queryString.get("repoIdentifier")[0])
+				.ieq("identifier", queryString.get("repoIdentifier")[0])
 				.findUnique();
 		if(repository == null) {
 			return notFound("Repository not found.");
