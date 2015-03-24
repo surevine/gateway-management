@@ -219,31 +219,20 @@ public class FederationConfigurations extends AuditedController {
     		case "bidirectional":
     			inboundEnabled = true;
     			outboundEnabled = true;
-    			break;
-    		case "inbound":
-    			inboundEnabled = true;
+    			flash("success", "Repository configured for bi-directional sharing with partner. It will be exported at the next federation cycle.");
     			break;
     		case "outbound":
     			outboundEnabled = true;
+    	    	flash("success", "Repository configured for outbound sharing with partner. It will be exported at the next federation cycle.");
+    			break;
+    		case "inbound":
+    			inboundEnabled = true;
+    			flash("success", "Repository configured for inbound sharing from partner.");
     			break;
     	}
 
     	FederationConfiguration config = new FederationConfiguration(partner, repo, inboundEnabled, outboundEnabled);
     	config.save();
-
-    	if(outboundEnabled) {
-    		Logger.info("Attempting initial distribution of repository to destination.");
-        	try {
-    			Federator.distribute(partner, repo);
-    		} catch (FederatorServiceException e) {
-    			String errorMessage = String.format("Failed to distribute repository to partner. Distribution will be reattempted at the next configured federation interval.",
-    									partner.name, repo.identifier);
-    			Logger.error(errorMessage, e);
-    			flash("error", errorMessage);
-    		}
-    	} else {
-    		Logger.info("Skipping initial distribution as outbound federation disabled.");
-    	}
 
     	ShareRepositoryAction action = Audit.getShareRepositoryAction(config);
     	audit(action);
