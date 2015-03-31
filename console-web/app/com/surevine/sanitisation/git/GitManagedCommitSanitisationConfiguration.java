@@ -37,7 +37,6 @@ public class GitManagedCommitSanitisationConfiguration extends GitManagedSanitis
 		StringBuilder args = new StringBuilder();
 
 		args.append(getArchive().getAbsolutePath() + " ");
-		args.append("\"" + getCommitMessage() + "\" ");
 		args.append(getRepository().getIdentifier() + " ");
 		args.append(getIdentifier() + " ");
 
@@ -59,7 +58,8 @@ public class GitManagedCommitSanitisationConfiguration extends GitManagedSanitis
 		}
 
 		args.append("\"" + StringUtils.strip(partnerURLs.toString(), "|") + "\" ");
-		args.append("\"" + StringUtils.strip(partnerNames.toString(), "|") + "\"");
+		args.append("\"" + StringUtils.strip(partnerNames.toString(), "|") + "\" ");
+		args.append("\"" + getCommitMessage() + "\"");
 
 		return args.toString();
 	}
