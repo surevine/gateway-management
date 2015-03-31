@@ -1,24 +1,23 @@
 package com.surevine.sanitisation.git;
 
 import java.io.File;
-import java.util.Iterator;
+import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
-import models.FederationConfiguration;
-import models.Partner;
 import models.Repository;
+
+import org.apache.commons.codec.binary.Base64;
 
 /**
  * Special configuration for git 'commit' sanitisations
+ *
  * @author jonnyheavey
  */
 public class GitManagedCommitSanitisationConfiguration extends GitManagedSanitisationConfiguration {
 
 	private String commitMessage;
 
-	public GitManagedCommitSanitisationConfiguration(File archive,
-			Repository repository, String sanitisationIdentifier, String commitMessage) {
+	public GitManagedCommitSanitisationConfiguration(final File archive, final Repository repository,
+			final String sanitisationIdentifier, final String commitMessage) {
 		super(archive, repository, sanitisationIdentifier);
 		this.setCommitMessage(commitMessage);
 	}
@@ -27,41 +26,16 @@ public class GitManagedCommitSanitisationConfiguration extends GitManagedSanitis
 		return commitMessage;
 	}
 
-	public void setCommitMessage(String commitMessage) {
+	public void setCommitMessage(final String commitMessage) {
 		this.commitMessage = commitMessage;
 	}
 
 	@Override
-	public String toSanitisationString() {
-
-		StringBuilder args = new StringBuilder();
-
-		args.append(getArchive().getAbsolutePath() + " ");
-		args.append(getRepository().getIdentifier() + " ");
-		args.append(getIdentifier() + " ");
-
-		StringBuilder partnerNames = new StringBuilder();
-		StringBuilder partnerURLs = new StringBuilder();
-
-		Iterator<FederationConfiguration> it = getRepository().getFederationConfigurations().iterator();
-		while(it.hasNext()) {
-			FederationConfiguration fedConfig = it.next();
-			if(fedConfig.outboundEnabled) {
-				Partner partner = fedConfig.getPartner();
-				partnerNames.append(partner.getName());
-				partnerURLs.append(partner.getUrl());
-				if(it.hasNext()) {
-					partnerNames.append("|");
-					partnerURLs.append("|");
-				}
-			}
-		}
-
-		args.append("\"" + StringUtils.strip(partnerURLs.toString(), "|") + "\" ");
-		args.append("\"" + StringUtils.strip(partnerNames.toString(), "|") + "\" ");
-		args.append("\"" + getCommitMessage() + "\"");
-
-		return args.toString();
+	public List<String> toSanitisationArguments() {
+		final List<String> args = super.toSanitisationArguments();
+		final byte[] encodedCommitMessage = Base64.encodeBase64(getCommitMessage().getBytes());
+		args.add("\"" + new String(encodedCommitMessage) + "\"");
+		return args;
 	}
 
 }

@@ -29,7 +29,8 @@ public abstract class GitManagedSanitisationService {
 	protected final String sanitisationRepo;
 	protected final String sanitisationScriptName;
 
-	protected GitManagedSanitisationService(String workingDir, String sanitisationRepo, String sanitisationScriptName) throws SanitisationException {
+	protected GitManagedSanitisationService(final String workingDir, final String sanitisationRepo,
+			final String sanitisationScriptName) throws SanitisationException {
 		this.workingDir = new File(workingDir);
 		this.sanitisationRepo = sanitisationRepo;
 		this.sanitisationScriptName = sanitisationScriptName;
@@ -43,15 +44,16 @@ public abstract class GitManagedSanitisationService {
 
 	/**
 	 * Retrieve any errors in posted data
+	 *
 	 * @param postedProperties
 	 * @return
 	 */
-	protected List<String> getValidationErrors(Map<String, String[]> postedProperties) {
+	protected List<String> getValidationErrors(final Map<String, String[]> postedProperties) {
 
-		List<String> errors = new ArrayList<String>();
+		final List<String> errors = new ArrayList<String>();
 
-		String sanitisationIdentifier = postedProperties.get("sanitisationIdentifier")[0];
-		if(sanitisationIdentifier == null) {
+		final String sanitisationIdentifier = postedProperties.get("sanitisationIdentifier")[0];
+		if (sanitisationIdentifier == null) {
 			errors.add("sanitisationIdentifier is missing from request");
 		}
 
@@ -60,36 +62,36 @@ public abstract class GitManagedSanitisationService {
 
 	/**
 	 * Updates existing local sanitisation repository (pulls from origin)
+	 *
 	 * @throws IOException
 	 * @throws InvalidRemoteException
 	 * @throws TransportException
 	 * @throws GitAPIException
 	 */
-	protected void updateSanitisationScript() throws IOException, InvalidRemoteException, TransportException, GitAPIException {
-        Git.open(workingDir)
-        .pull()
-        .setRemote("origin")
-        .call();
+	protected void updateSanitisationScript() throws IOException, InvalidRemoteException, TransportException,
+			GitAPIException {
+		Git.open(workingDir).pull().setRemote("origin").call();
 	}
 
 	/**
 	 * Executes sanitisation shell scripts in cloned repository.
-	 * @param GitManagedSanitisationConfiguration config sanitisation configuration
+	 *
+	 * @param GitManagedSanitisationConfiguration
+	 *            config sanitisation configuration
 	 * @return
 	 * @throws SanitisationException
 	 */
-	protected SanitisationResult executeSanitisationScripts(SanitisationConfiguration config) throws SanitisationException {
+	protected SanitisationResult executeSanitisationScripts(final SanitisationConfiguration config)
+			throws SanitisationException {
 
-		SanitisationResult result = new SanitisationResult(config.getArchive(),
-															config.getRepository().getIdentifier(),
-															config.getIdentifier(),
-															true);
+		final SanitisationResult result = new SanitisationResult(config.getArchive(), config.getRepository()
+				.getIdentifier(), config.getIdentifier(), true);
 
-		List<File> sanitisationScripts = findSanitisationScripts(workingDir, new ArrayList<File>());
+		final List<File> sanitisationScripts = findSanitisationScripts(workingDir, new ArrayList<File>());
 
-		for(File script : sanitisationScripts) {
+		for (final File script : sanitisationScripts) {
 
-			String sanitisationCommand = buildSanitisationCommand(script.getAbsolutePath(), config.toSanitisationString());
+			final String[] sanitisationCommand = buildSanitisationCommand(script.getAbsolutePath(), config);
 
 			Logger.info("Executing: " + sanitisationCommand);
 
@@ -98,25 +100,25 @@ public abstract class GitManagedSanitisationService {
 			int exitValue = 0;
 
 			try {
-				Process p = Runtime.getRuntime().exec(sanitisationCommand);
+				final Process p = Runtime.getRuntime().exec(sanitisationCommand);
 				processOutput = p.getInputStream();
 				scriptOutput = IOUtils.toString(processOutput, Charset.defaultCharset());
 				exitValue = p.waitFor();
-			} catch(IOException | InterruptedException e) {
+			} catch (IOException | InterruptedException e) {
 				throw new SanitisationException("Error during sanitisation script execution.", e);
 			} finally {
 				IOUtils.closeQuietly(processOutput);
 			}
 
-			if((scriptOutput != null) && (scriptOutput.trim() != "")) {
+			if ((scriptOutput != null) && (scriptOutput.trim() != "")) {
 				Logger.info(String.format("%s (%s)", scriptOutput, script.getAbsolutePath()));
 			}
 
-			if(exitValue != SANITISATION_SUCCESS_CODE) {
+			if (exitValue != SANITISATION_SUCCESS_CODE) {
 				result.setSane(false);
 				result.addError(scriptOutput);
 				Logger.info(String.format("Sanitisation script '%s' failed, marking archive unsafe.",
-											script.getAbsolutePath()));
+						script.getAbsolutePath()));
 			}
 
 		}
@@ -126,36 +128,34 @@ public abstract class GitManagedSanitisationService {
 
 	/**
 	 * Perform sanitisation (validation) of archive
+	 *
 	 * @param archive
 	 * @param properties
 	 * @param repository
 	 * @return
 	 * @throws SanitisationException
 	 */
-	protected SanitisationResult sanitise(SanitisationConfiguration config) throws SanitisationException {
+	protected SanitisationResult sanitise(final SanitisationConfiguration config) throws SanitisationException {
 
 		try {
 
 			updateSanitisationScript();
 
 			Logger.info(String.format("Sanitising archive of files with identifier '%s' for %s repository '%s'.",
-					config.getIdentifier(),
-					config.getRepository().getRepoType(),
-					config.getRepository().getIdentifier()));
+					config.getIdentifier(), config.getRepository().getRepoType(), config.getRepository()
+							.getIdentifier()));
 
-			SanitisationResult result = executeSanitisationScripts(config);
+			final SanitisationResult result = executeSanitisationScripts(config);
 
-			if(result.isSane()) {
+			if (result.isSane()) {
 				Logger.info(String.format("Archive with identifier '%s' for %s repository '%s' passed sanitisation.",
-						config.getIdentifier(),
-						config.getRepository().getRepoType(),
-						config.getRepository().getIdentifier()));
+						config.getIdentifier(), config.getRepository().getRepoType(), config.getRepository()
+								.getIdentifier()));
 			} else {
 				// TODO audit script failure
 				Logger.info(String.format("Archive with identifier '%s' for %s repository '%s' failed sanitisation.",
-						config.getIdentifier(),
-						config.getRepository().getRepoType(),
-						config.getRepository().getIdentifier()));
+						config.getIdentifier(), config.getRepository().getRepoType(), config.getRepository()
+								.getIdentifier()));
 			}
 
 			return result;
@@ -168,28 +168,41 @@ public abstract class GitManagedSanitisationService {
 
 	/**
 	 * Assemble sanitisation script command to execute
-	 * @param sanitisationScriptPath path to script
-	 * @param scriptArgs arguments to provide to script
+	 *
+	 * @param sanitisationScriptPath
+	 *            path to script
+	 * @param scriptArgs
+	 *            arguments to provide to script
 	 * @return
 	 */
-	private String buildSanitisationCommand(String sanitisationScriptPath, String scriptArgs) {
-		return sanitisationScriptPath + " " + scriptArgs;
+	private String[] buildSanitisationCommand(final String sanitisationScriptPath,
+			final SanitisationConfiguration config) {
+		final List<String> arguments = config.toSanitisationArguments();
+		final String[] command = new String[arguments.size() + 1];
+		command[0] = sanitisationScriptPath;
+		for (int i = 0; i < arguments.size(); i++) {
+			command[i + 1] = arguments.get(i);
+		}
+		return command;
 	}
 
 	/**
 	 * Finds all files in directory with configured
 	 * sanitisation script name.
-	 * @param directory Directory to search for files
-	 * @param sanitisationScripts collection of scripts to
+	 *
+	 * @param directory
+	 *            Directory to search for files
+	 * @param sanitisationScripts
+	 *            collection of scripts to
 	 * @return list of all files found
 	 */
-	private List<File> findSanitisationScripts(File directory, List<File> sanitisationScripts) {
-		File[] files = directory.listFiles();
-		for(File file: files) {
-			if(file.isDirectory()) {
+	private List<File> findSanitisationScripts(final File directory, final List<File> sanitisationScripts) {
+		final File[] files = directory.listFiles();
+		for (final File file : files) {
+			if (file.isDirectory()) {
 				findSanitisationScripts(file, sanitisationScripts);
 			} else {
-				if(file.getName().equals(sanitisationScriptName)) {
+				if (file.getName().equals(sanitisationScriptName)) {
 					sanitisationScripts.add(file);
 				}
 			}
@@ -199,22 +212,20 @@ public abstract class GitManagedSanitisationService {
 
 	/**
 	 * Creates a local clone of sanitisation repository
+	 *
 	 * @throws InvalidRemoteException
 	 * @throws TransportException
 	 * @throws IllegalStateException
 	 * @throws GitAPIException
 	 */
-	private void initSanitisationScript() throws InvalidRemoteException, TransportException, IllegalStateException, GitAPIException {
-		File sanitisationScript = new File(workingDir.getPath() + "/" + sanitisationScriptName);
-		if(!sanitisationScript.exists()) {
+	private void initSanitisationScript() throws InvalidRemoteException, TransportException, IllegalStateException,
+			GitAPIException {
+		final File sanitisationScript = new File(workingDir.getPath() + "/" + sanitisationScriptName);
+		if (!sanitisationScript.exists()) {
 			// Ensure directory doesn't exist (will be created by clone)
 			FileUtils.deleteRecursive(workingDir.getPath(), true);
-			Git.cloneRepository()
-			.setURI(sanitisationRepo)
-			.setDirectory(workingDir)
-			.setBare(false)
-			.setCloneAllBranches(false)
-			.call();
+			Git.cloneRepository().setURI(sanitisationRepo).setDirectory(workingDir).setBare(false)
+					.setCloneAllBranches(false).call();
 		}
 	}
 
